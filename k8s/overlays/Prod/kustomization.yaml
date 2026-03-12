@@ -1,0 +1,6 @@
+namespace: Corp-web
+
+resources:
+  - ../../base
+  - deployment.yaml
+  - ingress.yaml
