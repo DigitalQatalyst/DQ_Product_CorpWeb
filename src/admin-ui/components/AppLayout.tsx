@@ -82,35 +82,35 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
         },
       ],
     },
-    {
-      section: "Content",
-      items: [
-        {
-          path: "/admin-ui/media",
-          label: "Library",
-          icon: <BookOpenIcon />,
-          minRole: "creator",
-        },
-        {
-          path: "/admin-ui/authors",
-          label: "Authors",
-          icon: <UsersIcon />,
-          minRole: "creator",
-        },
-        {
-          path: "/admin-ui/categories",
-          label: "Categories",
-          icon: <TagIcon />,
-          minRole: "admin",
-        },
-        {
-          path: "/admin-ui/submissions",
-          label: "Submissions",
-          icon: <MessageIcon />,
-          minRole: "creator",
-        },
-      ],
-    },
+    // {
+    //   section: "Content",
+    //   items: [
+    //     {
+    //       path: "/admin-ui/media",
+    //       label: "Library",
+    //       icon: <BookOpenIcon />,
+    //       minRole: "creator",
+    //     },
+    //     {
+    //       path: "/admin-ui/authors",
+    //       label: "Authors",
+    //       icon: <UsersIcon />,
+    //       minRole: "creator",
+    //     },
+    //     {
+    //       path: "/admin-ui/categories",
+    //       label: "Categories",
+    //       icon: <TagIcon />,
+    //       minRole: "admin",
+    //     },
+    //     {
+    //       path: "/admin-ui/submissions",
+    //       label: "Submissions",
+    //       icon: <MessageIcon />,
+    //       minRole: "creator",
+    //     },
+    //   ],
+    // },
     {
       section: "System",
       items: [

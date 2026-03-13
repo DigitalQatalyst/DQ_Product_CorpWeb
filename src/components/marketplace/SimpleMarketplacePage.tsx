@@ -8,6 +8,7 @@ import { FilterIcon, XIcon, HomeIcon, ChevronRightIcon } from "lucide-react";
 import { getMarketplaceConfig } from "../../utils/marketplaceConfig";
 import { Header } from "../Header";
 import { Footer } from "../Footer";
+import { mockServiceData } from "@/data/mockServiceData";
 // import { mockServiceData } from "../../data/mockServiceData"; // COMMENTED OUT - Now using Supabase data only
 
 export interface SimpleMarketplacePageProps {
@@ -98,56 +99,56 @@ export const SimpleMarketplacePage: React.FC<SimpleMarketplacePageProps> = ({
   // Load and filter items
   useEffect(() => {
     // COMMENTED OUT - Now using Supabase data only
-    // // Filter by active tab first
-    // let tabFilteredServices = mockServiceData;
-    // if (activeSubMarketplace === 'design-services') {
-    //   tabFilteredServices = mockServiceData.filter(service => service.category === 'Design Services');
-    // } else if (activeSubMarketplace === 'deploy-services-saas') {
-    //   tabFilteredServices = mockServiceData.filter(service => service.category === 'Deploy Services (SaaS)');
-    // } else if (activeSubMarketplace === 'deploy-services-onprem') {
-    //   tabFilteredServices = mockServiceData.filter(service => service.category === 'Deploy Services (On-Prem)');
-    // }
+    // Filter by active tab first
+    let tabFilteredServices = mockServiceData;
+    if (activeSubMarketplace === 'design-services') {
+      tabFilteredServices = mockServiceData.filter(service => service.category === 'Design Services');
+    } else if (activeSubMarketplace === 'deploy-services-saas') {
+      tabFilteredServices = mockServiceData.filter(service => service.category === 'Deploy Services (SaaS)');
+    } else if (activeSubMarketplace === 'deploy-services-onprem') {
+      tabFilteredServices = mockServiceData.filter(service => service.category === 'Deploy Services (On-Prem)');
+    }
     
-    // // Apply filters and search query
-    // const filtered = tabFilteredServices.filter((service: any) => {
-    //   const matchesAllFacets = Object.keys(filters).every((facetCode) => {
-    //     const selectedValues = filters[facetCode] || [];
-    //     if (!selectedValues.length) return true;
+    // Apply filters and search query
+    const filtered = tabFilteredServices.filter((service: any) => {
+      const matchesAllFacets = Object.keys(filters).every((facetCode) => {
+        const selectedValues = filters[facetCode] || [];
+        if (!selectedValues.length) return true;
         
-    //     // Map filter codes to service properties
-    //     if (facetCode === 'serviceCategory') {
-    //       return selectedValues.some(value => {
-    //         const serviceValue = service.serviceCategory.toLowerCase().replace(/\s+/g, '-').replace(/\//g, '-').replace(/&/g, '').replace(/-+/g, '-');
-    //         return serviceValue === value;
-    //       });
-    //     } else if (facetCode === 'serviceAvailability') {
-    //       return selectedValues.some(value => 
-    //         service.serviceAvailability.toLowerCase().replace(/\s+/g, '-') === value
-    //       );
-    //     } else if (facetCode === 'serviceReadiness') {
-    //       return selectedValues.some(value => 
-    //         service.serviceReadiness.toLowerCase().replace(/\s+/g, '-') === value
-    //       );
-    //     } else if (facetCode === 'economicSector') {
-    //       return selectedValues.some(value => 
-    //         service.economicSector.toLowerCase().replace(/\s+/g, '-') === value
-    //       );
-    //     }
-    //     return true;
-    //   });
+        // Map filter codes to service properties
+        if (facetCode === 'serviceCategory') {
+          return selectedValues.some(value => {
+            const serviceValue = service.serviceCategory.toLowerCase().replace(/\s+/g, '-').replace(/\//g, '-').replace(/&/g, '').replace(/-+/g, '-');
+            return serviceValue === value;
+          });
+        } else if (facetCode === 'serviceAvailability') {
+          return selectedValues.some(value => 
+            service.serviceAvailability.toLowerCase().replace(/\s+/g, '-') === value
+          );
+        } else if (facetCode === 'serviceReadiness') {
+          return selectedValues.some(value => 
+            service.serviceReadiness.toLowerCase().replace(/\s+/g, '-') === value
+          );
+        } else if (facetCode === 'economicSector') {
+          return selectedValues.some(value => 
+            service.economicSector.toLowerCase().replace(/\s+/g, '-') === value
+          );
+        }
+        return true;
+      });
 
-    //   const matchesSearch = searchQuery.trim() === '' || 
-    //     service.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    //     service.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    //     service.tags.some((tag: string) => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+      const matchesSearch = searchQuery.trim() === '' || 
+        service.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        service.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        service.tags.some((tag: string) => tag.toLowerCase().includes(searchQuery.toLowerCase()));
 
-    //   return matchesAllFacets && matchesSearch;
-    // });
+      return matchesAllFacets && matchesSearch;
+    });
 
-    // setFilteredItems(filtered || []);
+    setFilteredItems(filtered || []);
     
     // Empty state since we're not using mock data anymore
-    setFilteredItems([]);
+    // setFilteredItems([]);
   }, [activeSubMarketplace, filters, searchQuery]);
 
   // Handle sub-marketplace tab change and clear filters

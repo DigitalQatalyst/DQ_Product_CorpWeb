@@ -69,7 +69,7 @@ export function Header({ "data-id": dataId }: HeaderProps) {
               <Link to="/" className="flex items-center px-4 py-2 rounded-md">
                 <img
                   src={
-                    isDarkMode
+                    !isDarkMode
                       ? "/images/DQ Logo White.svg"
                       : "/images/DQ Logo Dark.svg"
                   }
@@ -116,16 +116,7 @@ export function Header({ "data-id": dataId }: HeaderProps) {
               >
                 Products
               </Link>
-              <Link
-                to="/dtmi"
-                className={`text-sm font-medium transition-colors ${
-                  location.pathname.includes("/dtmi")
-                    ? "text-white"
-                    : "text-white/80 hover:text-primary-500"
-                }`}
-              >
-                Insights
-              </Link>
+              
               <Link
                 to="/about-us"
                 className={`text-sm font-medium transition-colors ${
@@ -160,7 +151,7 @@ export function Header({ "data-id": dataId }: HeaderProps) {
               </button>
 
               {/* Login/Profile Section */}
-              {isLoading ? (
+              {/* {isLoading ? (
                 <div className="w-10 h-10 rounded-full bg-white/20 animate-pulse" />
               ) : user ? (
                 <div className="flex items-center gap-3">
@@ -177,7 +168,7 @@ export function Header({ "data-id": dataId }: HeaderProps) {
                   )}
                   <ProfileDropdown />
                 </div>
-              ) : null}
+              ) : null} */}
             </div>
 
             {/* Mobile Menu */}

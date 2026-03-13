@@ -211,7 +211,7 @@ export function AppRouter() {
             />
             {/* Embedded Admin UI - role-protected */}
             <Route
-              path="/admin-ui/dashboard"
+              path="/admin/dashboard"
               element={
                 <AuthorizedRoute
                   allowedRoles={["admin", "creator", "HR-Admin", "HR-viewer"]}
