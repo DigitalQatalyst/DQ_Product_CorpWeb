@@ -41,22 +41,6 @@ const marketplaces = [
     icon: Package,
     href: "/products",
   },
-  {
-    id: "dtmi-resources",
-    name: "DTMI Resource Marketplace",
-    description:
-      "Access research-driven insights, articles, case studies, and digital transformation content",
-    icon: Newspaper,
-    href: "/marketplace/dtmi",
-  },
-  {
-    id: "dtmi-contributors",
-    name: "DTMI Contributors Marketplace",
-    description:
-      "Connect with digital transformation experts, thought leaders, and industry contributors",
-    icon: Users,
-    href: "/dtmi/contributors",
-  },
 ];
 
 const mainNavItems = [

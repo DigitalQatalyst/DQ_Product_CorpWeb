@@ -305,7 +305,7 @@ const ServiceCarousel = ({
         {/* Carousel container */}
         <div
           ref={carouselRef}
-          className="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory scroll-smooth pb-6 gap-6"
+          className="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory scroll-smooth pb-6 gap-6 justify-center"
           style={{
             scrollbarWidth: "none",
             msOverflowStyle: "none",
@@ -317,16 +317,12 @@ const ServiceCarousel = ({
           }).map((_, pageIndex) => (
             <div
               key={`page-${pageIndex}`}
-              className="flex-shrink-0 w-full flex gap-6 snap-center"
-              style={{
-                paddingLeft: pageIndex === 0 ? "0" : "0",
-                paddingRight: pageIndex === totalSlides - 1 ? "0" : "0",
-              }}
+              className="flex-shrink-0 w-full flex gap-6 snap-center justify-center"
             >
               {services
                 .slice(pageIndex * visibleCount, (pageIndex + 1) * visibleCount)
                 .map((service, serviceIndex) => (
-                  <div key={service.id} className={`flex-1 min-w-0`}>
+                  <div key={service.id} className={`flex-shrink-0 w-80 max-w-sm`}>
                     <FadeInUpOnScroll
                       delay={(serviceIndex % visibleCount) * 0.1}
                     >
@@ -337,13 +333,6 @@ const ServiceCarousel = ({
                       />
                     </FadeInUpOnScroll>
                   </div>
-                ))}
-              {/* Fill empty slots on the last page */}
-              {pageIndex === totalSlides - 1 &&
-                Array.from({
-                  length: (pageIndex + 1) * visibleCount - services.length,
-                }).map((_, i) => (
-                  <div key={`empty-${i}`} className="flex-1 min-w-0"></div>
                 ))}
             </div>
           ))}
@@ -397,24 +386,14 @@ export const HomePage: React.FC = () => {
           isActive: true,
         },
         {
-          id: "dtmi-resources",
-          title: "Knowledge Hub",
+          id: "careers-marketplace",
+          title: "Careers Marketplace",
           description:
-            "Explore expert insights to help your organization adapt and thrive in Economy 4.0",
-          icon: <Library />,
-          path: "/marketplace/dtmi",
+            "Discover exciting career opportunities and join our team of digital transformation experts",
+          icon: <Users />,
+          path: "/careers",
           gradientFrom: "from-purple-500",
           gradientTo: "to-purple-400",
-          isActive: true,
-        },
-        {
-          id: "dtmi-contributors-marketplace",
-          title: "DTMI Contributors",
-          description: "Discover the collective voices behind DTMI insights",
-          icon: <Users />,
-          path: "/dtmi/contributors",
-          gradientFrom: "from-violet-500",
-          gradientTo: "to-violet-400",
           isActive: true,
         },
       ],

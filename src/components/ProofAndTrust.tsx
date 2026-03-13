@@ -19,6 +19,128 @@ import {
   StaggeredFadeIn,
   useInView,
 } from "./AnimationUtils";
+
+// Testimonial Carousel Component
+const TestimonialCarousel: React.FC = () => {
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+
+  const testimonials = [
+    {
+      id: "abb",
+      badge: "ABB | DBP Design Engagement",
+      quote: "DigitalQatalyst brought architectural clarity and execution discipline that significantly elevated our Digital Business Products growth agenda. This was not simply advisory work; it was structured design that positioned us for sustainable digital growth.",
+      author: "Dr. Tariq Aslam",
+      position: "VP Digital | ABB EMEA"
+    },
+    {
+      id: "pg",
+      badge: "P&G | Digital Research Operations",
+      quote: "DigitalQatalyst helped us rethink how research operations can function in a digitally enabled environment. The result has been improved efficiency, stronger clarity on digital priorities, and a more future-ready research function.",
+      author: "Cho Edwards",
+      position: "Product Manager | Procter & Gamble (UK)"
+    }
+  ];
+
+  // Auto-slide testimonials every 6 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+    }, 6000);
+
+    return () => clearInterval(interval);
+  }, [testimonials.length]);
+
+  const nextTestimonial = () => {
+    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+  };
+
+  const prevTestimonial = () => {
+    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
+  const currentTestimonialData = testimonials[currentTestimonial];
+
+  return (
+    <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-white/20 relative">
+      <div className="text-center mb-8">
+        <h3 className="text-2xl font-bold text-white mb-6">
+          Client Testimonials
+        </h3>
+        
+        {/* Navigation Arrows */}
+        <div className="absolute top-6 right-6 flex gap-2">
+          <button
+            onClick={prevTestimonial}
+            className="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all duration-200"
+            aria-label="Previous testimonial"
+          >
+            <ChevronLeft size={16} className="text-white" />
+          </button>
+          <button
+            onClick={nextTestimonial}
+            className="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-all duration-200"
+            aria-label="Next testimonial"
+          >
+            <ChevronRight size={16} className="text-white" />
+          </button>
+        </div>
+
+        <div className="relative overflow-hidden">
+          <div 
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{ transform: `translateX(-${currentTestimonial * 100}%)` }}
+          >
+            {testimonials.map((testimonial, index) => (
+              <div key={testimonial.id} className="min-w-full">
+                <div className="relative">
+                  <div className="inline-block px-4 py-1.5 bg-brand-coral text-white text-xs font-bold rounded-full mb-4">
+                    {testimonial.badge}
+                  </div>
+                  <svg
+                    className="absolute top-8 left-0 w-8 h-8 text-white opacity-30"
+                    fill="currentColor"
+                    viewBox="0 0 32 32"
+                  >
+                    <path d="M10 8c-3.3 0-6 2.7-6 6v10h10V14H8c0-1.1.9-2 2-2V8zm16 0c-3.3 0-6 2.7-6 6v10h10V14h-6c0-1.1.9-2 2-2V8z" />
+                  </svg>
+                  <p className="text-lg text-white italic leading-relaxed px-8">
+                    "{testimonial.quote}"
+                  </p>
+                  <svg
+                    className="absolute bottom-0 right-0 w-8 h-8 text-white opacity-30 transform rotate-180"
+                    fill="currentColor"
+                    viewBox="0 0 32 32"
+                  >
+                    <path d="M10 8c-3.3 0-6 2.7-6 6v10h10V14H8c0-1.1.9-2 2-2V8zm16 0c-3.3 0-6 2.7-6 6v10h10V14h-6c0-1.1.9-2 2-2V8z" />
+                  </svg>
+                </div>
+                <p className="text-gray-200 font-medium mt-4">
+                  — {testimonial.author}, {testimonial.position}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Dots Navigation */}
+        <div className="flex justify-center gap-2 mt-6">
+          {testimonials.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentTestimonial(index)}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                currentTestimonial === index 
+                  ? "bg-brand-coral w-6" 
+                  : "bg-white/40 hover:bg-white/60"
+              }`}
+              aria-label={`Go to testimonial ${index + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
 interface Testimonial {
   id: string;
   name: string;
@@ -864,53 +986,7 @@ const ProofAndTrust: React.FC = () => {
 
           {/* Client Testimonial - Inside same section */}
           <FadeInUpOnScroll className="mt-16 max-w-4xl mx-auto" delay={0.4}>
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-white/20">
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-white mb-6">
-                  Client Testimonials
-                </h3>
-                <div className="relative">
-                  <div className="inline-block px-4 py-1.5 bg-brand-coral text-white text-xs font-bold rounded-full mb-4">
-                    ABB | DBP Design Engagement
-                  </div>
-                  <svg
-                    className="absolute top-8 left-0 w-8 h-8 text-white opacity-30"
-                    fill="currentColor"
-                    viewBox="0 0 32 32"
-                  >
-                    <path d="M10 8c-3.3 0-6 2.7-6 6v10h10V14H8c0-1.1.9-2 2-2V8zm16 0c-3.3 0-6 2.7-6 6v10h10V14h-6c0-1.1.9-2 2-2V8z" />
-                  </svg>
-                  <p className="text-lg text-white italic leading-relaxed px-8">
-                    "DigitalQatalyst brought architectural clarity and execution
-                    discipline that significantly elevated our Digital Business
-                    Products growth agenda. This was not simply advisory work;
-                    it was structured design that positioned us for sustainable
-                    digital growth."
-                  </p>
-                  <svg
-                    className="absolute bottom-0 right-0 w-8 h-8 text-white opacity-30 transform rotate-180"
-                    fill="currentColor"
-                    viewBox="0 0 32 32"
-                  >
-                    <path d="M10 8c-3.3 0-6 2.7-6 6v10h10V14H8c0-1.1.9-2 2-2V8zm16 0c-3.3 0-6 2.7-6 6v10h10V14h-6c0-1.1.9-2 2-2V8z" />
-                  </svg>
-                </div>
-                <p className="text-gray-200 font-medium mt-4">
-                  — Dr. Tariq Aslam, VP Digital | ABB EMEA
-                </p>
-              </div>
-              <div className="text-center">
-                <button
-                  onClick={() =>
-                    (window.location.href = "/client-testimonials")
-                  }
-                  className="inline-flex items-center px-6 py-3 bg-white text-primary font-semibold rounded-xl hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
-                >
-                  See Client Testimonials
-                  <ArrowRight size={20} className="ml-2" />
-                </button>
-              </div>
-            </div>
+            <TestimonialCarousel />
           </FadeInUpOnScroll>
         </div>
       </section>

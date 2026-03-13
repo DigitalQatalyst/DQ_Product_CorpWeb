@@ -30,6 +30,11 @@ const getFeatureDescription = (productId: string, tag: string): string => {
       "Bite-Sized Learning": "Short, digestible chapters allow busy leaders to quickly grasp key transformation strategies and methodologies.",
       "Practical Case Studies": "Real-world case studies provide actionable examples and solutions for overcoming digital transformation challenges."
     },
+    dtmi: {
+      "Market Intelligence": "Access comprehensive management insights and trends in digital transformation across industries and sectors.",
+      "Research Insights": "Expert-driven research and analysis on emerging technologies, methodologies, and transformation strategies.",
+      "Industry Analysis": "Deep-dive analysis of sector-specific transformation patterns, challenges, and opportunities."
+    },
     dtmcc: {
       "Digital Worker Enablement": "Spaces designed for human-machine collaboration, empowering professionals to thrive in Economy 4.0.",
       "AI-Ready Infrastructure": "High-speed connectivity and AI-integrated workstations for seamless human-AI collaboration.",
@@ -445,6 +450,72 @@ const getProductContent = (productId: string) => {
           </div>
         </div>
       </>
+    ),
+    dtmi: (
+      <>
+        <h3 className="text-2xl font-bold text-gray-900 mb-4">The Problem Space</h3>
+        <p className="text-gray-700 mb-5 leading-relaxed">
+          Organizations struggle to access reliable, structured insights about digital transformation trends, management intelligence, and industry-specific transformation patterns. Traditional research is fragmented, expensive, and often lacks the sector-specific depth needed for strategic decision-making.
+        </p>
+
+        <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Unique Solution</h3>
+        <p className="text-gray-700 mb-5 leading-relaxed">
+          DTMI is a comprehensive digital transformation management insights platform that provides structured intelligence through our 6xD framework and sector-specific lenses. Access expert-driven research, industry analysis, case studies, and transformation insights that inform strategic decisions and accelerate your transformation journey.
+        </p>
+
+        <h3 className="text-2xl font-bold text-gray-900 mb-4">DTMI Features</h3>
+        <div className="space-y-4 mb-6">
+          <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+            <h4 className="font-bold text-gray-900 mb-2">Market Intelligence</h4>
+            <p className="text-gray-700">Access comprehensive management insights and trends in digital transformation across industries and sectors.</p>
+          </div>
+          <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
+            <h4 className="font-bold text-gray-900 mb-2">Research Insights</h4>
+            <p className="text-gray-700">Expert-driven research and analysis on emerging technologies, methodologies, and transformation strategies.</p>
+          </div>
+          <div className="bg-purple-50 border-l-4 border-purple-500 p-4 rounded-r-lg">
+            <h4 className="font-bold text-gray-900 mb-2">Industry Analysis</h4>
+            <p className="text-gray-700">Deep-dive analysis of sector-specific transformation patterns, challenges, and opportunities.</p>
+          </div>
+        </div>
+
+        <h3 className="text-2xl font-bold text-gray-900 mb-6">Practical Value</h3>
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm divide-y divide-gray-200">
+          <div className="flex items-center gap-6 p-6">
+            <div className="w-16 h-16 bg-primary-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h4 className="font-bold text-gray-900 mb-1 text-lg">Better Decisions</h4>
+              <p className="text-gray-600">70% improvement in strategic decision quality</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-6 p-6">
+            <div className="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h4 className="font-bold text-gray-900 mb-1 text-lg">Faster Insights</h4>
+              <p className="text-gray-600">85% faster access to market intelligence</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-6 p-6">
+            <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h4 className="font-bold text-gray-900 mb-1 text-lg">Reduced Risk</h4>
+              <p className="text-gray-600">50% reduction in transformation risks</p>
+            </div>
+          </div>
+        </div>
+      </>
     )
   };
 
@@ -460,6 +531,10 @@ const getProductContent = (productId: string) => {
 const getCategoryDescription = (productId: string, category: string): string => {
   if (productId === "dtmcc") {
     return "Digital Working Studios belongs to the Collaboration category, enabling digital workers who thrive through human-machine collaboration. In Economy 4.0, our studios provide the environment where professionals seamlessly integrate AI and machine intelligence into their work, driving innovation and productivity in the digital economy.";
+  }
+  
+  if (productId === "dtmi") {
+    return "DTMI belongs to the Intelligence category, providing comprehensive management insights and research-driven intelligence for digital transformation. This category focuses on delivering structured knowledge, industry analysis, and strategic insights that inform decision-making and accelerate transformation initiatives across sectors.";
   }
   
   return `This product belongs to the ${category} category, providing specialized solutions for organizations looking to enhance their digital transformation capabilities. The ${category} category encompasses comprehensive solutions designed to address complex organizational challenges through strategic guidance, proven methodologies, and practical tools.`;

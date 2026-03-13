@@ -6,6 +6,7 @@ import {
   BookOpen,
   Users,
   Target,
+  TrendingUp,
 } from "lucide-react";
 import type { ProductType } from "../types/product";
 
@@ -96,6 +97,22 @@ export const dqProducts: ProductType[] = [
     }),
     imageUrl:
       "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop",
+  },
+  {
+    id: "dtmi",
+    name: "Digital Transformation Management Insights",
+    code: "DTMI",
+    description:
+      "Global digital transformation management insights platform structured by 6xD and sector lenses. Access research-driven insights, articles, case studies, and digital transformation content from industry experts and thought leaders.",
+    tags: ["Market Intelligence", "Research Insights", "Industry Analysis"],
+    demoUrl: "/products/dtmi/demo",
+    learnMoreUrl: "/products/dtmi",
+    category: "Intelligence",
+    icon: React.createElement(TrendingUp, {
+      size: 32,
+      className: "text-primary-500",
+    }),
+    imageUrl: "/images/DTMI-banner.png",
   },
   {
     id: "plant40",

@@ -850,17 +850,17 @@ export default function ProductsLandingPage() {
                 <div className="grid md:grid-cols-3 gap-6">
                   <div className="bg-gradient-to-br from-secondary-50 to-white p-6 rounded-xl border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full">
                     <h4 className="text-xl font-bold text-secondary mb-3">
-                      DTMI – Digital Transformation Market Insights
+                      DTMI – Digital Transformation Management Insights
                     </h4>
                     <p className="text-gray-600 mb-4 flex-grow">
-                      Global digital transformation insight platform structured
+                      Global digital transformation management insights platform structured
                       by 6xD and sector lenses.
                     </p>
                     <Link
-                      to="/marketplace/dtmi"
+                      to="/products/dtmi"
                       className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-semibold transition-colors mt-auto"
                     >
-                      Browse DTMI
+                      Learn More
                       <ArrowRight size={18} />
                     </Link>
                   </div>

@@ -54,11 +54,11 @@ export function BlogHeader({
       {/* Back Button Overlay */}
       <div className="absolute top-8 left-4 md:left-6 z-20">
         <button
-          onClick={() => navigate('/marketplace/dtmi')}
+          onClick={() => navigate('/')}
           className="inline-flex items-center gap-2 text-white hover:text-primary bg-black/20 hover:bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 transition-all duration-200"
         >
           <ArrowLeft size={20} />
-          <span className="font-medium">Back to Knowledge Hub</span>
+          <span className="font-medium">Back Home</span>
         </button>
       </div>
     </div>

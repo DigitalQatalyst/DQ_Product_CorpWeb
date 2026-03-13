@@ -9,7 +9,6 @@ import Home from './Home';
 import KnowledgeHub from './KnowledgeHub';
 import CallToAction from './CallToAction';
 import DigitalQatalystAttribution from './DigitalQatalystAttribution';
-import FeaturedProgramSpotlight from './FeaturedProgramSpotlight';
 
 const HomePage: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -22,7 +21,6 @@ const HomePage: React.FC = () => {
       />
       <main className="flex-grow">
         <HeroSection />
-        <FeaturedProgramSpotlight />
         <TransformationStats />
         <ProofAndTrust />
         <DigitalMaturityAssessment />
