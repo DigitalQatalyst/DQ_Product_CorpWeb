@@ -15,6 +15,8 @@ Azure B2C authentication is working, but the **email claim is not being included
 ## Solution: Configure Azure B2C to Return Email Claim
 
 ### Step 1: Go to Azure B2C Portal
+<!-- test
+ -->
 
 1. Open https://portal.azure.com
 2. Go to **Azure AD B2C** resource
