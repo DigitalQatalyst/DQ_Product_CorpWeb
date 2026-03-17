@@ -1,6 +1,11 @@
-import React, { PropsWithChildren, useEffect } from "react";
-import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "./Header";
+import React from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { Loader2 } from 'lucide-react';
+
+interface PropsWithChildren {
+  children?: React.ReactNode;
+}
 
 /**
  * Guards routes behind MSAL authentication.
@@ -15,37 +20,25 @@ import { useAuth } from "./Header";
  * use <AuthorizedRoute> which wraps this component.
  */
 export const ProtectedRoute: React.FC<PropsWithChildren> = ({ children }) => {
-  const { user, isLoading, login } = useAuth();
+  const { user, isLoading } = useAuth();
   const location = useLocation();
 
-  // Optional: auto-trigger login redirect when the user is not authenticated.
-  // Set to `true` in production once B2C is fully configured.
-  const AUTO_LOGIN = false;
-
-  useEffect(() => {
-    if (!isLoading && !user && AUTO_LOGIN) {
-      login();
-    }
-  }, [isLoading, user, login, AUTO_LOGIN]);
-
-  // While determining auth state, render nothing to avoid a redirect flash
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-secondary-900 via-secondary-800 to-primary-900">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 text-primary-500 animate-spin mx-auto mb-4" />
+          <p className="text-gray-400">Loading...</p>
+        </div>
       </div>
     );
   }
 
-  // Authenticated → render the protected content
-  if (user) {
-    return <>{children}</>;
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // Not authenticated and not auto-logging in → redirect to login
-  // Pass the attempted location as a query parameter so it survives Azure B2C redirect
-  const loginPath = `/login?from=${encodeURIComponent(location.pathname)}`;
-  return <Navigate to={loginPath} state={{ from: location }} replace />;
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

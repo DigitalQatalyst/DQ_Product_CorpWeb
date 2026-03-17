@@ -1,60 +1,24 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ExploreDropdown } from "./components/ExploreDropdown";
 import { MobileDrawer } from "./components/MobileDrawer";
-import { ProfileDropdown } from "./ProfileDropdown";
-import { NotificationsMenu } from "./notifications/NotificationsMenu";
-import { NotificationCenter } from "./notifications/NotificationCenter";
-import { mockNotifications } from "./utils/mockNotifications";
-import { useAuth } from "@/components/Header/context/AuthContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDarkMode } from "../../hooks/useDarkMode";
 
-import { ArrowRight, AlertCircle, LogIn } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface HeaderProps {
   "data-id"?: string;
 }
 
 export function Header({ "data-id": dataId }: HeaderProps) {
-  const [showNotificationsMenu, setShowNotificationsMenu] = useState(false);
-  const [showNotificationCenter, setShowNotificationCenter] = useState(false);
-  const { user, isLoading, isSyncing, syncError, login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { isDarkMode } = useDarkMode();
-
-  // Count unread notifications
-  const unreadCount = mockNotifications.filter((notif) => !notif.read).length;
-
-  // Toggle notifications menu
-  const toggleNotificationsMenu = () => {
-    setShowNotificationsMenu(!showNotificationsMenu);
-    if (showNotificationCenter) setShowNotificationCenter(false);
-  };
-
-  // Open notification center
-  const openNotificationCenter = () => {
-    setShowNotificationCenter(true);
-    setShowNotificationsMenu(false);
-  };
-
-  // Close notification center
-  const closeNotificationCenter = () => {
-    setShowNotificationCenter(false);
-  };
 
   // Handle get in touch - redirect to consultation page
   const handleGetInTouch = () => {
     navigate("/consultation");
   };
-
-  // Reset notification states when user logs out
-  useEffect(() => {
-    if (!user) {
-      setShowNotificationsMenu(false);
-      setShowNotificationCenter(false);
-    }
-  }, [user]);
 
   return (
     <>
@@ -84,39 +48,28 @@ export function Header({ "data-id": dataId }: HeaderProps) {
               <ExploreDropdown isCompact={false} />
             </div>
 
-            {/* Center: Main Navigation */}
-            <nav className="hidden lg:flex flex-1 items-center justify-center space-x-8">
+            {/* Center: Navigation */}
+            <nav className="hidden lg:flex items-center space-x-8">
               <Link
-                to="/"
-                className={`text-sm font-semibold text-white transition-colors ${
-                  location.pathname === "/"
-                    ? "text-white"
-                    : "text-white/80 hover:text-primary-500"
-                }`}
-              >
-                Home
-              </Link>
-              <Link
-                to="/services"
+                to="/courses"
                 className={`text-sm font-medium transition-colors ${
-                  location.pathname === "/services"
-                    ? "text-white"
-                    : "text-white/80 hover:text-primary-500"
+                  location.pathname.includes("/courses")
+                    ? "text-white border-b-2 border-primary pb-1"
+                    : "text-white/80 hover:text-white"
                 }`}
               >
-                Services
+                Courses
               </Link>
               <Link
-                to="/products"
+                to="/products/marketplace"
                 className={`text-sm font-medium transition-colors ${
                   location.pathname.includes("/products")
-                    ? "text-white"
+                    ? "text-white border-b-2 border-primary pb-1"
                     : "text-white/80 hover:text-primary-500"
                 }`}
               >
                 Products
               </Link>
-              
               <Link
                 to="/about-us"
                 className={`text-sm font-medium transition-colors ${
@@ -127,77 +80,26 @@ export function Header({ "data-id": dataId }: HeaderProps) {
               >
                 Company
               </Link>
-              {/* Research link hidden - feature/stage02-hide */}
-              {/* <Link
-                to="/research-report"
-                className={`text-sm font-medium transition-colors ${
-                  location.pathname.includes("/research-report")
-                    ? "text-white border-b-2 border-primary pb-1"
-                    : "text-white/80 hover:text-white"
-                }`}
-              >
-                Research
-              </Link> */}
             </nav>
 
             {/* Right: CTAs */}
             <div className="hidden lg:flex items-center gap-4">
               <button
                 onClick={handleGetInTouch}
-                className="flex flex-row items-center gap-2 bg-primary-500 text-white font-semibold px-6 py-2.5 rounded-lg shadow-lg hover:bg-primary-600 transition-all duration-200"
+                className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-700 transition-colors"
               >
-                Get In Touch
-                <ArrowRight size={18} />
+                Get Started
+                <ArrowRight size={16} />
               </button>
-
-              {/* Login/Profile Section */}
-              {/* {isLoading ? (
-                <div className="w-10 h-10 rounded-full bg-white/20 animate-pulse" />
-              ) : user ? (
-                <div className="flex items-center gap-3">
-                  {syncError && (
-                    <div className="flex items-center gap-2 px-3 py-1.5 bg-red-500/20 border border-red-500/50 rounded-lg text-red-100 text-xs">
-                      <AlertCircle size={14} />
-                      <span className="truncate max-w-xs">{syncError}</span>
-                    </div>
-                  )}
-                  {isSyncing && (
-                    <div className="text-xs text-white/60 animate-pulse">
-                      Syncing...
-                    </div>
-                  )}
-                  <ProfileDropdown />
-                </div>
-              ) : null} */}
             </div>
 
             {/* Mobile Menu */}
             <div className="lg:hidden flex items-center ml-auto">
-              <MobileDrawer isSignedIn={!!user} />
+              <MobileDrawer isSignedIn={false} />
             </div>
           </div>
         </div>
       </header>
-
-      {/* Notifications Menu */}
-      {showNotificationsMenu && user && (
-        <NotificationsMenu
-          onViewAll={openNotificationCenter}
-          onClose={() => setShowNotificationsMenu(false)}
-        />
-      )}
-      {/* Notification Center Modal */}
-      {showNotificationCenter && user && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
-          <div
-            className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
-            onClick={closeNotificationCenter}
-          ></div>
-          <div className="relative bg-white shadow-xl rounded-lg max-w-2xl w-full max-h-[90vh] m-4 transform transition-all duration-300">
-            <NotificationCenter onBack={closeNotificationCenter} />
-          </div>
-        </div>
-      )}
     </>
   );
 }

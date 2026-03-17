@@ -1,0 +1,18 @@
+Welcome to DigitalQatalyst! 🚀
+
+Thank you for signing up! We're excited to have you join our community of innovators.
+
+To complete your registration and activate your account, please confirm your email address:
+
+Confirm Your Email: {{ .ConfirmationURL }}
+
+🔒 Security Information:
+- This confirmation link expires in 24 hours for your protection
+- If you didn't create an account with us, please ignore this email
+
+Need help? Contact our support team at support@digitalqatalyst.com
+
+---
+© 2024 DigitalQatalyst. Empowering digital transformation.
+Privacy Policy: https://digitalqatalyst.com/privacy
+Terms of Service: https://digitalqatalyst.com/terms

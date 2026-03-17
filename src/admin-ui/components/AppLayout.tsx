@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Header } from "../../components/Header";
-import { useAuth } from "../../components/Header/context/AuthContext";
+import { AdminHeader } from "../../components/Header/AdminHeader";
+import { useAuth } from "../../contexts/AuthContext";
 import {
   Home as HomeIcon,
   BookOpen as BookOpenIcon,
@@ -27,7 +27,7 @@ type NavItem = {
   label: string;
   icon: React.ReactElement;
   /** Minimum role required to see this nav item. undefined = any logged-in user */
-  minRole?: "admin" | "creator" | "HR-Admin" | "HR-viewer";
+  minRole?: "admin" | "hr" | "editor";
 };
 
 type NavSection = {
@@ -38,7 +38,7 @@ type NavSection = {
 const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { isAdmin, isCreator, isHRAdmin, isHRViewer } = useAuth();
+  const { user, profile, isAdmin, isHR, isEditor } = useAuth();
 
   const allNavigationItems: NavSection[] = [
     {
@@ -49,7 +49,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
           path: "/admin-ui/analytics",
           label: "Analytics",
           icon: <BarChart3Icon />,
-          minRole: "HR-viewer",
+          minRole: "hr",
         },
       ],
     },
@@ -60,25 +60,25 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
           path: "/admin-ui/job-applications",
           label: "Applications",
           icon: <BriefcaseIcon />,
-          minRole: "HR-Admin",
+          minRole: "hr",
         },
         {
           path: "/admin-ui/job-applications",
           label: "CV Screening",
           icon: <FileTextIcon />,
-          minRole: "HR-viewer",
+          minRole: "hr",
         },
         {
           path: "/admin-ui/job-postings",
           label: "Job Postings",
           icon: <FileTextIcon />,
-          minRole: "HR-Admin",
+          minRole: "hr",
         },
         {
           path: "/admin-ui/interviews",
           label: "Interviews",
           icon: <CalendarIcon />,
-          minRole: "HR-Admin",
+          minRole: "hr",
         },
       ],
     },
@@ -118,7 +118,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
           path: "/admin-ui/notifications",
           label: "Notifications",
           icon: <BellIcon />,
-          minRole: "creator",
+          minRole: "editor",
         },
         {
           path: "/admin-ui/users",
@@ -141,11 +141,12 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
    * for a nav item.
    */
   const canSeeItem = (item: NavItem): boolean => {
+    // Admins can see everything
+    if (isAdmin()) return true;
+    
     if (!item.minRole) return true;
-    if (item.minRole === "creator" && isCreator()) return true;
-    if (item.minRole === "admin" && isAdmin()) return true;
-    if (item.minRole === "HR-Admin" && isHRAdmin()) return true;
-    if (item.minRole === "HR-viewer" && isHRViewer()) return true;
+    if (item.minRole === "editor" && isEditor()) return true;
+    if (item.minRole === "hr" && isHR()) return true;
     return false;
   };
 
@@ -162,9 +163,9 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header from main app */}
-      <Header />
-
+      {/* Admin Header */}
+      <AdminHeader title={title} />
+      
       <div className="flex">
         {/* Sidebar */}
         <aside
@@ -197,8 +198,8 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
                       {React.cloneElement(
                         item.icon as React.ReactElement<{ size?: number }>,
                         {
-                          size: 18,
-                        },
+                          size: location.pathname === item.path ? 20 : 18,
+                        }
                       )}
                     </span>
                     <span className="ml-3 font-medium">{item.label}</span>

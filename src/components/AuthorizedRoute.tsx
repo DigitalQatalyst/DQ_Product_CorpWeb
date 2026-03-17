@@ -1,126 +1,96 @@
-import React, { PropsWithChildren } from "react";
-import { useAuth } from "./Header";
-import ProtectedRoute from "./ProtectedRoute";
-import AccessDenied from "./AccessDenied";
+import React from 'react';
+import { Navigate, useLocation, Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { AlertCircle, X } from 'lucide-react';
 
-type UserRole = "admin" | "creator" | "viewer" | "HR-Admin" | "HR-viewer";
-
-export interface AuthorizedRouteProps extends PropsWithChildren {
-  /**
-   * One or more roles that are allowed to access this route.
-   * The user must have AT LEAST ONE of the listed roles.
-   *
-   * Role hierarchy (inclusive):
-   *   admin     → can do everything admins + creators + viewers + HR roles can do
-   *   creator   → can do everything creators + viewers can do
-   *   viewer    → read-only access
-   *   HR-Admin  → full access to HR/recruitment features
-   *   HR-viewer → read-only access to HR/recruitment features (CV screening)
-   *
-   * Leave undefined to allow any authenticated user (same as ProtectedRoute).
-   */
-  allowedRoles?: UserRole[];
-
-  /**
-   * Optional fine-grained permission check.
-   * Provide a { resource, action } pair; the user must have this permission
-   * in addition to passing the role check.
-   *
-   * Example: { resource: 'blogs', action: 'delete' }
-   */
-  requiredPermission?: { resource: string; action: string };
-
-  /**
-   * Custom message shown on the access-denied screen.
-   */
+interface AuthorizedRouteProps {
+  children?: React.ReactNode;
+  allowedRoles: string[];
+  requiredPermission?: string;
   deniedMessage?: string;
 }
 
-/**
- * Combines authentication AND authorisation in one guard.
- *
- * Renders <ProtectedRoute> first (ensures the user is logged in),
- * then checks role / permission requirements before rendering children.
- *
- * Usage:
- *
- * ```tsx
- * // Only admins
- * <AuthorizedRoute allowedRoles={['admin']}>
- *   <UserManagement />
- * </AuthorizedRoute>
- *
- * // Admins and creators
- * <AuthorizedRoute allowedRoles={['admin', 'creator']}>
- *   <BlogCreate />
- * </AuthorizedRoute>
- *
- * // Fine-grained permission
- * <AuthorizedRoute
- *   allowedRoles={['admin', 'creator']}
- *   requiredPermission={{ resource: 'blogs', action: 'delete' }}
- * >
- *   <BlogDetail />
- * </AuthorizedRoute>
- *
- * // Any authenticated user (same as ProtectedRoute)
- * <AuthorizedRoute>
- *   <Dashboard />
- * </AuthorizedRoute>
- * ```
- */
 const AuthorizedRoute: React.FC<AuthorizedRouteProps> = ({
   children,
   allowedRoles,
   requiredPermission,
   deniedMessage,
 }) => {
-  const { isAdmin, isCreator, isViewer, isHRAdmin, isHRViewer, hasPermission } =
-    useAuth();
+  const { user, profile, isLoading } = useAuth();
+  const location = useLocation();
 
-  // Helper: check if the current user's role satisfies one of the allowed roles
-  const checkRole = (): boolean => {
-    if (!allowedRoles || allowedRoles.length === 0) {
-      // No role restriction – any authenticated user is fine
-      return true;
-    }
-
-    // Hierarchical role matching using the helpers already provided by AuthContext
-    if (allowedRoles.includes("admin") && isAdmin()) return true;
-    if (allowedRoles.includes("creator") && isCreator()) return true;
-    if (allowedRoles.includes("viewer") && isViewer()) return true;
-    if (allowedRoles.includes("HR-Admin") && isHRAdmin()) return true;
-    if (allowedRoles.includes("HR-viewer") && isHRViewer()) return true;
-
-    return false;
-  };
-
-  // Helper: check fine-grained permission if one was requested
-  const checkPermission = (): boolean => {
-    if (!requiredPermission) return true;
-    return hasPermission(
-      requiredPermission.resource,
-      requiredPermission.action,
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-secondary-900 via-secondary-800 to-primary-900">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading...</p>
+        </div>
+      </div>
     );
-  };
+  }
 
-  return (
-    <ProtectedRoute>
-      {/* User is authenticated at this point – check authorisation */}
-      {checkRole() && checkPermission() ? (
-        <>{children}</>
-      ) : (
-        <AccessDenied
-          message={
-            deniedMessage ??
-            (allowedRoles
-              ? `This page is restricted to users with one of the following roles: ${allowedRoles.join(", ")}.`
-              : "You do not have permission to access this page.")
-          }
-        />
-      )}
-    </ProtectedRoute>
-  );
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  // Check role-based authorization
+  const hasRequiredRole = profile && allowedRoles.includes(profile.role);
+  
+  if (!hasRequiredRole) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-secondary-900 via-secondary-800 to-primary-900 px-4">
+        <div className="max-w-md w-full bg-secondary-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700 text-center">
+          <div className="mx-auto w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mb-6">
+            <X className="w-8 h-8 text-red-400" />
+          </div>
+          
+          <h2 className="text-3xl font-bold text-white mb-4">
+            Access Denied
+          </h2>
+          
+          <p className="text-gray-300 mb-6">
+            {deniedMessage || 'You do not have permission to access this page.'}
+          </p>
+          
+          <div className="space-y-4">
+            <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 flex items-start space-x-3">
+              <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+              <div className="text-left">
+                <p className="text-red-400 text-sm font-medium mb-1">Required role:</p>
+                <p className="text-gray-300 text-sm">
+                  {allowedRoles.join(' or ')}
+                </p>
+                {profile && (
+                  <>
+                    <p className="text-red-400 text-sm font-medium mb-1 mt-3">Your current role:</p>
+                    <p className="text-gray-300 text-sm capitalize">{profile.role}</p>
+                  </>
+                )}
+              </div>
+            </div>
+            
+            <div className="flex space-x-4">
+              <button
+                onClick={() => window.history.back()}
+                className="flex-1 px-4 py-2 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                Go Back
+              </button>
+              <Link
+                to="/"
+                className="flex-1 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-center"
+              >
+                Home
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return <>{children}</>;
 };
 
 export default AuthorizedRoute;

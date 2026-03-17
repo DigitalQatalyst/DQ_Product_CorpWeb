@@ -1,9 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { MsalProvider } from "@azure/msal-react";
-import { msalInstance, initializeMsal } from "./services/auth/msal";
 import { CourseType } from "./utils/mockData";
-import { AuthProvider } from "./components/Header/context/AuthContext";
+import { AuthProvider } from "./contexts/AuthContext";
 import { GoogleAnalytics } from "./components/GoogleAnalytics";
 import { MarketplaceRouter } from "./pages/marketplace/MarketplaceRouter";
 import { ProductMarketplacePage } from "./pages/ProductMarketplacePage";
@@ -22,12 +20,18 @@ import ServiceDetailPage from "./pages/ServiceDetailPage";
 import { ABBCaseStudy } from "./pages/case-studies/ABBCaseStudy";
 import { PGCaseStudy } from "./pages/case-studies/PGCaseStudy";
 import { CaseStudiesPage } from "./pages/case-studies/CaseStudiesPage";
+
+// Auth pages
+import LoginPage from "./pages/auth/LoginPage";
+import SignupPage from "./pages/auth/SignupPage";
+import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
+
 // Admin UI (integrated)
 import AdminDashboard from "./admin-ui/pages/Dashboard";
 import AdminMediaList from "./admin-ui/pages/MediaList";
 import BlogCreate from "./admin-ui/pages/BlogCreate";
 import BlogDetail from "./admin-ui/pages/BlogDetail";
-import AdminSettings from "./admin-ui/pages/Settings";
+import ProfileSettings from "./admin-ui/pages/ProfileSettings";
 import AuthorManagement from "./admin-ui/pages/AuthorManagement";
 import AuthorCreate from "./admin-ui/pages/AuthorCreate";
 import CategoryManagement from "./admin-ui/pages/CategoryManagement";
@@ -94,16 +98,10 @@ import JobApplicationForm from "./pages/forms/JobApplicationForm";
 import NewsletterSignupPage from "./pages/NewsletterSignupPage";
 import SectorLandingPage from "./pages/sectors/SectorLandingPage";
 import { ClientTestimonialsPage } from "./pages/ClientTestimonialsPage";
-import LoginPage from "./pages/LoginPage";
 
 export function AppRouter() {
   const [bookmarkedCourses, setBookmarkedCourses] = useState<string[]>([]);
   const [compareCourses, setCompareCourses] = useState<CourseType[]>([]);
-
-  // Initialize MSAL on component mount
-  useEffect(() => {
-    initializeMsal();
-  }, []);
 
   const toggleBookmark = (courseId: string) => {
     setBookmarkedCourses((prev) => {
@@ -126,11 +124,15 @@ export function AppRouter() {
   return (
     <BrowserRouter>
       <GoogleAnalytics />
-      <MsalProvider instance={msalInstance}>
-        <AuthProvider>
-          <Routes>
+      <AuthProvider>
+        <Routes>
             <Route path="/" element={<App />} />
+            
+            {/* Auth Routes */}
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            
             <Route path="/courses" element={<App />} />
             <Route path="/products" element={<ProductsLandingPage />} />
             <Route
@@ -205,11 +207,22 @@ export function AppRouter() {
                   allowedRoles={["admin"]}
                   deniedMessage="Settings are restricted to administrators only."
                 >
-                  <AdminSettings />
+                  <ProfileSettings />
                 </AuthorizedRoute>
               }
             />
             {/* Embedded Admin UI - role-protected */}
+            <Route
+              path="/admin-ui/dashboard"
+              element={
+                <AuthorizedRoute
+                  allowedRoles={["admin", "creator", "HR-Admin", "HR-viewer"]}
+                  deniedMessage="The admin dashboard requires admin, creator, or HR access."
+                >
+                  <AdminDashboard />
+                </AuthorizedRoute>
+              }
+            />
             <Route
               path="/admin/dashboard"
               element={
@@ -539,8 +552,7 @@ export function AppRouter() {
 
             <Route path="*" element={<Navigate to="/404" replace />} />
           </Routes>
-        </AuthProvider>
-      </MsalProvider>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
