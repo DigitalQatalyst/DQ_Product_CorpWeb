@@ -91,10 +91,11 @@ export async function getPublicJobPostings(): Promise<{ data: JobPosting[]; erro
     console.log('[JobPostingService] Fetching public job postings...');
     
     // Query directly from job_postings table for open positions
+    // Temporarily remove status filter to debug
     const { data, error } = await supabase
       .from('job_postings')
       .select('*')
-      .eq('status', 'open')
+      // .eq('status', 'open')  // Temporarily commented out for debugging
       .order('posted_date', { ascending: false });
 
     if (error) {

@@ -8,6 +8,7 @@ import {
   deactivateUser,
   deleteAdminUser,
 } from '../../services/adminUserService';
+import { getSupabaseAdmin } from '../../admin-ui/utils/supabaseClient';
 import type { AdminUser, UserRole } from '../../types/admin';
 import {
   UserPlus,
@@ -22,6 +23,9 @@ import {
   UserCheck,
   UserX,
   Shield,
+  Eye,
+  EyeOff,
+  Copy,
 } from 'lucide-react';
 
 export default function UserManagement() {
@@ -34,11 +38,13 @@ export default function UserManagement() {
   // Form state for new user
   const [newUser, setNewUser] = useState({
     email: '',
-    first_name: '',
-    last_name: '',
+    display_name: '',
+    password: '',
     role: 'viewer' as UserRole,
     department: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
 
   useEffect(() => {
     loadUsers();
@@ -53,30 +59,118 @@ export default function UserManagement() {
   };
 
   const handleCreateUser = async () => {
-    if (!newUser.email || !newUser.first_name || !newUser.last_name) {
+    if (!newUser.email || !newUser.display_name || !newUser.password) {
       alert('Please fill in all required fields');
       return;
     }
 
-    const { error } = await createAdminUser({
-      ...newUser,
-      is_active: true,
-    });
+    setIsCreating(true);
+    
+    try {
+      // Use regular client with service role key for admin operations
+      const supabaseAdmin = getSupabaseAdmin();
+      
+      console.log('Attempting to create user with admin client...');
+      
+      // Step 1: Create user in Supabase Auth using admin API
+      const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+        email: newUser.email,
+        password: newUser.password,
+        email_confirm: true, // Use boolean instead of string
+        user_metadata: {
+          display_name: newUser.display_name,
+          role: newUser.role,
+          department: newUser.department,
+        },
+        options: {
+          data: {
+            email_confirm: true // Explicitly set as boolean in options
+          }
+        }
+      });
 
-    if (error) {
-      alert(`Error creating user: ${error}`);
-      return;
+      if (authError) {
+        console.error('Error creating auth user:', authError);
+        
+        // If it's a permissions error, try alternative approach
+        if (authError.message?.includes('not allowed') || authError.message?.includes('permission')) {
+          alert('Permission denied. Please check that VITE_SUPABASE_SERVICE_ROLE_KEY is properly configured in your environment variables.');
+        } else {
+          alert(`Error creating user: ${authError.message}`);
+        }
+        
+        setIsCreating(false);
+        return;
+      }
+
+      console.log('Auth user created:', authData);
+
+      // Step 2: Create user profile in admin_users table
+      const { error: profileError } = await createAdminUser({
+        email: newUser.email,
+        display_name: newUser.display_name,
+        role: newUser.role,
+        department: newUser.department,
+        is_active: true,
+        auth_id: authData.user.id,
+      });
+
+      if (profileError) {
+        console.error('Error creating user profile:', profileError);
+        alert(`Error creating user profile: ${profileError}`);
+        // Try to clean up auth user if profile creation fails
+        await supabaseAdmin.auth.admin.deleteUser(authData.user.id);
+        setIsCreating(false);
+        return;
+      }
+
+      console.log('User profile created successfully');
+      
+      // Step 3: Send password reset email (acts as invitation)
+      const { error: inviteError } = await supabaseAdmin.auth.admin.generateLink({
+        type: 'recovery',
+        email: newUser.email,
+        options: {
+          redirectTo: `${window.location.origin}/login`,
+        },
+      });
+
+      if (inviteError) {
+        console.warn('Could not send invitation email:', inviteError);
+        // User is created, but email failed - still consider success
+        alert(`User created successfully but invitation email failed: ${inviteError.message}`);
+      } else {
+        alert(`User created successfully! Invitation email sent to ${newUser.email}`);
+      }
+
+      // Reset form and close modal
+      setShowAddModal(false);
+      setNewUser({
+        email: '',
+        display_name: '',
+        password: '',
+        role: 'viewer',
+        department: '',
+      });
+      
+      // Reload users list
+      await loadUsers();
+      
+    } catch (error: any) {
+      console.error('Unexpected error creating user:', error);
+      alert(`Unexpected error: ${error.message}`);
+    } finally {
+      setIsCreating(false);
     }
+  };
 
-    setShowAddModal(false);
-    setNewUser({
-      email: '',
-      first_name: '',
-      last_name: '',
-      role: 'viewer',
-      department: '',
-    });
-    loadUsers();
+  const generatePassword = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+    let password = '';
+    for (let i = 0; i < 12; i++) {
+      password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    setNewUser({ ...newUser, password });
   };
 
   const handleUpdateRole = async (userId: string, newRole: UserRole) => {
@@ -234,11 +328,13 @@ export default function UserManagement() {
                   <div className="col-span-3">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-bold text-sm border border-gray-200">
-                        {user.first_name[0]}{user.last_name[0]}
+                        {user.display_name ? user.display_name.split(' ').map(n => n[0]).join('') : 
+                         user.first_name && user.last_name ? `${user.first_name[0]}${user.last_name[0]}` : 
+                         user.email[0]?.toUpperCase()}
                       </div>
                       <div>
                         <div className="font-bold text-sm text-gray-900">
-                          {user.first_name} {user.last_name}
+                          {user.display_name || `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.email}
                         </div>
                         <div className="flex items-center gap-1 text-xs text-gray-500">
                           <Mail size={12} />
@@ -347,25 +443,44 @@ export default function UserManagement() {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-1">First Name *</label>
-                    <input
-                      type="text"
-                      value={newUser.first_name}
-                      onChange={(e) => setNewUser({ ...newUser, first_name: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Display Name *</label>
+                  <input
+                    type="text"
+                    value={newUser.display_name}
+                    onChange={(e) => setNewUser({ ...newUser, display_name: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                    placeholder="John Doe"
+                  />
+                </div>
 
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-1">Last Name *</label>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Password *</label>
+                  <div className="relative">
                     <input
-                      type="text"
-                      value={newUser.last_name}
-                      onChange={(e) => setNewUser({ ...newUser, last_name: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                      type={showPassword ? "text" : "password"}
+                      value={newUser.password}
+                      onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+                      className="w-full px-3 py-2 pr-20 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                      placeholder="Enter password or generate one"
                     />
+                    <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="p-1 text-gray-400 hover:text-gray-600"
+                      >
+                        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={generatePassword}
+                        className="p-1 text-gray-400 hover:text-gray-600"
+                        title="Generate secure password"
+                      >
+                        <Copy size={16} />
+                      </button>
+                    </div>
                   </div>
                 </div>
 
@@ -400,15 +515,27 @@ export default function UserManagement() {
               <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-end gap-2">
                 <button
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 text-gray-700 border border-gray-200 rounded-md hover:bg-gray-50 transition-colors"
+                  disabled={isCreating}
+                  className="px-4 py-2 text-gray-700 border border-gray-200 rounded-md hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleCreateUser}
-                  className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
+                  disabled={isCreating}
+                  className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                 >
-                  Add User
+                  {isCreating ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      Creating...
+                    </>
+                  ) : (
+                    <>
+                      <UserPlus className="w-4 h-4" />
+                      Add User
+                    </>
+                  )}
                 </button>
               </div>
             </div>

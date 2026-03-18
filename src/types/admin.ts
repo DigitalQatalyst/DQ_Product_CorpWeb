@@ -3,10 +3,11 @@ export type UserRole = 'super_admin' | 'admin' | 'hr_manager' | 'content_editor'
 
 export interface AdminUser {
   id: string;
-  auth_user_id?: string;
+  auth_id?: string;
   email: string;
-  first_name: string;
-  last_name: string;
+  display_name: string;
+  first_name?: string;
+  last_name?: string;
   role: UserRole;
   department?: string;
   avatar_url?: string;

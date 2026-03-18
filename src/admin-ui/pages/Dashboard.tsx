@@ -192,199 +192,187 @@ const Dashboard: React.FC = () => {
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          {(isAdmin() || isHRAdmin() || isHRViewer()) && (
-            <div className="bg-white rounded-xl border border-gray-200 p-4 border-r-[3px] border-r-blue-900">
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="text-2xl font-semibold text-gray-900">
-                    {stats.totalApplications}
-                  </div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    Total Applications
-                  </div>
+          <div className="bg-white rounded-xl border border-gray-200 p-4 border-r-[3px] border-r-blue-900">
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="text-2xl font-semibold text-gray-900">
+                  {stats.totalApplications}
                 </div>
-                <div className="bg-blue-50 p-2 rounded-lg">
-                  <FileText className="text-blue-600" size={20} />
+                <div className="text-xs text-gray-500 mt-1">
+                  Total Applications
                 </div>
               </div>
+              <div className="bg-blue-50 p-2 rounded-lg">
+                <FileText className="text-blue-600" size={20} />
+              </div>
             </div>
-          )}
+          </div>
 
-          {(isAdmin() || isHRAdmin() || isHRViewer()) && (
-            <div className="bg-white rounded-xl border border-gray-200 p-4 border-r-[3px] border-r-blue-900">
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="text-2xl font-semibold text-gray-900">
-                    {stats.upcomingInterviews}
-                  </div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    Upcoming Interviews
-                  </div>
+          <div className="bg-white rounded-xl border border-gray-200 p-4 border-r-[3px] border-r-blue-900">
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="text-2xl font-semibold text-gray-900">
+                  {stats.upcomingInterviews}
                 </div>
-                <div className="bg-blue-50 p-2 rounded-lg">
-                  <Calendar className="text-blue-600" size={20} />
+                <div className="text-xs text-gray-500 mt-1">
+                  Upcoming Interviews
                 </div>
               </div>
+              <div className="bg-blue-50 p-2 rounded-lg">
+                <Calendar className="text-blue-600" size={20} />
+              </div>
             </div>
-          )}
+          </div>
 
-          {isAdmin() && (
-            <div className="bg-white rounded-xl border border-gray-200 p-4 border-r-[3px] border-r-blue-900">
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="text-2xl font-semibold text-gray-900">
-                    {stats.activeUsers}
-                  </div>
-                  <div className="text-xs text-gray-500 mt-1">Active Users</div>
+          <div className="bg-white rounded-xl border border-gray-200 p-4 border-r-[3px] border-r-blue-900">
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="text-2xl font-semibold text-gray-900">
+                  {stats.activeUsers}
                 </div>
-                <div className="bg-blue-50 p-2 rounded-lg">
-                  <UserCheck className="text-blue-600" size={20} />
-                </div>
+                <div className="text-xs text-gray-500 mt-1">Active Users</div>
+              </div>
+              <div className="bg-blue-50 p-2 rounded-lg">
+                <UserCheck className="text-blue-600" size={20} />
               </div>
             </div>
-          )}
+          </div>
 
-          {(isAdmin() || isHRAdmin() || isHRViewer()) && (
-            <div className="bg-white rounded-xl border border-gray-200 p-4 border-r-[3px] border-r-blue-900">
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="text-2xl font-semibold text-gray-900">
-                    {stats.openPositions}
-                  </div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    Open Positions
-                  </div>
+          <div className="bg-white rounded-xl border border-gray-200 p-4 border-r-[3px] border-r-blue-900">
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="text-2xl font-semibold text-gray-900">
+                  {stats.openPositions}
                 </div>
-                <div className="bg-blue-50 p-2 rounded-lg">
-                  <Briefcase className="text-blue-600" size={20} />
+                <div className="text-xs text-gray-500 mt-1">
+                  Open Positions
                 </div>
               </div>
+              <div className="bg-blue-50 p-2 rounded-lg">
+                <Briefcase className="text-blue-600" size={20} />
+              </div>
             </div>
-          )}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Recent Applications - HR roles only */}
-          {(isAdmin() || isHRAdmin() || isHRViewer()) && (
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
-                <h3 className="font-semibold text-gray-900">
-                  Recent Applications
-                </h3>
-                <Link
-                  to="/admin-ui/job-applications"
-                  className="text-gray-500 hover:text-black text-xs font-medium underline underline-offset-4"
-                >
-                  View All
-                </Link>
-              </div>
-
-              {loading ? (
-                <div className="p-12 flex flex-col items-center justify-center text-gray-400">
-                  <Loader className="animate-spin mb-4" size={32} />
-                </div>
-              ) : recentApplications.length === 0 ? (
-                <div className="text-center py-12">
-                  <p className="text-gray-400 text-xs italic">
-                    No applications yet.
-                  </p>
-                </div>
-              ) : (
-                <div className="divide-y divide-gray-100">
-                  {recentApplications.map((app) => (
-                    <div
-                      key={app.id}
-                      className="group px-6 py-4 hover:bg-gray-50/50 transition-colors"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-bold text-sm border border-gray-200 shrink-0">
-                          {app.first_name[0]}
-                          {app.last_name[0]}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="text-sm font-semibold text-gray-900 truncate">
-                            {app.first_name} {app.last_name}
-                          </h4>
-                          <div className="text-xs text-gray-500 truncate">
-                            {app.job_title}
-                          </div>
-                        </div>
-                        <span
-                          className={`px-2 py-1 rounded-lg text-xs font-medium capitalize border ${getStatusColor(app.application_status)} shrink-0`}
-                        >
-                          {app.application_status}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+          {/* Recent Applications */}
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+              <h3 className="font-semibold text-gray-900">
+                Recent Applications
+              </h3>
+              <Link
+                to="/admin-ui/job-applications"
+                className="text-gray-500 hover:text-black text-xs font-medium underline underline-offset-4"
+              >
+                View All
+              </Link>
             </div>
-          )}
 
-          {/* Recent Interviews - HR roles only */}
-          {(isAdmin() || isHRAdmin()) && (
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
-                <h3 className="font-semibold text-gray-900">
-                  Upcoming Interviews
-                </h3>
-                <Link
-                  to="/admin-ui/interview-scheduler"
-                  className="text-gray-500 hover:text-black text-xs font-medium underline underline-offset-4"
-                >
-                  View All
-                </Link>
+            {loading ? (
+              <div className="p-12 flex flex-col items-center justify-center text-gray-400">
+                <Loader className="animate-spin mb-4" size={32} />
               </div>
-
-              {loading ? (
-                <div className="p-12 flex flex-col items-center justify-center text-gray-400">
-                  <Loader className="animate-spin mb-4" size={32} />
-                </div>
-              ) : recentInterviews.length === 0 ? (
-                <div className="text-center py-12">
-                  <p className="text-gray-400 text-xs italic">
-                    No interviews scheduled.
-                  </p>
-                </div>
-              ) : (
-                <div className="divide-y divide-gray-100">
-                  {recentInterviews.map((interview) => (
-                    <div
-                      key={interview.id}
-                      className="group px-6 py-4 hover:bg-gray-50/50 transition-colors"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="bg-blue-50 p-2 rounded-lg shrink-0">
-                          <Calendar className="text-blue-600" size={16} />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="text-sm font-semibold text-gray-900 truncate">
-                            {interview.candidate_name}
-                          </h4>
-                          <div className="text-xs text-gray-500">
-                            {new Date(
-                              interview.scheduled_date,
-                            ).toLocaleDateString()}{" "}
-                            at{" "}
-                            {new Date(
-                              interview.scheduled_date,
-                            ).toLocaleTimeString([], {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
-                          </div>
-                        </div>
-                        <span className="px-2 py-1 rounded-lg text-xs font-medium capitalize bg-blue-50 text-blue-700 border border-blue-100 shrink-0">
-                          {interview.interview_type}
-                        </span>
+            ) : recentApplications.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-gray-400 text-xs italic">
+                  No applications yet.
+                </p>
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-100">
+                {recentApplications.map((app) => (
+                  <div
+                    key={app.id}
+                    className="group px-6 py-4 hover:bg-gray-50/50 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-bold text-sm border border-gray-200 shrink-0">
+                        {app.first_name[0]}
+                        {app.last_name[0]}
                       </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-sm font-semibold text-gray-900 truncate">
+                          {app.first_name} {app.last_name}
+                        </h4>
+                        <div className="text-xs text-gray-500 truncate">
+                          {app.job_title}
+                        </div>
+                      </div>
+                      <span
+                        className={`px-2 py-1 rounded-lg text-xs font-medium capitalize border ${getStatusColor(app.application_status)} shrink-0`}
+                      >
+                        {app.application_status}
+                      </span>
                     </div>
-                  ))}
-                </div>
-              )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Recent Interviews */}
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+              <h3 className="font-semibold text-gray-900">
+                Upcoming Interviews
+              </h3>
+              <Link
+                to="/admin-ui/interview-scheduler"
+                className="text-gray-500 hover:text-black text-xs font-medium underline underline-offset-4"
+              >
+                View All
+              </Link>
             </div>
-          )}
+
+            {loading ? (
+              <div className="p-12 flex flex-col items-center justify-center text-gray-400">
+                <Loader className="animate-spin mb-4" size={32} />
+              </div>
+            ) : recentInterviews.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-gray-400 text-xs italic">
+                  No interviews scheduled.
+                </p>
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-100">
+                {recentInterviews.map((interview) => (
+                  <div
+                    key={interview.id}
+                    className="group px-6 py-4 hover:bg-gray-50/50 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="bg-blue-50 p-2 rounded-lg shrink-0">
+                        <Calendar className="text-blue-600" size={16} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-sm font-semibold text-gray-900 truncate">
+                          {interview.candidate_name}
+                        </h4>
+                        <div className="text-xs text-gray-500">
+                          {new Date(
+                            interview.scheduled_date,
+                          ).toLocaleDateString()}{" "}
+                          at{" "}
+                          {new Date(
+                            interview.scheduled_date,
+                          ).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </div>
+                      </div>
+                      <span className="px-2 py-1 rounded-lg text-xs font-medium capitalize bg-blue-50 text-blue-700 border border-blue-100 shrink-0">
+                        {interview.interview_type}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Recent Job Postings - HR roles only */}
           {(isAdmin() || isHRAdmin()) && (

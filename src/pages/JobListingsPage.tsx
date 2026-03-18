@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { getPublicJobPostings } from "../services/jobPostingService";
 import type { JobPosting } from "../services/jobPostingService";
+import { useLocation } from "react-router-dom";
 
 type JobListing = {
   id: number;
@@ -49,6 +50,7 @@ type FilterOption = {
 };
 
 export default function JobListingsPage() {
+  const location = useLocation();
   const [filters, setFilters] = useState<JobFilters>(initialFilters);
   const [showFilters, setShowFilters] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -144,47 +146,81 @@ export default function JobListingsPage() {
     };
 
     fetchJobs();
-  }, []);
+  }, [location.pathname]); // Refetch when route changes to this page
 
   // Generate filter options from job data
   const departmentOptions: FilterOption[] = useMemo(() => {
-    return Array.from(new Set(openPositions.map((job) => job.department)))
+    const departments = Array.from(new Set(openPositions.map((job) => job.department).filter(Boolean)));
+    console.log('[JobListingsPage] Available departments:', departments);
+    return departments
       .sort()
       .map((value) => ({ id: value, label: value }));
   }, [openPositions]);
 
   const locationOptions: FilterOption[] = useMemo(() => {
-    return Array.from(new Set(openPositions.map((job) => job.location)))
+    const locations = Array.from(new Set(openPositions.map((job) => job.location).filter(Boolean)));
+    console.log('[JobListingsPage] Available locations:', locations);
+    return locations
       .sort()
       .map((value) => ({ id: value, label: value }));
   }, [openPositions]);
 
   const typeOptions: FilterOption[] = useMemo(() => {
-    return Array.from(new Set(openPositions.map((job) => job.type)))
+    const types = Array.from(new Set(openPositions.map((job) => job.type).filter(Boolean)));
+    console.log('[JobListingsPage] Available job types:', types);
+    return types
       .sort()
       .map((value) => ({ id: value, label: value }));
   }, [openPositions]);
 
   // Filter jobs based on selected filters and search query
   const filteredPositions = useMemo(() => {
-    return openPositions.filter((job) => {
+    console.log('[JobListingsPage] Filtering jobs with:', {
+      totalJobs: openPositions.length,
+      filters,
+      searchQuery
+    });
+    
+    const filtered = openPositions.filter((job) => {
       // Filter by checkboxes
       const departmentMatch =
-        filters.department.length === 0 || filters.department.includes(job.department);
+        filters.department.length === 0 || 
+        (job.department && filters.department.includes(job.department));
       const locationMatch =
-        filters.location.length === 0 || filters.location.includes(job.location);
+        filters.location.length === 0 || 
+        (job.location && filters.location.includes(job.location));
       const typeMatch =
-        filters.type.length === 0 || filters.type.includes(job.type);
+        filters.type.length === 0 || 
+        (job.type && filters.type.includes(job.type));
       
       // Filter by search query
       const searchMatch = searchQuery === "" || 
         job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         job.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        job.department.toLowerCase().includes(searchQuery.toLowerCase());
+        (job.department && job.department.toLowerCase().includes(searchQuery.toLowerCase()));
       
-      return departmentMatch && locationMatch && typeMatch && searchMatch;
+      const matches = departmentMatch && locationMatch && typeMatch && searchMatch;
+      
+      if (!matches && (filters.department.length > 0 || filters.location.length > 0 || filters.type.length > 0 || searchQuery)) {
+        console.log('[JobListingsPage] Job filtered out:', {
+          jobTitle: job.title,
+          department: job.department,
+          location: job.location,
+          type: job.type,
+          matches: { departmentMatch, locationMatch, typeMatch, searchMatch }
+        });
+      }
+      
+      return matches;
     });
-  }, [filters, searchQuery]);
+    
+    console.log('[JobListingsPage] Filtered result:', {
+      filteredCount: filtered.length,
+      originalCount: openPositions.length
+    });
+    
+    return filtered;
+  }, [filters, searchQuery, openPositions]);
 
   const handleFilterChange = (
     filterType: keyof JobFilters,

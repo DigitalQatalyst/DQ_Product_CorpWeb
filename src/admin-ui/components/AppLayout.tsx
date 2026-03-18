@@ -45,12 +45,6 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
       section: "Overview",
       items: [
         { path: "/admin-ui/dashboard", label: "Dashboard", icon: <HomeIcon /> },
-        {
-          path: "/admin-ui/analytics",
-          label: "Analytics",
-          icon: <BarChart3Icon />,
-          minRole: "HR-viewer",
-        },
       ],
     },
     {
@@ -60,57 +54,24 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
           path: "/admin-ui/job-applications",
           label: "Applications",
           icon: <BriefcaseIcon />,
-          minRole: "HR-Admin",
         },
         {
           path: "/admin-ui/job-applications",
           label: "CV Screening",
           icon: <FileTextIcon />,
-          minRole: "HR-viewer",
         },
         {
           path: "/admin-ui/job-postings",
           label: "Job Postings",
           icon: <FileTextIcon />,
-          minRole: "HR-Admin",
         },
         {
           path: "/admin-ui/interviews",
           label: "Interviews",
           icon: <CalendarIcon />,
-          minRole: "HR-Admin",
         },
       ],
     },
-    // {
-    //   section: "Content",
-    //   items: [
-    //     {
-    //       path: "/admin-ui/media",
-    //       label: "Library",
-    //       icon: <BookOpenIcon />,
-    //       minRole: "creator",
-    //     },
-    //     {
-    //       path: "/admin-ui/authors",
-    //       label: "Authors",
-    //       icon: <UsersIcon />,
-    //       minRole: "creator",
-    //     },
-    //     {
-    //       path: "/admin-ui/categories",
-    //       label: "Categories",
-    //       icon: <TagIcon />,
-    //       minRole: "admin",
-    //     },
-    //     {
-    //       path: "/admin-ui/submissions",
-    //       label: "Submissions",
-    //       icon: <MessageIcon />,
-    //       minRole: "creator",
-    //     },
-    //   ],
-    // },
     {
       section: "System",
       items: [
@@ -118,19 +79,16 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
           path: "/admin-ui/notifications",
           label: "Notifications",
           icon: <BellIcon />,
-          minRole: "creator",
         },
         {
           path: "/admin-ui/users",
           label: "User Management",
           icon: <UsersIcon />,
-          minRole: "admin",
         },
         {
           path: "/admin-ui/settings",
           label: "Settings",
           icon: <SettingsIcon />,
-          minRole: "admin",
         },
       ],
     },

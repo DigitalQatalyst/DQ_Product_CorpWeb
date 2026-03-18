@@ -198,155 +198,30 @@ export function AppRouter() {
               path="/documentation/*"
               element={<Navigate to="/coming-soon/documentation" replace />}
             />
-            <Route
-              path="/admin-ui/settings"
-              element={
-                <AuthorizedRoute
-                  allowedRoles={["admin"]}
-                  deniedMessage="Settings are restricted to administrators only."
-                >
-                  <AdminSettings />
-                </AuthorizedRoute>
-              }
-            />
-            {/* Embedded Admin UI - role-protected */}
+            {/* Embedded Admin UI - no authentication */}
             <Route
               path="/admin/dashboard"
-              element={
-                <AuthorizedRoute
-                  allowedRoles={["admin", "creator", "HR-Admin", "HR-viewer"]}
-                  deniedMessage="The admin dashboard requires admin, creator, or HR access."
-                >
-                  <AdminDashboard />
-                </AuthorizedRoute>
-              }
+              element={<AdminDashboard />}
             />
             <Route
-              path="/admin-ui/media"
-              element={
-                <AuthorizedRoute allowedRoles={["admin", "creator"]}>
-                  <AdminMediaList />
-                </AuthorizedRoute>
-              }
+              path="/admin-ui/dashboard"
+              element={<AdminDashboard />}
             />
-            <Route
-              path="/admin-ui/media/new"
-              element={
-                <AuthorizedRoute
-                  allowedRoles={["admin", "creator"]}
-                  requiredPermission={{ resource: "blogs", action: "create" }}
-                >
-                  <BlogCreate />
-                </AuthorizedRoute>
-              }
-            />
-            <Route
-              path="/admin-ui/media/:id"
-              element={
-                <AuthorizedRoute allowedRoles={["admin", "creator"]}>
-                  <BlogDetail />
-                </AuthorizedRoute>
-              }
-            />
-            <Route
-              path="/admin-ui/authors"
-              element={
-                <AuthorizedRoute allowedRoles={["admin", "creator"]}>
-                  <AuthorManagement />
-                </AuthorizedRoute>
-              }
-            />
-            <Route
-              path="/admin-ui/authors/new"
-              element={
-                <AuthorizedRoute
-                  allowedRoles={["admin"]}
-                  deniedMessage="Creating authors requires admin access."
-                >
-                  <AuthorCreate />
-                </AuthorizedRoute>
-              }
-            />
-            <Route
-              path="/admin-ui/categories"
-              element={
-                <AuthorizedRoute allowedRoles={["admin"]}>
-                  <CategoryManagement />
-                </AuthorizedRoute>
-              }
-            />
-            <Route
-              path="/admin-ui/submissions"
-              element={
-                <AuthorizedRoute allowedRoles={["admin", "creator"]}>
-                  <ContentSubmissions />
-                </AuthorizedRoute>
-              }
-            />
-            <Route
-              path="/admin-ui/job-applications"
-              element={
-                <AuthorizedRoute
-                  allowedRoles={["admin", "HR-Admin", "HR-viewer"]}
-                  deniedMessage="Job applications are restricted to administrators and HR roles."
-                >
-                  <JobApplications />
-                </AuthorizedRoute>
-              }
-            />
-            <Route
-              path="/admin-ui/job-postings"
-              element={
-                <AuthorizedRoute allowedRoles={["admin", "HR-Admin"]}>
-                  <JobPostingsManagement />
-                </AuthorizedRoute>
-              }
-            />
-            <Route
-              path="/admin-ui/job-postings/new"
-              element={
-                <AuthorizedRoute allowedRoles={["admin", "HR-Admin"]}>
-                  <JobPostingCreate />
-                </AuthorizedRoute>
-              }
-            />
-            <Route
-              path="/admin-ui/analytics"
-              element={
-                <AuthorizedRoute
-                  allowedRoles={["admin", "HR-Admin", "HR-viewer"]}
-                >
-                  <Analytics />
-                </AuthorizedRoute>
-              }
-            />
-            <Route
-              path="/admin-ui/interviews"
-              element={
-                <AuthorizedRoute allowedRoles={["admin", "HR-Admin"]}>
-                  <InterviewScheduler />
-                </AuthorizedRoute>
-              }
-            />
-            <Route
-              path="/admin-ui/notifications"
-              element={
-                <AuthorizedRoute allowedRoles={["admin", "creator"]}>
-                  <NotificationCenter />
-                </AuthorizedRoute>
-              }
-            />
-            <Route
-              path="/admin-ui/users"
-              element={
-                <AuthorizedRoute
-                  allowedRoles={["admin"]}
-                  deniedMessage="User management is restricted to administrators only."
-                >
-                  <UserManagement />
-                </AuthorizedRoute>
-              }
-            />
+            <Route path="/admin-ui/settings" element={<AdminSettings />} />
+            <Route path="/admin-ui/media" element={<AdminMediaList />} />
+            <Route path="/admin-ui/media/new" element={<BlogCreate />} />
+            <Route path="/admin-ui/media/:id" element={<BlogDetail />} />
+            <Route path="/admin-ui/authors" element={<AuthorManagement />} />
+            <Route path="/admin-ui/authors/new" element={<AuthorCreate />} />
+            <Route path="/admin-ui/categories" element={<CategoryManagement />} />
+            <Route path="/admin-ui/submissions" element={<ContentSubmissions />} />
+            <Route path="/admin-ui/job-applications" element={<JobApplications />} />
+            <Route path="/admin-ui/job-postings" element={<JobPostingsManagement />} />
+            <Route path="/admin-ui/job-postings/new" element={<JobPostingCreate />} />
+            <Route path="/admin-ui/analytics" element={<Analytics />} />
+            <Route path="/admin-ui/interviews" element={<InterviewScheduler />} />
+            <Route path="/admin-ui/notifications" element={<NotificationCenter />} />
+            <Route path="/admin-ui/users" element={<UserManagement />} />
             {/** Forms routes - all protected */}
             <Route
               path="/forms/needs-assessment"
