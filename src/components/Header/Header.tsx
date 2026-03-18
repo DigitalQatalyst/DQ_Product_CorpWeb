@@ -5,11 +5,11 @@ import { ProfileDropdown } from "./ProfileDropdown";
 import { NotificationsMenu } from "./notifications/NotificationsMenu";
 import { NotificationCenter } from "./notifications/NotificationCenter";
 import { mockNotifications } from "./utils/mockNotifications";
-import { useAuth } from "@/components/Header/context/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDarkMode } from "../../hooks/useDarkMode";
 
-import { ArrowRight, AlertCircle, LogIn } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface HeaderProps {
   "data-id"?: string;
@@ -18,10 +18,14 @@ interface HeaderProps {
 export function Header({ "data-id": dataId }: HeaderProps) {
   const [showNotificationsMenu, setShowNotificationsMenu] = useState(false);
   const [showNotificationCenter, setShowNotificationCenter] = useState(false);
-  const { user, isLoading, isSyncing, syncError, login } = useAuth();
+  const { user, isLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { isDarkMode } = useDarkMode();
+
+  // Check if we're on admin or dashboard routes
+  const isAdminRoute = location.pathname.startsWith('/admin-ui') || 
+                       location.pathname.startsWith('/dashboard');
 
   // Count unread notifications
   const unreadCount = mockNotifications.filter((notif) => !notif.read).length;
@@ -159,44 +163,33 @@ export function Header({ "data-id": dataId }: HeaderProps) {
                 <ArrowRight size={18} />
               </button>
 
-              {/* Login/Profile Section */}
-              {isLoading ? (
-                <div className="w-10 h-10 rounded-full bg-white/20 animate-pulse" />
-              ) : user ? (
-                <div className="flex items-center gap-3">
-                  {syncError && (
-                    <div className="flex items-center gap-2 px-3 py-1.5 bg-red-500/20 border border-red-500/50 rounded-lg text-red-100 text-xs">
-                      <AlertCircle size={14} />
-                      <span className="truncate max-w-xs">{syncError}</span>
-                    </div>
-                  )}
-                  {isSyncing && (
-                    <div className="text-xs text-white/60 animate-pulse">
-                      Syncing...
-                    </div>
-                  )}
+              {/* Login/Profile Section - Only show on admin/dashboard routes */}
+              {isAdminRoute && (
+                isLoading ? (
+                  <div className="w-10 h-10 rounded-full bg-white/20 animate-pulse" />
+                ) : user ? (
                   <ProfileDropdown />
-                </div>
-              ) : null}
+                ) : null
+              )}
             </div>
 
             {/* Mobile Menu */}
             <div className="lg:hidden flex items-center ml-auto">
-              <MobileDrawer isSignedIn={!!user} />
+              <MobileDrawer isSignedIn={isAdminRoute ? !!user : false} />
             </div>
           </div>
         </div>
       </header>
 
-      {/* Notifications Menu */}
-      {showNotificationsMenu && user && (
+      {/* Notifications Menu - Only on admin/dashboard routes */}
+      {showNotificationsMenu && user && isAdminRoute && (
         <NotificationsMenu
           onViewAll={openNotificationCenter}
           onClose={() => setShowNotificationsMenu(false)}
         />
       )}
-      {/* Notification Center Modal */}
-      {showNotificationCenter && user && (
+      {/* Notification Center Modal - Only on admin/dashboard routes */}
+      {showNotificationCenter && user && isAdminRoute && (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden">
           <div
             className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"

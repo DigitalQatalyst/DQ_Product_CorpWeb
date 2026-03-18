@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "@/components/Header/context/AuthContext";
+import { useAuth } from "../../../contexts/AuthContext";
 import {
   Menu,
   X,

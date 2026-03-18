@@ -14,7 +14,7 @@ import BusinessProfilePage from "./businessProfile";
 import SupportPage from "./support";
 import SettingsPage from "./settings";
 import { ChatInterface } from "../../components/Chat/ChatInterface";
-import { useAuth } from "../../components/Header";
+import { useAuth } from "../../contexts/AuthContext";
 
 // Form imports
 import BookConsultationForEntrepreneurship from "../forms/BookConsultationForEntrepreneurship";

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { LogOutIcon, ChevronDownIcon, UserIcon } from "lucide-react";
-import { useAuth } from "@/components/Header/context/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export function ProfileDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
-  const { user, logout, isLoading } = useAuth();
+  const { user, signOut, isLoading } = useAuth();
   const navigate = useNavigate();
 
   // Generate initials from user name if no avatar is available
@@ -46,10 +46,10 @@ export function ProfileDropdown() {
   };
 
   // Handle logout
-  const handleLogout = () => {
+  const handleLogout = async () => {
     closeDropdown();
     setShowLogoutConfirmation(false);
-    logout();
+    await signOut();
   };
 
   // Navigate to user profile

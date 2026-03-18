@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "@/components/Header/context/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { updateUserProfile } from "@/lib/supabase";
 import { Mail, AlertCircle, CheckCircle, Loader } from "lucide-react";
 

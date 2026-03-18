@@ -2,7 +2,7 @@ import React from "react";
 import { Footer } from "../components/Footer/Footer";
 import { useNavigate, Link } from "react-router-dom";
 import { Bookmark, Bell, Tag, ArrowLeft } from "lucide-react";
-import { useAuth } from "../components/Header/context/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import { useDarkMode } from "../hooks/useDarkMode";
 
 const MyDQPage = () => {

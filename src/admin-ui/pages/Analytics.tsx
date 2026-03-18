@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import AppLayout from "../components/AppLayout";
 import { getAnalyticsSummary } from "../../services/analyticsService";
 import type { AnalyticsSummary } from "../../types/admin";
-import { useAuth } from "../../components/Header/context/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import {
   BarChart3,
   Loader,

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Header } from "../../components/Header";
-import { useAuth } from "../../components/Header/context/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import {
   Home as HomeIcon,
   BookOpen as BookOpenIcon,

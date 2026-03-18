@@ -1,4 +1,4 @@
-import { useAuth } from "../../components/Header/context/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Bookmark, FileText, Clock, Bell, ArrowRight } from "lucide-react";
 

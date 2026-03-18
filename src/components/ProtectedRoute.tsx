@@ -1,12 +1,12 @@
 import React, { PropsWithChildren, useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "./Header";
+import { useAuth } from "../contexts/AuthContext";
 
 /**
- * Guards routes behind MSAL authentication.
+ * Guards routes behind Supabase authentication.
  *
  * - While auth state is being determined → renders null (prevents flash)
- * - If unauthenticated → redirects to "/" preserving the "from" location
+ * - If unauthenticated → redirects to "/login" preserving the "from" location
  *   so the user can be bounced back after login
  * - If authenticated → renders children
  *
@@ -15,18 +15,8 @@ import { useAuth } from "./Header";
  * use <AuthorizedRoute> which wraps this component.
  */
 export const ProtectedRoute: React.FC<PropsWithChildren> = ({ children }) => {
-  const { user, isLoading, login } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
-
-  // Optional: auto-trigger login redirect when the user is not authenticated.
-  // Set to `true` in production once B2C is fully configured.
-  const AUTO_LOGIN = false;
-
-  useEffect(() => {
-    if (!isLoading && !user && AUTO_LOGIN) {
-      login();
-    }
-  }, [isLoading, user, login, AUTO_LOGIN]);
 
   // While determining auth state, render nothing to avoid a redirect flash
   if (isLoading) {
@@ -38,13 +28,13 @@ export const ProtectedRoute: React.FC<PropsWithChildren> = ({ children }) => {
   }
 
   // Authenticated → render the protected content
-  if (user) {
+  if (isAuthenticated) {
     return <>{children}</>;
   }
 
-  // Not authenticated and not auto-logging in → redirect to login
-  // Pass the attempted location as a query parameter so it survives Azure B2C redirect
-  const loginPath = `/login?from=${encodeURIComponent(location.pathname)}`;
+  // Not authenticated → redirect to login
+  // Pass the attempted location as a query parameter so it survives redirect
+  const loginPath = `/login?redirect=${encodeURIComponent(location.pathname)}`;
   return <Navigate to={loginPath} state={{ from: location }} replace />;
 };
 

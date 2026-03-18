@@ -1,7 +1,7 @@
 import React from "react";
 import { Header } from "../../components/Header/Header";
 import { Footer } from "../../components/Footer/Footer";
-import { useAuth } from "../../components/Header/context/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Bookmark, FileText, Clock, Bell, ArrowRight, Settings } from "lucide-react";
 

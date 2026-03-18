@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { MsalProvider } from "@azure/msal-react";
-import { msalInstance, initializeMsal } from "./services/auth/msal";
 import { CourseType } from "./utils/mockData";
-import { AuthProvider } from "./components/Header/context/AuthContext";
+import { AuthProvider } from "./contexts/AuthContext";
 import { GoogleAnalytics } from "./components/GoogleAnalytics";
 import { MarketplaceRouter } from "./pages/marketplace/MarketplaceRouter";
 import { ProductMarketplacePage } from "./pages/ProductMarketplacePage";
@@ -94,16 +92,16 @@ import JobApplicationForm from "./pages/forms/JobApplicationForm";
 import NewsletterSignupPage from "./pages/NewsletterSignupPage";
 import SectorLandingPage from "./pages/sectors/SectorLandingPage";
 import { ClientTestimonialsPage } from "./pages/ClientTestimonialsPage";
-import LoginPage from "./pages/LoginPage";
+import LoginPage from "./pages/auth/LoginPage";
+import SignupPage from "./pages/auth/SignupPage";
+import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
+import UnauthorizedPage from "./pages/UnauthorizedPage";
 
 export function AppRouter() {
   const [bookmarkedCourses, setBookmarkedCourses] = useState<string[]>([]);
   const [compareCourses, setCompareCourses] = useState<CourseType[]>([]);
 
-  // Initialize MSAL on component mount
-  useEffect(() => {
-    initializeMsal();
-  }, []);
+
 
   const toggleBookmark = (courseId: string) => {
     setBookmarkedCourses((prev) => {
@@ -126,11 +124,13 @@ export function AppRouter() {
   return (
     <BrowserRouter>
       <GoogleAnalytics />
-      <MsalProvider instance={msalInstance}>
-        <AuthProvider>
-          <Routes>
+      <AuthProvider>
+        <Routes>
             <Route path="/" element={<App />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/unauthorized" element={<UnauthorizedPage />} />
             <Route path="/courses" element={<App />} />
             <Route path="/products" element={<ProductsLandingPage />} />
             <Route
@@ -540,7 +540,6 @@ export function AppRouter() {
             <Route path="*" element={<Navigate to="/404" replace />} />
           </Routes>
         </AuthProvider>
-      </MsalProvider>
     </BrowserRouter>
   );
 }

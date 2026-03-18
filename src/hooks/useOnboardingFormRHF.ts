@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { v4 as uuidv4 } from "uuid";
 import { onboardingSchema } from "../pages/dashboard/onboarding/validationSchemas";
-import { useAuth } from "../components/Header";
+import { useAuth } from "../contexts/AuthContext";
 import {
   loadOnboardingData,
   loadOnboardingProgress,
