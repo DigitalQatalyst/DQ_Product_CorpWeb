@@ -89,6 +89,7 @@ import CareersPage from "./pages/CareersPage";
 import JobListingsPage from "./pages/JobListingsPage";
 import JobDetailPage from "./pages/JobDetailPage";
 import ProductsLandingPage from "./pages/ProductsLandingPage";
+import DWSLandingPage from "./pages/DWSLandingPage";
 import PodcastDetailPage from "./pages/PodcastDetailPage";
 import JobApplicationForm from "./pages/forms/JobApplicationForm";
 import NewsletterSignupPage from "./pages/NewsletterSignupPage";
@@ -133,6 +134,7 @@ export function AppRouter() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/courses" element={<App />} />
             <Route path="/products" element={<ProductsLandingPage />} />
+            <Route path="/dws" element={<DWSLandingPage />} />
             <Route
               path="/products/marketplace"
               element={<ProductMarketplacePage />}

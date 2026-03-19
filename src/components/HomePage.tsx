@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import HeroSection from './HeroSection';
+import DWSBanner from './DWSBanner';
 import TransformationStats from './TransformationStats';
 import ProofAndTrust from './ProofAndTrust';
 import DigitalMaturityAssessment from './DigitalMaturityAssessment';
@@ -21,6 +22,7 @@ const HomePage: React.FC = () => {
       />
       <main className="flex-grow">
         <HeroSection />
+        <DWSBanner />
         <TransformationStats />
         <ProofAndTrust />
         <DigitalMaturityAssessment />
