@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Header } from "../../components/Header";
 import { useAuth } from "../../contexts/AuthContext";
+import Modal from "./Modal";
 import {
   Home as HomeIcon,
   BookOpen as BookOpenIcon,
@@ -15,6 +16,7 @@ import {
   Calendar as CalendarIcon,
   Bell as BellIcon,
   Lock as LockIcon,
+  LogOut as LogOutIcon,
 } from "lucide-react";
 
 interface AppLayoutProps {
@@ -38,7 +40,9 @@ type NavSection = {
 const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { isAdmin, isCreator, isHRAdmin, isHRViewer } = useAuth();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const { isAdmin, isCreator, isHRAdmin, isHRViewer, signOut } = useAuth();
 
   const allNavigationItems: NavSection[] = [
     {
@@ -79,35 +83,6 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
           label: "Interviews",
           icon: <CalendarIcon />,
           minRole: "HR-Admin",
-        },
-      ],
-    },
-    {
-      section: "Content",
-      items: [
-        {
-          path: "/admin-ui/media",
-          label: "Library",
-          icon: <BookOpenIcon />,
-          minRole: "creator",
-        },
-        {
-          path: "/admin-ui/authors",
-          label: "Authors",
-          icon: <UsersIcon />,
-          minRole: "creator",
-        },
-        {
-          path: "/admin-ui/categories",
-          label: "Categories",
-          icon: <TagIcon />,
-          minRole: "admin",
-        },
-        {
-          path: "/admin-ui/submissions",
-          label: "Submissions",
-          icon: <MessageIcon />,
-          minRole: "creator",
         },
       ],
     },
@@ -159,6 +134,52 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
       items: section.items.filter(canSeeItem),
     }))
     .filter((section) => section.items.length > 0);
+
+  const handleLogout = async () => {
+    console.log('Logout button clicked');
+    setIsLoggingOut(true);
+    
+    try {
+      // Try the normal logout first with timeout
+      const logoutPromise = signOut();
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Logout timeout')), 3000)
+      );
+      
+      const result = await Promise.race([logoutPromise, timeoutPromise]);
+      console.log('SignOut result:', result);
+      
+      if (result && (result as any).error) {
+        console.error('Logout failed:', (result as any).error);
+      }
+      
+      console.log('Logout successful, redirecting...');
+    } catch (error) {
+      console.error('Logout exception:', error);
+      // Even if there's an error, continue with logout
+    } finally {
+      // Always close modal and redirect, regardless of outcome
+      setIsLoggingOut(false);
+      setShowLogoutModal(false);
+      
+      // Clear any remaining auth data from localStorage
+      try {
+        localStorage.removeItem('supabase.auth.token');
+        localStorage.removeItem('supabase.auth.refreshToken');
+        // Clear all supabase related items
+        Object.keys(localStorage).forEach(key => {
+          if (key.startsWith('supabase.')) {
+            localStorage.removeItem(key);
+          }
+        });
+      } catch (e) {
+        console.warn('Failed to clear localStorage:', e);
+      }
+      
+      // Force redirect to home page
+      window.location.href = '/';
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -216,6 +237,17 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
                 </p>
               </div>
             )}
+
+            {/* Logout button */}
+            <div className="border-t border-gray-200 pt-4 mt-4">
+              <button
+                onClick={() => setShowLogoutModal(true)}
+                className="flex items-center w-full px-3 py-2 rounded-lg text-sm text-red-600 hover:bg-red-50 hover:text-red-700 transition-all duration-200"
+              >
+                <LogOutIcon size={18} />
+                <span className="ml-3 font-medium">Logout</span>
+              </button>
+            </div>
           </nav>
         </aside>
 
@@ -239,6 +271,54 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
           onClick={() => setSidebarOpen(false)}
         />
       )}
+
+      {/* Logout confirmation modal */}
+      <Modal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        title="Confirm Logout"
+        size="sm"
+        footer={
+          <>
+            <button
+              onClick={() => setShowLogoutModal(false)}
+              disabled={isLoggingOut}
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleLogout}
+              disabled={isLoggingOut}
+              className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            >
+              {isLoggingOut ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Logging out...
+                </>
+              ) : (
+                <>
+                  <LogOutIcon size={16} />
+                  Logout
+                </>
+              )}
+            </button>
+          </>
+        }
+      >
+        <div className="text-center py-4">
+          <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+            <LogOutIcon className="text-red-600" size={24} />
+          </div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            Are you sure you want to logout?
+          </h3>
+          <p className="text-sm text-gray-500">
+            You will need to sign in again to access the admin panel.
+          </p>
+        </div>
+      </Modal>
     </div>
   );
 };

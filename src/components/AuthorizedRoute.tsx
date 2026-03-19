@@ -3,7 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 import ProtectedRoute from "./ProtectedRoute";
 import AccessDenied from "./AccessDenied";
 
-type UserRole = "admin" | "creator" | "viewer" | "HR-Admin" | "HR-viewer";
+type UserRole = "admin" | "creator" | "viewer" | "hr_admin" | "hr_viewer" | "inactive";
 
 export interface AuthorizedRouteProps extends PropsWithChildren {
   /**
@@ -14,8 +14,8 @@ export interface AuthorizedRouteProps extends PropsWithChildren {
    *   admin     → can do everything admins + creators + viewers + HR roles can do
    *   creator   → can do everything creators + viewers can do
    *   viewer    → read-only access
-   *   HR-Admin  → full access to HR/recruitment features
-   *   HR-viewer → read-only access to HR/recruitment features (CV screening)
+   *   hr_admin  → full access to HR/recruitment features
+   *   hr_viewer → read-only access to HR/recruitment features (CV screening)
    *
    * Leave undefined to allow any authenticated user (same as ProtectedRoute).
    */
@@ -80,8 +80,7 @@ const AuthorizedRoute: React.FC<AuthorizedRouteProps> = ({
     isCreator, 
     isViewer, 
     isHRAdmin, 
-    isHRViewer,
-    hasRole 
+    isHRViewer
   } = useAuth();
 
   // Helper: check if the current user's role satisfies one of the allowed roles
@@ -91,12 +90,12 @@ const AuthorizedRoute: React.FC<AuthorizedRouteProps> = ({
       return true;
     }
 
-    // Hierarchical role matching using the helpers already provided by AuthContext
+    // Hierarchical role matching using helpers already provided by AuthContext
     if (allowedRoles.includes("admin") && isAdmin()) return true;
     if (allowedRoles.includes("creator") && isCreator()) return true;
     if (allowedRoles.includes("viewer") && isViewer()) return true;
-    if (allowedRoles.includes("HR-Admin") && isHRAdmin()) return true;
-    if (allowedRoles.includes("HR-viewer") && isHRViewer()) return true;
+    if (allowedRoles.includes("hr_admin") && isHRAdmin()) return true;
+    if (allowedRoles.includes("hr_viewer") && isHRViewer()) return true;
 
     return false;
   };

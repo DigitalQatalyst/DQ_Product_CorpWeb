@@ -16,7 +16,11 @@ let secondaryClient: SupabaseClient | null = null;
  */
 export function getPrimarySupabase(): SupabaseClient {
   if (!primaryClient) {
-    primaryClient = createClient(PRIMARY_SUPABASE_URL, PRIMARY_SUPABASE_KEY);
+    primaryClient = createClient(PRIMARY_SUPABASE_URL, PRIMARY_SUPABASE_KEY, {
+      auth: {
+        lock: undefined, // Disable Navigator LockManager to prevent timeout issues
+      },
+    });
   }
   return primaryClient;
 }
@@ -32,7 +36,11 @@ export function getJobsSupabase(): SupabaseClient {
   }
   
   if (!secondaryClient) {
-    secondaryClient = createClient(SECONDARY_SUPABASE_URL, SECONDARY_SUPABASE_KEY);
+    secondaryClient = createClient(SECONDARY_SUPABASE_URL, SECONDARY_SUPABASE_KEY, {
+      auth: {
+        lock: undefined, // Disable Navigator LockManager to prevent timeout issues
+      },
+    });
   }
   return secondaryClient;
 }

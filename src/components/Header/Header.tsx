@@ -73,7 +73,7 @@ export function Header({ "data-id": dataId }: HeaderProps) {
               <Link to="/" className="flex items-center px-4 py-2 rounded-md">
                 <img
                   src={
-                    isDarkMode
+                    !isDarkMode
                       ? "/images/DQ Logo White.svg"
                       : "/images/DQ Logo Dark.svg"
                   }

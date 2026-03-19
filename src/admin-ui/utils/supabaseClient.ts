@@ -23,7 +23,11 @@ export function getSupabase(): SupabaseClient<Database> {
     const msg = `Supabase not configured. Check VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env.local (current url: "${SUPABASE_URL || 'undefined'}"). Restart the dev server after changes.`
     throw new Error(msg)
   }
-  _client = createClient<Database>(SUPABASE_URL, SUPABASE_ANON_KEY)
+  _client = createClient<Database>(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: {
+      lock: undefined, // Disable Navigator LockManager to prevent timeout issues
+    },
+  })
   return _client
 }
 
@@ -46,7 +50,8 @@ export function getSupabaseAdmin(): SupabaseClient<Database> {
   _adminClient = createClient<Database>(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
     auth: {
       autoRefreshToken: false,
-      persistSession: false
+      persistSession: false,
+      lock: undefined, // Disable Navigator LockManager to prevent timeout issues
     }
   })
   return _adminClient

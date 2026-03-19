@@ -86,11 +86,25 @@ export async function getAllJobPostings(filters?: {
  */
 export async function getPublicJobPostings(): Promise<{ data: JobPosting[]; error?: string }> {
   try {
+    console.log('[JobPostingService] Starting getPublicJobPostings...');
     const supabase = getJobsSupabase();
     
-    console.log('[JobPostingService] Fetching public job postings...');
+    console.log('[JobPostingService] Supabase client created, checking connection...');
     
-    // Query directly from job_postings table for open positions
+    // First, let's see what jobs exist and their statuses
+    const { data: allJobs, error: allJobsError } = await supabase
+      .from('job_postings')
+      .select('id, title, status')
+      .order('posted_date', { ascending: false });
+
+    if (allJobsError) {
+      console.error('[JobPostingService] Error fetching all jobs:', allJobsError);
+      throw new Error(`Failed to fetch jobs: ${allJobsError.message}`);
+    }
+
+    console.log('[JobPostingService] All jobs in database:', allJobs);
+
+    // Now fetch only open positions
     const { data, error } = await supabase
       .from('job_postings')
       .select('*')
@@ -102,10 +116,26 @@ export async function getPublicJobPostings(): Promise<{ data: JobPosting[]; erro
       throw new Error(error.message);
     }
 
-    console.log('[JobPostingService] Successfully fetched jobs:', {
+    console.log('[JobPostingService] Open jobs fetched:', {
       count: data?.length || 0,
       jobs: data?.map(j => ({ id: j.id, title: j.title, status: j.status }))
     });
+
+    // If no open jobs, try to fetch jobs with different status values
+    if (!data || data.length === 0) {
+      console.log('[JobPostingService] No open jobs found, trying all active jobs...');
+      
+      const { data: activeJobs, error: activeError } = await supabase
+        .from('job_postings')
+        .select('*')
+        .in('status', ['open', 'published', 'active'])
+        .order('posted_date', { ascending: false });
+
+      if (!activeError && activeJobs && activeJobs.length > 0) {
+        console.log('[JobPostingService] Found active jobs:', activeJobs.length);
+        return { data: activeJobs };
+      }
+    }
 
     return { data: data || [] };
   } catch (error) {

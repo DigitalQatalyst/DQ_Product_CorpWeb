@@ -214,7 +214,7 @@ export function AppRouter() {
               path="/admin-ui/dashboard"
               element={
                 <AuthorizedRoute
-                  allowedRoles={["admin", "creator", "HR-Admin", "HR-viewer"]}
+                  allowedRoles={["admin", "creator", "hr_admin", "hr_viewer"]}
                   deniedMessage="The admin dashboard requires admin, creator, or HR access."
                 >
                   <AdminDashboard />
@@ -287,7 +287,7 @@ export function AppRouter() {
               path="/admin-ui/job-applications"
               element={
                 <AuthorizedRoute
-                  allowedRoles={["admin", "HR-Admin", "HR-viewer"]}
+                  allowedRoles={["admin", "hr_admin", "hr_viewer"]}
                   deniedMessage="Job applications are restricted to administrators and HR roles."
                 >
                   <JobApplications />
@@ -297,7 +297,7 @@ export function AppRouter() {
             <Route
               path="/admin-ui/job-postings"
               element={
-                <AuthorizedRoute allowedRoles={["admin", "HR-Admin"]}>
+                <AuthorizedRoute allowedRoles={["admin", "hr_admin"]}>
                   <JobPostingsManagement />
                 </AuthorizedRoute>
               }
@@ -305,7 +305,7 @@ export function AppRouter() {
             <Route
               path="/admin-ui/job-postings/new"
               element={
-                <AuthorizedRoute allowedRoles={["admin", "HR-Admin"]}>
+                <AuthorizedRoute allowedRoles={["admin", "hr_admin"]}>
                   <JobPostingCreate />
                 </AuthorizedRoute>
               }
@@ -314,7 +314,7 @@ export function AppRouter() {
               path="/admin-ui/analytics"
               element={
                 <AuthorizedRoute
-                  allowedRoles={["admin", "HR-Admin", "HR-viewer"]}
+                  allowedRoles={["admin", "hr_admin", "hr_viewer"]}
                 >
                   <Analytics />
                 </AuthorizedRoute>
@@ -323,7 +323,7 @@ export function AppRouter() {
             <Route
               path="/admin-ui/interviews"
               element={
-                <AuthorizedRoute allowedRoles={["admin", "HR-Admin"]}>
+                <AuthorizedRoute allowedRoles={["admin", "hr_admin"]}>
                   <InterviewScheduler />
                 </AuthorizedRoute>
               }

@@ -74,6 +74,8 @@ export default function JobListingsPage() {
       });
       
       if (!result.error && result.data) {
+        console.log('[JobListingsPage] Raw job data from service:', result.data);
+        
         // Transform JobPosting to JobListing format
         const jobs: JobListing[] = result.data.map((job: JobPosting) => {
           console.log('[JobListingsPage] Processing job:', {
@@ -133,7 +135,7 @@ export default function JobListingsPage() {
         
         console.log('[JobListingsPage] Transformed jobs:', {
           count: jobs.length,
-          jobs: jobs.map(j => ({ id: j.id, title: j.title }))
+          jobs: jobs.map(j => ({ id: j.id, title: j.title, department: j.department }))
         });
         setOpenPositions(jobs);
       } else {
@@ -167,7 +169,13 @@ export default function JobListingsPage() {
 
   // Filter jobs based on selected filters and search query
   const filteredPositions = useMemo(() => {
-    return openPositions.filter((job) => {
+    console.log('[JobListingsPage] Filtering jobs:', {
+      totalJobs: openPositions.length,
+      filters,
+      searchQuery
+    });
+    
+    const filtered = openPositions.filter((job) => {
       // Filter by checkboxes
       const departmentMatch =
         filters.department.length === 0 || filters.department.includes(job.department);
@@ -182,9 +190,30 @@ export default function JobListingsPage() {
         job.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         job.department.toLowerCase().includes(searchQuery.toLowerCase());
       
-      return departmentMatch && locationMatch && typeMatch && searchMatch;
+      const matches = departmentMatch && locationMatch && typeMatch && searchMatch;
+      
+      if (!matches) {
+        console.log('[JobListingsPage] Job filtered out:', {
+          jobTitle: job.title,
+          departmentMatch,
+          locationMatch,
+          typeMatch,
+          searchMatch
+        });
+      }
+      
+      return matches;
     });
-  }, [filters, searchQuery]);
+    
+    console.log('[JobListingsPage] Filtered result:', {
+      originalCount: openPositions.length,
+      filteredCount: filtered.length,
+      filters,
+      searchQuery
+    });
+    
+    return filtered;
+  }, [filters, searchQuery, openPositions]);
 
   const handleFilterChange = (
     filterType: keyof JobFilters,

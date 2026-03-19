@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { ShieldOff, ArrowLeft, Home } from "lucide-react";
+import { ShieldOff, Home, LogOut, RefreshCw } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
 
 interface AccessDeniedProps {
   /** Custom message explaining what resource/role is needed */
@@ -18,6 +19,28 @@ export const AccessDenied: React.FC<AccessDeniedProps> = ({
   fullPage = true,
 }) => {
   const navigate = useNavigate();
+  const { signOut } = useAuth();
+  const [isLoggingOut, setIsLoggingOut] = React.useState(false);
+  const [isRefreshing, setIsRefreshing] = React.useState(false);
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await signOut();
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      // Force redirect even if logout fails
+      navigate("/");
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    window.location.reload();
+  };
 
   const wrapper = fullPage
     ? "min-h-screen bg-gray-50 flex items-center justify-center p-6"
@@ -46,11 +69,38 @@ export const AccessDenied: React.FC<AccessDeniedProps> = ({
         {/* Actions */}
         <div className="flex items-center justify-center gap-3">
           <button
-            onClick={() => navigate(-1)}
-            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-red-600 border border-red-600 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <ArrowLeft size={16} />
-            Go Back
+            {isLoggingOut ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                Logging out...
+              </>
+            ) : (
+              <>
+                <LogOut size={16} />
+                Logout
+              </>
+            )}
+          </button>
+          <button
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isRefreshing ? (
+              <>
+                <div className="w-4 h-4 border-2 border-gray-600 border-t-transparent rounded-full animate-spin" />
+                Refreshing...
+              </>
+            ) : (
+              <>
+                <RefreshCw size={16} />
+                Refresh
+              </>
+            )}
           </button>
           <button
             onClick={() => navigate("/")}
