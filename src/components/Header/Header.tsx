@@ -72,11 +72,8 @@ export function Header({ "data-id": dataId }: HeaderProps) {
             <div className="flex flex-row items-center">
               <Link to="/" className="flex items-center px-4 py-2 rounded-md">
                 <img
-                  src={
-                    !isDarkMode
-                      ? "/images/DQ Logo White.svg"
-                      : "/images/DQ Logo Dark.svg"
-                  }
+                  src="/images/DQ Logo White.svg"
+                  
                   alt="DigitalQatalyst"
                   className="h-12"
                 />
