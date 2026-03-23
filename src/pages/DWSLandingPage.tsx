@@ -248,7 +248,7 @@ const DWSLandingPage: React.FC = () => {
                 
                 {/* Main Headline */}
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                  DIGITAL WORKING STUDIOS
+                  Digital Working Studios
                 </h1>
                 
                 {/* Sub-headline */}
@@ -262,7 +262,7 @@ const DWSLandingPage: React.FC = () => {
                   onClick={() => navigate("/forms/tour-request")}
                   className="px-8 py-4 bg-primary hover:bg-primary-600 text-white font-bold rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center mx-auto text-lg"
                 >
-                  BOOK A TOUR
+                  Book a Tour
                   <ArrowRight size={20} className="ml-2" />
                 </button>
               </FadeInUpOnScroll>
