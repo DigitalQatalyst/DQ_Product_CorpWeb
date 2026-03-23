@@ -29,7 +29,7 @@ const OfficeSpacesCarousel: React.FC<{ navigate: (path: string) => void }> = ({ 
       gradient: "from-primary-100 to-primary-200",
       iconColor: "text-primary-600",
       textColor: "text-primary-700",
-      image: "/DWS images/IMG_4305.HEIC"
+      image: "/DWS images/DWS1.jpg"
     },
     {
       id: 2,
@@ -39,7 +39,7 @@ const OfficeSpacesCarousel: React.FC<{ navigate: (path: string) => void }> = ({ 
       gradient: "from-blue-100 to-blue-200",
       iconColor: "text-blue-600",
       textColor: "text-blue-700",
-      image: "/DWS images/IMG_4306.HEIC"
+      image: "/DWS images/DWS2.jpg"
     },
     {
       id: 3,
@@ -49,37 +49,7 @@ const OfficeSpacesCarousel: React.FC<{ navigate: (path: string) => void }> = ({ 
       gradient: "from-green-100 to-green-200",
       iconColor: "text-green-600",
       textColor: "text-green-700",
-      image: "/DWS images/IMG_4307.HEIC"
-    },
-    {
-      id: 4,
-      title: "Focus & Quiet Areas",
-      description: "Dedicated spaces for deep work, concentration, and individual productivity tasks.",
-      icon: <Globe size={48} />,
-      gradient: "from-purple-100 to-purple-200",
-      iconColor: "text-purple-600",
-      textColor: "text-purple-700",
-      image: "/DWS images/IMG_4308.HEIC"
-    },
-    {
-      id: 5,
-      title: "Relaxation Lounges",
-      description: "Comfortable spaces for breaks, informal meetings, and networking with fellow digital workers.",
-      icon: <Building2 size={48} />,
-      gradient: "from-orange-100 to-orange-200",
-      iconColor: "text-orange-600",
-      textColor: "text-orange-700",
-      image: "/DWS images/IMG_4309.HEIC"
-    },
-    {
-      id: 6,
-      title: "Technology Hub",
-      description: "Central tech station with 3D printers, VR equipment, and advanced digital tools for innovation.",
-      icon: <Zap size={48} />,
-      gradient: "from-teal-100 to-teal-200",
-      iconColor: "text-teal-600",
-      textColor: "text-teal-700",
-      image: "/DWS images/IMG_4316.HEIC"
+      image: "/DWS images/DWS3.jpg"
     }
   ];
 
@@ -127,8 +97,27 @@ const OfficeSpacesCarousel: React.FC<{ navigate: (path: string) => void }> = ({ 
           {officeSpaces.map((space) => (
             <div key={space.id} className="min-w-full">
               <div className="relative h-96 md:h-[500px] overflow-hidden">
-                {/* Background - Use gradient as primary since HEIC isn't widely supported */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${space.gradient} flex items-center justify-center`}>
+                {/* Background Image */}
+                <img
+                  src={space.image}
+                  alt={space.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  onError={(e) => {
+                    // Fallback to gradient if image fails to load
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    const parent = target.parentElement;
+                    if (parent) {
+                      const gradientDiv = parent.querySelector('.gradient-fallback');
+                      if (gradientDiv) {
+                        (gradientDiv as HTMLElement).style.display = 'flex';
+                      }
+                    }
+                  }}
+                />
+                
+                {/* Gradient Fallback (hidden by default) */}
+                <div className={`gradient-fallback absolute inset-0 bg-gradient-to-br ${space.gradient} items-center justify-center hidden`}>
                   <div className="text-center">
                     <div className={`${space.iconColor} mx-auto mb-4`}>
                       {space.icon}
@@ -138,23 +127,6 @@ const OfficeSpacesCarousel: React.FC<{ navigate: (path: string) => void }> = ({ 
                     </p>
                   </div>
                 </div>
-                
-                {/* Optional: Try to load HEIC image as overlay (will fallback gracefully) */}
-                <img
-                  src={space.image}
-                  alt={space.title}
-                  className="absolute inset-0 w-full h-full object-cover opacity-0"
-                  onLoad={(e) => {
-                    // If image loads successfully, show it
-                    const target = e.target as HTMLImageElement;
-                    target.style.opacity = '1';
-                  }}
-                  onError={(e) => {
-                    // If image fails, keep it hidden (gradient shows through)
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                  }}
-                />
                 
                 {/* Content Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end">
