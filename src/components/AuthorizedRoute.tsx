@@ -1,9 +1,9 @@
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useEffect, useRef } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import ProtectedRoute from "./ProtectedRoute";
-import AccessDenied from "./AccessDenied";
+import { useNavigate, useLocation } from "react-router-dom";
 
-type UserRole = "admin" | "creator" | "viewer" | "hr_admin" | "hr_viewer" | "inactive";
+type UserRole = "admin" | "creator" | "hr";
 
 export interface AuthorizedRouteProps extends PropsWithChildren {
   /**
@@ -29,11 +29,6 @@ export interface AuthorizedRouteProps extends PropsWithChildren {
    * Example: { resource: 'blogs', action: 'delete' }
    */
   requiredPermission?: { resource: string; action: string };
-
-  /**
-   * Custom message shown on the access-denied screen.
-   */
-  deniedMessage?: string;
 }
 
 /**
@@ -73,14 +68,14 @@ const AuthorizedRoute: React.FC<AuthorizedRouteProps> = ({
   children,
   allowedRoles,
   requiredPermission,
-  deniedMessage,
 }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const hasRedirected = useRef(false);
   const { 
     isAdmin, 
     isCreator, 
-    isViewer, 
-    isHRAdmin, 
-    isHRViewer
+    isHR
   } = useAuth();
 
   // Helper: check if the current user's role satisfies one of the allowed roles
@@ -93,9 +88,7 @@ const AuthorizedRoute: React.FC<AuthorizedRouteProps> = ({
     // Hierarchical role matching using helpers already provided by AuthContext
     if (allowedRoles.includes("admin") && isAdmin()) return true;
     if (allowedRoles.includes("creator") && isCreator()) return true;
-    if (allowedRoles.includes("viewer") && isViewer()) return true;
-    if (allowedRoles.includes("hr_admin") && isHRAdmin()) return true;
-    if (allowedRoles.includes("hr_viewer") && isHRViewer()) return true;
+    if (allowedRoles.includes("hr") && isHR()) return true;
 
     return false;
   };
@@ -109,20 +102,30 @@ const AuthorizedRoute: React.FC<AuthorizedRouteProps> = ({
     return true;
   };
 
+  // Redirect to dashboard if user doesn't have access (but prevent infinite loops)
+  const handleUnauthorizedAccess = () => {
+    if (!hasRedirected.current) {
+      hasRedirected.current = true;
+      // Only redirect if not already at dashboard
+      if (location.pathname !== '/admin-ui/dashboard') {
+        navigate('/admin-ui/dashboard', { replace: true });
+      }
+    }
+    return null;
+  };
+
+  // Reset redirect flag when component mounts or location changes
+  useEffect(() => {
+    hasRedirected.current = false;
+  }, [location]);
+
   return (
     <ProtectedRoute>
       {/* User is authenticated at this point – check authorisation */}
       {checkRole() && checkPermission() ? (
         <>{children}</>
       ) : (
-        <AccessDenied
-          message={
-            deniedMessage ??
-            (allowedRoles
-              ? `This page is restricted to users with one of the following roles: ${allowedRoles.join(", ")}.`
-              : "You do not have permission to access this page.")
-          }
-        />
+        handleUnauthorizedAccess()
       )}
     </ProtectedRoute>
   );

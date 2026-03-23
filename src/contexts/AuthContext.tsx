@@ -738,13 +738,13 @@ export interface AuthContextType {
   updateProfile: (updates: Partial<Profile>) => Promise<{ error: Error | null }>;
   refreshProfile: () => Promise<void>;
 
-  // Role helpers – now based on profile.role
+  // Role helpers – now based on profile.role (only creator, admin, hr)
   hasRole: (role: string) => boolean;
   isAdmin: () => boolean;
   isCreator: () => boolean;
-  isViewer: () => boolean;
-  isHRAdmin: () => boolean;
-  isHRViewer: () => boolean;
+  isHR: () => boolean;
+  isHRAdmin: () => boolean; // Legacy - maps to isHR
+  isHRViewer: () => boolean; // Legacy - maps to isHR
 
   refreshSession: () => Promise<{ error: AuthError | null }>;
 
@@ -776,8 +776,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
     (authUser: User | null, userProfile: Profile | null): SimpleUser | null => {
       if (!authUser) return null;
 
+      console.log('[AuthContext] Processing user:', {
+        authUserId: authUser.id,
+        userProfile: userProfile,
+        profileRole: userProfile?.role,
+        authRole: authUser.role
+      });
+
       const role = userProfile?.role || 'user';
       const isAdmin = role === 'admin';
+
+      console.log('[AuthContext] Final role assignment:', { role, isAdmin });
 
       return {
         ...authUser,
@@ -795,17 +804,57 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // ────────────────────────────────────────────────
   const fetchProfile = useCallback(async (userId: string) => {
     try {
+      console.log('[AuthContext] Fetching profile for userId:', userId);
+      
+      // First try to get the profile
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', userId)
         .single();
 
-      if (error) throw error;
+      console.log('[AuthContext] Profile fetch result:', { data, error });
+
+      if (error) {
+        console.error('[AuthContext] Profile fetch error:', error);
+        console.log('[AuthContext] Error details:', {
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          hint: error.hint
+        });
+        
+        // Try to see if any profiles exist at all
+        const { data: allProfiles, error: listError } = await supabase
+          .from('profiles')
+          .select('id, role, email')
+          .limit(5);
+          
+        console.log('[AuthContext] Sample profiles in database:', allProfiles);
+        console.log('[AuthContext] List profiles error:', listError);
+        
+        throw error;
+      }
+      
+      if (!data) {
+        console.warn('[AuthContext] No profile found for user:', userId);
+        
+        // Check if profiles table exists and has data
+        const { data: countData, error: countError } = await supabase
+          .from('profiles')
+          .select('count', { count: 'exact', head: true });
+          
+        console.log('[AuthContext] Total profiles count:', countData);
+        console.log('[AuthContext] Count error:', countError);
+      } else {
+        console.log('[AuthContext] Profile found with role:', data.role);
+        console.log('[AuthContext] Full profile data:', data);
+      }
+      
       setProfile(data);
       return data;
     } catch (err: any) {
-      console.error('Profile fetch failed:', err.message);
+      console.error('[AuthContext] Profile fetch failed:', err.message);
       setProfile(null);
       return null;
     }
@@ -877,11 +926,76 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, []);
 
+  // Comprehensive cleanup function to clear all auth data
+  const clearAllAuthData = useCallback(() => {
+    console.log('[Auth] Clearing all auth data...');
+    
+    // Clear React state
+    setUser(null);
+    setSession(null);
+    setProfile(null);
+    setError(null);
+    
+    // Clear all possible localStorage keys
+    const localStorageKeys = [
+      'supabase.auth.token',
+      'supabase.auth.refreshToken',
+      'supabase.auth.codeVerifier',
+      'supabase.auth.accessToken',
+      'supabase.auth.user',
+      'supabase.auth.session',
+      'sb-yorxrlwwcthkovbgvxfa-auth-token', // Specific lock key
+      'sb-yorxrlwwcthkovbgvxfa-auth-refresh-token',
+      'sb-yorxrlwwcthkovbgvxfa-auth-code-verifier'
+    ];
+    
+    localStorageKeys.forEach(key => {
+      try {
+        localStorage.removeItem(key);
+      } catch (error) {
+        console.warn(`[Auth] Failed to remove localStorage key ${key}:`, error);
+      }
+    });
+    
+    // Clear all possible sessionStorage keys
+    const sessionStorageKeys = [
+      'supabase.auth.token',
+      'supabase.auth.refreshToken',
+      'supabase.auth.codeVerifier',
+      'supabase.auth.accessToken',
+      'supabase.auth.user',
+      'supabase.auth.session'
+    ];
+    
+    sessionStorageKeys.forEach(key => {
+      try {
+        sessionStorage.removeItem(key);
+      } catch (error) {
+        console.warn(`[Auth] Failed to remove sessionStorage key ${key}:`, error);
+      }
+    });
+    
+    // Clear all cookies that might contain auth data
+    document.cookie.split(';').forEach(cookie => {
+      const eqPos = cookie.indexOf('=');
+      const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+      if (name.includes('supabase') || name.includes('auth')) {
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=${window.location.hostname}`;
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;`;
+      }
+    });
+    
+    console.log('[Auth] All auth data cleared');
+  }, []);
+
   const signOut = useCallback(async () => {
     setError(null);
     try {
       console.log('[Auth] Starting sign out process');
+      
+      // First try Supabase signOut
       const response = await supabase.auth.signOut();
+      
       if (response.error) {
         console.error('[Auth] Sign out error:', response.error);
         setError(response.error);
@@ -889,14 +1003,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         console.log('[Auth] Sign out successful');
       }
       
-      // Clear all auth state immediately
-      setUser(null);
-      setSession(null);
-      setProfile(null);
-      
-      // Clear any local storage items that might persist
-      localStorage.removeItem('supabase.auth.token');
-      localStorage.removeItem('supabase.auth.refreshToken');
+      // Always clear all auth data regardless of Supabase response
+      clearAllAuthData();
       
       return response;
     } catch (err: any) {
@@ -904,14 +1012,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const errObj = { message: 'Sign out failed' } as AuthError;
       setError(errObj);
       
-      // Force clear state even on error
-      setUser(null);
-      setSession(null);
-      setProfile(null);
+      // Force clear all data even on error
+      clearAllAuthData();
       
       return { error: errObj };
     }
-  }, []);
+  }, [clearAllAuthData]);
 
   const refreshSession = useCallback(async () => {
     try {
@@ -928,21 +1034,25 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const clearError = useCallback(() => setError(null), []);
 
   // ────────────────────────────────────────────────
-  // Role helpers – now use profile.role
+  // Role helpers – now use profile.role (only creator, admin, hr)
   // ────────────────────────────────────────────────
   const hasRole = useCallback(
     (requiredRole: string): boolean => {
       if (!profile) return false;
-      return profile.role === requiredRole || profile.role === 'admin';
+      const userRole = profile.role;
+      
+      return userRole === requiredRole || userRole === 'admin';
     },
     [profile]
   );
 
   const isAdmin = useCallback(() => profile?.role === 'admin', [profile]);
   const isCreator = useCallback(() => hasRole('creator') || isAdmin(), [hasRole, isAdmin]);
-  const isViewer = useCallback(() => hasRole('viewer') || isCreator(), [hasRole, isCreator]);
-  const isHRAdmin = useCallback(() => hasRole('hr_admin') || isAdmin(), [hasRole, isAdmin]);
-  const isHRViewer = useCallback(() => hasRole('hr_viewer') || isHRAdmin(), [hasRole, isHRAdmin]);
+  const isHR = useCallback(() => hasRole('hr') || isAdmin(), [hasRole, isAdmin]);
+  
+  // Legacy functions for backward compatibility
+  const isHRAdmin = useCallback(() => isHR(), [isHR]);
+  const isHRViewer = useCallback(() => isHR(), [isHR]);
 
   // ────────────────────────────────────────────────
   // Initialize + listen
@@ -1042,7 +1152,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       hasRole,
       isAdmin,
       isCreator,
-      isViewer,
+      isHR,
       isHRAdmin,
       isHRViewer,
       refreshSession,
@@ -1063,7 +1173,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       hasRole,
       isAdmin,
       isCreator,
-      isViewer,
+      isHR,
       isHRAdmin,
       isHRViewer,
       refreshSession,

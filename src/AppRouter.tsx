@@ -94,7 +94,8 @@ import SectorLandingPage from "./pages/sectors/SectorLandingPage";
 import { ClientTestimonialsPage } from "./pages/ClientTestimonialsPage";
 import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignupPage";
-import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 
 export function AppRouter() {
@@ -130,6 +131,7 @@ export function AppRouter() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/unauthorized" element={<UnauthorizedPage />} />
             <Route path="/courses" element={<App />} />
             <Route path="/products" element={<ProductsLandingPage />} />
@@ -203,7 +205,6 @@ export function AppRouter() {
               element={
                 <AuthorizedRoute
                   allowedRoles={["admin"]}
-                  deniedMessage="Settings are restricted to administrators only."
                 >
                   <AdminSettings />
                 </AuthorizedRoute>
@@ -214,8 +215,7 @@ export function AppRouter() {
               path="/admin-ui/dashboard"
               element={
                 <AuthorizedRoute
-                  allowedRoles={["admin", "creator", "hr_admin", "hr_viewer"]}
-                  deniedMessage="The admin dashboard requires admin, creator, or HR access."
+                  allowedRoles={["admin", "creator", "hr"]}
                 >
                   <AdminDashboard />
                 </AuthorizedRoute>
@@ -261,7 +261,6 @@ export function AppRouter() {
               element={
                 <AuthorizedRoute
                   allowedRoles={["admin"]}
-                  deniedMessage="Creating authors requires admin access."
                 >
                   <AuthorCreate />
                 </AuthorizedRoute>
@@ -287,8 +286,7 @@ export function AppRouter() {
               path="/admin-ui/job-applications"
               element={
                 <AuthorizedRoute
-                  allowedRoles={["admin", "hr_admin", "hr_viewer"]}
-                  deniedMessage="Job applications are restricted to administrators and HR roles."
+                  allowedRoles={["admin", "hr"]}
                 >
                   <JobApplications />
                 </AuthorizedRoute>
@@ -297,7 +295,7 @@ export function AppRouter() {
             <Route
               path="/admin-ui/job-postings"
               element={
-                <AuthorizedRoute allowedRoles={["admin", "hr_admin"]}>
+                <AuthorizedRoute allowedRoles={["admin", "hr"]}>
                   <JobPostingsManagement />
                 </AuthorizedRoute>
               }
@@ -305,7 +303,7 @@ export function AppRouter() {
             <Route
               path="/admin-ui/job-postings/new"
               element={
-                <AuthorizedRoute allowedRoles={["admin", "hr_admin"]}>
+                <AuthorizedRoute allowedRoles={["admin", "hr"]}>
                   <JobPostingCreate />
                 </AuthorizedRoute>
               }
@@ -314,7 +312,7 @@ export function AppRouter() {
               path="/admin-ui/analytics"
               element={
                 <AuthorizedRoute
-                  allowedRoles={["admin", "hr_admin", "hr_viewer"]}
+                  allowedRoles={["admin", "hr"]}
                 >
                   <Analytics />
                 </AuthorizedRoute>
@@ -323,7 +321,7 @@ export function AppRouter() {
             <Route
               path="/admin-ui/interviews"
               element={
-                <AuthorizedRoute allowedRoles={["admin", "hr_admin"]}>
+                <AuthorizedRoute allowedRoles={["admin", "hr"]}>
                   <InterviewScheduler />
                 </AuthorizedRoute>
               }
@@ -341,7 +339,6 @@ export function AppRouter() {
               element={
                 <AuthorizedRoute
                   allowedRoles={["admin"]}
-                  deniedMessage="User management is restricted to administrators only."
                 >
                   <UserManagement />
                 </AuthorizedRoute>

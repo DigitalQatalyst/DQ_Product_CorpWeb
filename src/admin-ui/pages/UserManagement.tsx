@@ -25,7 +25,9 @@ import {
   Edit,
   Save,
   X,
+  RefreshCwIcon,
 } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 export default function UserManagement() {
   const [users, setUsers] = useState<(Profile & { email?: string })[]>([]);
@@ -34,6 +36,9 @@ export default function UserManagement() {
   const [roleFilter, setRoleFilter] = useState<string>('all');
   const [editingUser, setEditingUser] = useState<(Profile & { email?: string }) | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
+
+  // get current logged user
+  
 
   // Form state for editing user
   const [editUser, setEditUser] = useState<Partial<Profile>>({
@@ -44,18 +49,35 @@ export default function UserManagement() {
 
   useEffect(() => {
     loadUsers();
-  }, [roleFilter]);
+  }, []);
 
-  const loadUsers = async () => {
-    setLoading(true);
-    const filters = roleFilter !== 'all' ? { role: roleFilter } : undefined;
-    const { data, error } = await getAllProfiles(filters);
+  // const loadUsers = async () => {
+  //   setLoading(true);
+  //   const filters = roleFilter !== 'all' ? { role: roleFilter } : undefined;
+  //   const { data, error } = await getAllProfiles();
     
-    console.log('Fetched users:', { data, error, filters });
+  //   console.log('Fetched users:', { data, error, filters });
     
-    setUsers(data);
-    setLoading(false);
-  };
+  //   setUsers(data);
+  //   setLoading(false);
+  // };o
+
+  const loadUsers = async()=>{
+    setLoading(true)
+    try {
+      const response = await supabase.from('profiles')
+              .select('*')
+              // where id is not mine
+              .neq('id', (await supabase.auth.getUser()).data.user?.id)
+              .order('created_at', { ascending: false });
+              console.log("all profiles table",response.data)
+      setUsers(response.data || []);
+      setLoading(false);
+    } catch (error) {
+      console.log("error getting users",error)
+      setLoading(false);
+    }
+  }
 
   const handleEditUser = (user: Profile & { email?: string }) => {
     setEditingUser(user);
@@ -94,11 +116,33 @@ export default function UserManagement() {
   };
 
   const handleDeleteUser = async (userId: string) => {
-    if (!confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+    if (!confirm('Are you sure you want to delete this user? This action cannot be undone and will:\n\n• Delete their profile data\n• Delete their authentication account\n• Revoke all access to the system')) {
       return;
     }
-    await deleteProfile(userId);
-    loadUsers();
+    
+    try {
+      console.log('[UserManagement] Starting user deletion for:', userId);
+      const result = await deleteProfile(userId);
+      
+      if (result.success) {
+        console.log('[UserManagement] User deletion successful:', {
+          authDeletionSuccess: result.authDeletionSuccess,
+          profileDeletionSuccess: result.profileDeletionSuccess
+        });
+        
+        // Show success message
+        alert(`User deleted successfully!\n\n✅ Profile deleted: ${result.profileDeletionSuccess ? 'Yes' : 'No'}\n✅ Auth account deleted: ${result.authDeletionSuccess ? 'Yes' : 'No'}`);
+        
+        // Refresh the user list
+        loadUsers();
+      } else {
+        console.error('[UserManagement] User deletion failed:', result.error);
+        alert(`Failed to delete user: ${result.error}`);
+      }
+    } catch (error) {
+      console.error('[UserManagement] Deletion error:', error);
+      alert(`An error occurred while deleting user: ${error.message || 'Unknown error'}`);
+    }
   };
 
   const filteredUsers = users.filter(user =>
@@ -215,7 +259,7 @@ export default function UserManagement() {
               <div className="col-span-2">Avatar</div>
               <div className="col-span-2">Status</div>
               <div className="col-span-2">Created</div>
-              <div className="col-span-1 text-right">Actions</div>
+              <div className="col-span-1 text-right flex flex-row items-center space-x-2">Actions <button onClick={()=>loadUsers()}><RefreshCwIcon size={16} color="green" /></button> </div>
             </div>
 
             {/* Table Body */}
@@ -249,10 +293,7 @@ export default function UserManagement() {
                     >
                       <option value="admin">Admin</option>
                       <option value="creator">Creator</option>
-                      <option value="hr_admin">HR-Admin</option>
-                      <option value="hr_viewer">HR-Viewer</option>
-                      <option value="viewer">Viewer</option>
-                      <option value="inactive">Inactive</option>
+                      <option value="hr">HR</option>
                     </select>
                   </div>
 
@@ -365,14 +406,14 @@ export default function UserManagement() {
                     onChange={(e) => setEditUser({ ...editUser, role: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
                   >
-                    <option value="viewer">Viewer</option>
-                    <option value="hr_viewer">HR-Viewer</option>
-                    <option value="creator">Creator</option>
-                    <option value="hr_admin">HR-Admin</option>
                     <option value="admin">Admin</option>
-                    <option value="inactive">Inactive</option>
+                    <option value="hr">HR</option>
+                    <option value="creator">Creator</option>
                   </select>
                 </div>
+
+                
+
 
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-1">Avatar URL</label>

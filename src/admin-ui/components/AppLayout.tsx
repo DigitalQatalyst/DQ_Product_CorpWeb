@@ -29,7 +29,7 @@ type NavItem = {
   label: string;
   icon: React.ReactElement;
   /** Minimum role required to see this nav item. undefined = any logged-in user */
-  minRole?: "admin" | "creator" | "HR-Admin" | "HR-viewer";
+  minRole?: "admin" | "creator" | "hr";
 };
 
 type NavSection = {
@@ -42,7 +42,14 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const { isAdmin, isCreator, isHRAdmin, isHRViewer, signOut } = useAuth();
+  const { isAdmin, isCreator, isHR, isHRAdmin, isHRViewer, signOut } = useAuth();
+
+  console.log('[AppLayout] User roles:', {
+    isAdmin: isAdmin(),
+    isCreator: isCreator(),
+    isHR: isHR(),
+    isHRUser: isHR()
+  });
 
   const allNavigationItems: NavSection[] = [
     {
@@ -53,7 +60,13 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
           path: "/admin-ui/analytics",
           label: "Analytics",
           icon: <BarChart3Icon />,
-          minRole: "HR-viewer",
+          minRole: "hr",
+        },
+        {
+          path: "/dashboard/profile",
+          label: "Profile",
+          icon: <UsersIcon />,
+          minRole: "hr",
         },
       ],
     },
@@ -64,25 +77,25 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
           path: "/admin-ui/job-applications",
           label: "Applications",
           icon: <BriefcaseIcon />,
-          minRole: "HR-Admin",
+          minRole: "hr",
         },
         {
           path: "/admin-ui/job-applications",
           label: "CV Screening",
           icon: <FileTextIcon />,
-          minRole: "HR-viewer",
+          minRole: "hr",
         },
         {
           path: "/admin-ui/job-postings",
           label: "Job Postings",
           icon: <FileTextIcon />,
-          minRole: "HR-Admin",
+          minRole: "admin",
         },
         {
           path: "/admin-ui/interviews",
           label: "Interviews",
           icon: <CalendarIcon />,
-          minRole: "HR-Admin",
+          minRole: "hr",
         },
       ],
     },
@@ -119,66 +132,124 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
     if (!item.minRole) return true;
     if (item.minRole === "creator" && isCreator()) return true;
     if (item.minRole === "admin" && isAdmin()) return true;
-    if (item.minRole === "HR-Admin" && isHRAdmin()) return true;
-    if (item.minRole === "HR-viewer" && isHRViewer()) return true;
+    if (item.minRole === "hr" && isHR()) return true;
     return false;
   };
 
   /**
+   * HR users should only see Overview and Recruitment sections
+   * This overrides the hierarchical permissions for HR users
+   */
+  const isHRUser = (): boolean => {
+    return isHR();
+  };
+
+  /**
    * Filter nav sections: only include items the user can see.
+   * HR users are restricted to Overview and Recruitment sections only.
    * Sections with no visible items are omitted.
    */
   const visibleNavigationItems = allNavigationItems
+    .filter((section) => {
+      // HR users can only see Overview and Recruitment sections
+      if (isHRUser()) {
+        return section.section === "Overview" || section.section === "Recruitment";
+      }
+      return true;
+    })
     .map((section) => ({
       ...section,
       items: section.items.filter(canSeeItem),
     }))
     .filter((section) => section.items.length > 0);
 
+  // Debug logging for navigation
+  console.log('[AppLayout] Visible navigation sections:', visibleNavigationItems);
+  console.log('[AppLayout] All navigation sections:', allNavigationItems);
+  
+  // Additional debugging for admin users
+  if (isAdmin()) {
+    console.log('[AppLayout] Admin user detected, should see all sections');
+    console.log('[AppLayout] canSeeItem results for each section:');
+    allNavigationItems.forEach(section => {
+      console.log(`- ${section.section}:`, section.items.map(item => ({
+        label: item.label,
+        minRole: item.minRole,
+        canSee: canSeeItem(item)
+      })));
+    });
+  }
+
   const handleLogout = async () => {
-    console.log('Logout button clicked');
     setIsLoggingOut(true);
     
     try {
-      // Try the normal logout first with timeout
-      const logoutPromise = signOut();
-      const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Logout timeout')), 3000)
-      );
+      console.log('[AppLayout] Starting logout process...');
       
-      const result = await Promise.race([logoutPromise, timeoutPromise]);
-      console.log('SignOut result:', result);
+      // Start timeout for force logout
+      const logoutTimeout = setTimeout(() => {
+        console.warn('[AppLayout] Logout timeout - forcing logout');
+        forceLogout();
+      }, 5000); // 5 second timeout
       
-      if (result && (result as any).error) {
-        console.error('Logout failed:', (result as any).error);
-      }
+      // Call AuthContext signOut which now includes comprehensive cleanup
+      await signOut();
       
-      console.log('Logout successful, redirecting...');
+      // Clear timeout if logout completed successfully
+      clearTimeout(logoutTimeout);
+      
+      // Additional cleanup to ensure everything is cleared
+      setTimeout(() => {
+        forceLogout();
+      }, 1000);
+      
     } catch (error) {
-      console.error('Logout exception:', error);
-      // Even if there's an error, continue with logout
-    } finally {
-      // Always close modal and redirect, regardless of outcome
-      setIsLoggingOut(false);
-      setShowLogoutModal(false);
-      
-      // Clear any remaining auth data from localStorage
-      try {
-        localStorage.removeItem('supabase.auth.token');
-        localStorage.removeItem('supabase.auth.refreshToken');
-        // Clear all supabase related items
-        Object.keys(localStorage).forEach(key => {
-          if (key.startsWith('supabase.')) {
-            localStorage.removeItem(key);
-          }
-        });
-      } catch (e) {
-        console.warn('Failed to clear localStorage:', e);
-      }
-      
-      // Force redirect to home page
-      window.location.href = '/';
+      console.error('[AppLayout] Logout error:', error);
+      // Force logout even on error
+      forceLogout();
     }
+  };
+  
+  const forceLogout = () => {
+    console.log('[AppLayout] Force logout - clearing all data...');
+    
+    // Clear all storage comprehensively
+    try {
+      // Clear localStorage
+      Object.keys(localStorage).forEach(key => {
+        if (key.includes('supabase') || key.includes('auth')) {
+          localStorage.removeItem(key);
+        }
+      });
+      
+      // Clear sessionStorage
+      Object.keys(sessionStorage).forEach(key => {
+        if (key.includes('supabase') || key.includes('auth')) {
+          sessionStorage.removeItem(key);
+        }
+      });
+      
+      // Clear cookies
+      document.cookie.split(';').forEach(cookie => {
+        const eqPos = cookie.indexOf('=');
+        const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+        if (name.includes('supabase') || name.includes('auth')) {
+          document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=${window.location.hostname}`;
+          document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;`;
+        }
+      });
+      
+      console.log('[AppLayout] All storage cleared');
+    } catch (error) {
+      console.error('[AppLayout] Error clearing storage:', error);
+    }
+    
+    // Always close modal and redirect
+    setIsLoggingOut(false);
+    setShowLogoutModal(false);
+    
+    // Force hard redirect to clear any remaining memory
+    window.location.href = '/';
   };
 
   return (

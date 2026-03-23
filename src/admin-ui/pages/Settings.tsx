@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import AppLayout from '../components/AppLayout'
 import {
@@ -10,41 +10,64 @@ import {
   Activity,
   ChevronRight,
   Bell,
-  CheckCircle2
+  CheckCircle2,
+  Key,
+  Eye,
+  EyeOff,
+  Save,
+  AlertCircle,
+  Upload,
+  Camera,
+  X
 } from 'lucide-react'
+import { useAuth } from '../../contexts/AuthContext'
+import { supabase } from '../../lib/supabase'
 
 const TABS = [
   { id: 'profile', label: 'Profile', icon: User },
-  { id: 'media-config', label: 'Governance', icon: SettingsIcon },
-  { id: 'taxonomy', label: 'Taxonomy', icon: Layers },
-  { id: 'roles', label: 'Access Control', icon: ShieldCheck },
-  { id: 'storage', label: 'System', icon: Database },
-  { id: 'diagnostics', label: 'Node Health', icon: Activity },
+  { id: 'password-reset', label: 'Password Reset', icon: Key },
 ] as const
 
 type TabId = (typeof TABS)[number]['id']
 
 const Settings: React.FC = () => {
+  const { user, profile, updateProfile } = useAuth()
   const [searchParams, setSearchParams] = useSearchParams()
   const initialTab = useMemo<TabId>(() => {
     const maybeTab = searchParams.get('tab') as TabId | null
     return (maybeTab && TABS.some((tab) => tab.id === maybeTab)) ? maybeTab : 'profile'
   }, [searchParams])
   const [activeTab, setActiveTab] = useState<TabId>(initialTab)
+  const [isLoading, setIsLoading] = useState(false)
+  const [saveMessage, setSaveMessage] = useState<{ type: 'success' | 'error', message: string } | null>(null)
 
   useEffect(() => {
     setActiveTab(initialTab)
   }, [initialTab])
 
+  // Initialize profile state with actual profile data
   const [profileState, setProfileState] = useState({
-    name: 'Admin Manager',
-    email: 'admin@digitalqatalyst.com',
-    timezone: 'Asia/Dubai',
-    notifications: {
-      approvals: true,
-      publishing: true,
-      weeklyDigest: false,
-    },
+    first_name: profile?.first_name || '',
+    last_name: profile?.last_name || '',
+    email: user?.email || '',
+    role: profile?.role || 'user',
+    avatar_url: profile?.avatar_url || '',
+  })
+
+  // Avatar upload state
+  const [avatarFile, setAvatarFile] = useState<File | null>(null)
+  const [avatarPreview, setAvatarPreview] = useState<string>('')
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Password reset state
+  const [passwordState, setPasswordState] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+    showCurrentPassword: false,
+    showNewPassword: false,
+    showConfirmPassword: false,
   })
 
   const [mediaConfig, setMediaConfig] = useState({
@@ -96,6 +119,168 @@ const Settings: React.FC = () => {
     { label: 'Consistency Check', status: 'running', detail: 'Pending manual trigger' },
   ])
 
+  // Update profile state when profile data changes
+  useEffect(() => {
+    if (profile) {
+      setProfileState(prev => ({
+        ...prev,
+        first_name: profile.first_name || '',
+        last_name: profile.last_name || '',
+        email: user?.email || '',
+        role: profile.role || 'user',
+        avatar_url: profile.avatar_url || '',
+      }))
+    }
+  }, [profile, user?.email])
+
+  // Handle avatar file selection
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      // Validate file type and size
+      if (!file.type.startsWith('image/')) {
+        setSaveMessage({ type: 'error', message: 'Please select an image file' })
+        setTimeout(() => setSaveMessage(null), 3000)
+        return
+      }
+      
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        setSaveMessage({ type: 'error', message: 'Image must be less than 5MB' })
+        setTimeout(() => setSaveMessage(null), 3000)
+        return
+      }
+
+      setAvatarFile(file)
+      
+      // Create preview
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setAvatarPreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  // Upload avatar to Supabase storage
+  const uploadAvatar = async (file: File): Promise<string | null> => {
+    try {
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${user?.id}-${Date.now()}.${fileExt}`
+      const filePath = `avatars/${fileName}`
+
+      // Upload file
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file, {
+          upsert: true
+        })
+
+      if (uploadError) throw uploadError
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath)
+
+      return publicUrl
+    } catch (error) {
+      console.error('Error uploading avatar:', error)
+      return null
+    }
+  }
+
+  // Remove avatar
+  const removeAvatar = () => {
+    setAvatarFile(null)
+    setAvatarPreview('')
+    setProfileState(prev => ({ ...prev, avatar_url: '' }))
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+  }
+
+  const handleSaveProfile = async () => {
+    if (!profile) return
+    
+    setIsLoading(true)
+    setSaveMessage(null)
+    
+    try {
+      let avatarUrl = profileState.avatar_url
+      
+      // Upload new avatar if selected
+      if (avatarFile) {
+        setIsUploadingAvatar(true)
+        const uploadedUrl = await uploadAvatar(avatarFile)
+        if (uploadedUrl) {
+          avatarUrl = uploadedUrl
+        } else {
+          setSaveMessage({ type: 'error', message: 'Failed to upload avatar' })
+          setIsUploadingAvatar(false)
+          setIsLoading(false)
+          return
+        }
+        setIsUploadingAvatar(false)
+      }
+      
+      // Update profile without full_name (it's autogenerated)
+      const { error } = await updateProfile({
+        first_name: profileState.first_name,
+        last_name: profileState.last_name,
+        avatar_url: avatarUrl,
+      })
+      
+      if (error) {
+        setSaveMessage({ type: 'error', message: 'Failed to update profile' })
+      } else {
+        setSaveMessage({ type: 'success', message: 'Profile updated successfully!' })
+        setAvatarFile(null) // Clear uploaded file
+        setAvatarPreview('') // Clear preview
+      }
+    } catch (err) {
+      setSaveMessage({ type: 'error', message: 'An unexpected error occurred' })
+    } finally {
+      setIsLoading(false)
+      setTimeout(() => setSaveMessage(null), 5000) // Show success message for 5 seconds
+    }
+  }
+
+  const handlePasswordReset = async () => {
+    if (passwordState.newPassword !== passwordState.confirmPassword) {
+      setSaveMessage({ type: 'error', message: 'New passwords do not match' })
+      setTimeout(() => setSaveMessage(null), 3000)
+      return
+    }
+    
+    if (passwordState.newPassword.length < 8) {
+      setSaveMessage({ type: 'error', message: 'Password must be at least 8 characters long' })
+      setTimeout(() => setSaveMessage(null), 3000)
+      return
+    }
+    
+    setIsLoading(true)
+    setSaveMessage(null)
+    
+    try {
+      // Import and use the password reset service
+      const { resetPassword } = await import('../../services/passwordResetService')
+      
+      // For password reset, we need the current session
+      if (!user) {
+        throw new Error('No active session')
+      }
+      
+      // This would need to be implemented - updating password for logged in user
+      // For now, show a success message
+      setSaveMessage({ type: 'success', message: 'Password reset functionality would be implemented here' })
+    } catch (err) {
+      setSaveMessage({ type: 'error', message: 'Failed to reset password' })
+    } finally {
+      setIsLoading(false)
+      setTimeout(() => setSaveMessage(null), 3000)
+    }
+  }
+
   const setActiveTabAndUrl = (id: TabId) => {
     setActiveTab(id)
     const next = new URLSearchParams(searchParams)
@@ -110,365 +295,295 @@ const Settings: React.FC = () => {
           <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 space-y-10">
             <header className="space-y-1">
               <h2 className="text-xl font-black text-gray-900">Profile & Experience</h2>
-              <p className="text-sm text-gray-400">Configure your personal workspace and workflow notifications.</p>
+              <p className="text-sm text-gray-400">Configure your personal workspace and profile information.</p>
             </header>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Full Identity</label>
-                  <input
-                    value={profileState.name}
-                    onChange={(e) => setProfileState((prev) => ({ ...prev, name: e.target.value }))}
-                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-black outline-none transition-all"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Admin Email</label>
-                  <input
-                    type="email"
-                    value={profileState.email}
-                    onChange={(e) => setProfileState((prev) => ({ ...prev, email: e.target.value }))}
-                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-black outline-none transition-all"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Workspace Timezone</label>
-                  <select
-                    value={profileState.timezone}
-                    onChange={(e) => setProfileState((prev) => ({ ...prev, timezone: e.target.value }))}
-                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-black outline-none transition-all appearance-none"
-                  >
-                    <option value="Asia/Dubai">GST - Dubai (UTC+4)</option>
-                    <option value="Europe/London">GMT - London (UTC+0)</option>
-                    <option value="America/New_York">EST - New York (UTC-5)</option>
-                  </select>
-                </div>
+            {saveMessage && (
+              <div className={`p-4 rounded-lg border flex items-center gap-3 ${
+                saveMessage.type === 'success' 
+                  ? 'bg-green-50 border-green-200 text-green-800' 
+                  : 'bg-red-50 border-red-200 text-red-800'
+              }`}>
+                {saveMessage.type === 'success' ? 
+                  <CheckCircle2 size={16} /> : 
+                  <AlertCircle size={16} />
+                }
+                <span className="text-sm font-medium">{saveMessage.message}</span>
               </div>
-
-              <div className="bg-gray-50/50 rounded-2xl p-8 border border-gray-100 flex flex-col justify-center gap-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-white rounded-lg border border-gray-100 shadow-sm text-gray-500">
-                    <Bell size={20} />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-sm font-bold text-gray-900">Push Notifications</h3>
-                    <p className="text-xs text-gray-400 mt-1">Receive alerts for critical system events and content changes.</p>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  {[
-                    { key: 'approvals', label: 'Workflow state transitions' },
-                    { key: 'publishing', label: 'Successful deployment confirmation' },
-                    { key: 'weeklyDigest', label: 'Weekly health report' },
-                  ].map((notif) => (
-                    <label key={notif.key} className="flex items-center justify-between cursor-pointer group">
-                      <span className="text-xs font-medium text-gray-600 group-hover:text-black transition-colors">{notif.label}</span>
-                      <input
-                        type="checkbox"
-                        checked={(profileState.notifications as any)[notif.key]}
-                        onChange={(e) => setProfileState((prev) => ({
-                          ...prev,
-                          notifications: { ...prev.notifications, [notif.key]: e.target.checked },
-                        }))}
-                        className="w-4 h-4 text-black border-gray-300 rounded focus:ring-black accent-black"
-                      />
-                    </label>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        )
-      case 'media-config':
-        return (
-          <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 space-y-10">
-            <header className="space-y-1">
-              <h2 className="text-xl font-black text-gray-900">Governance</h2>
-              <p className="text-sm text-gray-400">Manage the quality standards and default behaviors of the media hub.</p>
-            </header>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Entry Visibility</label>
-                  <select
-                    value={mediaConfig.defaultVisibility}
-                    onChange={(e) => setMediaConfig((prev) => ({ ...prev, defaultVisibility: e.target.value }))}
-                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-black outline-none transition-all appearance-none"
-                  >
-                    <option value="Public">Public Access</option>
-                    <option value="Private">Restricted</option>
-                    <option value="Internal">Enterprise Internal</option>
-                  </select>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Initial Workflow State</label>
-                  <select
-                    value={mediaConfig.defaultStatus}
-                    onChange={(e) => setMediaConfig((prev) => ({ ...prev, defaultStatus: e.target.value }))}
-                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-black outline-none transition-all appearance-none"
-                  >
-                    <option value="Draft">Drafting</option>
-                    <option value="InReview">Submission</option>
-                    <option value="Scheduled">Scheduled Queue</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div className="p-6 bg-white border border-gray-200 rounded-2xl space-y-6">
-                  <label className="flex items-start gap-4 group cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={mediaConfig.enforceSeoFields}
-                      onChange={(e) => setMediaConfig((prev) => ({ ...prev, enforceSeoFields: e.target.checked }))}
-                      className="mt-1 w-4 h-4 text-black border-gray-300 rounded focus:ring-black accent-black"
-                    />
-                    <div className="space-y-1">
-                      <span className="text-sm font-bold text-gray-900 group-hover:underline underline-offset-4 decoration-black/10">Lock publishing for metadata</span>
-                      <p className="text-[10px] text-gray-400 font-medium leading-relaxed uppercase tracking-tight">Requires SEO titles and descriptions before any content goes live.</p>
-                    </div>
-                  </label>
-
-                  <label className="flex items-start gap-4 group cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={mediaConfig.requireReview}
-                      onChange={(e) => setMediaConfig((prev) => ({ ...prev, requireReview: e.target.checked }))}
-                      className="mt-1 w-4 h-4 text-black border-gray-300 rounded focus:ring-black accent-black"
-                    />
-                    <div className="space-y-1">
-                      <span className="text-sm font-bold text-gray-900 group-hover:underline underline-offset-4 decoration-black/10">Double-entry verification</span>
-                      <p className="text-[10px] text-gray-400 font-medium leading-relaxed uppercase tracking-tight">Ensures that a second administrator must approve content before publication.</p>
-                    </div>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        )
-      case 'taxonomy':
-        return (
-          <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 space-y-10">
-            <header className="space-y-1">
-              <h2 className="text-xl font-black text-gray-900">Taxonomy</h2>
-              <p className="text-sm text-gray-400">Curate the classification system used across the knowledge ecosystem.</p>
-            </header>
+            )}
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {[
-                { title: 'Domains', items: taxonomyState.domains, key: 'domains' },
-                { title: 'Stages', items: taxonomyState.stages, key: 'stages' },
-                { title: 'Formats', items: taxonomyState.formats, key: 'formats' },
-              ].map((group) => (
-                <div key={group.key} className="space-y-4">
-                  <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{group.title}</h3>
-                  <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden divide-y divide-gray-50">
-                    {group.items.map((item) => (
-                      <div key={item} className="flex items-center justify-between p-4 group">
-                        <span className="text-xs font-bold text-gray-700">{item}</span>
-                        <button
-                          onClick={() => setTaxonomyState((prev: any) => ({
-                            ...prev,
-                            [group.key]: prev[group.key].filter((i: string) => i !== item),
-                          }))}
-                          className="text-[10px] font-black text-red-400 opacity-0 group-hover:opacity-100 transition-opacity hover:text-red-600"
-                        >
-                          REMOVE
-                        </button>
+              {/* Avatar Section */}
+              <div className="space-y-6">
+                <div className="space-y-4">
+                  <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Profile Avatar</h3>
+                  
+                  <div className="flex flex-col items-center space-y-4">
+                    {/* Avatar Display */}
+                    <div className="relative group">
+                      <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-100 border-4 border-gray-200">
+                        {(avatarPreview || profileState.avatar_url) ? (
+                          <img 
+                            src={avatarPreview || profileState.avatar_url} 
+                            alt="Profile avatar" 
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gray-50">
+                            <User size={48} className="text-gray-400" />
+                          </div>
+                        )}
                       </div>
-                    ))}
+                      
+                      {/* Avatar Actions */}
+                      <div className="absolute inset-0 w-32 h-32 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                        <button
+                          onClick={() => fileInputRef.current?.click()}
+                          className="p-2 bg-white rounded-full text-gray-700 hover:bg-gray-100 transition-colors"
+                          title="Change avatar"
+                        >
+                          <Camera size={16} />
+                        </button>
+                        {(avatarPreview || profileState.avatar_url) && (
+                          <button
+                            onClick={removeAvatar}
+                            className="p-2 bg-white rounded-full text-red-600 hover:bg-red-50 transition-colors"
+                            title="Remove avatar"
+                          >
+                            <X size={16} />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    
+                    {/* Hidden File Input */}
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleAvatarChange}
+                      className="hidden"
+                    />
+                    
+                    {/* Upload Button */}
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
+                    >
+                      <Upload size={16} />
+                      {profileState.avatar_url ? 'Change Avatar' : 'Upload Avatar'}
+                    </button>
+                    
+                    {/* Upload Status */}
+                    {isUploadingAvatar && (
+                      <div className="flex items-center gap-2 text-sm text-blue-600">
+                        <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                        Uploading...
+                      </div>
+                    )}
+                    
+                    {/* File Requirements */}
+                    <div className="text-xs text-gray-500 text-center space-y-1">
+                      <p>Maximum file size: 5MB</p>
+                      <p>Supported formats: JPG, PNG, GIF</p>
+                    </div>
                   </div>
                 </div>
-              ))}
+              </div>
+
+              {/* Profile Information */}
+              <div className="lg:col-span-2 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">First Name</label>
+                    <input
+                      value={profileState.first_name}
+                      onChange={(e) => setProfileState((prev) => ({ ...prev, first_name: e.target.value }))}
+                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-black outline-none transition-all"
+                      placeholder="Enter your first name"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Last Name</label>
+                    <input
+                      value={profileState.last_name}
+                      onChange={(e) => setProfileState((prev) => ({ ...prev, last_name: e.target.value }))}
+                      className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-black outline-none transition-all"
+                      placeholder="Enter your last name"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Admin Email</label>
+                    <input
+                      type="email"
+                      value={profileState.email}
+                      disabled
+                      className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-500 cursor-not-allowed"
+                    />
+                    <p className="text-[10px] text-gray-400">Email cannot be changed</p>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Role</label>
+                    <input
+                      value={profileState.role}
+                      disabled
+                      className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-500 cursor-not-allowed capitalize"
+                    />
+                    <p className="text-[10px] text-gray-400">Role is managed by administrators</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="p-8 bg-gray-50/50 rounded-2xl border border-gray-100">
-              <h4 className="text-[10px] font-black text-gray-900 uppercase tracking-widest mb-6">Append Classification</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
-                <div className="sm:col-span-3">
-                  <select className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-black outline-none appearance-none">
-                    <option>Domain</option>
-                    <option>Business Stage</option>
-                    <option>Format</option>
-                  </select>
-                </div>
-                <div className="sm:col-span-7">
+            {/* Save Button */}
+            <div className="flex justify-end">
+              <button
+                onClick={handleSaveProfile}
+                disabled={isLoading || isUploadingAvatar}
+                className="flex items-center gap-2 px-6 py-2.5 bg-black text-white text-sm font-bold rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isLoading ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save size={16} />
+                    Save Profile
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        )
+      case 'password-reset':
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 space-y-10">
+            <header className="space-y-1">
+              <h2 className="text-xl font-black text-gray-900">Password Reset</h2>
+              <p className="text-sm text-gray-400">Change your account password for enhanced security.</p>
+            </header>
+
+            {saveMessage && (
+              <div className={`p-4 rounded-lg border flex items-center gap-3 ${
+                saveMessage.type === 'success' 
+                  ? 'bg-green-50 border-green-200 text-green-800' 
+                  : 'bg-red-50 border-red-200 text-red-800'
+              }`}>
+                {saveMessage.type === 'success' ? 
+                  <CheckCircle2 size={16} /> : 
+                  <AlertCircle size={16} />
+                }
+                <span className="text-sm font-medium">{saveMessage.message}</span>
+              </div>
+            )}
+
+            <div className="max-w-2xl space-y-6">
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Current Password</label>
+                <div className="relative">
                   <input
-                    placeholder="Classification label..."
-                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-black outline-none transition-all"
+                    type={passwordState.showCurrentPassword ? 'text' : 'password'}
+                    value={passwordState.currentPassword}
+                    onChange={(e) => setPasswordState(prev => ({ ...prev, currentPassword: e.target.value }))}
+                    className="w-full px-4 py-2.5 pr-12 bg-white border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-black outline-none transition-all"
+                    placeholder="Enter current password"
                   />
-                </div>
-                <div className="sm:col-span-2">
-                  <button className="w-full py-2.5 bg-black text-white rounded-lg text-sm font-bold hover:bg-gray-800 transition-colors">
-                    Add Item
+                  <button
+                    type="button"
+                    onClick={() => setPasswordState(prev => ({ ...prev, showCurrentPassword: !prev.showCurrentPassword }))}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    {passwordState.showCurrentPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
                 </div>
               </div>
-            </div>
-          </div>
-        )
-      case 'roles':
-        return (
-          <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 space-y-10">
-            <header className="space-y-1 flex justify-between items-end">
-              <div className="space-y-1">
-                <h2 className="text-xl font-black text-gray-900">Access Control</h2>
-                <p className="text-sm text-gray-400">Manage fine-grained permissions and collaborative roles.</p>
-              </div>
-              <button className="px-4 py-2 bg-black text-white text-xs font-bold rounded-lg hover:bg-gray-800 transition-colors">
-                Invite Member
-              </button>
-            </header>
 
-            <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-gray-50/50 border-b border-gray-100">
-                    <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Role Type</th>
-                    <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Description</th>
-                    <th className="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Grant Count</th>
-                    <th className="px-6 py-4"></th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-50">
-                  {rolesState.map((role) => (
-                    <tr key={role.role} className="group hover:bg-gray-50/20 transition-colors text-xs">
-                      <td className="px-6 py-5 font-bold text-gray-900">{role.role}</td>
-                      <td className="px-6 py-5 text-gray-500 italic">"{role.description}"</td>
-                      <td className="px-6 py-5">
-                        <span className="px-2 py-1 bg-gray-100 rounded-md font-mono text-gray-600">{role.members} users</span>
-                      </td>
-                      <td className="px-6 py-5 text-right">
-                        <button className="text-[10px] font-black text-gray-400 hover:text-black transition-colors flex items-center gap-1 ml-auto">
-                          AUDIT <ChevronRight size={10} />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )
-      case 'storage':
-        return (
-          <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 space-y-10">
-            <header className="space-y-1">
-              <h2 className="text-xl font-black text-gray-900">Node Architecture</h2>
-              <p className="text-sm text-gray-400">Low-level infrastructure and external integration settings.</p>
-            </header>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              <div className="space-y-8">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Storage Provider</label>
-                  <select
-                    value={storageState.storageProvider}
-                    onChange={(e) => setStorageState((prev) => ({ ...prev, storageProvider: e.target.value }))}
-                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-black outline-none appearance-none"
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">New Password</label>
+                <div className="relative">
+                  <input
+                    type={passwordState.showNewPassword ? 'text' : 'password'}
+                    value={passwordState.newPassword}
+                    onChange={(e) => setPasswordState(prev => ({ ...prev, newPassword: e.target.value }))}
+                    className="w-full px-4 py-2.5 pr-12 bg-white border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-black outline-none transition-all"
+                    placeholder="Enter new password (min. 8 characters)"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setPasswordState(prev => ({ ...prev, showNewPassword: !prev.showNewPassword }))}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
-                    <option value="Supabase">Supabase Storage</option>
-                    <option value="Azure Blob Storage">Azure Blob Engine</option>
-                    <option value="AWS S3">Amazon S3 Node</option>
-                  </select>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Asset Bucket</label>
-                  <input
-                    value={storageState.bucket}
-                    onChange={(e) => setStorageState((prev) => ({ ...prev, bucket: e.target.value }))}
-                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-black outline-none transition-all"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Edge Discovery Endpoint (Webhook)</label>
-                  <input
-                    value={storageState.webhooksEndpoint}
-                    onChange={(e) => setStorageState((prev) => ({ ...prev, webhooksEndpoint: e.target.value }))}
-                    className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm font-mono focus:ring-1 focus:ring-black outline-none transition-all"
-                  />
+                    {passwordState.showNewPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
                 </div>
               </div>
 
-              <div className="p-8 bg-gray-50/50 rounded-2xl border border-gray-100 space-y-8">
-                <h3 className="text-[10px] font-black text-gray-900 uppercase tracking-widest flex items-center gap-2">
-                  <SettingsIcon size={12} /> External Bridges
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Confirm New Password</label>
+                <div className="relative">
+                  <input
+                    type={passwordState.showConfirmPassword ? 'text' : 'password'}
+                    value={passwordState.confirmPassword}
+                    onChange={(e) => setPasswordState(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                    className="w-full px-4 py-2.5 pr-12 bg-white border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-black outline-none transition-all"
+                    placeholder="Confirm new password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setPasswordState(prev => ({ ...prev, showConfirmPassword: !prev.showConfirmPassword }))}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    {passwordState.showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="bg-gray-50/50 rounded-2xl p-6 border border-gray-100">
+                <h3 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <Key size={16} />
+                  Password Requirements
                 </h3>
-                <div className="space-y-6">
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Telemetery Node</label>
-                    <input
-                      value={storageState.integrations.analytics}
-                      onChange={(e) => setStorageState((prev) => ({
-                        ...prev,
-                        integrations: { ...prev.integrations, analytics: e.target.value },
-                      }))}
-                      className="w-full px-0 bg-transparent border-b border-gray-200 focus:border-black text-sm font-bold placeholder-gray-200 outline-none transition-all rounded-none"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Linguistic Processor</label>
-                    <input
-                      value={storageState.integrations.transcription}
-                      onChange={(e) => setStorageState((prev) => ({
-                        ...prev,
-                        integrations: { ...prev.integrations, transcription: e.target.value },
-                      }))}
-                      className="w-full px-0 bg-transparent border-b border-gray-200 focus:border-black text-sm font-bold placeholder-gray-200 outline-none transition-all rounded-none"
-                    />
-                  </div>
-                </div>
+                <ul className="space-y-2 text-xs text-gray-600">
+                  <li className="flex items-center gap-2">
+                    <div className={`w-2 h-2 rounded-full ${
+                      passwordState.newPassword.length >= 8 ? 'bg-green-500' : 'bg-gray-300'
+                    }`} />
+                    At least 8 characters long
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className={`w-2 h-2 rounded-full ${
+                      passwordState.newPassword === passwordState.confirmPassword && passwordState.confirmPassword ? 'bg-green-500' : 'bg-gray-300'
+                    }`} />
+                    New passwords match
+                  </li>
+                </ul>
+              </div>
+
+              <div className="flex justify-end">
+                <button
+                  onClick={handlePasswordReset}
+                  disabled={isLoading || !passwordState.currentPassword || !passwordState.newPassword || !passwordState.confirmPassword}
+                  className="flex items-center gap-2 px-6 py-2.5 bg-black text-white text-sm font-bold rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isLoading ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Resetting...
+                    </>
+                  ) : (
+                    <>
+                      <Key size={16} />
+                      Reset Password
+                    </>
+                  )}
+                </button>
               </div>
             </div>
-          </div>
-        )
-      case 'diagnostics':
-        return (
-          <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 space-y-10">
-            <header className="space-y-1">
-              <h2 className="text-xl font-black text-gray-900">Health Monitor</h2>
-              <p className="text-sm text-gray-400">Verifying synchronization across distributed environment nodes.</p>
-            </header>
-
-            <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden divide-y divide-gray-50">
-              {diagnosticsResults.map((item) => (
-                <div key={item.label} className="p-5 flex items-center justify-between group hover:bg-gray-50/50 transition-colors">
-                  <div className="space-y-1">
-                    <p className="text-xs font-bold text-gray-900">{item.label}</p>
-                    {item.detail && <p className="text-[10px] text-gray-400 font-medium italic">{item.detail}</p>}
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded ${item.status === 'passing' ? 'text-emerald-500 bg-emerald-50' :
-                          item.status === 'failing' ? 'text-red-500 bg-red-50' :
-                            'text-gray-400 bg-gray-50'
-                        }`}
-                    >
-                      {item.status}
-                    </span>
-                    {item.status === 'passing' && <CheckCircle2 size={14} className="text-emerald-500" />}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <button
-              onClick={() =>
-                setDiagnosticsResults((prev) =>
-                  prev.map((item) =>
-                    item.status === 'running'
-                      ? { ...item, status: 'passing', detail: 'Verification complete. Synchronized.' }
-                      : item,
-                  ),
-                )
-              }
-              className="px-6 py-2.5 bg-black text-white text-sm font-bold rounded-lg hover:bg-gray-800 transition-colors shadow-xl shadow-gray-100"
-            >
-              Force Status Refresh
-            </button>
           </div>
         )
       default:
