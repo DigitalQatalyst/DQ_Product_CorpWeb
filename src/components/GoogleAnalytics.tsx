@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
 
-// Initialize Google Analytics with direct approach
+// Initialize Google Analytics - optimized for static script
 export const initGA = () => {
   const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
   
@@ -12,7 +12,13 @@ export const initGA = () => {
     return;
   }
 
-  console.log('🔍 Initializing Google Analytics:', measurementId);
+  // Check if gtag is already available (from static script)
+  if (window.gtag) {
+    console.log('✅ Google Analytics already loaded via static script');
+    return;
+  }
+
+  console.log('🔍 Initializing Google Analytics dynamically:', measurementId);
 
   // Initialize dataLayer FIRST
   window.dataLayer = window.dataLayer || [];
@@ -35,17 +41,6 @@ export const initGA = () => {
     gtag('config', measurementId, {
       send_page_view: true
     });
-
-    // Send initial events after a short delay
-    setTimeout(() => {
-      gtag('event', 'page_view', {
-        page_title: document.title,
-        page_location: window.location.href,
-        page_path: window.location.pathname
-      });
-      
-      gtag('event', 'session_start');
-    }, 1000);
   };
   
   script.onerror = () => {
@@ -57,11 +52,13 @@ export const initGA = () => {
 
 // Track page views
 export const trackPageView = (path: string) => {
-  const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
-  
-  if (!measurementId || !window.gtag) {
+  if (!window.gtag) {
+    console.warn('Google Analytics not initialized');
     return;
   }
+
+  const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
+  if (!measurementId) return;
 
   window.gtag('config', measurementId, {
     page_path: path,
@@ -73,9 +70,8 @@ export const trackEvent = (
   eventName: string,
   eventParams?: Record<string, any>
 ) => {
-  const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
-  
-  if (!measurementId || !window.gtag) {
+  if (!window.gtag) {
+    console.warn('Google Analytics not initialized');
     return;
   }
 
@@ -87,8 +83,12 @@ export function GoogleAnalytics() {
   const location = useLocation();
 
   useEffect(() => {
-    // Initialize GA on mount
-    initGA();
+    // Only initialize if gtag is not already available
+    if (!window.gtag) {
+      initGA();
+    } else {
+      console.log('✅ Google Analytics already available');
+    }
   }, []);
 
   useEffect(() => {

@@ -7,14 +7,22 @@ declare global {
 }
 
 // GA4 Configuration
-export const GA_MEASUREMENT_ID = '';
+export const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID || '';
 
-// Initialize Google Analytics
+// Initialize Google Analytics - optimized for static script
 export const initGA = () => {
   if (!GA_MEASUREMENT_ID) {
-    console.warn('GA4 Measurement ID not found. Please set REACT_APP_GA_MEASUREMENT_ID in your environment variables.');
+    console.warn('GA4 Measurement ID not found. Please set VITE_GA_MEASUREMENT_ID in your environment variables.');
     return;
   }
+
+  // Check if gtag is already available (from static script)
+  if (window.gtag) {
+    console.log('✅ Google Analytics already loaded via static script');
+    return;
+  }
+
+  console.log('🔍 Loading Google Analytics dynamically');
 
   // Load gtag script
   const script = document.createElement('script');
@@ -38,7 +46,10 @@ export const initGA = () => {
 
 // Track page views
 export const trackPageView = (path: string, title?: string) => {
-  if (!window.gtag) return;
+  if (!window.gtag) {
+    console.warn('Google Analytics not initialized');
+    return;
+  }
   
   window.gtag('config', GA_MEASUREMENT_ID, {
     page_path: path,
@@ -56,7 +67,10 @@ export const trackBlogEvent = (eventName: string, parameters: {
   engagement_time?: number;
   scroll_depth?: number;
 }) => {
-  if (!window.gtag) return;
+  if (!window.gtag) {
+    console.warn('Google Analytics not initialized');
+    return;
+  }
 
   window.gtag('event', eventName, {
     event_category: 'Blog',
@@ -71,7 +85,10 @@ export const trackConversion = (eventName: string, parameters: {
   conversion_type?: string;
   source_page?: string;
 }) => {
-  if (!window.gtag) return;
+  if (!window.gtag) {
+    console.warn('Google Analytics not initialized');
+    return;
+  }
 
   window.gtag('event', eventName, {
     event_category: 'Conversion',
@@ -85,7 +102,10 @@ export const trackEngagement = (eventName: string, parameters: {
   page_title?: string;
   page_location?: string;
 }) => {
-  if (!window.gtag) return;
+  if (!window.gtag) {
+    console.warn('Google Analytics not initialized');
+    return;
+  }
 
   window.gtag('event', eventName, {
     event_category: 'Engagement',
@@ -95,7 +115,10 @@ export const trackEngagement = (eventName: string, parameters: {
 
 // Track search events
 export const trackSearch = (searchTerm: string, results?: number) => {
-  if (!window.gtag) return;
+  if (!window.gtag) {
+    console.warn('Google Analytics not initialized');
+    return;
+  }
 
   window.gtag('event', 'search', {
     search_term: searchTerm,
@@ -121,7 +144,10 @@ export const trackContactForm = (formType: string) => {
 
 // Track file downloads
 export const trackDownload = (fileName: string, fileType: string) => {
-  if (!window.gtag) return;
+  if (!window.gtag) {
+    console.warn('Google Analytics not initialized');
+    return;
+  }
 
   window.gtag('event', 'file_download', {
     event_category: 'Downloads',
@@ -132,7 +158,10 @@ export const trackDownload = (fileName: string, fileType: string) => {
 
 // Track external link clicks
 export const trackExternalLink = (url: string, linkText?: string) => {
-  if (!window.gtag) return;
+  if (!window.gtag) {
+    console.warn('Google Analytics not initialized');
+    return;
+  }
 
   window.gtag('event', 'click', {
     event_category: 'External Links',
@@ -143,7 +172,10 @@ export const trackExternalLink = (url: string, linkText?: string) => {
 
 // Track social media clicks
 export const trackSocialClick = (platform: string, action: string) => {
-  if (!window.gtag) return;
+  if (!window.gtag) {
+    console.warn('Google Analytics not initialized');
+    return;
+  }
 
   window.gtag('event', 'social_click', {
     event_category: 'Social Media',
