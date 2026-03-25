@@ -2,14 +2,15 @@ import WhitepaperNav from "../components/whitepaper/WhitepaperNav";
 import ParallaxSection from "../components/whitepaper/ParallaxSection";
 import ContentSection from "../components/whitepaper/ContentSection";
 
-import heroImg from "/images/whitepaper/whitepaper-hero.jpg";
-import forewordImg from "/images/whitepaper/whitepaper-foreword.jpg";
-import executiveImg from "/images/whitepaper/whitepaper-executive.jpg";
-import chapter1Img from "/images/whitepaper/whitepaper-chapter1.jpg";
-import chapter2Img from "/images/whitepaper/whitepaper-chapter2.jpg";
-import conclusionImg from "/images/whitepaper/whitepaper-conclusion.jpg";
-import referencesImg from "/images/whitepaper/whitepaper-references.jpg";
-import authorImg from "/images/whitepaper/whitepaper-author.jpg";
+// Use string paths instead of imports to avoid build issues
+const heroImg = "/images/whitepaper/whitepaper-hero.jpg";
+const forewordImg = "/images/whitepaper/whitepaper-foreword.jpg";
+const executiveImg = "/images/whitepaper/whitepaper-executive.jpg";
+const chapter1Img = "/images/whitepaper/whitepaper-chapter1.jpg";
+const chapter2Img = "/images/whitepaper/whitepaper-chapter2.jpg";
+const conclusionImg = "/images/whitepaper/whitepaper-conclusion.jpg";
+const referencesImg = "/images/whitepaper/whitepaper-references.jpg";
+const authorImg = "/images/whitepaper/whitepaper-author.jpg";
 
 const HeroSection = () => {
   return (
