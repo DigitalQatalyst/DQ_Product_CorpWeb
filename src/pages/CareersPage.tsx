@@ -2,7 +2,6 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { Link } from "react-router-dom";
 import {
-  Briefcase,
   ArrowRight,
   Users,
   TrendingUp,
@@ -80,7 +79,7 @@ export default function CareersPage() {
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="relative overflow-hidden">
+        <section className="relative overflow-hidden py-24 md:py-32">
           {/* Background Image */}
           <div className="absolute inset-0">
             <img 
@@ -93,68 +92,35 @@ export default function CareersPage() {
           <div className="absolute inset-0 bg-gradient-to-r from-secondary-900/95 via-secondary-900/85 to-secondary-900/60" />
           
           {/* Content */}
-          <div className="relative container mx-auto px-4 py-24 md:py-32">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              {/* Left Content */}
-              <div className="text-white">
-                <p className="text-sm uppercase tracking-[0.3em] text-white/70 mb-4">
-                  Careers at DigitalQatalyst
-                </p>
-                <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
-                  Shape the Future of Digital Transformation
-                </h1>
-                <p className="text-lg md:text-xl text-white/80 mb-10">
-                  Join a team of innovators, strategists, and technologists building 
-                  Digital Cognitive Organizations for Economy 4.0.
-                </p>
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="text-center max-w-4xl mx-auto">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+                Shape the Future of Digital Transformation
+              </h1>
+              <p className="text-xl text-white/90 mb-10 leading-relaxed">
+                Join a team of innovators, strategists, and technologists building 
+                Digital Cognitive Organizations for Economy 4.0.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   to="/jobs"
-                  className="inline-flex items-center gap-2 bg-primary hover:bg-primary-600 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
+                  className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-600 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
                 >
                   View Open Positions
                   <ArrowRight size={20} />
                 </Link>
-              </div>
-
-              {/* Right Image - Career/Team Visual */}
-              <div className="hidden md:block">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-3xl" />
-                  <div className="relative bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-                    <div className="space-y-6">
-                      {/* Job Search Visual Elements */}
-                      <div className="flex items-center gap-4 bg-white/10 backdrop-blur-sm p-4 rounded-lg">
-                        <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-                          <Briefcase className="text-white" size={24} />
-                        </div>
-                        <div>
-                          <div className="text-white font-semibold">50+ Positions</div>
-                          <div className="text-white/70 text-sm">Across 6 Countries</div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-4 bg-white/10 backdrop-blur-sm p-4 rounded-lg">
-                        <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-                          <Users className="text-white" size={24} />
-                        </div>
-                        <div>
-                          <div className="text-white font-semibold">Diverse Teams</div>
-                          <div className="text-white/70 text-sm">Global Collaboration</div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-4 bg-white/10 backdrop-blur-sm p-4 rounded-lg">
-                        <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-                          <TrendingUp className="text-white" size={24} />
-                        </div>
-                        <div>
-                          <div className="text-white font-semibold">Career Growth</div>
-                          <div className="text-white/70 text-sm">Continuous Learning</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <button
+                  onClick={() => {
+                    document.getElementById('why-join-us')?.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start',
+                    });
+                  }}
+                  className="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-secondary-900 px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+                >
+                  Learn More
+                  <ArrowRight size={20} />
+                </button>
               </div>
             </div>
           </div>
@@ -179,7 +145,7 @@ export default function CareersPage() {
         </section>
 
         {/* Why Join Us Section */}
-        <section className="py-20 bg-gray-50">
+        <section id="why-join-us" className="py-20 bg-gray-50">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-4">

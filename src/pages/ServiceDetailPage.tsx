@@ -2258,8 +2258,8 @@ const DesignServiceDetailPage = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-secondary-900/85 to-secondary-900/30" />
         </div>
         <div className="relative container mx-auto px-4 h-full flex flex-col justify-center text-white">
-          <p className="text-white/80 text-lg mb-3 max-w-2xl">{hero.subtitle}</p>
           <h1 className="text-4xl md:text-6xl font-bold mb-6">{hero.title}</h1>
+          <p className="text-white/80 text-lg mb-3 max-w-2xl">{hero.subtitle}</p>
           <div className="flex flex-wrap gap-4">
             <button
               onClick={handleScrollToContact}
@@ -2355,8 +2355,8 @@ const DesignServiceDetailPage = () => {
 
       {/* Methodology */}
       <section className="py-20 bg-[#f5f5f5] overflow-hidden">
-        <div className="container mx-auto px-4 lg:px-0 grid lg:grid-cols-2 gap-12 items-center">
-          <div className="rounded-3xl p-10 bg-[#f5f5f5]">
+        <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
+          <div>
             <p className="text-sm uppercase tracking-widest text-primary mb-3">
               {methodology.eyebrow}
             </p>
@@ -2422,7 +2422,7 @@ const DesignServiceDetailPage = () => {
               <ArrowRight size={16} />
             </button>
           </div>
-          <div className="relative lg:-mr-24 2xl:-mr-32 lg:-mt-10 xl:-mt-14 h-full flex items-stretch">
+          <div className="relative flex items-center justify-center h-full">
             <div className="w-full h-[560px] md:h-[620px] overflow-hidden shadow-2xl rounded-3xl">
               <img
                 src={methodology.image}
@@ -2465,11 +2465,26 @@ const DesignServiceDetailPage = () => {
       {/* Industry expertise */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-12">
-            <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-3">{industryExpertise.title}</h2>
-              <p className="text-gray-600 text-lg">{industryExpertise.description}</p>
-            </div>
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-3">{industryExpertise.title}</h2>
+            <p className="text-gray-600 text-lg mb-6">{industryExpertise.description}</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {industryExpertise.cards.map((card) => {
+              const Icon = card.icon;
+              return (
+                <div key={card.title} className="bg-white rounded-2xl border border-gray-200 p-6 flex flex-col">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-6">
+                    <Icon className="w-6 h-6 text-primary" strokeWidth={1.5} />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{card.title}</h3>
+                  <div className="h-px bg-gray-200 mb-4" />
+                  <p className="text-gray-600 flex-1">{card.description}</p>
+                </div>
+              );
+            })}
+          </div>
+          <div className="text-center">
             <Link
               to="/services"
               className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-full hover:bg-primary-600 transition-colors"
@@ -2477,30 +2492,6 @@ const DesignServiceDetailPage = () => {
               {industryExpertise.ctaLabel}
               <ArrowRight size={16} />
             </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {industryExpertise.cards.map((card) => {
-              const Icon = card.icon;
-              return (
-                <div key={card.title} className="bg-white rounded-2xl border border-gray-200 p-6 flex flex-col">
-                  <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-6">
-                    <Icon className="w-6 h-6 text-secondary-900" strokeWidth={1.5} />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{card.title}</h3>
-                  <div className="h-px bg-gray-200 mb-4" />
-                  <p className="text-gray-600 flex-1">{card.description}</p>
-                  <Link 
-                    to={card.title === "Farming 4.0" ? "/services/farming-4-0" : 
-                        card.title === "Agility 4.0" ? "/services/agility-4-0" : 
-                        card.title === "Experience 4.0" ? "/services/experience-4-0" : "/services"}
-                    className="mt-6 inline-flex items-center gap-2 text-primary font-semibold hover:text-primary-600 transition-colors"
-                  >
-                    Explore More
-                    <ArrowRight size={14} />
-                  </Link>
-                </div>
-              );
-            })}
           </div>
         </div>
       </section>
@@ -2561,8 +2552,8 @@ const DeployServiceDetailPage = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-secondary-900/85 to-secondary-900/30" />
         </div>
         <div className="relative container mx-auto px-4 h-full flex flex-col justify-center text-white">
-          <p className="text-white/80 text-lg mb-3 max-w-2xl">{hero.subtitle}</p>
           <h1 className="text-4xl md:text-6xl font-bold mb-6">{hero.title}</h1>
+          <p className="text-white/80 text-lg mb-3 max-w-2xl">{hero.subtitle}</p>
           <div className="flex flex-wrap gap-4">
             <button
               onClick={handleScrollToContact}
@@ -2657,8 +2648,8 @@ const DeployServiceDetailPage = () => {
 
       {/* Methodology */}
       <section className="py-20 bg-[#f5f5f5] overflow-hidden">
-        <div className="container mx-auto px-4 lg:px-0 grid lg:grid-cols-2 gap-12 items-center">
-          <div className="rounded-3xl p-10 bg-[#f5f5f5]">
+        <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
+          <div>
             <p className="text-sm uppercase tracking-widest text-primary mb-3">
               {methodology.eyebrow}
             </p>
@@ -2724,7 +2715,7 @@ const DeployServiceDetailPage = () => {
               <ArrowRight size={16} />
             </button>
           </div>
-          <div className="relative lg:-mr-24 2xl:-mr-32 lg:-mt-10 xl:-mt-14 h-full flex items-stretch">
+          <div className="relative h-full flex items-stretch">
             <div className="w-full h-[560px] md:h-[620px] overflow-hidden shadow-2xl rounded-3xl">
               <img
                 src={methodology.image}
@@ -2764,11 +2755,26 @@ const DeployServiceDetailPage = () => {
       {/* Industry Expertise */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-12">
-            <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-3">{industryExpertise.title}</h2>
-              <p className="text-gray-600 text-lg">{industryExpertise.description}</p>
-            </div>
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-3">{industryExpertise.title}</h2>
+            <p className="text-gray-600 text-lg mb-6">{industryExpertise.description}</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {industryExpertise.cards.map((card) => {
+              const Icon = card.icon;
+              return (
+                <div key={card.title} className="bg-white rounded-2xl border border-gray-200 p-6 flex flex-col">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-6">
+                    <Icon className="w-6 h-6 text-primary" strokeWidth={1.5} />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{card.title}</h3>
+                  <div className="h-px bg-gray-200 mb-4" />
+                  <p className="text-gray-600 flex-1">{card.description}</p>
+                </div>
+              );
+            })}
+          </div>
+          <div className="text-center">
             <Link
               to="/services"
               className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-full hover:bg-primary-600 transition-colors"
@@ -2776,30 +2782,6 @@ const DeployServiceDetailPage = () => {
               {industryExpertise.ctaLabel}
               <ArrowRight size={16} />
             </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {industryExpertise.cards.map((card) => {
-              const Icon = card.icon;
-              return (
-                <div key={card.title} className="bg-white rounded-2xl border border-gray-200 p-6 flex flex-col">
-                  <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-6">
-                    <Icon className="w-6 h-6 text-secondary-900" strokeWidth={1.5} />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{card.title}</h3>
-                  <div className="h-px bg-gray-200 mb-4" />
-                  <p className="text-gray-600 flex-1">{card.description}</p>
-                  <Link 
-                    to={card.title === "Plant 4.0" ? "/services/plant-4-0" : 
-                        card.title === "Infrastructure 4.0" ? "/services/infrastructure-4-0" : 
-                        card.title === "Government 4.0" ? "/services/government-4-0" : "/services"}
-                    className="mt-6 inline-flex items-center gap-2 text-primary font-semibold hover:text-primary-600 transition-colors"
-                  >
-                    Explore More
-                    <ArrowRight size={14} />
-                  </Link>
-                </div>
-              );
-            })}
           </div>
         </div>
       </section>
@@ -3064,7 +3046,7 @@ export default function ServiceDetailPage() {
                     return (
                       <div key={index} className="flex gap-4 p-6 bg-gray-50 rounded-xl">
                         <div className="flex-shrink-0">
-                          <BenefitIcon className="w-8 h-8 text-gray-700" strokeWidth={1.5} />
+                          <BenefitIcon className="w-8 h-8 text-primary" strokeWidth={1.5} />
                         </div>
                         <div>
                           <h3 className="font-bold text-gray-900 mb-2">{benefit.title}</h3>
@@ -3101,11 +3083,8 @@ export default function ServiceDetailPage() {
 
               {/* Service Areas */}
               <div className="mb-16">
-                <div className="text-center mb-8">
-                  <p className="text-sm text-gray-500 uppercase tracking-wider mb-2">SERVICE AREAS</p>
-                  <h2 className="text-3xl font-bold text-gray-900">
-                    {getServiceAreasTitle(slug || '')}
-                  </h2>
+                <div className="mb-8">
+                  <h2 className="text-3xl font-bold text-gray-900">Service Areas</h2>
                 </div>
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {service.serviceAreas.map((area: any, index: number) => (

@@ -316,19 +316,19 @@ export const getOverviewClosingText = (slug: string): string => {
 // Helper function to get service areas title based on slug
 export const getServiceAreasTitle = (slug: string): string => {
   const titleMap: Record<string, string> = {
-    'agility-4-0': "Key focus areas to empower your organization with adaptive, agile, and scalable operations",
-    'farming-4-0': "Key focus areas to drive sustainable, efficient, and tech-driven agricultural transformation",
-    'plant-4-0': "Key focus areas to drive efficiency, sustainability, and innovation in industrial operations",
-    'infrastructure-4-0': "Key focus areas to build smarter, sustainable, and connected urban environments",
-    'government-4-0': "Key focus areas to enhance governance, transparency, and citizen-centric digital transformation",
-    'hospitality-4-0': "Key focus areas to deliver seamless, personalized, and tech-driven hospitality experiences",
-    'retail-4-0': "Key focus areas to deliver seamless, personalized, and tech-driven retail experiences",
-    'wellness-4-0': "Key focus areas to drive digital innovation in healthcare and wellness",
-    'logistics-4-0': "Key focus areas to drive digital innovation and operational excellence across industries",
-    'service-4-0': "Key focus areas to drive digital innovation and operational excellence across industries"
+    'agility-4-0': "Empower your organization with adaptive, agile, and scalable operations",
+    'farming-4-0': "Drive sustainable, efficient, and tech-driven agricultural transformation",
+    'plant-4-0': "Drive efficiency, sustainability, and innovation in industrial operations",
+    'infrastructure-4-0': "Build smarter, sustainable, and connected urban environments",
+    'government-4-0': "Enhance governance, transparency, and citizen-centric digital transformation",
+    'hospitality-4-0': "Deliver seamless, personalized, and tech-driven hospitality experiences",
+    'retail-4-0': "Deliver seamless, personalized, and tech-driven retail experiences",
+    'wellness-4-0': "Drive digital innovation in healthcare and wellness",
+    'logistics-4-0': "Drive digital innovation and operational excellence across industries",
+    'service-4-0': "Drive digital innovation and operational excellence across industries"
   };
 
-  return titleMap[slug] || "Key focus areas to enable you deliver exceptional, seamless, and personalized customer experiences";
+  return titleMap[slug] || "Enable you deliver exceptional, seamless, and personalized customer experiences";
 };
 
 // Helper function to get FAQ section title based on slug

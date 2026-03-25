@@ -23,7 +23,7 @@ export function ProductCard({ product, onClick }: ProductCardProps) {
       <div className="px-4 py-5 flex-grow flex flex-col">
         {product.icon && (
           <div className="mb-4">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-primary/10 border border-primary/20">
               {product.icon}
             </div>
           </div>

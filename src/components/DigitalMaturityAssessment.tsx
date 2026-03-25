@@ -693,13 +693,6 @@ Security & DevOps: ${formData.securityDevOps}`;
                 <BrainCircuit className="w-4 h-4" />
                 <span>AI-Driven Analysis</span>
               </div>
-              <button
-                onClick={loadSampleData}
-                className="flex items-center space-x-1.5 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-medium rounded-lg transition-colors"
-              >
-                <FileText className="w-3 h-3" />
-                <span>Load Sample Data</span>
-              </button>
             </div>
 
             <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">

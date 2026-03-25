@@ -645,7 +645,7 @@ export function ProductDetailPage() {
             <ol className="inline-flex items-center space-x-1 md:space-x-2">
               <li className="inline-flex items-center">
                 <a
-                  href="/"
+                  href="/products"
                   className="text-gray-600 hover:text-gray-900 inline-flex items-center"
                 >
                   <HomeIcon size={16} className="mr-1" />
@@ -656,7 +656,7 @@ export function ProductDetailPage() {
                 <div className="flex items-center">
                   <ChevronRightIcon size={16} className="text-gray-400" />
                   <a
-                    href="/products"
+                    href="/products/marketplace"
                     className="ml-1 text-gray-600 hover:text-gray-900 md:ml-2"
                   >
                     Products

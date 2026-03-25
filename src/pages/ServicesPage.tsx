@@ -250,8 +250,8 @@ export default function ServicesPage() {
           {/* Featured Service Categories */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-white rounded-xl p-6 border border-gray-200 hover:shadow-md transition-all">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                <Palette className="w-6 h-6 text-blue-600" />
+              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                <Palette className="w-6 h-6 text-primary" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Design Services</h3>
               <p className="text-gray-600 text-sm mb-4">
@@ -274,8 +274,8 @@ export default function ServicesPage() {
             </div>
 
             <div className="bg-white rounded-xl p-6 border border-gray-200 hover:shadow-md transition-all">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                <Rocket className="w-6 h-6 text-green-600" />
+              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                <Rocket className="w-6 h-6 text-primary" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Deploy Services (SaaS & On-Prem)</h3>
               <p className="text-gray-600 text-sm mb-4">
@@ -320,8 +320,8 @@ export default function ServicesPage() {
               const Icon = prop.icon;
               return (
                 <div key={index} className="bg-gray-50 rounded-2xl p-8 text-center hover:shadow-md transition-all duration-300">
-                  <div className="w-14 h-14 bg-gray-100 rounded-xl flex items-center justify-center mx-auto mb-5">
-                    <Icon className="w-7 h-7 text-gray-700" strokeWidth={1.5} />
+                  <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-5">
+                    <Icon className="w-7 h-7 text-primary" strokeWidth={1.5} />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
                     {prop.title}
@@ -332,16 +332,6 @@ export default function ServicesPage() {
                 </div>
               );
             })}
-          </div>
-
-          {/* CTA Button */}
-          <div className="mt-12 text-center">
-            <button 
-              onClick={() => navigate('/about-us#testimonials')}
-              className="px-8 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-600 transition-all"
-            >
-              Read Our Testimonials
-            </button>
           </div>
         </div>
       </section>
