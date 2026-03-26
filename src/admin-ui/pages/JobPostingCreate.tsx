@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AppLayout from "../components/AppLayout";
 import { createJobPosting } from "../../services/jobPostingService";
+import { getDepartments, testDepartmentsTable, type Department } from "../../services/departmentService";
 import type { JobPostingInput } from "../../services/jobPostingService";
 import { useToast } from "../../components/ui/Toast";
 import {
@@ -15,6 +16,7 @@ import {
   User,
   CheckCircle,
 } from "lucide-react";
+import { supabase } from "../../lib/supabase";
 
 export default function JobPostingCreate() {
   const navigate = useNavigate();
@@ -22,6 +24,8 @@ export default function JobPostingCreate() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPreview, setIsPreview] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [departments, setDepartments] = useState<Department[]>([]);
+  const [loadingDepartments, setLoadingDepartments] = useState(true);
   
   const [formData, setFormData] = useState<JobPostingInput>({
     title: "",
@@ -43,9 +47,10 @@ export default function JobPostingCreate() {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const departmentOptions = [
+  // Fallback departments in case database fetch fails
+  const fallbackDepartments = [
     "Engineering",
-    "Product",
+    "Product", 
     "Design",
     "Marketing",
     "Sales",
@@ -56,6 +61,64 @@ export default function JobPostingCreate() {
     "Executive",
     "Other",
   ];
+
+  // Load departments from database
+  useEffect(() => {
+    const loadDepartments = async () => {
+      console.log('🚀 Starting to load departments...');
+      
+      try {
+        // First test table access
+        const testResult = await testDepartmentsTable();
+        console.log('🧪 Table test result:', testResult);
+        
+        if (testResult.success) {
+          const { data: departmentsData } = await supabase
+                .from('departments')
+                .select('*')
+                .order('name', { ascending: true });
+          // const data = await getDepartments();
+          console.log('📦 Received departments data:', departmentsData);
+          setDepartments(departmentsData || []);
+        } else {
+          console.warn('⚠️ Using fallback departments due to table access issue');
+          // Convert fallback array to Department objects
+          const fallbackData = fallbackDepartments.map((name, index) => ({
+            id: `fallback-${index}`,
+            name,
+            description: null,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          }));
+          setDepartments(fallbackData);
+        }
+      } catch (error) {
+        console.error("❌ Failed to load departments:", error);
+        console.warn('⚠️ Using fallback departments due to error');
+        // Convert fallback array to Department objects
+        const fallbackData = fallbackDepartments.map((name, index) => ({
+          id: `fallback-${index}`,
+          name,
+          description: null,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        }));
+        setDepartments(fallbackData);
+        showToast("Using offline departments. Database unavailable.", "info");
+      } finally {
+        console.log('🏁 Finished loading departments');
+        setLoadingDepartments(false);
+      }
+    };
+
+    loadDepartments();
+  }, []); // Empty dependency array - only run once
+
+  // Debug state changes
+  useEffect(() => {
+    console.log('🔄 Departments state updated:', departments);
+    console.log('🔄 Loading state:', loadingDepartments);
+  }, [departments, loadingDepartments]);
 
   const locationOptions = [
     "Nairobi",
@@ -422,13 +485,16 @@ export default function JobPostingCreate() {
                       <select
                         value={formData.department}
                         onChange={(e) => handleInputChange('department', e.target.value)}
+                        disabled={loadingDepartments}
                         className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black ${
                           errors.department ? 'border-red-500' : 'border-gray-300'
                         }`}
                       >
-                        <option value="">Select department</option>
-                        {departmentOptions.map(dept => (
-                          <option key={dept} value={dept}>{dept}</option>
+                        <option value="">
+                          {loadingDepartments ? 'Loading...' : 'Select department'}
+                        </option>
+                        {departments.map(dept => (
+                          <option key={dept.id} value={dept.name}>{dept.name}</option>
                         ))}
                       </select>
                       {errors.department && <p className="text-red-500 text-xs mt-1">{errors.department}</p>}

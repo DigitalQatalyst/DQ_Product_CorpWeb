@@ -9,8 +9,6 @@ import { useAuth } from "../../contexts/AuthContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDarkMode } from "../../hooks/useDarkMode";
 
-import { ArrowRight } from "lucide-react";
-
 interface HeaderProps {
   "data-id"?: string;
 }
@@ -45,11 +43,6 @@ export function Header({ "data-id": dataId }: HeaderProps) {
   // Close notification center
   const closeNotificationCenter = () => {
     setShowNotificationCenter(false);
-  };
-
-  // Handle get in touch - redirect to consultation page
-  const handleGetInTouch = () => {
-    navigate("/consultation");
   };
 
   // Reset notification states when user logs out
@@ -118,16 +111,6 @@ export function Header({ "data-id": dataId }: HeaderProps) {
                 Products
               </Link>
               <Link
-                to="/dtmi"
-                className={`text-sm font-medium transition-colors ${
-                  location.pathname.includes("/dtmi")
-                    ? "text-white"
-                    : "text-white/80 hover:text-primary-500"
-                }`}
-              >
-                Insights
-              </Link>
-              <Link
                 to="/about-us"
                 className={`text-sm font-medium transition-colors ${
                   location.pathname.includes("/about-us")
@@ -152,14 +135,6 @@ export function Header({ "data-id": dataId }: HeaderProps) {
 
             {/* Right: CTAs */}
             <div className="hidden lg:flex items-center gap-4">
-              <button
-                onClick={handleGetInTouch}
-                className="flex flex-row items-center gap-2 bg-primary-500 text-white font-semibold px-6 py-2.5 rounded-lg shadow-lg hover:bg-primary-600 transition-all duration-200"
-              >
-                Get In Touch
-                <ArrowRight size={18} />
-              </button>
-
               {/* Login/Profile Section - Only show on admin/dashboard routes */}
               {isAdminRoute && (
                 isLoading ? (

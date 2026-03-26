@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { CourseType } from "./utils/mockData";
-import { AuthProvider } from "./contexts/AuthContext";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { GoogleAnalytics } from "./components/GoogleAnalytics";
 import { MarketplaceRouter } from "./pages/marketplace/MarketplaceRouter";
 import { ProductMarketplacePage } from "./pages/ProductMarketplacePage";
@@ -10,7 +10,6 @@ import { App } from "./App";
 import MarketplaceDetailsPage from "./pages/marketplace/MarketplaceDetailsPage";
 import DashboardRouter from "./pages/dashboard/DashboardRouter";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AuthorizedRoute from "./components/AuthorizedRoute";
 import AboutUsPage from "./pages/AboutUsPage";
 import NotFound from "./pages/NotFound";
 import MediaDetailPage from "./pages/media/MediaDetailPage";
@@ -20,6 +19,18 @@ import ServiceDetailPage from "./pages/ServiceDetailPage";
 import { ABBCaseStudy } from "./pages/case-studies/ABBCaseStudy";
 import { PGCaseStudy } from "./pages/case-studies/PGCaseStudy";
 import { CaseStudiesPage } from "./pages/case-studies/CaseStudiesPage";
+
+// Simple role-based route guard
+const RoleGuard = ({ children, allowedRoles }: { children: React.ReactNode; allowedRoles: string[] }) => {
+  const { loggedrole } = useAuth();
+  const userRole = loggedrole?.role?.toLowerCase() || "";
+  
+  if (!allowedRoles.includes(userRole)) {
+    return <Navigate to="/admin-ui/dashboard" replace />;
+  }
+  
+  return <>{children}</>;
+};
 // Admin UI (integrated)
 import AdminDashboard from "./admin-ui/pages/Dashboard";
 import AdminMediaList from "./admin-ui/pages/MediaList";
@@ -37,6 +48,7 @@ import Analytics from "./admin-ui/pages/Analytics";
 import InterviewScheduler from "./admin-ui/pages/InterviewScheduler";
 import NotificationCenter from "./admin-ui/pages/NotificationCenter";
 import UserManagement from "./admin-ui/pages/UserManagement";
+import DepartmentsManagement from "./admin-ui/pages/DepartmentsManagement";
 // Forms
 import NeedsAssessmentForm from "./pages/forms/NeedsAssessmentForm";
 import RequestForMembership from "./pages/forms/RequestForMembership";
@@ -203,145 +215,138 @@ export function AppRouter() {
             <Route
               path="/admin-ui/settings"
               element={
-                <AuthorizedRoute
-                  allowedRoles={["admin"]}
-                >
+                <RoleGuard allowedRoles={["admin", "hr"]}>
                   <AdminSettings />
-                </AuthorizedRoute>
+                </RoleGuard>
               }
             />
             {/* Embedded Admin UI - role-protected */}
             <Route
               path="/admin-ui/dashboard"
               element={
-                <AuthorizedRoute
-                  allowedRoles={["admin", "creator", "hr"]}
-                >
+                <RoleGuard allowedRoles={["admin", "creator", "hr"]}>
                   <AdminDashboard />
-                </AuthorizedRoute>
+                </RoleGuard>
               }
             />
             <Route
               path="/admin-ui/media"
               element={
-                <AuthorizedRoute allowedRoles={["admin", "creator"]}>
+                <RoleGuard allowedRoles={["admin", "creator"]}>
                   <AdminMediaList />
-                </AuthorizedRoute>
+                </RoleGuard>
               }
             />
             <Route
               path="/admin-ui/media/new"
               element={
-                <AuthorizedRoute
-                  allowedRoles={["admin", "creator"]}
-                  requiredPermission={{ resource: "blogs", action: "create" }}
-                >
+                <RoleGuard allowedRoles={["admin", "creator"]}>
                   <BlogCreate />
-                </AuthorizedRoute>
+                </RoleGuard>
               }
             />
             <Route
               path="/admin-ui/media/:id"
               element={
-                <AuthorizedRoute allowedRoles={["admin", "creator"]}>
+                <RoleGuard allowedRoles={["admin", "creator"]}>
                   <BlogDetail />
-                </AuthorizedRoute>
+                </RoleGuard>
               }
             />
             <Route
               path="/admin-ui/authors"
               element={
-                <AuthorizedRoute allowedRoles={["admin", "creator"]}>
+                <RoleGuard allowedRoles={["admin", "creator"]}>
                   <AuthorManagement />
-                </AuthorizedRoute>
+                </RoleGuard>
               }
             />
             <Route
               path="/admin-ui/authors/new"
               element={
-                <AuthorizedRoute
-                  allowedRoles={["admin"]}
-                >
+                <RoleGuard allowedRoles={["admin"]}>
                   <AuthorCreate />
-                </AuthorizedRoute>
+                </RoleGuard>
               }
             />
             <Route
               path="/admin-ui/categories"
               element={
-                <AuthorizedRoute allowedRoles={["admin"]}>
+                <RoleGuard allowedRoles={["admin"]}>
                   <CategoryManagement />
-                </AuthorizedRoute>
+                </RoleGuard>
               }
             />
             <Route
               path="/admin-ui/submissions"
               element={
-                <AuthorizedRoute allowedRoles={["admin", "creator"]}>
+                <RoleGuard allowedRoles={["admin", "creator"]}>
                   <ContentSubmissions />
-                </AuthorizedRoute>
+                </RoleGuard>
               }
             />
             <Route
               path="/admin-ui/job-applications"
               element={
-                <AuthorizedRoute
-                  allowedRoles={["admin", "hr"]}
-                >
+                <RoleGuard allowedRoles={["admin", "hr"]}>
                   <JobApplications />
-                </AuthorizedRoute>
+                </RoleGuard>
               }
             />
             <Route
               path="/admin-ui/job-postings"
               element={
-                <AuthorizedRoute allowedRoles={["admin", "hr"]}>
+                <RoleGuard allowedRoles={["admin", "hr"]}>
                   <JobPostingsManagement />
-                </AuthorizedRoute>
+                </RoleGuard>
               }
             />
             <Route
               path="/admin-ui/job-postings/new"
               element={
-                <AuthorizedRoute allowedRoles={["admin", "hr"]}>
+                <RoleGuard allowedRoles={["admin", "hr"]}>
                   <JobPostingCreate />
-                </AuthorizedRoute>
+                </RoleGuard>
               }
             />
             <Route
               path="/admin-ui/analytics"
               element={
-                <AuthorizedRoute
-                  allowedRoles={["admin", "hr"]}
-                >
+                <RoleGuard allowedRoles={["admin", "hr"]}>
                   <Analytics />
-                </AuthorizedRoute>
+                </RoleGuard>
               }
             />
             <Route
               path="/admin-ui/interviews"
               element={
-                <AuthorizedRoute allowedRoles={["admin", "hr"]}>
+                <RoleGuard allowedRoles={["admin", "hr"]}>
                   <InterviewScheduler />
-                </AuthorizedRoute>
+                </RoleGuard>
               }
             />
             <Route
               path="/admin-ui/notifications"
               element={
-                <AuthorizedRoute allowedRoles={["admin", "creator"]}>
+                <RoleGuard allowedRoles={["admin", "creator"]}>
                   <NotificationCenter />
-                </AuthorizedRoute>
+                </RoleGuard>
               }
             />
             <Route
               path="/admin-ui/users"
               element={
-                <AuthorizedRoute
-                  allowedRoles={["admin"]}
-                >
+                <RoleGuard allowedRoles={["admin"]}>
                   <UserManagement />
-                </AuthorizedRoute>
+                </RoleGuard>
+              }
+            />
+            <Route
+              path="/admin-ui/departments"
+              element={
+                <RoleGuard allowedRoles={["admin"]}>
+                  <DepartmentsManagement />
+                </RoleGuard>
               }
             />
             {/** Forms routes - all protected */}

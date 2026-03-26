@@ -72,11 +72,13 @@ const AuthorizedRoute: React.FC<AuthorizedRouteProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
   const hasRedirected = useRef(false);
-  const { 
-    isAdmin, 
-    isCreator, 
-    isHR
-  } = useAuth();
+  const { loggedrole } = useAuth();
+  const userRole = loggedrole?.role?.toLowerCase() || "";
+  
+  // Role checking helpers
+  const isAdmin = () => userRole === "admin";
+  const isCreator = () => userRole === "creator" || isAdmin();
+  const isHR = () => userRole === "hr" || isAdmin();
 
   // Helper: check if the current user's role satisfies one of the allowed roles
   const checkRole = (): boolean => {

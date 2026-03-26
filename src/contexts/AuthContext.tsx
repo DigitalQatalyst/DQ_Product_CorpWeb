@@ -713,6 +713,10 @@ export interface Profile {
   avatar_url: string | null;
   created_at: string;
   updated_at: string;
+  email:string;
+}
+export interface LoggedRole { 
+  role:string | null
 }
 
 // Extended user – now includes profile reference
@@ -729,6 +733,7 @@ export interface AuthContextType {
   profile: Profile | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+  loggedrole: LoggedRole | null;
 
   signIn: (credentials: SignInWithPasswordCredentials) => Promise<AuthResponse>;
   signUp: (credentials: SignUpWithPasswordCredentials) => Promise<AuthResponse>;
@@ -740,11 +745,6 @@ export interface AuthContextType {
 
   // Role helpers – now based on profile.role (only creator, admin, hr)
   hasRole: (role: string) => boolean;
-  isAdmin: () => boolean;
-  isCreator: () => boolean;
-  isHR: () => boolean;
-  isHRAdmin: () => boolean; // Legacy - maps to isHR
-  isHRViewer: () => boolean; // Legacy - maps to isHR
 
   refreshSession: () => Promise<{ error: AuthError | null }>;
 
@@ -768,6 +768,27 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const isAuthenticated = useMemo(() => !!user && !!session, [user, session]);
 
   console.log("logged user + profile", { user, profile });
+  const [loggedrole,setLoggedrole] = useState<LoggedRole | null>({role:''});
+  console.log("logged role",loggedrole)
+
+  const setRole = async()=>{
+    try {
+      if(profile != null || profile || profile != ''){
+        setLoggedrole({role:profile?.role || ''})
+      }else{
+        console.log("error geting current profile")
+      }
+      
+    } catch (error) {
+      console.log("failed to assign role")
+      
+    }
+  }
+
+  useEffect(()=>{
+    setRole()
+
+  },[user])
 
   // ────────────────────────────────────────────────
   // Merge auth user + profile data
@@ -1046,14 +1067,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     [profile]
   );
 
-  const isAdmin = useCallback(() => profile?.role === 'admin', [profile]);
-  const isCreator = useCallback(() => hasRole('creator') || isAdmin(), [hasRole, isAdmin]);
-  const isHR = useCallback(() => hasRole('hr') || isAdmin(), [hasRole, isAdmin]);
-  
-  // Legacy functions for backward compatibility
-  const isHRAdmin = useCallback(() => isHR(), [isHR]);
-  const isHRViewer = useCallback(() => isHR(), [isHR]);
-
   // ────────────────────────────────────────────────
   // Initialize + listen
   // ────────────────────────────────────────────────
@@ -1150,14 +1163,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
       updateProfile,
       refreshProfile,
       hasRole,
-      isAdmin,
-      isCreator,
-      isHR,
-      isHRAdmin,
-      isHRViewer,
       refreshSession,
       error,
       clearError,
+      loggedrole
     }),
     [
       user,
@@ -1171,14 +1180,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
       updateProfile,
       refreshProfile,
       hasRole,
-      isAdmin,
-      isCreator,
-      isHR,
-      isHRAdmin,
-      isHRViewer,
       refreshSession,
       error,
       clearError,
+      loggedrole
     ]
   );
 

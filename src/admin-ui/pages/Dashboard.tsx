@@ -9,6 +9,8 @@ import { getAllJobPostings } from "../../services/jobPostingService";
 import type { JobPosting } from "../../services/jobPostingService";
 import { getAdminUsers } from "../../services/adminUserService";
 import type { AdminUser } from "../../types/admin";
+import { getDepartments } from "../../services/departmentService";
+import type { Department } from "../../services/departmentService";
 import { useAuth } from "../../contexts/AuthContext";
 import {
   TrendingUp as TrendingUpIcon,
@@ -29,12 +31,18 @@ interface DashboardStats {
   openPositions: number;
   totalUsers: number;
   activeUsers: number;
+  totalDepartments: number;
   contentViews: number;
   publishedPosts: number;
 }
 
 const Dashboard: React.FC = () => {
-  const { isAdmin, isHRAdmin, isHRViewer } = useAuth();
+  const { loggedrole } = useAuth();
+  const userRole = loggedrole?.role?.toLowerCase() || "";
+  
+  // Role checking helpers
+  const isAdmin = () => userRole === "admin";
+  const isHR = () => userRole === "hr" || isAdmin();
   const [stats, setStats] = useState<DashboardStats>({
     totalApplications: 0,
     pendingReview: 0,
@@ -44,6 +52,7 @@ const Dashboard: React.FC = () => {
     openPositions: 0,
     totalUsers: 0,
     activeUsers: 0,
+    totalDepartments: 0,
     contentViews: 12458,
     publishedPosts: 24,
   });
@@ -77,6 +86,9 @@ const Dashboard: React.FC = () => {
 
       // Fetch users
       const usersResult = await getAdminUsers();
+
+      // Fetch departments
+      const departmentsData = await getDepartments();
 
       if (!applicationsResult.error && applicationsResult.data) {
         const applications = applicationsResult.data;
@@ -146,6 +158,12 @@ const Dashboard: React.FC = () => {
           activeUsers: users.filter((u) => u.is_active).length,
         }));
       }
+
+      // Update departments stats
+      setStats((prev) => ({
+        ...prev,
+        totalDepartments: departmentsData.length,
+      }));
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
     } finally {
@@ -192,7 +210,7 @@ const Dashboard: React.FC = () => {
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          {(isAdmin() || isHRAdmin() || isHRViewer()) && (
+          {(isAdmin() || isHR()) && (
             <div className="bg-white rounded-xl border border-gray-200 p-4 border-r-[3px] border-r-blue-900">
               <div className="flex items-start justify-between">
                 <div>
@@ -210,7 +228,7 @@ const Dashboard: React.FC = () => {
             </div>
           )}
 
-          {(isAdmin() || isHRAdmin() || isHRViewer()) && (
+          {(isAdmin() || isHR()) && (
             <div className="bg-white rounded-xl border border-gray-200 p-4 border-r-[3px] border-r-blue-900">
               <div className="flex items-start justify-between">
                 <div>
@@ -244,15 +262,15 @@ const Dashboard: React.FC = () => {
             </div>
           )}
 
-          {(isAdmin() || isHRAdmin() || isHRViewer()) && (
+          {(isAdmin() || isHR()) && (
             <div className="bg-white rounded-xl border border-gray-200 p-4 border-r-[3px] border-r-blue-900">
               <div className="flex items-start justify-between">
                 <div>
                   <div className="text-2xl font-semibold text-gray-900">
-                    {stats.openPositions}
+                    {stats.totalDepartments}
                   </div>
                   <div className="text-xs text-gray-500 mt-1">
-                    Open Positions
+                    Departments
                   </div>
                 </div>
                 <div className="bg-blue-50 p-2 rounded-lg">
@@ -265,7 +283,7 @@ const Dashboard: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Recent Applications - HR roles only */}
-          {(isAdmin() || isHRAdmin() || isHRViewer()) && (
+          {(isAdmin() || isHR()) && (
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
               <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
                 <h3 className="font-semibold text-gray-900">
@@ -323,7 +341,7 @@ const Dashboard: React.FC = () => {
           )}
 
           {/* Recent Interviews - HR roles only */}
-          {(isAdmin() || isHRAdmin()) && (
+          {(isAdmin() || isHR()) && (
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
               <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
                 <h3 className="font-semibold text-gray-900">
@@ -387,7 +405,7 @@ const Dashboard: React.FC = () => {
           )}
 
           {/* Recent Job Postings - HR roles only */}
-          {(isAdmin() || isHRAdmin()) && (
+          {(isAdmin() || isHR()) && (
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
               <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
                 <h3 className="font-semibold text-gray-900">
