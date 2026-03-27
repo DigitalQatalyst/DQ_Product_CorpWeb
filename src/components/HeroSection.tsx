@@ -211,7 +211,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ "data-id": dataId }) => {
         >
           <button
             onClick={() => navigate("/services")}
-            className="px-8 py-3 bg-primary hover:bg-primary-600 text-white font-bold rounded-lg shadow-lg transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl text-center flex items-center justify-center overflow-hidden group"
+            className="h-14 px-8 bg-primary hover:bg-primary-600 text-white font-bold rounded-lg shadow-lg transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl text-center flex items-center justify-center overflow-hidden group"
           >
             <span className="relative z-10">Explore Our Services</span>
             <ArrowRight
@@ -225,10 +225,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ "data-id": dataId }) => {
           </button>
           <button
             onClick={() => navigate("/products")}
-            className="px-8 py-3 bg-white text-secondary-900 hover:bg-gray-50 font-bold rounded-lg shadow-lg flex items-center justify-center gap-2 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+            className="h-14 px-8 bg-transparent border-2 border-white text-white hover:bg-white hover:text-secondary-900 font-bold rounded-lg transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex items-center justify-center"
           >
             Explore Our Products
-            <ArrowRight size={18} />
           </button>
         </StaggeredFadeIn>
       </div>

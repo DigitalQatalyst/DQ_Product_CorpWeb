@@ -209,7 +209,7 @@ export function Footer({
                 </a>
               </li>
               <li>
-                <a href="https://x.com/drstephane_" className="text-gray-300 hover:text-primary transition-colors text-sm flex items-center gap-2" target="_blank" rel="noopener noreferrer">
+                <a href="https://x.com/DigitalQatalyst" className="text-gray-300 hover:text-primary transition-colors text-sm flex items-center gap-2" target="_blank" rel="noopener noreferrer">
                   <XIcon size={16} />
                   X
                 </a>
@@ -364,7 +364,7 @@ export function Footer({
                 </a>
               </li>
               <li>
-                <a href="https://x.com/drstephane_" className="text-gray-300 hover:text-primary transition-colors text-sm flex items-center gap-2" target="_blank" rel="noopener noreferrer">
+                <a href="https://x.com/DigitalQatalyst" className="text-gray-300 hover:text-primary transition-colors text-sm flex items-center gap-2" target="_blank" rel="noopener noreferrer">
                   <XIcon size={16} />
                   X
                 </a>
