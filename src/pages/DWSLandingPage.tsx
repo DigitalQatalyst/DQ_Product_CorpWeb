@@ -67,7 +67,7 @@ const DWSLandingPage: React.FC = () => {
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <button
-                    onClick={() => navigate("/consultation")}
+                    onClick={() => navigate("/forms/tour-request")}
                     className="px-8 py-4 bg-primary hover:bg-primary-600 text-white font-bold rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center text-lg"
                   >
                     Book a Tour
@@ -400,7 +400,7 @@ const DWSLandingPage: React.FC = () => {
 
                   <div className="flex justify-center">
                     <button
-                      onClick={() => navigate("/consultation")}
+                      onClick={() => navigate("/forms/tour-request")}
                       className="px-8 py-4 bg-primary hover:bg-primary-600 text-white font-bold rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center"
                     >
                       Book a Tour

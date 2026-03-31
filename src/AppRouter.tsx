@@ -376,11 +376,7 @@ export function AppRouter() {
             />
             <Route
               path="/forms/tour-request"
-              element={
-                <ProtectedRoute>
-                  <TourRequestForm />
-                </ProtectedRoute>
-              }
+              element={<TourRequestForm />}
             />
             <Route
               path="/expert-interviews/:slug"
