@@ -587,13 +587,15 @@ export default function ServicesPage() {
             <p className="text-lg text-gray-200 mb-8">
               Browse our comprehensive marketplace of digital transformation services and solutions designed to help your business thrive in the digital era.
             </p>
-            <button 
-              onClick={() => navigate('/marketplace/services')}
-              className="h-14 px-8 bg-primary text-white font-bold rounded-lg hover:bg-primary-600 transition-all shadow-lg transform hover:-translate-y-1 hover:shadow-xl flex items-center justify-center gap-2 group"
-            >
-              Browse Services
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
-            </button>
+            <div className="flex justify-center">
+              <button 
+                onClick={() => navigate('/marketplace/services')}
+                className="h-14 px-8 bg-primary text-white font-bold rounded-lg hover:bg-primary-600 transition-all shadow-lg transform hover:-translate-y-1 hover:shadow-xl flex items-center justify-center gap-2 group"
+              >
+                Browse Services
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
+              </button>
+            </div>
           </div>
         </div>
       </section>

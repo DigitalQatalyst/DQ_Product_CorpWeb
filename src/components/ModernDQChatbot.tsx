@@ -203,7 +203,7 @@ const ModernDQChatbot: React.FC<ModernDQChatbotProps> = ({ initialMessage, onMes
             </div>
             <div>
               <h2 className="text-lg font-semibold text-primary">Ask DQ AI Assistant</h2>
-              <p className="text-sm text-gray-500">A chatbot to answer your questions based on DigitalQatalyst's expertise</p>
+              <p className="text-sm text-gray-500">Specialized chatbot for DigitalQatalyst services and digital transformation inquiries only</p>
             </div>
           </div>
           <button
@@ -318,7 +318,7 @@ const ModernDQChatbot: React.FC<ModernDQChatbotProps> = ({ initialMessage, onMes
 
           {/* Disclaimer */}
           <p className="text-xs text-gray-400 text-center">
-            Responses from the Chatbot may occasionally be inaccurate or incomplete. For expert consultation, please contact info@digitalqatalyst.com
+            This chatbot is designed specifically for DigitalQatalyst inquiries only. For expert consultation, please contact info@digitalqatalyst.com
           </p>
         </div>
       </div>

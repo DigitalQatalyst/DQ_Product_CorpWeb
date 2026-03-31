@@ -234,6 +234,19 @@ You are the official DigitalQatalyst (DQ) AI Assistant. You represent DigitalQat
 
 CRITICAL: You work for DigitalQatalyst (DQ), a digital transformation consulting company. Never mention Abu Dhabi Enterprise Journey Platform or any other platform.
 
+STRICT USAGE RESTRICTIONS:
+You are ONLY allowed to discuss topics related to DigitalQatalyst's business, services, and digital transformation. You MUST NOT:
+- Review, analyze, or provide feedback on code
+- Help with programming, software development, or technical implementation
+- Provide general business advice unrelated to digital transformation
+- Discuss topics outside of DigitalQatalyst's scope
+- Act as a general-purpose AI assistant
+- Help with academic assignments or research not related to DQ
+- Provide information about competitors or other consulting firms
+- Assist with personal tasks or general knowledge questions
+
+If a user asks about restricted topics, politely decline and redirect them to DigitalQatalyst-specific topics.
+
 Your role is to:
 1. Answer questions about DigitalQatalyst's services, methodology, and approach
 2. Explain the DQ Golden Honeycomb of Competencies (GHC) framework
@@ -327,9 +340,73 @@ export const dqChatbotService = {
   },
 
   /**
+   * Check if a message contains restricted content
+   */
+  isRestrictedContent(message: string): boolean {
+    const lowerMessage = message.toLowerCase();
+    
+    // First, check if it's a legitimate DQ question that should NOT be restricted
+    const legitimateDQKeywords = [
+      'digital transformation', 'transformation journey', 'dq', 'digitalqatalyst',
+      'digital business platform', 'dbp', 'digital cognitive organization', 'dco',
+      'dt 2.0', 'methodology', 'service area', 'product', 'assessment',
+      'maturity', 'consultation', 'framework', 'architecture', 'data-driven'
+    ];
+    
+    // If it contains legitimate DQ keywords, don't restrict it
+    if (legitimateDQKeywords.some(keyword => lowerMessage.includes(keyword))) {
+      return false;
+    }
+    
+    // Code review and programming related keywords (more specific)
+    const codeKeywords = [
+      'code review', 'review my code', 'check my code', 'debug my',
+      'fix my code', 'programming help', 'coding help',
+      'javascript code', 'python code', 'java code', 'react code',
+      'html code', 'css code', 'sql query', 'database query',
+      'function implementation', 'algorithm help',
+      'syntax error', 'compile error', 'deployment issue',
+      'git help', 'github help', 'stack overflow',
+      'software development help', 'coding problem'
+    ];
+    
+    // General non-DQ topics (more specific)
+    const generalKeywords = [
+      'homework help', 'assignment help', 'essay writing', 'research paper help',
+      'weather forecast', 'news today', 'sports scores', 'entertainment news',
+      'recipe for', 'health advice', 'medical advice', 'legal advice',
+      'financial advice', 'investment advice', 'personal relationship advice',
+      'dating advice', 'travel recommendations', 'shopping recommendations',
+      'competitor analysis', 'mckinsey services', 'deloitte services', 'accenture services'
+    ];
+    
+    const allRestrictedKeywords = [...codeKeywords, ...generalKeywords];
+    
+    return allRestrictedKeywords.some(keyword => lowerMessage.includes(keyword));
+  },
+
+  /**
+   * Get restriction message for blocked content
+   */
+  getRestrictionMessage(message: string): string {
+    const lowerMessage = message.toLowerCase();
+    
+    if (lowerMessage.includes('code') || lowerMessage.includes('programming') || lowerMessage.includes('debug')) {
+      return "I'm the DigitalQatalyst AI Assistant, and I'm specifically designed to help with questions about our digital transformation services and methodology. I can't assist with code reviews or programming tasks.\n\nInstead, I'd be happy to discuss how DigitalQatalyst can help your organization with its digital transformation journey, our DT 2.0 methodology, or our suite of digital accelerator products. What would you like to know about our services?";
+    }
+    
+    return "I'm the DigitalQatalyst AI Assistant, and I focus specifically on helping visitors learn about our digital transformation services, methodology, and approach.\n\nI'd be happy to discuss how DigitalQatalyst can accelerate your organization's digital journey, our architecture-led and data-driven approach, or help you understand our service areas. What would you like to know about DigitalQatalyst?";
+  },
+
+  /**
    * Send a message to the DQ AI chatbot
    */
   async sendMessage(message: string, conversationHistory: ChatMessage[] = []): Promise<string> {
+    // Check for restricted content first
+    if (this.isRestrictedContent(message)) {
+      return this.getRestrictionMessage(message);
+    }
+
     if (!openai) {
       throw new Error("Azure OpenAI not configured. Please set the required environment variables.");
     }
@@ -387,6 +464,11 @@ export const dqChatbotService = {
    * Generate a fallback response when AI is not available
    */
   getFallbackResponse(message: string): string {
+    // Check for restricted content first
+    if (this.isRestrictedContent(message)) {
+      return this.getRestrictionMessage(message);
+    }
+
     const lowerMessage = message.toLowerCase();
     
     // Default welcome/greeting response

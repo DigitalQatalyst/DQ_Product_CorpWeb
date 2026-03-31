@@ -172,10 +172,10 @@ export default function AboutUsPage() {
                 return (
                   <article
                     key={value.title}
-                    className="rounded-3xl bg-white shadow-sm border border-gray-100 p-6 hover:-translate-y-1 transition-transform"
+                    className="bg-white p-6 rounded-xl border border-gray-100 flex flex-col h-full"
                   >
-                    <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4">
-                      <Icon size={22} />
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                      <Icon className="text-primary" size={22} />
                     </div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">
                       {value.title}
@@ -208,12 +208,12 @@ export default function AboutUsPage() {
                 return (
                   <article
                     key={belief.title}
-                    className="rounded-3xl bg-white/5 border border-white/10 p-6 backdrop-blur-sm"
+                    className="bg-white/5 p-6 rounded-xl border border-white/10 backdrop-blur-sm flex flex-col h-full"
                   >
-                    <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-4">
-                      <Icon size={22} />
+                    <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center mb-4">
+                      <Icon className="text-white" size={22} />
                     </div>
-                    <h3 className="text-xl font-semibold mb-3">
+                    <h3 className="text-xl font-semibold text-white mb-3">
                       {belief.title}
                     </h3>
                     <p className="text-white/80 text-sm">{belief.description}</p>
@@ -276,7 +276,7 @@ export default function AboutUsPage() {
                 return (
                 <article
                   key={leader.name}
-                  className="bg-white rounded-2xl border border-gray-100 p-8 text-center shadow-sm hover:-translate-y-1 transition-transform"
+                  className="bg-white p-6 rounded-xl border border-gray-100 text-center flex flex-col h-full"
                 >
                   <div className="w-24 h-24 rounded-full mx-auto mb-4 overflow-hidden bg-gray-100 flex items-center justify-center">
                     {leader.image ? (
@@ -292,7 +292,7 @@ export default function AboutUsPage() {
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">
                     {leader.name}
                   </h3>
-                  <p className="text-sm text-gray-500 font-medium mb-4">{leader.role}</p>
+                  <p className="text-sm text-gray-500 font-medium">{leader.role}</p>
                 </article>
               )})}
             </div>
