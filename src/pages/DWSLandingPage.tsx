@@ -11,7 +11,10 @@ import {
   Building2,
   Quote,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  CheckCircle,
+  Clock,
+  MessageSquare
 } from "lucide-react";
 import { FadeInUpOnScroll, StaggeredFadeIn } from "../components/AnimationUtils";
 
@@ -248,171 +251,324 @@ const DWSLandingPage: React.FC = () => {
                 
                 {/* Main Headline */}
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                  Digital Working Studios
+                  Work smarter. Collaborate better. Grow faster.
                 </h1>
                 
                 {/* Sub-headline */}
-                <p className="text-xl md:text-2xl text-white/90 mb-10 leading-relaxed max-w-3xl mx-auto">
-                  More than a desk. An intelligent workspace that blends physical and digital tools 
-                  to boost how you collaborate, produce, and innovate.
+                <p className="text-xl md:text-2xl text-white/90 mb-10 leading-relaxed max-w-4xl mx-auto">
+                  DWS is a modern digital working space designed for professionals and teams who need more than just a desk. From focused workdays to team collaboration and client meetings, DWS gives you the environment, flexibility, and smart support to move work forward.
                 </p>
 
-                {/* CTA Button */}
-                <button
-                  onClick={() => navigate("/forms/tour-request")}
-                  className="px-8 py-4 bg-primary hover:bg-primary-600 text-white font-bold rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center mx-auto text-lg"
-                >
-                  Book a Tour
-                  <ArrowRight size={20} className="ml-2" />
-                </button>
-              </FadeInUpOnScroll>
-            </div>
-          </div>
-        </section>
-
-        {/* Our Story Section */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <FadeInUpOnScroll>
-                <div className="grid lg:grid-cols-2 gap-12 items-center">
-                  {/* Left Column - Text Content */}
-                  <div className="space-y-6">
-                    <div>
-                      <h2 className="text-3xl md:text-4xl font-bold text-secondary-900 mb-4">
-                        Built by Digital Builders, for Digital Workers.
-                      </h2>
-                      <div className="w-16 h-1 bg-primary mb-6"></div>
-                    </div>
-                    
-                    <p className="text-lg text-gray-700 leading-relaxed">
-                      We didn't start by designing a coworking space. We started by building a world-class 
-                      Digital Work System (DWS) for ourselves. The result is Digital Working Studios (DWS)—the 
-                      physical home of that system.
-                    </p>
-                    
-                    <p className="text-lg text-gray-600 leading-relaxed">
-                      You're not just renting a desk; you're plugging into an environment designed by a 
-                      digital transformation company, for people who want to work smarter.
-                    </p>
-                  </div>
-
-                  {/* Right Column - Image */}
-                  <div className="relative">
-                    <div className="relative rounded-2xl overflow-hidden shadow-xl">
-                      {/* Main image */}
-                      <div className="aspect-[4/3]">
-                        <img
-                          src="/DWS images/Digitalworker.jpg"
-                          alt="Digital Working Studios Overview"
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            // Fallback to gradient if image fails to load
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = 'none';
-                            const parent = target.parentElement;
-                            if (parent) {
-                              parent.innerHTML = `
-                                <div class="w-full h-full bg-gradient-to-br from-secondary-100 via-primary-50 to-secondary-50 flex items-center justify-center">
-                                  <div class="text-center p-8">
-                                    <div class="w-16 h-16 mx-auto mb-4 text-primary opacity-60">
-                                      <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                                    </div>
-                                    <p class="text-secondary-700 font-medium text-lg">Digital Working Studios</p>
-                                    <p class="text-gray-600 text-sm mt-2">Where Innovation Meets Productivity</p>
-                                  </div>
-                                </div>
-                              `;
-                            }
-                          }}
-                        />
-                      </div>
-                    </div>
-                    
-                    {/* Decorative elements */}
-                    <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl"></div>
-                    <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-secondary-100/50 rounded-full blur-3xl"></div>
-                  </div>
+                {/* CTA Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <button
+                    onClick={() => navigate("/forms/tour-request")}
+                    className="px-8 py-4 bg-primary hover:bg-primary-600 text-white font-bold rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center text-lg"
+                  >
+                    Book a Tour
+                    <ArrowRight size={20} className="ml-2" />
+                  </button>
+                  
+                  <button
+                    onClick={() => {
+                      const spacesSection = document.getElementById('spaces-section');
+                      if (spacesSection) {
+                        spacesSection.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
+                    className="px-8 py-4 bg-transparent border-2 border-white text-white hover:bg-white/10 font-bold rounded-lg transform transition-all duration-300 hover:scale-105 flex items-center justify-center text-lg"
+                  >
+                    Explore Spaces
+                  </button>
                 </div>
               </FadeInUpOnScroll>
             </div>
           </div>
         </section>
 
-        {/* Benefits Section */}
+        {/* Intro Section */}
+        <section className="py-20 bg-white">
+          <div className="container mx-auto px-4 md:px-6">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              {/* Left Column - Text */}
+              <div>
+                <FadeInUpOnScroll>
+                  <h2 className="text-3xl md:text-4xl font-bold text-secondary-900 mb-8">
+                    More than a workspace
+                  </h2>
+                  
+                  <p className="text-xl text-gray-700 leading-relaxed mb-8">
+                    DWS is built for the realities of modern work. It is where focus meets flexibility, 
+                    collaboration meets professionalism, and everyday work turns into meaningful progress.
+                  </p>
+
+                  <div className="space-y-6">
+                    {/* Feature 1 */}
+                    <div className="flex items-start gap-4">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-3 flex-shrink-0"></div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-secondary-900 mb-2">
+                          Professional Environment
+                        </h3>
+                        <p className="text-gray-600 leading-relaxed">
+                          Step into a space designed for serious work. From client meetings to focused deep work, 
+                          DWS provides the professional atmosphere that elevates your business presence.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Feature 2 */}
+                    <div className="flex items-start gap-4">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-3 flex-shrink-0"></div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-secondary-900 mb-2">
+                          Flexible Solutions
+                        </h3>
+                        <p className="text-gray-600 leading-relaxed">
+                          Whether you need a dedicated desk for daily focus, a private office for your team, 
+                          or meeting rooms for important presentations, DWS adapts to how you work best.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Feature 3 */}
+                    <div className="flex items-start gap-4">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-3 flex-shrink-0"></div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-secondary-900 mb-2">
+                          Smart Infrastructure
+                        </h3>
+                        <p className="text-gray-600 leading-relaxed">
+                          High-speed internet, modern technology, and thoughtfully designed spaces that reduce 
+                          friction and keep you focused on what matters most - your work and growth.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* CTA Button */}
+                  <div className="mt-8">
+                    <button
+                      onClick={() => navigate("/forms/tour-request")}
+                      className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary-600 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105"
+                    >
+                      Explore Spaces
+                      <ArrowRight size={18} className="ml-2" />
+                    </button>
+                  </div>
+                </FadeInUpOnScroll>
+              </div>
+
+              {/* Right Column - Images */}
+              <div className="relative lg:ml-auto lg:w-full">
+                <FadeInUpOnScroll>
+                  <div className="grid grid-cols-2 gap-4">
+                    {/* Main Image */}
+                    <div className="col-span-2">
+                      <img
+                        src="/DWS images/DWS1.jpg"
+                        alt="Modern workspace collaboration"
+                        className="w-full h-80 object-cover rounded-2xl shadow-lg"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f3f4f6'/%3E%3Ctext x='200' y='150' text-anchor='middle' fill='%236b7280' font-family='Arial' font-size='16'%3EWorkspace Image%3C/text%3E%3C/svg%3E";
+                        }}
+                      />
+                    </div>
+                    
+                    {/* Secondary Images */}
+                    <div>
+                      <img
+                        src="/DWS images/DWS2.jpg"
+                        alt="Professional work environment"
+                        className="w-full h-40 object-cover rounded-xl shadow-md"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%23e5e7eb'/%3E%3Ctext x='100' y='75' text-anchor='middle' fill='%236b7280' font-family='Arial' font-size='12'%3EWorkspace%3C/text%3E%3C/svg%3E";
+                        }}
+                      />
+                    </div>
+                    
+                    <div>
+                      <img
+                        src="/DWS images/DWS3.jpg"
+                        alt="Collaborative meeting space"
+                        className="w-full h-40 object-cover rounded-xl shadow-md"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%23e5e7eb'/%3E%3Ctext x='100' y='75' text-anchor='middle' fill='%236b7280' font-family='Arial' font-size='12'%3EMeeting%3C/text%3E%3C/svg%3E";
+                        }}
+                      />
+                    </div>
+                  </div>
+                </FadeInUpOnScroll>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Why DWS Section */}
         <section className="py-20 bg-gradient-to-r from-gray-50 to-white">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <FadeInUpOnScroll>
                 <div className="text-center mb-16">
-                  <h2 className="text-3xl md:text-4xl font-bold text-secondary-900 mb-4">
-                    Why Choose Digital Working Studios?
+                  <h2 className="text-3xl md:text-4xl font-bold text-secondary-900 mb-6">
+                    A workspace designed around outcomes
                   </h2>
-                  <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                    Experience the future of work with our intelligently designed spaces and cutting-edge technology.
+                  <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                    At DWS, every experience is built to support better work. Whether you need a space for focus, 
+                    collaboration, or growth, DWS is designed to enhance your professional journey.
                   </p>
                 </div>
               </FadeInUpOnScroll>
 
-              <StaggeredFadeIn className="grid md:grid-cols-2 lg:grid-cols-4 gap-6" staggerDelay={0.1}>
-                {benefits.map((benefit, index) => (
-                  <div key={index} className="group relative">
-                    {/* Card */}
-                    <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 h-full flex flex-col">
-                      {/* Icon Container */}
-                      <div className="relative mb-6">
-                        <div className="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center mx-auto border border-primary-100 group-hover:border-primary-200 transition-all duration-300 group-hover:bg-primary-100">
-                          <div className="text-primary group-hover:text-primary-600 transition-colors duration-300">
-                            {React.cloneElement(benefit.icon as React.ReactElement, { 
-                              size: 20,
-                              strokeWidth: 1.5 
-                            })}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Content */}
-                      <div className="text-center flex-grow flex flex-col">
-                        <h3 className="text-lg font-semibold text-secondary-900 mb-3 leading-tight">
-                          {benefit.title}
-                        </h3>
-                        <p className="text-gray-600 text-sm leading-relaxed flex-grow">
-                          {benefit.description}
-                        </p>
-                      </div>
-
-                      {/* Subtle hover accent */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary-25 to-primary-50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
-                    </div>
-
-                    {/* Minimalistic accent dot */}
-                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full opacity-0 group-hover:opacity-100 transform scale-0 group-hover:scale-100 transition-all duration-300"></div>
+              <StaggeredFadeIn className="grid md:grid-cols-3 gap-8" staggerDelay={0.1}>
+                {/* Growth */}
+                <div className="text-center group">
+                  <div className="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary/10 transition-colors duration-300">
+                    <Users size={32} className="text-primary" strokeWidth={1.5} />
                   </div>
-                ))}
+                  <h3 className="text-xl font-bold text-secondary-900 mb-4">Growth</h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    A space that helps you connect faster, collaborate deeply, and scale with confidence.
+                  </p>
+                </div>
+
+                {/* Workflow */}
+                <div className="text-center group">
+                  <div className="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary/10 transition-colors duration-300">
+                    <Zap size={32} className="text-primary" strokeWidth={1.5} />
+                  </div>
+                  <h3 className="text-xl font-bold text-secondary-900 mb-4">Workflow</h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    An environment designed to streamline how you meet, create, and get things done.
+                  </p>
+                </div>
+
+                {/* Smart */}
+                <div className="text-center group">
+                  <div className="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary/10 transition-colors duration-300">
+                    <Globe size={32} className="text-primary" strokeWidth={1.5} />
+                  </div>
+                  <h3 className="text-xl font-bold text-secondary-900 mb-4">Smart</h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    Work in an environment enhanced by simple, intelligent systems that reduce friction and keep you focused.
+                  </p>
+                </div>
               </StaggeredFadeIn>
             </div>
           </div>
         </section>
 
-        {/* Office Spaces Showcase Section */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <FadeInUpOnScroll>
-                <div className="text-center mb-16">
-                  <h2 className="text-3xl md:text-4xl font-bold text-secondary-900 mb-4">
-                    Explore Our Workspace
+        {/* Space Offerings Section */}
+        <section id="spaces-section" className="py-20 bg-white">
+          <div className="container mx-auto px-4 md:px-6">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              {/* Left Column - Text */}
+              <div>
+                <FadeInUpOnScroll>
+                  <h2 className="text-3xl md:text-4xl font-bold text-secondary-900 mb-8">
+                    Spaces designed for every work style
                   </h2>
-                  <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                    Step inside our intelligently designed spaces where innovation meets productivity.
+                  
+                  <p className="text-xl text-gray-700 leading-relaxed mb-8">
+                    Our workspace offers flexible options to support different ways of working, from individual focus to team collaboration.
                   </p>
-                </div>
-              </FadeInUpOnScroll>
 
-              {/* Office Spaces Carousel */}
-              <FadeInUpOnScroll delay={0.2}>
-                <OfficeSpacesCarousel navigate={navigate} />
-              </FadeInUpOnScroll>
+                  <div className="space-y-6">
+                    {/* Feature 1 */}
+                    <div className="flex items-start gap-4">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-3 flex-shrink-0"></div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-secondary-900 mb-2">
+                          Dedicated Desks
+                        </h3>
+                        <p className="text-gray-600 leading-relaxed">
+                          Personal workstations with storage and consistent setup for professionals who need a reliable, focused environment every day.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Feature 2 */}
+                    <div className="flex items-start gap-4">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-3 flex-shrink-0"></div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-secondary-900 mb-2">
+                          Private Offices
+                        </h3>
+                        <p className="text-gray-600 leading-relaxed">
+                          Fully enclosed spaces equipped for teams that require privacy, confidentiality, and room to collaborate without distractions.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Feature 3 */}
+                    <div className="flex items-start gap-4">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-3 flex-shrink-0"></div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-secondary-900 mb-2">
+                          Meeting Rooms
+                        </h3>
+                        <p className="text-gray-600 leading-relaxed">
+                          Professional meeting spaces available for presentations, client meetings, workshops, and collaborative sessions of all sizes.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* CTA Button */}
+                  <div className="mt-8">
+                    <button
+                      onClick={() => navigate("/forms/tour-request")}
+                      className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary-600 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105"
+                    >
+                      Explore Spaces
+                      <ArrowRight size={18} className="ml-2" />
+                    </button>
+                  </div>
+                </FadeInUpOnScroll>
+              </div>
+
+              {/* Right Column - Video */}
+              <div className="relative lg:ml-auto lg:w-full">
+                <FadeInUpOnScroll>
+                  <div className="relative rounded-2xl overflow-hidden shadow-xl bg-gray-100">
+                    <video
+                      className="w-full h-auto min-h-[400px]"
+                      controls
+                      poster="/DWS images/DWS-BG.jpg"
+                      preload="metadata"
+                      playsInline
+                    >
+                      <source src="/DWS images/Landing page promo (DWS).mp4" type="video/mp4" />
+                      
+                      {/* Fallback content for unsupported browsers */}
+                      <div className="flex items-center justify-center h-64 bg-gradient-to-br from-gray-100 to-gray-200">
+                        <div className="text-center p-8">
+                          <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <Building2 size={40} className="text-primary" />
+                          </div>
+                          <h3 className="text-xl font-semibold text-secondary-900 mb-4">
+                            DWS Spaces Video Tour
+                          </h3>
+                          <p className="text-gray-600 mb-6">
+                            Your browser doesn't support video playback.
+                          </p>
+                          <a 
+                            href="/DWS images/Landing page promo (DWS).mp4" 
+                            className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary-600 text-white font-semibold rounded-lg transition-all duration-300"
+                            download
+                          >
+                            Download Video
+                            <ArrowRight size={18} className="ml-2" />
+                          </a>
+                        </div>
+                      </div>
+                    </video>
+                  </div>
+                </FadeInUpOnScroll>
+              </div>
             </div>
           </div>
         </section>
@@ -442,7 +598,7 @@ const DWSLandingPage: React.FC = () => {
                       onClick={() => navigate("/forms/tour-request")}
                       className="px-8 py-4 bg-primary hover:bg-primary-600 text-white font-bold rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center"
                     >
-                      Book Studio Tour
+                      Book a Tour
                       <ArrowRight size={20} className="ml-2" />
                     </button>
                   </div>

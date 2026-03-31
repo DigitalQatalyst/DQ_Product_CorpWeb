@@ -22,12 +22,12 @@ const HomePage: React.FC = () => {
       />
       <main className="flex-grow">
         <HeroSection />
-        <DWSBanner />
         <TransformationStats />
         <ProofAndTrust />
         <DigitalMaturityAssessment />
         <Home />
         <KnowledgeHub graphqlEndpoint={null} />
+        <DWSBanner />
         <CallToAction />
       </main>
       <Footer isLoggedIn={false} />
