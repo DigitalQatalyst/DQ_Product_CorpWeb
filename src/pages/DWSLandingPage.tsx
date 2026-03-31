@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
@@ -8,207 +8,12 @@ import {
   Users, 
   Zap, 
   Globe, 
-  Building2,
-  Quote,
-  ChevronLeft,
-  ChevronRight,
-  CheckCircle,
-  Clock,
-  MessageSquare
+  Building2
 } from "lucide-react";
 import { FadeInUpOnScroll, StaggeredFadeIn } from "../components/AnimationUtils";
 
-// Office Spaces Carousel Component
-const OfficeSpacesCarousel: React.FC<{ navigate: (path: string) => void }> = ({ navigate }) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const carouselRef = useRef<HTMLDivElement>(null);
-
-  const officeSpaces = [
-    {
-      id: 1,
-      title: "Open Collaboration Areas",
-      description: "Spacious areas designed for team meetings, brainstorming sessions, and collaborative work with integrated AI tools.",
-      icon: <Building2 size={48} />,
-      gradient: "from-primary-100 to-primary-200",
-      iconColor: "text-primary-600",
-      textColor: "text-primary-700",
-      image: "/DWS images/DWS1.jpg"
-    },
-    {
-      id: 2,
-      title: "AI-Integrated Workstations",
-      description: "Individual workspaces equipped with high-performance computers, AI software, and productivity tools.",
-      icon: <Zap size={48} />,
-      gradient: "from-blue-100 to-blue-200",
-      iconColor: "text-blue-600",
-      textColor: "text-blue-700",
-      image: "/DWS images/DWS2.jpg"
-    },
-    {
-      id: 3,
-      title: "Smart Meeting Rooms",
-      description: "Private meeting spaces with video conferencing, digital whiteboards, and presentation technology.",
-      icon: <Users size={48} />,
-      gradient: "from-green-100 to-green-200",
-      iconColor: "text-green-600",
-      textColor: "text-green-700",
-      image: "/DWS images/DWS3.jpg"
-    }
-  ];
-
-  // Auto-slide every 5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % officeSpaces.length);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [officeSpaces.length]);
-
-  // Update carousel position when currentSlide changes
-  useEffect(() => {
-    if (carouselRef.current) {
-      const slideWidth = carouselRef.current.offsetWidth;
-      carouselRef.current.scrollTo({
-        left: currentSlide * slideWidth,
-        behavior: 'smooth'
-      });
-    }
-  }, [currentSlide]);
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % officeSpaces.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + officeSpaces.length) % officeSpaces.length);
-  };
-
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-  };
-
-  return (
-    <div className="relative">
-      {/* Main Carousel */}
-      <div className="relative overflow-hidden rounded-2xl shadow-xl">
-        <div
-          ref={carouselRef}
-          className="flex transition-transform duration-500 ease-in-out"
-          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-        >
-          {officeSpaces.map((space) => (
-            <div key={space.id} className="min-w-full">
-              <div className="relative h-96 md:h-[500px] overflow-hidden">
-                {/* Background Image */}
-                <img
-                  src={space.image}
-                  alt={space.title}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  onError={(e) => {
-                    // Fallback to gradient if image fails to load
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                    const parent = target.parentElement;
-                    if (parent) {
-                      const gradientDiv = parent.querySelector('.gradient-fallback');
-                      if (gradientDiv) {
-                        (gradientDiv as HTMLElement).style.display = 'flex';
-                      }
-                    }
-                  }}
-                />
-                
-                {/* Gradient Fallback (hidden by default) */}
-                <div className={`gradient-fallback absolute inset-0 bg-gradient-to-br ${space.gradient} items-center justify-center hidden`}>
-                  <div className="text-center">
-                    <div className={`${space.iconColor} mx-auto mb-4`}>
-                      {space.icon}
-                    </div>
-                    <p className={`${space.textColor} font-medium text-lg`}>
-                      {space.title}
-                    </p>
-                  </div>
-                </div>
-                
-                {/* Content Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex items-end">
-                  <div className="p-8 md:p-12 text-white w-full">
-                    <h3 className="text-2xl md:text-3xl font-bold mb-4">
-                      {space.title}
-                    </h3>
-                    <p className="text-lg md:text-xl text-white/90 max-w-2xl">
-                      {space.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Navigation Arrows */}
-        <button
-          onClick={prevSlide}
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
-          aria-label="Previous slide"
-        >
-          <ChevronLeft size={24} />
-        </button>
-        
-        <button
-          onClick={nextSlide}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
-          aria-label="Next slide"
-        >
-          <ChevronRight size={24} />
-        </button>
-      </div>
-
-      {/* Dot Indicators */}
-      <div className="flex justify-center mt-6 gap-2">
-        {officeSpaces.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              currentSlide === index 
-                ? "bg-primary w-8" 
-                : "bg-gray-300 hover:bg-gray-400"
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
-
 const DWSLandingPage: React.FC = () => {
   const navigate = useNavigate();
-
-  const benefits = [
-    {
-      icon: <Zap size={20} strokeWidth={1.5} />,
-      title: "AI-Integrated Workstations",
-      description: "High-performance setups with AI tools built-in for maximum productivity"
-    },
-    {
-      icon: <Users size={20} strokeWidth={1.5} />,
-      title: "Collaborative Spaces",
-      description: "Designed for seamless human-machine collaboration and team innovation"
-    },
-    {
-      icon: <Globe size={20} strokeWidth={1.5} />,
-      title: "Global Network Access",
-      description: "Connect with digital workers worldwide through our expanding studio network"
-    },
-    {
-      icon: <Building2 size={20} strokeWidth={1.5} />,
-      title: "Premium Infrastructure",
-      description: "Enterprise-grade connectivity, security, and digital transformation tools"
-    }
-  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -262,7 +67,7 @@ const DWSLandingPage: React.FC = () => {
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <button
-                    onClick={() => navigate("/forms/tour-request")}
+                    onClick={() => navigate("/consultation")}
                     className="px-8 py-4 bg-primary hover:bg-primary-600 text-white font-bold rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center text-lg"
                   >
                     Book a Tour
@@ -349,7 +154,7 @@ const DWSLandingPage: React.FC = () => {
                   {/* CTA Button */}
                   <div className="mt-8">
                     <button
-                      onClick={() => navigate("/forms/tour-request")}
+                      onClick={() => navigate("/consultation")}
                       className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary-600 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105"
                     >
                       Explore Spaces
@@ -520,7 +325,7 @@ const DWSLandingPage: React.FC = () => {
                   {/* CTA Button */}
                   <div className="mt-8">
                     <button
-                      onClick={() => navigate("/forms/tour-request")}
+                      onClick={() => navigate("/consultation")}
                       className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary-600 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105"
                     >
                       Explore Spaces
@@ -595,7 +400,7 @@ const DWSLandingPage: React.FC = () => {
 
                   <div className="flex justify-center">
                     <button
-                      onClick={() => navigate("/forms/tour-request")}
+                      onClick={() => navigate("/consultation")}
                       className="px-8 py-4 bg-primary hover:bg-primary-600 text-white font-bold rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center"
                     >
                       Book a Tour

@@ -591,7 +591,7 @@ export function ProductDetailPage() {
   };
 
   const handleTourRequest = () => {
-    navigate('/forms/tour-request');
+    navigate('/consultation');
   };
 
   const getCtaButton = () => {

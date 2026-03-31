@@ -51,7 +51,7 @@ const DWSBanner: React.FC = () => {
                   </button>
                   
                   <button
-                    onClick={() => navigate("/forms/tour-request")}
+                    onClick={() => navigate("/consultation")}
                     className="px-6 py-3 bg-transparent border-2 border-white text-white hover:bg-white/10 font-bold rounded-lg transform transition-all duration-300 hover:scale-105 flex items-center justify-center"
                   >
                     Book a Tour
