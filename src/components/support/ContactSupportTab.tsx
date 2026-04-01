@@ -249,7 +249,8 @@ export default function ContactSupportTab() {
                                     required
                                     value={formData.fullName}
                                     onChange={handleInputChange}
-                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm"
+                                    style={{ outline: 'none' }}
                                     placeholder="Jimmy"
                                 />
                             </div>
@@ -267,7 +268,8 @@ export default function ContactSupportTab() {
                                     required
                                     value={formData.emailAddress}
                                     onChange={handleInputChange}
-                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm"
+                                    style={{ outline: 'none' }}
                                     placeholder="jameswafula2002@gmail.com"
                                 />
                             </div>
@@ -286,7 +288,8 @@ export default function ContactSupportTab() {
                                 required
                                 value={formData.subject}
                                 onChange={handleInputChange}
-                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm"
+                                style={{ outline: 'none' }}
                                 placeholder="Support"
                             />
                         </div>
@@ -304,7 +307,8 @@ export default function ContactSupportTab() {
                                     required
                                     value={formData.category}
                                     onChange={handleInputChange}
-                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm"
+                                    style={{ outline: 'none' }}
                                 >
                                     <option value="">Select a category</option>
                                     <option value="technical">Technical Issue</option>
@@ -326,7 +330,8 @@ export default function ContactSupportTab() {
                                     id="priority"
                                     value={formData.priority}
                                     onChange={handleInputChange}
-                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm"
+                                    style={{ outline: 'none' }}
                                 >
                                     <option value="low">Low</option>
                                     <option value="medium">Medium</option>
@@ -349,7 +354,8 @@ export default function ContactSupportTab() {
                                 required
                                 value={formData.message}
                                 onChange={handleInputChange}
-                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm"
+                                style={{ outline: 'none' }}
                                 placeholder="new login credentials"
                             ></textarea>
                         </div>

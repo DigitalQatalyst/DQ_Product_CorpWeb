@@ -17,6 +17,15 @@ import {
   Lightbulb,
   ArrowRightLeft,
   CheckCircle,
+  Settings,
+  Rocket,
+  Database,
+  Cloud,
+  Brain,
+  GraduationCap,
+  FileText,
+  Network,
+  Building,
 } from "lucide-react";
 import CallToAction from "../components/CallToAction";
 import { ProductCard } from "../components/ProductCard";
@@ -207,14 +216,14 @@ export default function ProductsLandingPage() {
   const testimonials = [
     {
       quote:
-        "DigitalQatalyst brought architectural clarity and execution discipline that significantly elevated our Digital Business Products growth agenda. This was not simply advisory work; it was structured design that positioned us for sustainable digital growth.",
+        "Digital Qatalyst brought architectural clarity and execution discipline that significantly elevated our Digital Business Products growth agenda. This was not simply advisory work; it was structured design that positioned us for sustainable digital growth.",
       name: "Dr. Tariq Aslam",
       title: "VP Digital | ABB EMEA",
       initials: "TA",
     },
     {
       quote:
-        "DigitalQatalyst helped us rethink how research operations can function in a digitally enabled environment. The result has been improved efficiency, stronger clarity on digital priorities, and a more future-ready research function.",
+        "Digital Qatalyst helped us rethink how research operations can function in a digitally enabled environment. The result has been improved efficiency, stronger clarity on digital priorities, and a more future-ready research function.",
       name: "Cho Edwards",
       title: "Product Manager | Procter & Gamble (UK)",
       initials: "CE",
@@ -284,7 +293,7 @@ export default function ProductsLandingPage() {
           <div className="absolute inset-0">
             <img
               src="/images/Service_landing_hero_image.png"
-              alt="Products at DigitalQatalyst"
+              alt="Products at Digital Qatalyst"
               className="w-full h-full object-cover"
             />
           </div>
@@ -292,7 +301,7 @@ export default function ProductsLandingPage() {
           <div className="absolute inset-0 bg-gradient-to-r from-secondary-900/95 via-secondary-900/85 to-secondary-900/60" />
 
           {/* Content */}
-          <div className="container mx-auto px-4 h-full flex flex-col justify-center items-center relative z-10">
+          <div className="container mx-auto px-4 md:px-6 h-full flex flex-col justify-center items-center relative z-10">
             <div className="text-center max-w-4xl mx-auto">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
                 Digital Products That Turn Strategy into Execution.
@@ -305,10 +314,10 @@ export default function ProductsLandingPage() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   to="/products/marketplace"
-                  className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-600 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  className="h-14 inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-600 text-white px-8 rounded-lg font-bold transition-all duration-300 transform hover:scale-105 shadow-lg group"
                 >
                   Explore Our Products
-                  <ArrowRight size={20} />
+                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform duration-300" />
                 </Link>
                 <button
                   onClick={() => {
@@ -319,10 +328,9 @@ export default function ProductsLandingPage() {
                         block: "start",
                       });
                   }}
-                  className="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-secondary-900 px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  className="h-14 inline-flex items-center justify-center bg-transparent border-2 border-white text-white hover:bg-white hover:text-secondary-900 px-8 rounded-lg font-bold transition-all duration-300 transform hover:scale-105"
                 >
                   Request Demo
-                  <ArrowRight size={20} />
                 </button>
               </div>
             </div>
@@ -331,7 +339,7 @@ export default function ProductsLandingPage() {
 
         {/* Why Choose Our Products Section */}
         <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4 md:px-6">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-4">
                 Why Choose Our Products?
@@ -343,9 +351,9 @@ export default function ProductsLandingPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {/* Card 1 */}
-              <div className="bg-gradient-to-br from-secondary-50 to-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 flex flex-col h-full">
+              <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 flex flex-col h-full">
                 <div className="mb-6">
                   <div className="text-4xl font-bold text-primary mb-2">
                     50%
@@ -362,7 +370,7 @@ export default function ProductsLandingPage() {
               </div>
 
               {/* Card 2 */}
-              <div className="bg-gradient-to-br from-secondary-50 to-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 flex flex-col h-full">
+              <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 flex flex-col h-full">
                 <div className="mb-6">
                   <div className="text-4xl font-bold text-primary mb-2">
                     80%
@@ -379,7 +387,7 @@ export default function ProductsLandingPage() {
               </div>
 
               {/* Card 3 */}
-              <div className="bg-gradient-to-br from-secondary-50 to-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 flex flex-col h-full">
+              <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 flex flex-col h-full">
                 <div className="mb-6">
                   <div className="text-4xl font-bold text-primary mb-2">
                     360°
@@ -396,7 +404,7 @@ export default function ProductsLandingPage() {
               </div>
 
               {/* Card 4 */}
-              <div className="bg-gradient-to-br from-secondary-50 to-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 flex flex-col h-full">
+              <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 flex flex-col h-full">
                 <div className="mb-6">
                   <div className="text-4xl font-bold text-primary mb-2">
                     15+
@@ -479,7 +487,7 @@ export default function ProductsLandingPage() {
 
         {/* Digital Transformation Roadmap Overview - 6XD Framework */}
         <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4 md:px-6">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-4">
                 Pioneer your Business Future with 6XD
@@ -491,145 +499,133 @@ export default function ProductsLandingPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* 1. Digital Economy */}
-              <div className="bg-gradient-to-br from-secondary-50 to-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col h-full">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <span className="text-primary font-bold">1</span>
-                  </div>
-                  <h3 className="text-lg font-bold text-secondary">
-                    Digital Economy (DE)
-                  </h3>
+              <div className="bg-white p-6 rounded-xl border border-gray-200 flex flex-col h-full">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                  <span className="text-primary font-bold text-lg">1</span>
                 </div>
-                <p className="text-gray-600 text-sm flex-grow mb-4">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  Digital Economy (DE)
+                </h3>
+                <p className="text-gray-600 flex-grow mb-6 leading-relaxed">
                   Transform your business to thrive in the digital economy with
                   data-driven decisions that unlock new revenue and increase
                   profitability.
                 </p>
                 <Link
                   to="/dtmi/article/why-traditional-organizations-are-obsolete"
-                  className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-semibold text-sm transition-colors mt-auto"
+                  className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-medium transition-colors mt-auto"
                 >
-                  Read More
+                  Read more
                   <ArrowRight size={16} />
                 </Link>
               </div>
 
               {/* 2. Digital Cognitive Organization */}
-              <div className="bg-gradient-to-br from-secondary-50 to-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col h-full">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <span className="text-primary font-bold">2</span>
-                  </div>
-                  <h3 className="text-lg font-bold text-secondary">
-                    Digital Cognitive Organization (DCO)
-                  </h3>
+              <div className="bg-white p-6 rounded-xl border border-gray-200 flex flex-col h-full">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                  <span className="text-primary font-bold text-lg">2</span>
                 </div>
-                <p className="text-gray-600 text-sm flex-grow mb-4">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  Digital Cognitive Organization (DCO)
+                </h3>
+                <p className="text-gray-600 flex-grow mb-6 leading-relaxed">
                   Leverage AI and automation to drive smarter decision-making
                   and enhance operational agility in real-time.
                 </p>
                 <Link
                   to="/dtmi/article/why-traditional-business-models-are-doomed"
-                  className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-semibold text-sm transition-colors mt-auto"
+                  className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-medium transition-colors mt-auto"
                 >
-                  Read More
+                  Read more
                   <ArrowRight size={16} />
                 </Link>
               </div>
 
               {/* 3. Digital Business Platform */}
-              <div className="bg-gradient-to-br from-secondary-50 to-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col h-full">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <span className="text-primary font-bold">3</span>
-                  </div>
-                  <h3 className="text-lg font-bold text-secondary">
-                    Digital Business Platform (DBP)
-                  </h3>
+              <div className="bg-white p-6 rounded-xl border border-gray-200 flex flex-col h-full">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                  <span className="text-primary font-bold text-lg">3</span>
                 </div>
-                <p className="text-gray-600 text-sm flex-grow mb-4">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  Digital Business Platform (DBP)
+                </h3>
+                <p className="text-gray-600 flex-grow mb-6 leading-relaxed">
                   Streamline workflows and improve collaboration with a unified
                   platform that integrates all key business functions.
                 </p>
                 <Link
                   to="/dtmi/article/traditional-digital-transformation-is-dead"
-                  className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-semibold text-sm transition-colors mt-auto"
+                  className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-medium transition-colors mt-auto"
                 >
-                  Read More
+                  Read more
                   <ArrowRight size={16} />
                 </Link>
               </div>
 
               {/* 4. Digital Transformation */}
-              <div className="bg-gradient-to-br from-secondary-50 to-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col h-full">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <span className="text-primary font-bold">4</span>
-                  </div>
-                  <h3 className="text-lg font-bold text-secondary">
-                    Digital Transformation (DT2.0)
-                  </h3>
+              <div className="bg-white p-6 rounded-xl border border-gray-200 flex flex-col h-full">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                  <span className="text-primary font-bold text-lg">4</span>
                 </div>
-                <p className="text-gray-600 text-sm flex-grow mb-4">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  Digital Transformation (DT2.0)
+                </h3>
+                <p className="text-gray-600 flex-grow mb-6 leading-relaxed">
                   Accelerate your transformation with strategic digital
                   technologies that enhance performance and meet evolving
                   customer needs.
                 </p>
                 <Link
                   to="/expert-interviews/digital-transformation-strategies-modern-businesses"
-                  className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-semibold text-sm transition-colors mt-auto"
+                  className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-medium transition-colors mt-auto"
                 >
-                  Read More
+                  Read more
                   <ArrowRight size={16} />
                 </Link>
               </div>
 
               {/* 5. Digital Worker & Workspace */}
-              <div className="bg-gradient-to-br from-secondary-50 to-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col h-full">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <span className="text-primary font-bold">5</span>
-                  </div>
-                  <h3 className="text-lg font-bold text-secondary">
-                    Digital Worker & Workspace (DW/WS)
-                  </h3>
+              <div className="bg-white p-6 rounded-xl border border-gray-200 flex flex-col h-full">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                  <span className="text-primary font-bold text-lg">5</span>
                 </div>
-                <p className="text-gray-600 text-sm flex-grow mb-4">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  Digital Worker & Workspace (DW/WS)
+                </h3>
+                <p className="text-gray-600 flex-grow mb-6 leading-relaxed">
                   Empower your workforce with intelligent tools that boost
                   productivity, collaboration, and engagement in the digital
                   workspace.
                 </p>
                 <Link
                   to="/dtmi/article/why-traditional-business-models-are-doomed"
-                  className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-semibold text-sm transition-colors mt-auto"
+                  className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-medium transition-colors mt-auto"
                 >
-                  Read More
+                  Read more
                   <ArrowRight size={16} />
                 </Link>
               </div>
 
               {/* 6. Digital Accelerators */}
-              <div className="bg-gradient-to-br from-secondary-50 to-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col h-full">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <span className="text-primary font-bold">6</span>
-                  </div>
-                  <h3 className="text-lg font-bold text-secondary">
-                    Digital Accelerators
-                  </h3>
+              <div className="bg-white p-6 rounded-xl border border-gray-200 flex flex-col h-full">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                  <span className="text-primary font-bold text-lg">6</span>
                 </div>
-                <p className="text-gray-600 text-sm flex-grow mb-4">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  Digital Accelerators
+                </h3>
+                <p className="text-gray-600 flex-grow mb-6 leading-relaxed">
                   Speed up your transformation with ready-to-use, scalable
                   solutions that drive fast implementation and continuous
                   growth.
                 </p>
                 <Link
                   to="/marketplace/dtmi/prediction-analysis"
-                  className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-semibold text-sm transition-colors mt-auto"
+                  className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-medium transition-colors mt-auto"
                 >
-                  Read More
+                  Read more
                   <ArrowRight size={16} />
                 </Link>
               </div>
@@ -639,7 +635,7 @@ export default function ProductsLandingPage() {
 
         {/* The Four Classes of DQ Offerings Section */}
         <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4 md:px-6">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-4">
                 The Four Classes of DQ Offerings
@@ -651,108 +647,124 @@ export default function ProductsLandingPage() {
             </div>
 
             {/* Filter Bar */}
-            <div className="flex flex-wrap justify-center gap-3 mb-12">
+            <div className="flex flex-wrap justify-center gap-8 mb-12 border-b border-gray-200">
               <button
                 onClick={() => setSelectedClass("all")}
-                className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                className={`pb-4 px-2 font-medium transition-all duration-300 relative ${
                   selectedClass === "all"
-                    ? "bg-secondary text-white shadow-lg"
-                    : "bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-200"
+                    ? "text-primary"
+                    : "text-gray-500 hover:text-gray-700"
                 }`}
               >
                 All Offerings
+                {selectedClass === "all" && (
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
+                )}
               </button>
               <button
                 onClick={() => setSelectedClass("class01")}
-                className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                className={`pb-4 px-2 font-medium transition-all duration-300 relative ${
                   selectedClass === "class01"
-                    ? "bg-secondary text-white shadow-lg"
-                    : "bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-200"
+                    ? "text-primary"
+                    : "text-gray-500 hover:text-gray-700"
                 }`}
               >
                 Class 01 DBP Services
+                {selectedClass === "class01" && (
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
+                )}
               </button>
               <button
                 onClick={() => setSelectedClass("class02")}
-                className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                className={`pb-4 px-2 font-medium transition-all duration-300 relative ${
                   selectedClass === "class02"
-                    ? "bg-secondary text-white shadow-lg"
-                    : "bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-200"
+                    ? "text-primary"
+                    : "text-gray-500 hover:text-gray-700"
                 }`}
               >
                 Class 02 DT 2.0 Products
+                {selectedClass === "class02" && (
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
+                )}
               </button>
               <button
                 onClick={() => setSelectedClass("class03")}
-                className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                className={`pb-4 px-2 font-medium transition-all duration-300 relative ${
                   selectedClass === "class03"
-                    ? "bg-secondary text-white shadow-lg"
-                    : "bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-200"
+                    ? "text-primary"
+                    : "text-gray-500 hover:text-gray-700"
                 }`}
               >
                 Class 03 DCO Products
+                {selectedClass === "class03" && (
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
+                )}
               </button>
               <button
                 onClick={() => setSelectedClass("class04")}
-                className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                className={`pb-4 px-2 font-medium transition-all duration-300 relative ${
                   selectedClass === "class04"
-                    ? "bg-secondary text-white shadow-lg"
-                    : "bg-gray-100 text-gray-600 border border-gray-200 hover:bg-gray-200"
+                    ? "text-primary"
+                    : "text-gray-500 hover:text-gray-700"
                 }`}
               >
                 Class 04 TxM Platforms
+                {selectedClass === "class04" && (
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
+                )}
               </button>
             </div>
 
             {/* Class 01 - DBP Services */}
             {(selectedClass === "all" || selectedClass === "class01") && (
               <div className="mb-16">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center">
-                    <Briefcase className="text-primary" size={32} />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-secondary">
-                      Class 01 — DBP Services
-                    </h3>
-                    <p className="text-gray-600">
-                      Blueprint-based advisory and implementation forming the
-                      architectural foundation of transformation.
-                    </p>
-                  </div>
+                <div className="mb-6">
+                  <h3 className="text-2xl font-bold text-secondary">
+                    Class 01 — DBP Services
+                  </h3>
+                  <p className="text-gray-600">
+                    Blueprint-based advisory and implementation forming the
+                    architectural foundation of transformation.
+                  </p>
                 </div>
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-gradient-to-br from-secondary-50 to-white p-6 rounded-xl border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full">
-                    <h4 className="text-xl font-bold text-secondary mb-3">
+                  <div className="bg-white p-6 rounded-xl border border-gray-200 flex flex-col h-full">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                      <Settings className="text-primary" size={24} />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 mb-4">
                       DBP Designs – Strategy, Architecture, Roadmaps
                     </h4>
-                    <p className="text-gray-600 mb-4 flex-grow">
+                    <p className="text-gray-600 flex-grow mb-6 leading-relaxed">
                       Blueprint-based advisory defining digital strategy,
                       architecture, operating models, and sector transformation
                       roadmaps.
                     </p>
                     <Link
                       to="/services/design-4-0"
-                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-semibold transition-colors mt-auto"
+                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-medium transition-colors mt-auto"
                     >
-                      Explore DQ Design Services
+                      Learn More
                       <ArrowRight size={18} />
                     </Link>
                   </div>
-                  <div className="bg-gradient-to-br from-secondary-50 to-white p-6 rounded-xl border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full">
-                    <h4 className="text-xl font-bold text-secondary mb-3">
+                  <div className="bg-white p-6 rounded-xl border border-gray-200 flex flex-col h-full">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                      <Rocket className="text-primary" size={24} />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 mb-4">
                       DBP Deploys – Platform Implementation
                     </h4>
-                    <p className="text-gray-600 mb-4 flex-grow">
+                    <p className="text-gray-600 flex-grow mb-6 leading-relaxed">
                       Blueprint-driven implementation of Experience 4.0, Agility
                       4.0, Intelligence 4.0, Workspace 4.0, and Sector 4.0
                       platforms.
                     </p>
                     <Link
                       to="/services/deploy-4-0"
-                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-semibold transition-colors mt-auto"
+                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-medium transition-colors mt-auto"
                     >
-                      Explore DQ Deploy Services
+                      Learn More
                       <ArrowRight size={18} />
                     </Link>
                   </div>
@@ -763,64 +775,68 @@ export default function ProductsLandingPage() {
             {/* Class 02 - DT 2.0 */}
             {(selectedClass === "all" || selectedClass === "class02") && (
               <div className="mb-16">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center">
-                    <RotateCcw className="text-primary" size={32} />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-secondary">
-                      Class 02 — DT 2.0 Products
-                    </h3>
-                    <p className="text-gray-600">
-                      Platforms that industrialize and automate transformation
-                      execution across the organization.
-                    </p>
-                  </div>
+                <div className="mb-6">
+                  <h3 className="text-2xl font-bold text-secondary">
+                    Class 02 — DT 2.0 Products
+                  </h3>
+                  <p className="text-gray-600">
+                    Platforms that industrialize and automate transformation
+                    execution across the organization.
+                  </p>
                 </div>
                 <div className="grid md:grid-cols-3 gap-6">
-                  <div className="bg-gradient-to-br from-secondary-50 to-white p-6 rounded-xl border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full">
-                    <h4 className="text-xl font-bold text-secondary mb-3">
+                  <div className="bg-white p-6 rounded-xl border border-gray-200 flex flex-col h-full">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                      <Database className="text-primary" size={24} />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 mb-4">
                       DTMP – Specification & Orchestration Platform
                     </h4>
-                    <p className="text-gray-600 mb-4 flex-grow">
+                    <p className="text-gray-600 flex-grow mb-6 leading-relaxed">
                       End-to-end DBP specification and orchestration platform
                       accelerating strategy, design, deployment, and adoption.
                     </p>
                     <Link
                       to="/products/dtmp"
-                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-semibold transition-colors mt-auto"
+                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-medium transition-colors mt-auto"
                     >
                       Learn More
                       <ArrowRight size={18} />
                     </Link>
                   </div>
-                  <div className="bg-gradient-to-br from-secondary-50 to-white p-6 rounded-xl border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full">
-                    <h4 className="text-xl font-bold text-secondary mb-3">
+                  <div className="bg-white p-6 rounded-xl border border-gray-200 flex flex-col h-full">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                      <Cloud className="text-primary" size={24} />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 mb-4">
                       TMaaS – Transformation as a Service
                     </h4>
-                    <p className="text-gray-600 mb-4 flex-grow">
+                    <p className="text-gray-600 flex-grow mb-6 leading-relaxed">
                       Marketplace-driven managed transformation initiatives
                       delivered as scalable Transformation-as-a-Service.
                     </p>
                     <Link
                       to="/products/tmaas"
-                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-semibold transition-colors mt-auto"
+                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-medium transition-colors mt-auto"
                     >
                       Learn More
                       <ArrowRight size={18} />
                     </Link>
                   </div>
-                  <div className="bg-gradient-to-br from-secondary-50 to-white p-6 rounded-xl border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full">
-                    <h4 className="text-xl font-bold text-secondary mb-3">
+                  <div className="bg-white p-6 rounded-xl border border-gray-200 flex flex-col h-full">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                      <Brain className="text-primary" size={24} />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 mb-4">
                       DTO4T (TwinGM AI) – AI-Guided Transformation
                     </h4>
-                    <p className="text-gray-600 mb-4 flex-grow">
+                    <p className="text-gray-600 flex-grow mb-6 leading-relaxed">
                       AI-guided digital twin transformation platform reinforcing
                       precision execution as a continuous discipline.
                     </p>
                     <Link
                       to="/products/plant40"
-                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-semibold transition-colors mt-auto"
+                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-medium transition-colors mt-auto"
                     >
                       Learn More
                       <ArrowRight size={18} />
@@ -833,67 +849,71 @@ export default function ProductsLandingPage() {
             {/* Class 03 - DCO */}
             {(selectedClass === "all" || selectedClass === "class03") && (
               <div className="mb-16">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center">
-                    <Lightbulb className="text-primary" size={32} />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-secondary">
-                      Class 03 — DCO Products
-                    </h3>
-                    <p className="text-gray-600">
-                      Intellectual infrastructure enabling organizations to
-                      understand and operate as Digital Cognitive Organizations.
-                    </p>
-                  </div>
+                <div className="mb-6">
+                  <h3 className="text-2xl font-bold text-secondary">
+                    Class 03 — DCO Products
+                  </h3>
+                  <p className="text-gray-600">
+                    Intellectual infrastructure enabling organizations to
+                    understand and operate as Digital Cognitive Organizations.
+                  </p>
                 </div>
                 <div className="grid md:grid-cols-3 gap-6">
-                  <div className="bg-gradient-to-br from-secondary-50 to-white p-6 rounded-xl border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full">
-                    <h4 className="text-xl font-bold text-secondary mb-3">
+                  <div className="bg-white p-6 rounded-xl border border-gray-200 flex flex-col h-full">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                      <TrendingUp className="text-primary" size={24} />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 mb-4">
                       DTMI – Digital Transformation Management Insights
                     </h4>
-                    <p className="text-gray-600 mb-4 flex-grow">
+                    <p className="text-gray-600 flex-grow mb-6 leading-relaxed">
                       Global digital transformation management insights platform structured
                       by 6xD and sector lenses.
                     </p>
                     <Link
                       to="/products/dtmi"
-                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-semibold transition-colors mt-auto"
+                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-medium transition-colors mt-auto"
                     >
                       Learn More
                       <ArrowRight size={18} />
                     </Link>
                   </div>
-                  <div className="bg-gradient-to-br from-secondary-50 to-white p-6 rounded-xl border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full">
-                    <h4 className="text-xl font-bold text-secondary mb-3">
+                  <div className="bg-white p-6 rounded-xl border border-gray-200 flex flex-col h-full">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                      <GraduationCap className="text-primary" size={24} />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 mb-4">
                       DTMA – Digital Transformation Academy
                     </h4>
-                    <p className="text-gray-600 mb-4 flex-grow">
+                    <p className="text-gray-600 flex-grow mb-6 leading-relaxed">
                       Structured learning programs building competencies for
                       operating in Digital Cognitive Organizations.
                     </p>
                     <Link
                       to="/products/dtma"
-                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-semibold transition-colors mt-auto"
+                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-medium transition-colors mt-auto"
                     >
-                      Browse Courses
+                      Learn More
                       <ArrowRight size={18} />
                     </Link>
                   </div>
-                  <div className="bg-gradient-to-br from-secondary-50 to-white p-6 rounded-xl border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full">
-                    <h4 className="text-xl font-bold text-secondary mb-3">
+                  <div className="bg-white p-6 rounded-xl border border-gray-200 flex flex-col h-full">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                      <FileText className="text-primary" size={24} />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 mb-4">
                       DTMB (6xD / GHC Series) – Published Intellectual
                       Foundation
                     </h4>
-                    <p className="text-gray-600 mb-4 flex-grow">
+                    <p className="text-gray-600 flex-grow mb-6 leading-relaxed">
                       Published intellectual foundation codifying DQ's digital
                       transformation frameworks.
                     </p>
                     <Link
                       to="/products/dtmb"
-                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-semibold transition-colors mt-auto"
+                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-medium transition-colors mt-auto"
                     >
-                      Browse Books
+                      Learn More
                       <ArrowRight size={18} />
                     </Link>
                   </div>
@@ -904,48 +924,49 @@ export default function ProductsLandingPage() {
             {/* Class 04 - TxM */}
             {(selectedClass === "all" || selectedClass === "class04") && (
               <div className="mb-16">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center">
-                    <ArrowRightLeft className="text-primary" size={32} />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-secondary">
-                      Class 04 — TxM Platforms
-                    </h3>
-                    <p className="text-gray-600">
-                      Live transaction ecosystems operationalizing
-                      transformation into economic infrastructure.
-                    </p>
-                  </div>
+                <div className="mb-6">
+                  <h3 className="text-2xl font-bold text-secondary">
+                    Class 04 — TxM Platforms
+                  </h3>
+                  <p className="text-gray-600">
+                    Live transaction ecosystems operationalizing
+                    transformation into economic infrastructure.
+                  </p>
                 </div>
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-gradient-to-br from-secondary-50 to-white p-6 rounded-xl border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full">
-                    <h4 className="text-xl font-bold text-secondary mb-3">
+                  <div className="bg-white p-6 rounded-xl border border-gray-200 flex flex-col h-full">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                      <Network className="text-primary" size={24} />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 mb-4">
                       TxM (B2B2C) – Consumer Ecosystems
                     </h4>
-                    <p className="text-gray-600 mb-4 flex-grow">
+                    <p className="text-gray-600 flex-grow mb-6 leading-relaxed">
                       Consumer and experience ecosystems powered by unified DBPs
                       enabling near-perfect life transactions.
                     </p>
                     <Link
                       to="/consultation"
-                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-semibold transition-colors mt-auto"
+                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-medium transition-colors mt-auto"
                     >
                       Book Consultation
                       <ArrowRight size={18} />
                     </Link>
                   </div>
-                  <div className="bg-gradient-to-br from-secondary-50 to-white p-6 rounded-xl border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full">
-                    <h4 className="text-xl font-bold text-secondary mb-3">
+                  <div className="bg-white p-6 rounded-xl border border-gray-200 flex flex-col h-full">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+                      <Building className="text-primary" size={24} />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 mb-4">
                       TxM (B2B2B) – Enterprise Ecosystems
                     </h4>
-                    <p className="text-gray-600 mb-4 flex-grow">
+                    <p className="text-gray-600 flex-grow mb-6 leading-relaxed">
                       Enterprise transaction ecosystems enabling scalable
                       partner and supply chain collaboration.
                     </p>
                     <Link
                       to="/consultation"
-                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-semibold transition-colors mt-auto"
+                      className="inline-flex items-center gap-2 text-primary hover:text-primary-600 font-medium transition-colors mt-auto"
                     >
                       Book Consultation
                       <ArrowRight size={18} />
@@ -970,8 +991,8 @@ export default function ProductsLandingPage() {
           {/* Dark overlay */}
           <div className="absolute inset-0 bg-secondary-900/75"></div>
 
-          <div className="relative z-10 container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+          <div className="relative z-10 container mx-auto px-4 md:px-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               {/* Left Content */}
               <div className="text-white">
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">

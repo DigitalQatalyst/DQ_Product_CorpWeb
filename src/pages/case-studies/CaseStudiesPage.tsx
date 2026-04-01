@@ -32,7 +32,7 @@ export function CaseStudiesPage() {
         "Transforming digital ambition into structured growth through architectural clarity and execution discipline.",
       testimonial: {
         quote:
-          "DigitalQatalyst brought architectural clarity and execution discipline that significantly elevated our Digital Business Products growth agenda. They translated ambition into structured growth drivers, defined a coherent operating model, and provided a practical path from strategy to execution. This was not simply advisory work; it was structured design that positioned us for sustainable digital growth.",
+          "Digital Qatalyst brought architectural clarity and execution discipline that significantly elevated our Digital Business Products growth agenda. They translated ambition into structured growth drivers, defined a coherent operating model, and provided a practical path from strategy to execution. This was not simply advisory work; it was structured design that positioned us for sustainable digital growth.",
         author: "Dr. Tariq Aslam",
         position: "VP Digital | ABB EMEA",
         avatar:
@@ -89,7 +89,7 @@ export function CaseStudiesPage() {
         "Transforming research operations through digital worker tools and capability building for enhanced performance.",
       testimonial: {
         quote:
-          "DigitalQatalyst helped us rethink how research operations can function in a digitally enabled environment. With the structured insights and capability-building approach from DigitalQatalyst, we gained clearer visibility into digital worker tools and how they can practically enhance research performance. The result has been improved efficiency, stronger clarity on digital priorities, and a more future-ready research function.",
+          "Digital Qatalyst helped us rethink how research operations can function in a digitally enabled environment. With the structured insights and capability-building approach from Digital Qatalyst, we gained clearer visibility into digital worker tools and how they can practically enhance research performance. The result has been improved efficiency, stronger clarity on digital priorities, and a more future-ready research function.",
         author: "Cho Edwards",
         position: "Product Manager | Procter & Gamble (UK)",
         avatar:

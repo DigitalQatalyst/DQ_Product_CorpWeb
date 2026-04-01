@@ -1,19 +1,11 @@
 import { useState } from 'react';
-import { ArticleAuthorCard } from './ArticleAuthorCard.tsx';
 import { WhitepaperAccessModal } from '../../components/WhitepaperAccessModal';
 
 export function Article3Content() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
-  const author = {
-    name: 'Dr. Stéphane Niango',
-    title: 'Expert in DCOs & Strategic Transformation',
-    avatar: '/images/Stephane_Avatar.png',
-    bio: 'Dr. Niango is a globally recognized Digital Transformation Architect and Founder of DigitalQatalyst, specializing in the evolution of Digital Cognitive Organizations and AI-driven strategic transformation.',
-    slug: 'stephane-niango'
-  };
 
-  return <>
+  return (
+    <>
       <p className="text-xl text-gray-700 leading-relaxed mb-8 font-medium">
         The world has changed. What worked in the past no longer works in today's fast-paced, digitally-driven marketplace. In a world where agility, intelligence, and real-time responsiveness are paramount, traditional organizations — built on outdated models of slow, hierarchical decision-making and rigid structures — are quickly becoming obsolete.
       </p>
@@ -31,7 +23,7 @@ export function Article3Content() {
         explains, the next wave of business evolution is already underway. The organizations that will thrive in the new economy are Digital Cognitive Organizations (DCOs) — businesses that combine human insight with machine intelligence to continuously adapt and innovate. In contrast, organizations still operating on traditional models are being left behind.
       </p>
 
-      <ArticleAuthorCard author={author} />
+      {/* <ArticleAuthorCard author={author} /> */}
 
       <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">
         Why Traditional Organizations Can't Keep Up
@@ -208,21 +200,6 @@ export function Article3Content() {
         For those ready to make the leap to a truly cognitive model, the journey starts today.
       </p>
 
-      <div className="bg-gradient-to-r from-[#1E3C8B] to-cyan-400 px-6 py-6 rounded-2xl my-8 shadow-lg">
-        <h3 className="text-2xl font-bold mb-3 text-white leading-tight">
-          Read the Full Whitepaper
-        </h3>
-        <p className="text-base mb-4 text-white/95 leading-relaxed max-w-3xl">
-          To learn more about the cognitive revolution and how Digital Cognitive Organizations will reshape your industry, read the full whitepaper, "The Rise of Economy 4.0"
-        </p>
-        <button 
-          onClick={() => setIsModalOpen(true)}
-          className="inline-block px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-600 transition-all shadow-md w-fit"
-        >
-          Read Whitepaper
-        </button>
-      </div>
-
       <WhitepaperAccessModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -258,7 +235,7 @@ export function Article3Content() {
           {/* Article 1 */}
           <div 
             className="group cursor-pointer"
-            onClick={() => window.location.href = '/dtmi/articles/why-traditional-business-models-are-doomed'}
+            onClick={() => window.location.href = '/dtmi/article/why-traditional-business-models-are-doomed'}
           >
             <div className="relative h-48 overflow-hidden rounded-xl mb-4">
               <img
@@ -286,7 +263,7 @@ export function Article3Content() {
           {/* Article 2 */}
           <div 
             className="group cursor-pointer"
-            onClick={() => window.location.href = '/dtmi/articles/traditional-digital-transformation-is-dead'}
+            onClick={() => window.location.href = '/dtmi/article/traditional-digital-transformation-is-dead'}
           >
             <div className="relative h-48 overflow-hidden rounded-xl mb-4">
               <img
@@ -310,35 +287,8 @@ export function Article3Content() {
               <span>10 min read</span>
             </div>
           </div>
-
-          {/* Prediction Analysis */}
-          <div 
-            className="group cursor-pointer"
-            onClick={() => window.location.href = '/marketplace/knowledge-hub/prediction-analysis'}
-          >
-            <div className="relative h-48 overflow-hidden rounded-xl mb-4">
-              <img
-                src="/images/prediction-hero.jpg"
-                alt="Prediction Analysis"
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-            </div>
-            <div className="mb-2">
-              <span className="text-xs font-semibold text-brand-teal uppercase tracking-wide">
-                PREDICTION ANALYSIS
-              </span>
-            </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-brand-teal transition-colors line-clamp-2">
-              The Rise of Digital Cognitive Organizations: 2025-2030 Outlook
-            </h3>
-            <div className="flex items-center gap-2 text-sm text-gray-500">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>15 min read</span>
-            </div>
-          </div>
         </div>
       </div>
-    </>;
+    </>
+  );
 }

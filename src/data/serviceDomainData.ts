@@ -243,13 +243,13 @@ export const serviceData: Record<string, ServiceDomainData> = {
       { title: "Agile Project Management", description: "Implement agile tools and methodologies to adapt quickly to changes and deliver projects iteratively.", cta: "Start" }
     ],
     serviceAreas: [
-      { number: "01", title: "DevOps4.0", description: "Optimize the software lifecycle with automation, CI/CD, and continuous monitoring for seamless operations workflows." },
-      { number: "02", title: "EA4.0", description: "Align IT assets and investments with business goals using agile enterprise architecture strategies." },
-      { number: "03", title: "BPM4.0", description: "Automate and streamline business processes to reduce inefficiencies and enhance operational efficiency." },
-      { number: "04", title: "APIOps", description: "Create smooth data flow and interoperability across systems, enabling seamless API management." },
-      { number: "05", title: "SecOps", description: "Integrate security into DevOps pipelines for continuous monitoring and risk mitigation." },
-      { number: "06", title: "IntelOps", description: "Enable real-time data analytics and intelligence for faster, data-driven decision-making." },
-      { number: "07", title: "OpsCenter4.0", description: "Monitor and optimize IT infrastructure with AI-driven automation and real-time insights." }
+      { number: "01", title: "DevOps 4.0", description: "Optimize the software lifecycle with automation, CI/CD, and continuous monitoring for seamless operations workflows." },
+      { number: "02", title: "EA 4.0", description: "Align IT assets and investments with business goals using agile enterprise architecture strategies." },
+      { number: "03", title: "BPM 4.0", description: "Automate and streamline business processes to reduce inefficiencies and enhance operational efficiency." },
+      { number: "04", title: "APIOps 4.0", description: "Create smooth data flow and interoperability across systems, enabling seamless API management." },
+      { number: "05", title: "SecOps 4.0", description: "Integrate security into DevOps pipelines for continuous monitoring and risk mitigation." },
+      { number: "06", title: "IntelOps 4.0", description: "Enable real-time data analytics and intelligence for faster, data-driven decision-making." },
+      { number: "07", title: "OpsCenter 4.0", description: "Monitor and optimize IT infrastructure with AI-driven automation and real-time insights." }
     ],
     faqs: [
       { question: "How does Agility4.0 improve organizational performance?", answer: "Agility4.0 streamlines workflows, reduces bottlenecks, and optimizes resource allocation through iterative processes and real-time feedback, enabling faster delivery of outcomes with minimal waste. Organizations typically see 30-50% improvement in time-to-market and significant increases in team productivity." },

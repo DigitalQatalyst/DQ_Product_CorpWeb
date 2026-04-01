@@ -25,7 +25,7 @@ export const dqProducts: ProductType[] = [
       size: 32,
       className: "text-primary",
     }),
-    imageUrl: "/images/tmaas-image.png",
+    imageUrl: "/images/TMaaS Mockup.png",
   },
   {
     id: "dtmp",
@@ -41,7 +41,7 @@ export const dqProducts: ProductType[] = [
       size: 32,
       className: "text-primary",
     }),
-    imageUrl: "/images/dtmp-image.png",
+    imageUrl: "/images/DTMP Mockup.png",
   },
   {
     id: "dtma",
@@ -57,8 +57,7 @@ export const dqProducts: ProductType[] = [
       size: 32,
       className: "text-primary",
     }),
-    imageUrl:
-      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&h=600&fit=crop",
+    imageUrl: "/images/DTMA Mockup.png",
   },
   {
     id: "dtmb",

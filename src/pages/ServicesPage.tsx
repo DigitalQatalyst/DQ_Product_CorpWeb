@@ -21,7 +21,8 @@ import {
   Users,
   Truck,
   Heart,
-  Mountain
+  Mountain,
+  ArrowRight
 } from "lucide-react";
 
 export default function ServicesPage() {
@@ -120,7 +121,7 @@ export default function ServicesPage() {
     tertiary: [
       {
         icon: Users,
-        title: "Service 4.0",
+        title: "Services 4.0",
         description: "Enhance service delivery and boost customer satisfaction with smarter processes and real-time insights.",
       },
       {
@@ -206,7 +207,7 @@ export default function ServicesPage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative bg-secondary-900 text-white py-24 overflow-hidden">
+      <section className="relative bg-secondary-900 text-white overflow-hidden" style={{ height: "100vh" }}>
         <div className="absolute inset-0">
           <img 
             src="/images/Service_landing_hero_image.png" 
@@ -215,7 +216,7 @@ export default function ServicesPage() {
           />
           <div className="absolute inset-0 bg-secondary-900/70"></div>
         </div>
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-6 h-full flex flex-col justify-center items-center relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
               Accelerate Your Digital Transformation
@@ -226,9 +227,10 @@ export default function ServicesPage() {
             <div className="flex flex-wrap gap-4 justify-center">
               <button 
                 onClick={() => navigate('/marketplace/services')}
-                className="px-8 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-600 transition-all"
+                className="h-14 px-8 bg-primary text-white font-bold rounded-lg hover:bg-primary-600 transition-all transform hover:-translate-y-1 hover:shadow-xl flex items-center justify-center gap-2"
               >
                 Browse Services
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
               </button>
             </div>
           </div>
@@ -381,7 +383,7 @@ export default function ServicesPage() {
                 <div className="px-4 py-3 bg-secondary/5 text-secondary rounded-full text-sm font-medium border border-secondary/10">
                   <div className="mb-1">Intelligence 4.0</div>
                   <Link
-                    to="/coming-soon"
+                    to="/services/intelligence-4-0"
                     className="text-primary hover:text-primary-600 text-xs font-semibold transition-colors"
                   >
                     Read more →
@@ -390,7 +392,7 @@ export default function ServicesPage() {
                 <div className="px-4 py-3 bg-secondary/5 text-secondary rounded-full text-sm font-medium border border-secondary/10">
                   <div className="mb-1">Workspace 4.0</div>
                   <Link
-                    to="/coming-soon"
+                    to="/services/workspace-4-0"
                     className="text-primary hover:text-primary-600 text-xs font-semibold transition-colors"
                   >
                     Read more →
@@ -399,7 +401,7 @@ export default function ServicesPage() {
                 <div className="px-4 py-3 bg-secondary/5 text-secondary rounded-full text-sm font-medium border border-secondary/10">
                   <div className="mb-1">Governance 4.0</div>
                   <Link
-                    to="/coming-soon"
+                    to="/services/governance-4-0"
                     className="text-primary hover:text-primary-600 text-xs font-semibold transition-colors"
                   >
                     Read more →
@@ -408,7 +410,7 @@ export default function ServicesPage() {
                 <div className="px-4 py-3 bg-secondary/5 text-secondary rounded-full text-sm font-medium border border-secondary/10">
                   <div className="mb-1">Backoffice 4.0</div>
                   <Link
-                    to="/coming-soon"
+                    to="/services/backoffice-4-0"
                     className="text-primary hover:text-primary-600 text-xs font-semibold transition-colors"
                   >
                     Read more →
@@ -430,7 +432,7 @@ export default function ServicesPage() {
                 <div className="px-4 py-3 bg-secondary/5 text-secondary rounded-full text-sm font-medium border border-secondary/10">
                   <div className="mb-1">Mining 4.0</div>
                   <Link
-                    to="/coming-soon"
+                    to="/services/mining-4-0"
                     className="text-primary hover:text-primary-600 text-xs font-semibold transition-colors"
                   >
                     Read more →
@@ -585,12 +587,15 @@ export default function ServicesPage() {
             <p className="text-lg text-gray-200 mb-8">
               Browse our comprehensive marketplace of digital transformation services and solutions designed to help your business thrive in the digital era.
             </p>
-            <button 
-              onClick={() => navigate('/marketplace/services')}
-              className="px-8 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-600 transition-all shadow-lg"
-            >
-              Browse Services
-            </button>
+            <div className="flex justify-center">
+              <button 
+                onClick={() => navigate('/marketplace/services')}
+                className="h-14 px-8 bg-primary text-white font-bold rounded-lg hover:bg-primary-600 transition-all shadow-lg transform hover:-translate-y-1 hover:shadow-xl flex items-center justify-center gap-2 group"
+              >
+                Browse Services
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
+              </button>
+            </div>
           </div>
         </div>
       </section>

@@ -79,10 +79,10 @@ export function PGCaseStudy() {
               <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
                 <div className="text-6xl text-brand-coral mb-6">"</div>
                 <blockquote className="text-xl md:text-2xl text-gray-800 leading-relaxed mb-8 italic">
-                  DigitalQatalyst helped us rethink how research operations can
+                  Digital Qatalyst helped us rethink how research operations can
                   function in a digitally enabled environment. With the
                   structured insights and capability-building approach from
-                  DigitalQatalyst, we gained clearer visibility into digital
+                  Digital Qatalyst, we gained clearer visibility into digital
                   worker tools and how they can practically enhance research
                   performance. The result has been improved efficiency, stronger
                   clarity on digital priorities, and a more future-ready
@@ -182,7 +182,7 @@ export function PGCaseStudy() {
                 Our Approach
               </h2>
               <p className="text-gray-700 leading-relaxed mb-8">
-                DigitalQatalyst delivered a comprehensive digital research
+                Digital Qatalyst delivered a comprehensive digital research
                 operations transformation through structured insights and
                 capability building:
               </p>

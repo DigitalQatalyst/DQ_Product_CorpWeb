@@ -31,7 +31,7 @@ export const designServiceContent = {
     backgroundImage: "/images/tmaas-image.png",
     breadcrumbs: [
       { label: "Home", href: "/" },
-      { label: "Industry", href: "/services" },
+      { label: "Services", href: "/services" },
       { label: "Design 4.0" }
     ]
   },
@@ -183,7 +183,7 @@ export const deployServiceContent = {
     backgroundImage: "/images/landingpage_hero.png",
     breadcrumbs: [
       { label: "Home", href: "/" },
-      { label: "Industry", href: "/services" },
+      { label: "Services", href: "/services" },
       { label: "Deploy 4.0" }
     ]
   },
@@ -247,6 +247,18 @@ export const deployServiceContent = {
 // Helper function to get sidebar CTA content based on service title
 export const getSidebarCtaContent = (serviceTitle: string) => {
   const ctaMap: Record<string, { title: string; description: string }> = {
+    "Design 4.0": {
+      title: "Architect Your Digital Future with Design 4.0",
+      description: "Create strategic blueprints and transformation roadmaps tailored to your goals. Submit your details, and our experts will guide you."
+    },
+    "Deploy 4.0": {
+      title: "Accelerate Your Digital Transformation with Deploy 4.0",
+      description: "Implement scalable solutions with precision and speed. Submit your details, and our experts will guide you."
+    },
+    "Experience 4.0": {
+      title: "Transform Customer Experiences with Experience 4.0",
+      description: "Elevate engagement and drive growth through seamless, personalized interactions. Submit your details, and our experts will guide you."
+    },
     "Agility 4.0": {
       title: "Transform your Operations with Agility 4.0",
       description: "Elevate engagement and drive growth. Submit your details, and our experts will guide you."
@@ -254,6 +266,10 @@ export const getSidebarCtaContent = (serviceTitle: string) => {
     "Farming 4.0": {
       title: "Transform your Farm with Farming 4.0",
       description: "Optimize yields and ensure sustainability. Submit your details, and our experts will guide you."
+    },
+    "Mining 4.0": {
+      title: "Revolutionize Mining Operations with Mining 4.0",
+      description: "Enhance safety, optimize extraction, and ensure sustainability through AI and automation. Submit your details, and our experts will guide you."
     },
     "Plant 4.0": {
       title: "Revolutionize Your Plant with Digital Innovation",
@@ -267,6 +283,10 @@ export const getSidebarCtaContent = (serviceTitle: string) => {
       title: "Transform Governance with Digital Innovation",
       description: "Enhance transparency, efficiency, and citizen trust through AI, blockchain, and e-government solutions. Submit your details, and our experts will guide you."
     },
+    "Governance 4.0": {
+      title: "Strengthen Organizational Governance with Governance 4.0",
+      description: "Ensure compliance, mitigate risks, and maintain strategic alignment through automated governance frameworks. Submit your details, and our experts will guide you."
+    },
     "Hospitality 4.0": {
       title: "Transform Hospitality with Digital Solutions",
       description: "Deliver unforgettable guest experiences, streamline operations, and drive revenue growth through AI, IoT, and mobile-first innovation. Submit your details, and let us guide you to success."
@@ -275,7 +295,7 @@ export const getSidebarCtaContent = (serviceTitle: string) => {
       title: "Unlock the Future of Retail",
       description: "Optimize yields and reduce waste. Submit your details, and our experts will guide you."
     },
-    "Service 4.0": {
+    "Services 4.0": {
       title: "Transform Services with Digital Innovation",
       description: "Optimize operations, enhance customer experiences, and drive growth through AI, automation, and data-driven insights. Submit your details, and let us guide you to success."
     },
@@ -283,9 +303,21 @@ export const getSidebarCtaContent = (serviceTitle: string) => {
       title: "Transform your Logistics Operations Today",
       description: "Optimize supply chains, reduce costs, and improve delivery accuracy through AI, IoT, and automation. Submit your details now, and let us guide you to success."
     },
-    "Healthcare & Wellness 4.0": {
+    "Wellness 4.0": {
       title: "Deliver Smarter, more Effective Wellness Solutions",
       description: "Enhance care delivery, reduce costs, and improve patient outcomes through AI, IoT, and telehealth solutions. Submit your details now, and let us guide you to success."
+    },
+    "Intelligence 4.0": {
+      title: "Unlock the Power of Data with Intelligence 4.0",
+      description: "Transform raw information into strategic advantage through AI-driven analytics and intelligent automation. Submit your details, and our experts will guide you."
+    },
+    "Workspace 4.0": {
+      title: "Revolutionize Your Workplace with Workspace 4.0",
+      description: "Create collaborative digital environments that boost productivity and enable seamless remote work. Submit your details, and our experts will guide you."
+    },
+    "Backoffice 4.0": {
+      title: "Transform Back-Office Operations with Backoffice 4.0",
+      description: "Streamline processes, reduce costs, and eliminate manual tasks through intelligent automation. Submit your details, and our experts will guide you."
     }
   };
 
@@ -298,19 +330,24 @@ export const getSidebarCtaContent = (serviceTitle: string) => {
 // Helper function to get overview closing text based on slug
 export const getOverviewClosingText = (slug: string): string => {
   const textMap: Record<string, string> = {
-    'agility-4-0': "Ready to transform your operations? With Agility4.0, you can reduce time-to-market, enhance cross-functional collaboration, and optimize workflows through cutting-edge technologies. Our solutions ensure seamless integration, continuous improvement, and scalable infrastructure, enabling you to focus on what matters most—delivering value to your customers. Partner with us to unlock your organization's full potential today.",
-    'farming-4-0': "Ready to revolutionize your farm? Farming4.0 delivers smart irrigation, crop monitoring, and livestock management solutions tailored to your needs. By leveraging real-time data and predictive analytics, we help you enhance productivity, minimize costs, and achieve sustainable growth. Partner with us today to unlock the full potential of modern agriculture and secure a brighter future.",
-    'plant-4-0': "Ready to revolutionize your plant operations? Plant4.0 delivers tailored solutions for manufacturing, oil & gas, chemicals, power, mining, and more. By leveraging digital twins, robotics, and AI-powered analytics, we help you streamline workflows, improve asset performance, and unlock new revenue streams. Partner with us today to future-proof your industrial operations.",
+    'agility-4-0': "Ready to transform your operations? With Agility 4.0, you can reduce time-to-market, enhance cross-functional collaboration, and optimize workflows through cutting-edge technologies. Our solutions ensure seamless integration, continuous improvement, and scalable infrastructure, enabling you to focus on what matters most—delivering value to your customers. Partner with us to unlock your organization's full potential today.",
+    'farming-4-0': "Ready to revolutionize your farm? Farming 4.0 delivers smart irrigation, crop monitoring, and livestock management solutions tailored to your needs. By leveraging real-time data and predictive analytics, we help you enhance productivity, minimize costs, and achieve sustainable growth. Partner with us today to unlock the full potential of modern agriculture and secure a brighter future.",
+    'mining-4-0': "Ready to revolutionize mining operations? Mining 4.0 delivers cutting-edge solutions for enhanced safety, optimized resource extraction, and sustainable mining practices. By integrating IoT sensors, autonomous vehicles, and AI-powered analytics, we help you reduce operational costs, improve productivity, and minimize environmental impact. Partner with us today to transform your mining operations and drive industry-leading performance.",
+    'plant-4-0': "Ready to revolutionize your plant operations? Plant 4.0 delivers tailored solutions for manufacturing, oil & gas, chemicals, power, mining, and more. By leveraging digital twins, robotics, and AI-powered analytics, we help you streamline workflows, improve asset performance, and unlock new revenue streams. Partner with us today to future-proof your industrial operations.",
     'infrastructure-4-0': "Ready to revolutionize your infrastructure projects? Infrastructure 4.0 delivers tailored solutions for smart cities, efficient buildings, and sustainable urban planning. By integrating digital twins, automation, and real-time data insights, we help you reduce costs, improve performance, and unlock new opportunities. Partner with us today to future-proof your infrastructure and drive sustainable growth.",
-    'government-4-0': "Ready to modernize your government services? Government4.0 delivers tailored solutions for e-governance, smart cities, and regulatory compliance. By integrating advanced technologies like AI-driven policymaking and blockchain for transparency, we help you achieve operational excellence and citizen satisfaction. Partner with us today to unlock the full potential of digital transformation in the public sector.",
-    'hospitality-4-0': "Ready to redefine hospitality? Hospitality4.0 delivers tailored solutions for hotels, restaurants, parks, and events. By integrating AI-driven personalization, dynamic pricing, and smart facility management, we help you reduce costs, improve efficiency, and boost revenue. Partner with us today to unlock the full potential of digital transformation and stay ahead in the competitive hospitality market.",
-    'retail-4-0': "Ready to revolutionize your retail strategy? Retail4.0 delivers tailored solutions for smart stores, data-driven merchandising, and frictionless payment systems. By integrating advanced technologies like AI-powered recommendations and real-time analytics, we help you optimize operations, boost sales, and build lasting customer loyalty. Partner with us today to unlock the future of retail.",
-    'wellness-4-0': "Ready to revolutionize wellness? Wellness4.0 delivers tailored solutions for healthcare providers, caregivers, and families. By integrating virtual consultations, real-time monitoring, and AI-driven insights, we help you reduce costs, improve outcomes, and expand access to care. Partner with us today to unlock the full potential of digital transformation in health and wellness services.",
-    'logistics-4-0': "Ready to revolutionize your supply chain? Logistics4.0 delivers tailored solutions for real-time tracking, warehouse automation, and last-mile delivery optimization. By integrating AI-driven insights and seamless technologies, we help you streamline operations, reduce costs, and deliver exceptional customer experiences. Partner with us today to unlock the full potential of digital transformation in logistics.",
-    'service-4-0': "Ready to revolutionize your services? Services4.0 delivers tailored solutions for industries like banking, education, media, and telecommunications. By integrating omnichannel platforms, predictive analytics, and automated workflows, we help you streamline processes, improve efficiency, and drive growth. Partner with us today to unlock the full potential of digital transformation and elevate your service offerings."
+    'government-4-0': "Ready to modernize your government services? Government 4.0 delivers tailored solutions for e-governance, smart cities, and regulatory compliance. By integrating advanced technologies like AI-driven policymaking and blockchain for transparency, we help you achieve operational excellence and citizen satisfaction. Partner with us today to unlock the full potential of digital transformation in the public sector.",
+    'hospitality-4-0': "Ready to redefine hospitality? Hospitality 4.0 delivers tailored solutions for hotels, restaurants, parks, and events. By integrating AI-driven personalization, dynamic pricing, and smart facility management, we help you reduce costs, improve efficiency, and boost revenue. Partner with us today to unlock the full potential of digital transformation and stay ahead in the competitive hospitality market.",
+    'retail-4-0': "Ready to revolutionize your retail strategy? Retail 4.0 delivers tailored solutions for smart stores, data-driven merchandising, and frictionless payment systems. By integrating advanced technologies like AI-powered recommendations and real-time analytics, we help you optimize operations, boost sales, and build lasting customer loyalty. Partner with us today to unlock the future of retail.",
+    'wellness-4-0': "Ready to revolutionize wellness? Wellness 4.0 delivers tailored solutions for healthcare providers, caregivers, and families. By integrating virtual consultations, real-time monitoring, and AI-driven insights, we help you reduce costs, improve outcomes, and expand access to care. Partner with us today to unlock the full potential of digital transformation in wellness services.",
+    'logistics-4-0': "Ready to revolutionize your supply chain? Logistics 4.0 delivers tailored solutions for real-time tracking, warehouse automation, and last-mile delivery optimization. By integrating AI-driven insights and seamless technologies, we help you streamline operations, reduce costs, and deliver exceptional customer experiences. Partner with us today to unlock the full potential of digital transformation in logistics.",
+    'service-4-0': "Ready to revolutionize your services? Services 4.0 delivers tailored solutions for industries like banking, education, media, and telecommunications. By integrating omnichannel platforms, predictive analytics, and automated workflows, we help you streamline processes, improve efficiency, and drive growth. Partner with us today to unlock the full potential of digital transformation and elevate your service offerings.",
+    'intelligence-4-0': "Ready to unlock the power of data? Intelligence 4.0 transforms raw information into strategic advantage through AI-driven analytics, predictive modeling, and intelligent automation. Our solutions help you make faster decisions, identify new opportunities, and optimize operations with real-time insights. Partner with us today to harness the full potential of artificial intelligence and data science for sustainable business growth.",
+    'workspace-4-0': "Ready to revolutionize how your teams work? Workspace 4.0 creates collaborative digital environments that boost productivity, enhance employee satisfaction, and enable seamless remote and hybrid work. Our solutions integrate communication platforms, automation tools, and smart workspace management to empower your workforce. Partner with us today to build the future of work and unlock your team's full potential.",
+    'governance-4-0': "Ready to strengthen your organizational governance? Governance 4.0 delivers automated compliance monitoring, intelligent risk management, and transparent policy frameworks that ensure regulatory adherence while enabling agile decision-making. Our solutions help you mitigate risks, maintain audit readiness, and achieve strategic alignment. Partner with us today to build robust governance that drives sustainable success.",
+    'backoffice-4-0': "Ready to transform your back-office operations? Backoffice 4.0 eliminates manual processes through intelligent automation, streamlined workflows, and digital document management. Our solutions reduce operational costs by up to 50%, accelerate processing times, and free your team to focus on strategic initiatives. Partner with us today to optimize your operations and drive measurable efficiency gains."
   };
 
-  return textMap[slug] || "Ready to redefine customer journeys? Experience4.0 empowers businesses to integrate advanced technologies, optimize touchpoints, and build lasting relationships. From real-time analytics to AI-driven personalization, our solutions ensure frictionless interactions that delight customers and drive measurable ROI. Partner with us to unlock the full potential of digital transformation and future-proof your business today.";
+  return textMap[slug] || "Ready to redefine customer journeys? Experience 4.0 empowers businesses to integrate advanced technologies, optimize touchpoints, and build lasting relationships. From real-time analytics to AI-driven personalization, our solutions ensure frictionless interactions that delight customers and drive measurable ROI. Partner with us to unlock the full potential of digital transformation and future-proof your business today.";
 };
 
 // Helper function to get service areas title based on slug

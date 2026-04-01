@@ -78,7 +78,7 @@ export function ABBCaseStudy() {
               <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
                 <div className="text-6xl text-brand-coral mb-6">"</div>
                 <blockquote className="text-xl md:text-2xl text-gray-800 leading-relaxed mb-8 italic">
-                  DigitalQatalyst brought architectural clarity and execution
+                  Digital Qatalyst brought architectural clarity and execution
                   discipline that significantly elevated our Digital Business
                   Products growth agenda. They translated ambition into
                   structured growth drivers, defined a coherent operating model,
