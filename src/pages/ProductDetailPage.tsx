@@ -767,11 +767,9 @@ export function ProductDetailPage() {
               About {product.code}
             </h2>
             <div className="prose max-w-none">
-              {!["dtmp", "dtma", "dtmb", "dtmcc", "plant40"].includes(product.id) && (
-                <p className="text-gray-700 mb-5 leading-relaxed">
-                  {product.description}
-                </p>
-              )}
+              <p className="text-gray-700 mb-5 leading-relaxed">
+                {product.description}
+              </p>
 
               {getProductContent(product.id)}
             </div>
