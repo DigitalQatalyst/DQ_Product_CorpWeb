@@ -121,7 +121,7 @@ export default function ServicesPage() {
     tertiary: [
       {
         icon: Users,
-        title: "Service 4.0",
+        title: "Services 4.0",
         description: "Enhance service delivery and boost customer satisfaction with smarter processes and real-time insights.",
       },
       {
@@ -383,7 +383,7 @@ export default function ServicesPage() {
                 <div className="px-4 py-3 bg-secondary/5 text-secondary rounded-full text-sm font-medium border border-secondary/10">
                   <div className="mb-1">Intelligence 4.0</div>
                   <Link
-                    to="/coming-soon"
+                    to="/services/intelligence-4-0"
                     className="text-primary hover:text-primary-600 text-xs font-semibold transition-colors"
                   >
                     Read more →
@@ -392,7 +392,7 @@ export default function ServicesPage() {
                 <div className="px-4 py-3 bg-secondary/5 text-secondary rounded-full text-sm font-medium border border-secondary/10">
                   <div className="mb-1">Workspace 4.0</div>
                   <Link
-                    to="/coming-soon"
+                    to="/services/workspace-4-0"
                     className="text-primary hover:text-primary-600 text-xs font-semibold transition-colors"
                   >
                     Read more →
@@ -401,7 +401,7 @@ export default function ServicesPage() {
                 <div className="px-4 py-3 bg-secondary/5 text-secondary rounded-full text-sm font-medium border border-secondary/10">
                   <div className="mb-1">Governance 4.0</div>
                   <Link
-                    to="/coming-soon"
+                    to="/services/governance-4-0"
                     className="text-primary hover:text-primary-600 text-xs font-semibold transition-colors"
                   >
                     Read more →
@@ -410,7 +410,7 @@ export default function ServicesPage() {
                 <div className="px-4 py-3 bg-secondary/5 text-secondary rounded-full text-sm font-medium border border-secondary/10">
                   <div className="mb-1">Backoffice 4.0</div>
                   <Link
-                    to="/coming-soon"
+                    to="/services/backoffice-4-0"
                     className="text-primary hover:text-primary-600 text-xs font-semibold transition-colors"
                   >
                     Read more →
@@ -432,7 +432,7 @@ export default function ServicesPage() {
                 <div className="px-4 py-3 bg-secondary/5 text-secondary rounded-full text-sm font-medium border border-secondary/10">
                   <div className="mb-1">Mining 4.0</div>
                   <Link
-                    to="/coming-soon"
+                    to="/services/mining-4-0"
                     className="text-primary hover:text-primary-600 text-xs font-semibold transition-colors"
                   >
                     Read more →

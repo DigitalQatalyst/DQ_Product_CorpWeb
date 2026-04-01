@@ -96,27 +96,27 @@ Spaces enabling digital workers in Economy 4.0 through human-machine collaborati
 Our specialized service domains organized by key sectors of the digital economy.
 
 ### Cross-Sector Domains:
-1. Experience4.0 - Digital design and deployment of seamless user experiences across all channels with omnichannel engagement, personalization at scale, and AI-driven customer experience.
-2. Agility4.0 - Digital design and deployment of agile, adaptable solutions with continuous delivery, DevOps, automation, and real-time data analytics.
+1. Experience 4.0 - Digital design and deployment of seamless user experiences across all channels with omnichannel engagement, personalization at scale, and AI-driven customer experience.
+2. Agility 4.0 - Digital design and deployment of agile, adaptable solutions with continuous delivery, DevOps, automation, and real-time data analytics.
 
 ### Primary Sector:
-3. Farming4.0 - Digital transformation in agriculture, conservation, forestry, and livestock management.
+3. Farming 4.0 - Digital transformation in agriculture, conservation, forestry, and livestock management.
 
 ### Secondary Sector:
-4. Plant4.0 - Digital transformation for manufacturing including oil, gas, chemicals, power, water, mining, and pharmaceuticals.
-5. Infrastructure4.0 - Digital transformation for infrastructure development, property, construction, and urbanization.
+4. Plant 4.0 - Digital transformation for manufacturing including oil, gas, chemicals, power, water, mining, and pharmaceuticals.
+5. Infrastructure 4.0 - Digital transformation for infrastructure development, property, construction, and urbanization.
 
 ### Tertiary Sector:
-6. Government4.0 - Digital transformation in government services including policy, regulation, compliance, and emergency services.
-7. Hospitality4.0 - Digital transformation in hospitality including hotels, resorts, restaurants, and event management.
-8. Retail4.0 - Digital transformation in retail including commerce, merchandising, stores, and customer interactions.
+6. Government 4.0 - Digital transformation in government services including policy, regulation, compliance, and emergency services.
+7. Hospitality 4.0 - Digital transformation in hospitality including hotels, resorts, restaurants, and event management.
+8. Retail 4.0 - Digital transformation in retail including commerce, merchandising, stores, and customer interactions.
 
 ### Quaternary Sector:
-9. Service4.0 - Digital transformation for service industries including advisory, consulting, professional services, HR, education, banking, media, and telecommunications.
-10. Logistics4.0 - Digital transformation in logistics, transportation, and supply chain management.
+9. Services 4.0 - Digital transformation for service industries including advisory, consulting, professional services, HR, education, banking, media, and telecommunications.
+10. Logistics 4.0 - Digital transformation in logistics, transportation, and supply chain management.
 
 ### Quinary Sector:
-11. Wellness4.0 - Digital transformation in healthcare and wellness including patient care, medical services, and wellness management.
+11. Wellness 4.0 - Digital transformation in healthcare and wellness including patient care, medical services, and wellness management.
 
 ---
 
@@ -488,7 +488,7 @@ export const dqChatbotService = {
     
     // Service areas questions - SECTION 3
     if (lowerMessage.includes('service area') || lowerMessage.includes('industry') || lowerMessage.includes('sector')) {
-      return "DigitalQatalyst offers specialized digital transformation services across 11 domains organized by economic sectors:\n\nCross-Sector: Experience4.0 and Agility4.0\nPrimary Sector: Farming4.0\nSecondary Sector: Plant4.0 and Infrastructure4.0\nTertiary Sector: Government4.0, Hospitality4.0, and Retail4.0\nQuaternary Sector: Service4.0 and Logistics4.0\nQuinary Sector: Wellness4.0\n\nEach domain is tailored to address the specific digital transformation needs of that sector. Which industry are you interested in?";
+      return "DigitalQatalyst offers specialized digital transformation services across 11 domains organized by economic sectors:\n\nCross-Sector: Experience 4.0 and Agility 4.0\nPrimary Sector: Farming 4.0\nSecondary Sector: Plant 4.0 and Infrastructure 4.0\nTertiary Sector: Government 4.0, Hospitality 4.0, and Retail 4.0\nQuaternary Sector: Services 4.0 and Logistics 4.0\nQuinary Sector: Wellness 4.0\n\nEach domain is tailored to address the specific digital transformation needs of that sector. Which industry are you interested in?";
     }
     
     // Products questions - SECTION 2

@@ -777,7 +777,7 @@ Security & DevOps: ${formData.securityDevOps}`;
                       <option value="Government 4.0">Government 4.0</option>
                       <option value="Hospitality 4.0">Hospitality 4.0</option>
                       <option value="Retail 4.0">Retail 4.0</option>
-                      <option value="Service 4.0">Service 4.0</option>
+                      <option value="Services 4.0">Services 4.0</option>
                       <option value="Logistics 4.0">Logistics 4.0</option>
                       <option value="Wellness 4.0">Wellness 4.0</option>
                       <option value="Other">Other</option>
