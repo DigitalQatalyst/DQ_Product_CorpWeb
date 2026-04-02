@@ -389,10 +389,10 @@ const DWSLandingPage: React.FC = () => {
                   {/* CTA Button */}
                   <div className="mt-8">
                     <button
-                      onClick={() => navigate("/consultation")}
+                      onClick={() => navigate("/forms/tour-request")}
                       className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary-600 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105"
                     >
-                      Explore Spaces
+                      Book a Tour
                       <ArrowRight size={18} className="ml-2" />
                     </button>
                   </div>
