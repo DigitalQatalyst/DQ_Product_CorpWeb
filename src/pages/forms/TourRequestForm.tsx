@@ -375,6 +375,43 @@ const TourRequestForm: React.FC = () => {
                     </>
                   )}
                 </form>
+                
+                {/* Direct Contact Options - Outside Form */}
+                <div className="mt-8 pt-6 border-t border-gray-200">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-4 text-center">
+                    Or Contact Us Directly
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <a
+                      href="mailto:admin@DigitalQatalyst.com?subject=DWS Space tour Enquiry"
+                      className="flex items-center justify-center gap-3 p-4 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 transition-all duration-200 group"
+                    >
+                      <svg className="w-5 h-5 text-primary group-hover:text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                      <div className="text-left">
+                        <div className="font-semibold text-gray-900 text-sm">Email Us</div>
+                        <div className="text-primary text-sm">admin@DigitalQatalyst.com</div>
+                      </div>
+                    </a>
+                    
+                    <a
+                      href="tel:+254748899958"
+                      className="flex items-center justify-center gap-3 p-4 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 transition-all duration-200 group"
+                    >
+                      <svg className="w-5 h-5 text-primary group-hover:text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                      </svg>
+                      <div className="text-left">
+                        <div className="font-semibold text-gray-900 text-sm">Call Us</div>
+                        <div className="text-primary text-sm">+254 748 899 958</div>
+                      </div>
+                    </a>
+                  </div>
+                  <p className="text-center text-gray-500 text-xs mt-3">
+                    Available Monday - Friday, 9:00 AM - 6:00 PM (EAT)
+                  </p>
+                </div>
               </div>
             </div>
           </div>

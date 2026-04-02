@@ -8,9 +8,14 @@ import {
   Users, 
   Zap, 
   Globe, 
-  Building2
+  Building2,
+  ChevronDown
 } from "lucide-react";
-import { FadeInUpOnScroll, StaggeredFadeIn } from "../components/AnimationUtils";
+import { 
+  FadeInUpOnScroll, 
+  StaggeredFadeIn, 
+  AnimatedText 
+} from "../components/AnimationUtils";
 
 const DWSLandingPage: React.FC = () => {
   const navigate = useNavigate();
@@ -21,22 +26,33 @@ const DWSLandingPage: React.FC = () => {
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-r from-secondary-900 via-secondary-800 to-secondary-700 overflow-hidden">
-          {/* Background Image */}
-          <div className="absolute inset-0">
-            <img
-              src="/DWS images/DWS-BG.jpg"
-              alt="Digital Working Studios"
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                // Fallback to gradient if image fails to load
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-              }}
-            />
-            {/* Dark overlay for text readability */}
-            <div className="absolute inset-0 bg-secondary-900/50"></div>
-          </div>
+        <section 
+          className="relative w-full bg-gradient-to-r from-secondary-900 via-secondary-800 to-secondary-700 overflow-hidden"
+          style={{ height: "100vh" }}
+        >
+          {/* Animated background image with zoom effect */}
+          <div
+            className="absolute inset-0 transition-transform duration-[3000ms] ease-out"
+            style={{
+              backgroundImage: "linear-gradient(rgba(3, 15, 53, 0.3), rgba(3, 15, 53, 0.3)), url('/DWS images/DWS-BG.jpg')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              transform: "scale(1)",
+            }}
+            onError={(e) => {
+              // Fallback to gradient if image fails to load
+              const target = e.target as HTMLDivElement;
+              target.style.backgroundImage = "linear-gradient(rgba(3, 15, 53, 0.8), rgba(3, 15, 53, 0.8))";
+            }}
+          />
+
+          {/* Animated gradient overlay */}
+          <div
+            className="absolute inset-0 bg-gradient-to-r from-primary/30 to-purple/30 mix-blend-multiply"
+            style={{
+              animation: "pulse-gradient 8s ease-in-out infinite alternate",
+            }}
+          />
 
           {/* Background Pattern (subtle overlay) */}
           <div className="absolute inset-0 opacity-10">
@@ -45,8 +61,8 @@ const DWSLandingPage: React.FC = () => {
             <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-white rounded-full blur-2xl"></div>
           </div>
 
-          <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-4xl mx-auto text-center">
+          <div className="container mx-auto px-4 h-full flex flex-col justify-center items-center relative z-10">
+            <div className="text-center max-w-4xl mx-auto mb-8">
               <FadeInUpOnScroll>
                 {/* Location Badge */}
                 <div className="inline-flex items-center px-4 py-2 bg-white/20 text-white rounded-full text-sm font-semibold mb-6">
@@ -55,40 +71,83 @@ const DWSLandingPage: React.FC = () => {
                 </div>
                 
                 {/* Main Headline */}
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                  Work smarter. Collaborate better. Grow faster.
+                <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-snug">
+                  <AnimatedText
+                    text="Work smarter. Collaborate better. Grow faster."
+                    gap="1rem"
+                  />
                 </h1>
                 
                 {/* Sub-headline */}
-                <p className="text-xl md:text-2xl text-white/90 mb-10 leading-relaxed max-w-4xl mx-auto">
+                <p className="font-body text-xl text-white/90 mb-8">
                   DWS is a modern digital working space designed for professionals and teams who need more than just a desk. From focused workdays to team collaboration and client meetings, DWS gives you the environment, flexibility, and smart support to move work forward.
                 </p>
-
-                {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button
-                    onClick={() => navigate("/forms/tour-request")}
-                    className="px-8 py-4 bg-primary hover:bg-primary-600 text-white font-bold rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center text-lg"
-                  >
-                    Book a Tour
-                    <ArrowRight size={20} className="ml-2" />
-                  </button>
-                  
-                  <button
-                    onClick={() => {
-                      const spacesSection = document.getElementById('spaces-section');
-                      if (spacesSection) {
-                        spacesSection.scrollIntoView({ behavior: 'smooth' });
-                      }
-                    }}
-                    className="px-8 py-4 bg-transparent border-2 border-white text-white hover:bg-white/10 font-bold rounded-lg transform transition-all duration-300 hover:scale-105 flex items-center justify-center text-lg"
-                  >
-                    Explore Spaces
-                  </button>
-                </div>
               </FadeInUpOnScroll>
+
+              {/* CTA Buttons with animations */}
+              <StaggeredFadeIn
+                staggerDelay={0.2}
+                className="flex flex-col sm:flex-row gap-4 justify-center"
+              >
+                <button
+                  onClick={() => navigate("/forms/tour-request")}
+                  className="px-8 py-4 bg-primary hover:bg-primary-600 text-white font-bold rounded-lg shadow-lg transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex items-center justify-center text-lg overflow-hidden group"
+                >
+                  <span className="relative z-10">Book a Tour</span>
+                  <ArrowRight
+                    size={20}
+                    className="ml-2 relative z-10 group-hover:translate-x-1 transition-transform duration-300"
+                  />
+                  {/* Ripple effect on hover */}
+                  <span className="absolute inset-0 overflow-hidden rounded-lg">
+                    <span className="absolute inset-0 bg-white/20 transform scale-0 opacity-0 group-hover:scale-[2.5] group-hover:opacity-100 rounded-full transition-all duration-700 origin-center"></span>
+                  </span>
+                </button>
+                
+                <button
+                  onClick={() => {
+                    const spacesSection = document.getElementById('spaces-section');
+                    if (spacesSection) {
+                      spacesSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                  className="px-8 py-4 bg-white text-secondary-900 hover:bg-gray-50 font-bold rounded-lg shadow-lg flex items-center justify-center text-lg transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                >
+                  Explore Spaces
+                  <ArrowRight size={20} className="ml-2" />
+                </button>
+              </StaggeredFadeIn>
             </div>
           </div>
+
+          {/* Scroll indicator with animation */}
+          <div
+            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer"
+            onClick={() => {
+              const nextSection = document.querySelector("main > section:nth-child(2)");
+              nextSection?.scrollIntoView({
+                behavior: "smooth",
+              });
+            }}
+          >
+            <ChevronDown size={24} className="text-white" />
+            <span className="sr-only">Scroll down</span>
+          </div>
+
+          {/* Add keyframes for gradient animation */}
+          <style jsx>{`
+            @keyframes pulse-gradient {
+              0% {
+                opacity: 0.4;
+              }
+              50% {
+                opacity: 0.6;
+              }
+              100% {
+                opacity: 0.4;
+              }
+            }
+          `}</style>
         </section>
 
         {/* Intro Section */}
@@ -154,7 +213,12 @@ const DWSLandingPage: React.FC = () => {
                   {/* CTA Button */}
                   <div className="mt-8">
                     <button
-                      onClick={() => navigate("/consultation")}
+                      onClick={() => {
+                        const spacesSection = document.getElementById('spaces-section');
+                        if (spacesSection) {
+                          spacesSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
                       className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary-600 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105"
                     >
                       Explore Spaces

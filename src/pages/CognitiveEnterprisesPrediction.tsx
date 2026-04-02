@@ -203,7 +203,7 @@ const CognitiveEnterprisesPrediction = () => {
         name: "Accelerated Adoption",
         probability: 40,
         icon: Zap,
-        color: "border-green-500 bg-green-50",
+        color: "border-secondary-500 bg-secondary-50",
         outcomes: [
           "90% of Fortune 500 companies integrate AI by 2028",
           "Global productivity increases by 40% due to widespread automation",
@@ -214,7 +214,7 @@ const CognitiveEnterprisesPrediction = () => {
         name: "Measured Growth",
         probability: 45,
         icon: Target,
-        color: "border-blue-500 bg-blue-50",
+        color: "border-secondary-500 bg-secondary-50",
         outcomes: [
           "60% of companies fully implement AI by 2030, with variances across sectors",
           "Cross-sector collaboration becomes more common, but at a slower pace",
@@ -225,7 +225,7 @@ const CognitiveEnterprisesPrediction = () => {
         name: "Fragmented Adoption",
         probability: 15,
         icon: AlertTriangle,
-        color: "border-orange-500 bg-orange-50",
+        color: "border-secondary-500 bg-secondary-50",
         outcomes: [
           "30% of companies hesitate to scale AI",
           "Global economic disparities widen as AI adoption remains isolated in certain sectors",

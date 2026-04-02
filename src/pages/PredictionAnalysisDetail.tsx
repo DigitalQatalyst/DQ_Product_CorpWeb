@@ -480,20 +480,20 @@ const ScenarioAnalysis = ({ scenarios }: any) => {
   const getTabColor = (scenario: any, isActive: boolean) => {
     if (scenario.id === 'optimistic') {
       return isActive
-        ? 'text-teal-600 border-teal-600 bg-teal-50'
-        : 'text-teal-500 border-transparent hover:text-teal-600 hover:border-teal-300';
+        ? 'text-secondary-600 border-secondary-600 bg-secondary-50'
+        : 'text-secondary-500 border-transparent hover:text-secondary-600 hover:border-secondary-300';
     }
     if (scenario.id === 'conservative') {
       return isActive
-        ? 'text-gray-600 border-gray-600 bg-gray-50'
-        : 'text-gray-500 border-transparent hover:text-gray-600 hover:border-gray-300';
+        ? 'text-secondary-600 border-secondary-600 bg-secondary-50'
+        : 'text-secondary-500 border-transparent hover:text-secondary-600 hover:border-secondary-300';
     }
     if (scenario.id === 'disruptive') {
       return isActive
-        ? 'text-orange-600 border-orange-600 bg-orange-50'
-        : 'text-orange-500 border-transparent hover:text-orange-600 hover:border-orange-300';
+        ? 'text-secondary-600 border-secondary-600 bg-secondary-50'
+        : 'text-secondary-500 border-transparent hover:text-secondary-600 hover:border-secondary-300';
     }
-    return 'text-gray-500 border-transparent';
+    return 'text-secondary-500 border-transparent';
   };
 
   const getScenarioCardStyle = (scenario: any) => {

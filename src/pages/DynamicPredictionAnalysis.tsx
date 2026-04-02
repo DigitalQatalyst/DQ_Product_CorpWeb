@@ -503,7 +503,7 @@ const ScenarioAnalysis = ({ scenarios }: any) => {
   }, [activeTab]);
 
   const getTabColor = (index: number) => {
-    if (index === activeTab) return 'bg-primary-600 text-white';
+    if (index === activeTab) return 'bg-secondary-600 text-white';
     return 'bg-gray-100 text-gray-700 hover:bg-gray-200';
   };
 
