@@ -22,7 +22,8 @@ import {
   Truck,
   Heart,
   Mountain,
-  ArrowRight
+  ArrowRight,
+  ChevronRight
 } from "lucide-react";
 
 export default function ServicesPage() {
@@ -214,20 +215,20 @@ export default function ServicesPage() {
             alt="Services hero"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-secondary-900/70"></div>
         </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-secondary-900/95 via-secondary-900/70 to-secondary-900/30" />
         <div className="container mx-auto px-6 h-full flex flex-col justify-center items-center relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
               Accelerate Your Digital Transformation
             </h1>
             <p className="text-xl text-gray-200 mb-8 leading-relaxed">
-              Drive growth, enhance customer experiences, and stay ahead of the competition with DQ's transformation services.
+              Drive growth, enhance customer experiences, and stay ahead of the competition with DQ's transformation services
             </p>
-            <div className="flex flex-wrap gap-4 justify-center">
+            <div className="flex justify-center">
               <button 
                 onClick={() => navigate('/marketplace/services')}
-                className="h-14 px-8 bg-primary text-white font-bold rounded-lg hover:bg-primary-600 transition-all transform hover:-translate-y-1 hover:shadow-xl flex items-center justify-center gap-2"
+                className="h-14 px-8 bg-primary text-white font-bold rounded-lg hover:bg-primary-600 transition-all transform hover:-translate-y-1 hover:shadow-xl inline-flex items-center gap-2 group"
               >
                 Browse Services
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />

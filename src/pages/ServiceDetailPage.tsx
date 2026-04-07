@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useMethodologySteps } from "../hooks/useMethodologySteps";
 import { getSidebarCtaContent, getOverviewClosingText, getServiceAreasTitle, getFaqSectionTitle } from "../data/serviceDetailData";
 import { 
-  ArrowRight, 
+  ArrowRight,
   Target, 
   Zap, 
   Rocket,
@@ -2277,6 +2277,7 @@ const DesignServiceDetailPage = () => {
             >
               Get in Touch
               <ArrowRight size={18} />
+
             </button>
           </div>
           <div className="mt-10 flex items-center text-sm text-white/80 gap-2 flex-wrap">
@@ -2924,7 +2925,7 @@ export default function ServiceDetailPage() {
                 const element = document.getElementById('contact-form');
                 element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }}
-              className="px-6 py-3 bg-white text-secondary-900 font-semibold rounded-lg hover:bg-gray-100 transition-colors inline-flex items-center gap-2"
+              className="px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors inline-flex items-center gap-2"
             >
               Get in Touch
               <ArrowRight size={18} />
@@ -2950,7 +2951,7 @@ export default function ServiceDetailPage() {
             <aside className="hidden lg:block lg:col-span-1 relative">
               <div ref={sidebarRef} style={sidebarStyle} className="bg-gray-50 p-6">
                 <h3 className="font-bold text-gray-900 mb-4">Our Services</h3>
-                <nav className="space-y-2">
+                <nav className="space-y-2 max-h-[60vh] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-400">
                   {allServices.map((s) => (
                     <Link
                       key={s.slug}
@@ -2985,7 +2986,7 @@ export default function ServiceDetailPage() {
                       const element = document.getElementById('contact-form');
                       element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }}
-                    className="w-full px-4 py-3 bg-white text-secondary-900 font-semibold rounded-lg hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
+                    className="w-full px-4 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-600 transition-colors inline-flex items-center justify-center gap-2"
                   >
                     Contact Us
                     <ArrowRight size={18} />
