@@ -88,19 +88,16 @@ export default function AboutUsPage() {
           <div className="absolute inset-0 bg-gradient-to-r from-secondary-900/95 via-secondary-900/70 to-secondary-900/30" />
           <div className="container mx-auto px-4 h-full flex flex-col justify-center items-center relative z-10">
             <div className="text-center max-w-4xl mx-auto">
-              <p className="text-sm uppercase tracking-[0.3em] text-white/70 mb-4">
-                DigitalQatalyst
-              </p>
               <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6 mx-auto max-w-4xl text-white">
                 Transform Your Business for the Digital Future
               </h1>
               <p className="text-lg md:text-xl text-white/80 max-w-3xl mb-10 mx-auto">
-                We simplify digital transformation, combining strategy, technology, and expertise to guide your success in the digital economy.
+                We simplify digital transformation, combining strategy, technology, and expertise to guide your success in the digital economy
               </p>
               <div className="flex justify-center">
                 <a 
                   href="/consultation"
-                  className="h-14 px-8 bg-primary text-white font-bold rounded-lg hover:bg-primary-600 transition-all transform hover:-translate-y-1 hover:shadow-xl inline-flex items-center gap-2 group"
+                  className="px-8 py-4 bg-primary text-white font-bold rounded-full hover:bg-primary-600 transition-all transform hover:-translate-y-1 hover:shadow-xl inline-flex items-center gap-2 group"
                 >
                   Start Your Transformation Journey
                   <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />

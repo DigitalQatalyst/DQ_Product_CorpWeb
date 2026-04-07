@@ -98,21 +98,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({ "data-id": dataId }) => {
       <div
         className="absolute inset-0 transition-transform duration-[3000ms] ease-out"
         style={{
-          backgroundImage:
-            "linear-gradient(rgba(3, 15, 53, 0.3), rgba(3, 15, 53, 0.3)), url('/images/landingpage_hero.png')",
+          backgroundImage: "url('/images/landingpage_hero.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           transform: isLoaded ? "scale(1)" : "scale(1.1)",
         }}
       ></div>
 
-      {/* Animated gradient overlay */}
-      <div
-        className="absolute inset-0 bg-gradient-to-r from-primary/30 to-purple/30 mix-blend-multiply"
-        style={{
-          animation: "pulse-gradient 8s ease-in-out infinite alternate",
-        }}
-      ></div>
+      {/* Gradient overlay to match Company page */}
+      <div className="absolute inset-0 bg-gradient-to-r from-secondary-900/95 via-secondary-900/70 to-secondary-900/30" />
 
       <div className="container mx-auto px-4 h-full flex flex-col justify-center items-center relative z-10">
         <div className="text-center max-w-4xl mx-auto mb-8">
@@ -126,7 +120,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ "data-id": dataId }) => {
             <p className="font-body text-xl text-white/90 mb-8">
               From strategy and architecture to platforms and execution; we
               design, deploy, and operate your transformation with clarity,
-              speed, and control.
+              speed, and control
             </p>
           </FadeInUpOnScroll>
         </div>
@@ -207,27 +201,17 @@ const HeroSection: React.FC<HeroSectionProps> = ({ "data-id": dataId }) => {
         {/* Call to Action Buttons with animations and onClick handlers */}
         <StaggeredFadeIn
           staggerDelay={0.2}
-          className="flex flex-col sm:flex-row gap-4 mt-2"
+          className="flex justify-center"
         >
           <button
             onClick={() => navigate("/services")}
-            className="h-14 px-8 bg-primary hover:bg-primary-600 text-white font-bold rounded-lg shadow-lg transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl text-center flex items-center justify-center overflow-hidden group"
+            className="h-14 px-8 bg-primary text-white font-bold rounded-lg hover:bg-primary-600 transition-all transform hover:-translate-y-1 hover:shadow-xl inline-flex items-center gap-2 group"
           >
-            <span className="relative z-10">Explore Our Services</span>
+            <span className="relative z-10">Explore Now</span>
             <ArrowRight
               size={18}
-              className="ml-2 relative z-10 group-hover:translate-x-1 transition-transform duration-300"
+              className="relative z-10 group-hover:translate-x-1 transition-transform duration-300"
             />
-            {/* Ripple effect on hover */}
-            <span className="absolute inset-0 overflow-hidden rounded-lg">
-              <span className="absolute inset-0 bg-white/20 transform scale-0 opacity-0 group-hover:scale-[2.5] group-hover:opacity-100 rounded-full transition-all duration-700 origin-center"></span>
-            </span>
-          </button>
-          <button
-            onClick={() => navigate("/products")}
-            className="h-14 px-8 bg-transparent border-2 border-white text-white hover:bg-white hover:text-secondary-900 font-bold rounded-lg transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex items-center justify-center"
-          >
-            Explore Our Products
           </button>
         </StaggeredFadeIn>
       </div>

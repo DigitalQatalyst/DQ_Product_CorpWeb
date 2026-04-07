@@ -298,40 +298,27 @@ export default function ProductsLandingPage() {
             />
           </div>
           {/* Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-secondary-900/95 via-secondary-900/85 to-secondary-900/60" />
+          <div className="absolute inset-0 bg-gradient-to-r from-secondary-900/95 via-secondary-900/70 to-secondary-900/30" />
 
           {/* Content */}
           <div className="container mx-auto px-4 md:px-6 h-full flex flex-col justify-center items-center relative z-10">
             <div className="text-center max-w-4xl mx-auto">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-                Digital Products That Turn Strategy into Execution.
+                Digital Products That Turn Strategy into Execution
               </h1>
               <p className="text-xl text-white/90 mb-10 leading-relaxed">
                 DQ products operationalize your vision through unified, scalable
                 systems built for measurable growth and sustained
-                transformation.
+                transformation
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex justify-center">
                 <Link
                   to="/products/marketplace"
-                  className="h-14 inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-600 text-white px-8 rounded-lg font-bold transition-all duration-300 transform hover:scale-105 shadow-lg group"
+                  className="h-14 px-8 bg-primary text-white font-bold rounded-lg hover:bg-primary-600 transition-all transform hover:-translate-y-1 hover:shadow-xl inline-flex items-center gap-2 group"
                 >
                   Explore Our Products
-                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform duration-300" />
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
                 </Link>
-                <button
-                  onClick={() => {
-                    document
-                      .getElementById("request-demo-form")
-                      ?.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start",
-                      });
-                  }}
-                  className="h-14 inline-flex items-center justify-center bg-transparent border-2 border-white text-white hover:bg-white hover:text-secondary-900 px-8 rounded-lg font-bold transition-all duration-300 transform hover:scale-105"
-                >
-                  Request Demo
-                </button>
               </div>
             </div>
           </div>

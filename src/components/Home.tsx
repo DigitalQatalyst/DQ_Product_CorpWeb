@@ -145,10 +145,9 @@ const ServiceCard = ({
         >
           {isComingSoon ? <Lock size={14} className="mr-2" /> : "Explore Now"}
           {!isComingSoon && (
-            <ChevronRight
-              size={16}
-              className={`ml-2 transition-transform duration-300 ${isHovered ? "translate-x-1" : ""
-                }`}
+            <ArrowRight
+              size={18}
+              className="group-hover:translate-x-1 transition-transform duration-300"
             />
           )}
         </button>

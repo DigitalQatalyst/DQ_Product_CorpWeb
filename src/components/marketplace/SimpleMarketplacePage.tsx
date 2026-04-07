@@ -243,8 +243,8 @@ export const SimpleMarketplacePage: React.FC<SimpleMarketplacePageProps> = ({
                   : 'On-premise deployment services for secure and controlled digital infrastructure.'}
               </p>
             </div>
-            <span className="ml-4 px-6 py-1 text-sm font-medium text-white bg-primary rounded-full whitespace-nowrap">
-              Tab overview
+            <span className="ml-4 px-3 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full whitespace-nowrap">
+              Overview
             </span>
           </div>
         </div>

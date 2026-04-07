@@ -5,6 +5,7 @@ import { Footer } from '../../components/Footer';
 import { mockServiceData, ServiceItem } from '../../data/mockServiceData';
 import {
   CheckCircle,
+  ArrowRight,
   ChevronRight,
   ChevronDown,
   Home,
@@ -231,7 +232,7 @@ const ServiceDetailPage = () => {
                     className="inline-flex items-center px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors"
                   >
                     Request Service
-                    <ChevronRight size={18} className="ml-2" />
+                    <ArrowRight size={18} className="ml-2" />
                   </Link>
                 </div>
 
@@ -896,7 +897,7 @@ const ServiceDetailPage = () => {
                             className="inline-flex items-center px-8 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors text-lg"
                           >
                             Request Service
-                            <ChevronRight size={20} className="ml-2" />
+                            <ArrowRight size={20} className="ml-2" />
                           </Link>
                         </div>
                       </div>
