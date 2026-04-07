@@ -36,6 +36,14 @@ const marketplaces: Marketplace[] = [
     icon: PackageIcon,
     href: "/products",
   },
+  {
+    id: "careers",
+    name: "Careers",
+    description:
+      "Discover exciting career opportunities and join our team of digital transformation experts",
+    icon: UsersIcon,
+    href: "/careers",
+  },
 ];
 
 // TODO: Add more marketplaces

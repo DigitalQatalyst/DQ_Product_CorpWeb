@@ -28,14 +28,14 @@ const TestimonialCarousel: React.FC = () => {
     {
       id: "abb",
       badge: "ABB | DBP Design Engagement",
-      quote: "DigitalQatalyst brought architectural clarity and execution discipline that significantly elevated our Digital Business Products growth agenda. This was not simply advisory work; it was structured design that positioned us for sustainable digital growth.",
+      quote: "Digital Qatalyst brought architectural clarity and execution discipline that significantly elevated our Digital Business Products growth agenda. This was not simply advisory work; it was structured design that positioned us for sustainable digital growth.",
       author: "Dr. Tariq Aslam",
       position: "VP Digital | ABB EMEA"
     },
     {
       id: "pg",
       badge: "P&G | Digital Research Operations",
-      quote: "DigitalQatalyst helped us rethink how research operations can function in a digitally enabled environment. The result has been improved efficiency, stronger clarity on digital priorities, and a more future-ready research function.",
+      quote: "Digital Qatalyst helped us rethink how research operations can function in a digitally enabled environment. The result has been improved efficiency, stronger clarity on digital priorities, and a more future-ready research function.",
       author: "Cho Edwards",
       position: "Product Manager | Procter & Gamble (UK)"
     }

@@ -23,9 +23,9 @@ export const dqProducts: ProductType[] = [
     category: "Service",
     icon: React.createElement(Settings, {
       size: 32,
-      className: "text-primary-500",
+      className: "text-primary",
     }),
-    imageUrl: "/images/tmaas-image.png",
+    imageUrl: "/images/TMaaS Mockup.png",
   },
   {
     id: "dtmp",
@@ -39,9 +39,9 @@ export const dqProducts: ProductType[] = [
     category: "Platform",
     icon: React.createElement(LayoutGrid, {
       size: 32,
-      className: "text-primary-500",
+      className: "text-primary",
     }),
-    imageUrl: "/images/dtmp-image.png",
+    imageUrl: "/images/DTMP Mockup.png",
   },
   {
     id: "dtma",
@@ -55,10 +55,9 @@ export const dqProducts: ProductType[] = [
     category: "Education",
     icon: React.createElement(GraduationCap, {
       size: 32,
-      className: "text-primary-500",
+      className: "text-primary",
     }),
-    imageUrl:
-      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&h=600&fit=crop",
+    imageUrl: "/images/DTMA Mockup.png",
   },
   {
     id: "dtmb",
@@ -76,7 +75,7 @@ export const dqProducts: ProductType[] = [
     category: "Resources",
     icon: React.createElement(BookOpen, {
       size: 32,
-      className: "text-primary-500",
+      className: "text-primary",
     }),
     imageUrl:
       "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=800&h=600&fit=crop",
@@ -93,7 +92,7 @@ export const dqProducts: ProductType[] = [
     category: "Collaboration",
     icon: React.createElement(Users, {
       size: 32,
-      className: "text-primary-500",
+      className: "text-primary",
     }),
     imageUrl:
       "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop",
@@ -110,7 +109,7 @@ export const dqProducts: ProductType[] = [
     category: "Intelligence",
     icon: React.createElement(TrendingUp, {
       size: 32,
-      className: "text-primary-500",
+      className: "text-primary",
     }),
     imageUrl: "/images/DTMI-banner.png",
   },
@@ -130,7 +129,7 @@ export const dqProducts: ProductType[] = [
     category: "Platform",
     icon: React.createElement(Target, {
       size: 32,
-      className: "text-primary-500",
+      className: "text-primary",
     }),
     imageUrl: "/images/plant4.0-image.png",
   },

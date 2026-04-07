@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Header } from '../components/Header';
-import { Footer } from '../components/Footer';
+import { Header } from './Header/Header';
+import { Footer } from './Footer/Footer';
 import HeroSection from './HeroSection';
 import DWSBanner from './DWSBanner';
 import TransformationStats from './TransformationStats';

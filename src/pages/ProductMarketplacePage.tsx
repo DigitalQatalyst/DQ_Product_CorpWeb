@@ -68,7 +68,7 @@ export function ProductMarketplacePage() {
             <ol className="inline-flex items-center space-x-1 md:space-x-2">
               <li className="inline-flex items-center">
                 <a
-                  href="/"
+                  href="/products"
                   className="text-gray-600 hover:text-primary-600 inline-flex items-center"
                 >
                   <HomeIcon size={16} className="mr-1" />

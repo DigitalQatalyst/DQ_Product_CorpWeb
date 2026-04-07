@@ -22,7 +22,7 @@ export function ClientTestimonialsPage() {
       clientType: "Fortune 500 Enterprise",
       badge: "ABB | DBP Design Engagement",
       quote:
-        "DigitalQatalyst brought a level of architectural clarity and execution discipline that significantly elevated our Digital Business Products growth agenda. Through their DBP Design engagement, they translated ambition into structured growth drivers, defined a coherent operating model, and provided a practical path from strategy to execution. This was not simply advisory work. It was structured design that positioned us for sustainable digital growth.",
+        "Digital Qatalyst brought a level of architectural clarity and execution discipline that significantly elevated our Digital Business Products growth agenda. Through their DBP Design engagement, they translated ambition into structured growth drivers, defined a coherent operating model, and provided a practical path from strategy to execution. This was not simply advisory work. It was structured design that positioned us for sustainable digital growth.",
       author: "Dr. Tariq Aslam",
       position: "VP Digital",
       companyName: "ABB EMEA",
@@ -78,7 +78,7 @@ export function ClientTestimonialsPage() {
       clientType: "Fortune 500 Enterprise",
       badge: "P&G | Digital Research Operations",
       quote:
-        "DigitalQatalyst helped us rethink how research operations can function in a digitally enabled environment. With the structured insights and capability-building approach from DigitalQatalyst, we gained clearer visibility into digital worker tools and how they can practically enhance research performance. The result has been improved efficiency, stronger clarity on digital priorities, and a more future-ready research function.",
+        "Digital Qatalyst helped us rethink how research operations can function in a digitally enabled environment. With the structured insights and capability-building approach from Digital Qatalyst, we gained clearer visibility into digital worker tools and how they can practically enhance research performance. The result has been improved efficiency, stronger clarity on digital priorities, and a more future-ready research function.",
       author: "Cho Edwards",
       position: "Product Manager",
       companyName: "Procter & Gamble (UK)",

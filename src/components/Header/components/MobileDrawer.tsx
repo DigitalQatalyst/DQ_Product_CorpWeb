@@ -12,12 +12,9 @@ import {
   Package,
   Home,
   Briefcase,
-  Lightbulb,
   Info,
   Phone,
   FileText,
-  LogIn,
-  LogOut,
 } from "lucide-react";
 
 interface MobileDrawerProps {
@@ -41,6 +38,14 @@ const marketplaces = [
     icon: Package,
     href: "/products",
   },
+  {
+    id: "careers",
+    name: "Careers",
+    description:
+      "Join our team and help shape the future of digital transformation",
+    icon: Users,
+    href: "/careers",
+  },
 ];
 
 const mainNavItems = [
@@ -58,11 +63,6 @@ const mainNavItems = [
     name: "Products",
     href: "/products",
     icon: Package,
-  },
-  {
-    name: "Insights",
-    href: "/dtmi",
-    icon: Lightbulb,
   },
   {
     name: "Company",
@@ -84,7 +84,6 @@ function isExternal(href: string) {
 export function MobileDrawer({ isSignedIn }: MobileDrawerProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, logout } = useAuth();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isExploreExpanded, setIsExploreExpanded] = useState(false);
 
@@ -105,16 +104,6 @@ export function MobileDrawer({ isSignedIn }: MobileDrawerProps) {
 
   const handleGetInTouchClick = () => {
     navigate("/consultation");
-    setIsDrawerOpen(false);
-  };
-
-  const handleLoginClick = () => {
-    login();
-    setIsDrawerOpen(false);
-  };
-
-  const handleLogoutClick = () => {
-    logout();
     setIsDrawerOpen(false);
   };
 
@@ -288,29 +277,6 @@ export function MobileDrawer({ isSignedIn }: MobileDrawerProps) {
 
                 {/* Get In Touch Section */}
                 <div className="px-6 py-4 space-y-3">
-                  {!isSignedIn ? (
-                    <button
-                      className="w-full flex items-center justify-between px-4 py-3 text-left text-white bg-primary-500 hover:bg-primary-600 rounded-lg transition-colors font-medium shadow-lg"
-                      onClick={handleLoginClick}
-                    >
-                      <div className="flex items-center">
-                        <LogIn size={20} className="mr-3 text-white" />
-                        <span>Sign In</span>
-                      </div>
-                      <ChevronRight size={16} className="text-white" />
-                    </button>
-                  ) : (
-                    <button
-                      className="w-full flex items-center justify-between px-4 py-3 text-left text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors font-medium shadow-lg"
-                      onClick={handleLogoutClick}
-                    >
-                      <div className="flex items-center">
-                        <LogOut size={20} className="mr-3 text-white" />
-                        <span>Sign Out</span>
-                      </div>
-                      <ChevronRight size={16} className="text-white" />
-                    </button>
-                  )}
                   <button
                     className="w-full flex items-center justify-between px-4 py-3 text-left text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors font-medium shadow-lg"
                     onClick={handleGetInTouchClick}

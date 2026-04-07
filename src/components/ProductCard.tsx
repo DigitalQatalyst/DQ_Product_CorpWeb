@@ -17,49 +17,69 @@ export function ProductCard({ product, onClick }: ProductCardProps) {
 
   return (
     <div
-      className="flex flex-col min-h-[340px] bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200 cursor-pointer"
+      className="flex flex-col bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer overflow-hidden"
       onClick={onClick}
     >
-      <div className="px-4 py-5 flex-grow flex flex-col">
-        {product.icon && (
-          <div className="mb-4">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200">
-              {product.icon}
-            </div>
+      {/* Product Image/Screenshot */}
+      <div className="relative h-48 bg-gray-50 border-b border-gray-200">
+        {product.imageUrl ? (
+          <img
+            src={product.imageUrl}
+            alt={product.name}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              // Fallback to icon if image fails to load
+              e.currentTarget.style.display = 'none';
+              const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+              if (fallback) fallback.style.display = 'flex';
+            }}
+          />
+        ) : null}
+        
+        {/* Fallback icon container */}
+        <div 
+          className={`absolute inset-0 flex items-center justify-center bg-gray-50 ${product.imageUrl ? 'hidden' : 'flex'}`}
+        >
+          <div className="w-16 h-16 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+            {product.icon}
           </div>
-        )}
+        </div>
+      </div>
 
-        <div className="mb-4">
-          <h3 className="font-bold text-gray-900 line-clamp-2 min-h-[48px] leading-snug text-lg">
-            {product.name} ({product.code})
+      {/* Content */}
+      <div className="p-6 flex-grow flex flex-col">
+        <div className="mb-3">
+          <h3 className="font-bold text-gray-900 text-lg leading-tight mb-1">
+            {product.name}
           </h3>
+          <p className="text-sm text-gray-500 font-medium">
+            {product.code}
+          </p>
         </div>
 
-        <div className="mb-5 flex-grow">
-          <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed">
+        <div className="mb-4 flex-grow">
+          <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
             {product.description}
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2 mt-auto">
-          {product.tags.slice(0, 2).map((tag, index) => (
-            <span
-              key={index}
-              className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200"
+        {/* Learn More Link */}
+        <div className="mt-auto">
+          <button
+            onClick={handleLearnMore}
+            className="text-primary hover:text-primary-600 text-sm font-medium transition-colors flex items-center gap-1 group"
+          >
+            Learn more
+            <svg 
+              className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
             >
-              {tag}
-            </span>
-          ))}
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
         </div>
-      </div>
-
-      <div className="mt-auto border-t border-gray-100 p-4">
-        <button
-          onClick={handleLearnMore}
-          className="w-full px-4 py-2 text-sm font-medium text-primary-600 bg-white border border-primary-600 rounded-md hover:bg-primary-50 transition-colors whitespace-nowrap flex items-center justify-center"
-        >
-          Learn More
-        </button>
       </div>
     </div>
   );
