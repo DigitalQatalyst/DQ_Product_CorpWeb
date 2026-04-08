@@ -6,7 +6,7 @@ import {
   StaggeredFadeIn,
 } from "./AnimationUtils";
 import { useNavigate } from "react-router-dom";
-import { useChatbot } from "../contexts/ChatbotContext";
+import { useChatbot } from "../hooks/useChatbot";
 
 interface HeroSectionProps {
   "data-id"?: string;

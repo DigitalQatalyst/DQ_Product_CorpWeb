@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Send, Star, Bot } from 'lucide-react';
 import { dqChatbotService, ChatSession } from '../services/dqChatbotService';
-import { useChatbot } from '../contexts/ChatbotContext';
+import { useChatbot } from '../hooks/useChatbot';
 
 interface Message {
   id: string;
@@ -20,7 +20,7 @@ const TRENDING_QUESTIONS = [
 ];
 
 const GlobalChatbot: React.FC = () => {
-  const { isOpen, setIsOpen, pendingMessage, clearPendingMessage } = useChatbot() as any;
+  const { isOpen, setIsOpen, pendingMessage, clearPendingMessage } = useChatbot();
   const [session] = useState<ChatSession>(() => dqChatbotService.createSession());
   const [inputMessage, setInputMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
@@ -62,7 +62,7 @@ const GlobalChatbot: React.FC = () => {
       handleSendMessage(pendingMessage);
       clearPendingMessage();
     }
-  }, [pendingMessage, isOpen]);
+  }, [pendingMessage, isOpen, clearPendingMessage]);
 
   const handleSendMessage = async (message?: string) => {
     const messageToSend = message || inputMessage.trim();
