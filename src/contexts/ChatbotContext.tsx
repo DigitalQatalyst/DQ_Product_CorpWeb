@@ -1,4 +1,4 @@
-import React, { createContext, useState, ReactNode } from 'react';
+import React, { createContext, useState, ReactNode, useMemo } from 'react';
 
 export interface ChatbotContextType {
   triggerChatbot: (message: string) => void;
@@ -25,13 +25,13 @@ export const ChatbotProvider: React.FC<ChatbotProviderProps> = ({ children }) =>
 
   const clearPendingMessage = () => setPendingMessage(null);
 
-  const value: ChatbotContextType = {
+  const value: ChatbotContextType = useMemo(() => ({
     triggerChatbot,
     isOpen,
     setIsOpen,
     pendingMessage,
     clearPendingMessage
-  };
+  }), [isOpen, pendingMessage]);
 
   return (
     <ChatbotContext.Provider value={value}>

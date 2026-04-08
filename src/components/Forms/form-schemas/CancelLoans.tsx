@@ -1,6 +1,7 @@
 import * as yup from "yup";
 import { FormSchema, FormField } from "../FormPreview";
 import { PLACEHOLDER_STANDARDS } from "../../../utils/formPlaceholderStandards";
+import { isValidEmail } from "../../../utils/emailValidation";
 
 // Define the form schema for the "Loan Cancellation" form
 export const loanCancellationSchema: FormSchema = {
@@ -43,11 +44,6 @@ export const loanCancellationSchema: FormSchema = {
               required: true,
               placeholder: PLACEHOLDER_STANDARDS.email.placeholder,
               helperText: PLACEHOLDER_STANDARDS.email.helperText,
-              validation: {
-                required: "Email address is required",
-                pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
-                message: "Please enter a valid email address",
-              },
             } as FormField,
             {
               id: "telephoneNumber",
@@ -166,7 +162,9 @@ export const loanCancellationValidationSchema = yup.object({
   EmailAddress: yup
     .string()
     .required("Email address is required")
-    .email("Please enter a valid email address"),
+    .test("email-validation", "Please enter a valid email address", (value) => {
+      return value ? isValidEmail(value) : false;
+    }),
   Contacttelephonenumber: yup
     .string()
     .required("Contact telephone number is required")
