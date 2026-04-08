@@ -32,8 +32,8 @@ export const initGA = () => {
 
   // Initialize dataLayer and gtag
   globalThis.dataLayer = globalThis.dataLayer || [];
-  globalThis.gtag = function gtag() {
-    globalThis.dataLayer.push(arguments);
+  globalThis.gtag = function gtag(...args: any[]) {
+    globalThis.dataLayer.push(args);
   };
 
   globalThis.gtag('js', new Date());

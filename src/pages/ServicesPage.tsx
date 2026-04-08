@@ -21,8 +21,7 @@ import {
   Truck,
   Heart,
   Mountain,
-  ArrowRight,
-  ChevronRight
+  ArrowRight
 } from "lucide-react";
 
 export default function ServicesPage() {

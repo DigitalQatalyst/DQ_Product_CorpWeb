@@ -323,8 +323,8 @@ export const ConsultationFormCard: React.FC<ConsultationFormCardProps> = ({
 
     // Check if any required field is empty
     const emptyFields = Object.entries(requiredFields)
-      .filter(([_, value]) => !value)
-      .map(([field, _]) => {
+      .filter(([, value]) => !value)
+      .map(([field]) => {
         switch (field) {
           case 'name': return 'Name';
           case 'email': return 'Email Address';

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { X, Send, Star, Bot } from 'lucide-react';
 import { dqChatbotService, ChatSession } from '../services/dqChatbotService';
 import { useChatbot } from '../hooks/useChatbot';
@@ -56,15 +56,7 @@ const GlobalChatbot: React.FC = () => {
     };
   }, [isOpen]);
 
-  // Handle pending message from context (e.g., from HeroSection)
-  useEffect(() => {
-    if (pendingMessage && isOpen) {
-      handleSendMessage(pendingMessage);
-      clearPendingMessage();
-    }
-  }, [pendingMessage, isOpen, clearPendingMessage]);
-
-  const handleSendMessage = async (message?: string) => {
+  const handleSendMessage = useCallback(async (message?: string) => {
     const messageToSend = message || inputMessage.trim();
     if (!messageToSend) return;
 
@@ -114,7 +106,15 @@ const GlobalChatbot: React.FC = () => {
       };
       setMessages(prev => prev.slice(0, -1).concat(errorMessage));
     }
-  };
+  }, [inputMessage, session.messages]);
+
+  // Handle pending message from context (e.g., from HeroSection)
+  useEffect(() => {
+    if (pendingMessage && isOpen) {
+      handleSendMessage(pendingMessage);
+      clearPendingMessage();
+    }
+  }, [pendingMessage, isOpen, clearPendingMessage, handleSendMessage]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
