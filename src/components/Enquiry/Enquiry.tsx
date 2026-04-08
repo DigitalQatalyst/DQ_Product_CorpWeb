@@ -157,7 +157,7 @@ export const Enquiry: React.FC<EnquiryProps> = ({ id }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const isValidEmail = (email: string): boolean => {
+  const validateEmail = (email: string): boolean => {
     return isValidEmail(email);
   };
 
@@ -165,7 +165,7 @@ export const Enquiry: React.FC<EnquiryProps> = ({ id }) => {
     return (
       formData.firstName.match(/^[A-Za-z]+$/) &&
       formData.lastName.match(/^[A-Za-z]+$/) &&
-      isValidEmail(formData.email) &&
+      validateEmail(formData.email) &&
       formData.phoneNumber.match(/^[0-9]{1,11}$/) &&
       [
         "Funding Request",
@@ -202,7 +202,7 @@ export const Enquiry: React.FC<EnquiryProps> = ({ id }) => {
       if (!formData.lastName.match(/^[A-Za-z]+$/)) {
         errorMessage += "- Last name must contain only letters.\n";
       }
-      if (!isValidEmail(formData.email)) {
+      if (!validateEmail(formData.email)) {
         errorMessage += "- Email must be a valid format (e.g., user@example.com).\n";
       }
       if (!formData.phoneNumber.match(/^[0-9]{1,11}$/)) {
