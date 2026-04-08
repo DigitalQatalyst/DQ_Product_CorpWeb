@@ -263,7 +263,7 @@ export function Article3Content() {
           {/* Article 2 */}
           <div 
             className="group cursor-pointer"
-            onClick={() => window.location.href = '/dtmi/article/traditional-digital-transformation-is-dead'}
+            onClick={() => globalThis.location.href = '/dtmi/article/traditional-digital-transformation-is-dead'}
           >
             <div className="relative h-48 overflow-hidden rounded-xl mb-4">
               <img

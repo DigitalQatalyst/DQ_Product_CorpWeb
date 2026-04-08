@@ -99,16 +99,14 @@ const EnquiryModal: React.FC<EnquiryModalProps> = ({ 'data-id': dataId, isOpen, 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto" data-id={`${dataId}-modal`}>
       <div className="flex items-center justify-center min-h-screen px-4">
-        <div 
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm" 
+        <button 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm border-0 p-0 cursor-default" 
           onClick={onClose}
           onKeyDown={(e) => {
             if (e.key === 'Escape') {
               onClose();
             }
           }}
-          role="button"
-          tabIndex={0}
           aria-label="Close modal"
         />
         

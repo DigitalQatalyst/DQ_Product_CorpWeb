@@ -82,10 +82,6 @@ export const reallocationLoanSchema: FormSchema = {
               type: "email",
               required: true,
               placeholder: "Enter email address",
-              validation: {
-                pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
-                message: "Invalid email address",
-              },
             } as FormField,
             {
               id: "telephone",

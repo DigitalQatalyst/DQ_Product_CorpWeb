@@ -17,7 +17,7 @@ export const initGA = () => {
   }
 
   // Check if gtag is already available (from static script)
-  if (window.gtag && typeof window.gtag === 'function') {
+  if (globalThis.gtag && typeof globalThis.gtag === 'function') {
     console.log('✅ Google Analytics already loaded via static script');
     return;
   }
@@ -31,30 +31,30 @@ export const initGA = () => {
   document.head.appendChild(script);
 
   // Initialize dataLayer and gtag
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag() {
-    window.dataLayer.push(arguments);
+  globalThis.dataLayer = globalThis.dataLayer || [];
+  globalThis.gtag = function gtag() {
+    globalThis.dataLayer.push(arguments);
   };
 
-  window.gtag('js', new Date());
-  window.gtag('config', GA_MEASUREMENT_ID, {
+  globalThis.gtag('js', new Date());
+  globalThis.gtag('config', GA_MEASUREMENT_ID, {
     page_title: document.title,
-    page_location: window.location.href,
+    page_location: globalThis.location.href,
     send_page_view: true,
   });
 };
 
 // Track page views
 export const trackPageView = (path: string, title?: string) => {
-  if (!window.gtag || typeof window.gtag !== 'function') {
+  if (!globalThis.gtag || typeof globalThis.gtag !== 'function') {
     console.warn('Google Analytics not initialized');
     return;
   }
   
-  window.gtag('config', GA_MEASUREMENT_ID, {
+  globalThis.gtag('config', GA_MEASUREMENT_ID, {
     page_path: path,
     page_title: title || document.title,
-    page_location: window.location.href,
+    page_location: globalThis.location.href,
   });
 };
 
@@ -67,12 +67,12 @@ export const trackBlogEvent = (eventName: string, parameters: {
   engagement_time?: number;
   scroll_depth?: number;
 }) => {
-  if (!window.gtag || typeof window.gtag !== 'function') {
+  if (!globalThis.gtag || typeof globalThis.gtag !== 'function') {
     console.warn('Google Analytics not initialized');
     return;
   }
 
-  window.gtag('event', eventName, {
+  globalThis.gtag('event', eventName, {
     event_category: 'Blog',
     ...parameters,
   });
@@ -85,12 +85,12 @@ export const trackConversion = (eventName: string, parameters: {
   conversion_type?: string;
   source_page?: string;
 }) => {
-  if (!window.gtag || typeof window.gtag !== 'function') {
+  if (!globalThis.gtag || typeof globalThis.gtag !== 'function') {
     console.warn('Google Analytics not initialized');
     return;
   }
 
-  window.gtag('event', eventName, {
+  globalThis.gtag('event', eventName, {
     event_category: 'Conversion',
     ...parameters,
   });
@@ -102,12 +102,12 @@ export const trackEngagement = (eventName: string, parameters: {
   page_title?: string;
   page_location?: string;
 }) => {
-  if (!window.gtag || typeof window.gtag !== 'function') {
+  if (!globalThis.gtag || typeof globalThis.gtag !== 'function') {
     console.warn('Google Analytics not initialized');
     return;
   }
 
-  window.gtag('event', eventName, {
+  globalThis.gtag('event', eventName, {
     event_category: 'Engagement',
     ...parameters,
   });
@@ -115,12 +115,12 @@ export const trackEngagement = (eventName: string, parameters: {
 
 // Track search events
 export const trackSearch = (searchTerm: string, results?: number) => {
-  if (!window.gtag || typeof window.gtag !== 'function') {
+  if (!globalThis.gtag || typeof globalThis.gtag !== 'function') {
     console.warn('Google Analytics not initialized');
     return;
   }
 
-  window.gtag('event', 'search', {
+  globalThis.gtag('event', 'search', {
     search_term: searchTerm,
     results_count: results,
   });
@@ -144,12 +144,12 @@ export const trackContactForm = (formType: string) => {
 
 // Track file downloads
 export const trackDownload = (fileName: string, fileType: string) => {
-  if (!window.gtag || typeof window.gtag !== 'function') {
+  if (!globalThis.gtag || typeof globalThis.gtag !== 'function') {
     console.warn('Google Analytics not initialized');
     return;
   }
 
-  window.gtag('event', 'file_download', {
+  globalThis.gtag('event', 'file_download', {
     event_category: 'Downloads',
     file_name: fileName,
     file_type: fileType,
@@ -158,12 +158,12 @@ export const trackDownload = (fileName: string, fileType: string) => {
 
 // Track external link clicks
 export const trackExternalLink = (url: string, linkText?: string) => {
-  if (!window.gtag || typeof window.gtag !== 'function') {
+  if (!globalThis.gtag || typeof globalThis.gtag !== 'function') {
     console.warn('Google Analytics not initialized');
     return;
   }
 
-  window.gtag('event', 'click', {
+  globalThis.gtag('event', 'click', {
     event_category: 'External Links',
     event_label: url,
     link_text: linkText,
@@ -172,12 +172,12 @@ export const trackExternalLink = (url: string, linkText?: string) => {
 
 // Track social media clicks
 export const trackSocialClick = (platform: string, action: string) => {
-  if (!window.gtag || typeof window.gtag !== 'function') {
+  if (!globalThis.gtag || typeof globalThis.gtag !== 'function') {
     console.warn('Google Analytics not initialized');
     return;
   }
 
-  window.gtag('event', 'social_click', {
+  globalThis.gtag('event', 'social_click', {
     event_category: 'Social Media',
     social_platform: platform,
     social_action: action,

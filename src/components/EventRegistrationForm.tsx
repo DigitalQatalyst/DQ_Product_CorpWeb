@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { isValidEmail } from '../utils/emailValidation'
 import {
   X,
   Calendar,
@@ -70,7 +71,7 @@ const EventRegistrationForm: React.FC<EventRegistrationFormProps> = ({
     }
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required'
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    } else if (!isValidEmail(formData.email)) {
       newErrors.email = 'Email is invalid'
     }
     if (!formData.phone.trim()) {

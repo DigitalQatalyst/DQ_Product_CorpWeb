@@ -50,7 +50,7 @@ export const initGA = () => {
 
 // Track page views
 export const trackPageView = (path: string) => {
-  if (!window.gtag || typeof window.gtag !== 'function') {
+  if (!globalThis.gtag || typeof globalThis.gtag !== 'function') {
     console.warn('Google Analytics not initialized');
     return;
   }
