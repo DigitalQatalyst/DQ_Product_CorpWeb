@@ -1,7 +1,6 @@
 import { Header } from "../components/Header/Header";
 import { Footer } from "../components/Footer/Footer";
 import { useNavigate, Link } from "react-router-dom";
-import ModernDQChatbot from "../components/ModernDQChatbot";
 import DiscoverProducts from "../components/DiscoverProducts";
 import { 
   Palette, 
@@ -605,9 +604,6 @@ export default function ServicesPage() {
       <DiscoverProducts />
 
       <Footer />
-      
-      {/* DQ AI Chatbot */}
-      <ModernDQChatbot />
     </div>
   );
 }

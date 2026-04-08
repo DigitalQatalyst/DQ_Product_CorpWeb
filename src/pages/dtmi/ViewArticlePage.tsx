@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { Header } from "../../components/Header/Header";
 import { Footer } from "../../components/Footer/Footer";
 import { Article1Content } from "./Article1Content";
-// import { Article2Content } from "./Article2Content"; // Temporarily commented out
 import { Article3Content } from "./Article3Content";
 import { ArticleLayout } from "./components/ArticleLayout";
 import { useArticleBySlug } from "./api/hooks";
@@ -32,7 +31,7 @@ const ARTICLE_CONFIG: Record<string, {
     category: "Digital Economy 4.0",
     date: "December 20, 2025",
     readTime: "10 min read",
-    Content: () => <div>Article content temporarily unavailable</div> // Article2Content
+    Content: () => <div>Article content temporarily unavailable</div>
   },
   "why-traditional-organizations-are-obsolete": {
     title: "Why Traditional Organizations Are Obsolete in Today's Digital Economy",

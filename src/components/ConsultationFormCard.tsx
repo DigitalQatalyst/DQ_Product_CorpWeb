@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ArrowRight, CheckCircle, X } from "lucide-react";
 import { submitConsultationRequest } from "../services/airtableService";
+import { isValidEmail } from "../utils/emailValidation";
 
 type ToastType = "success" | "error";
 
@@ -298,6 +299,16 @@ export const ConsultationFormCard: React.FC<ConsultationFormCardProps> = ({
     });
   };
 
+  // Utility function to handle validation errors
+  const handleValidationError = (errorMessage: string) => {
+    setIsSubmitting(false);
+    setSubmitError(errorMessage);
+    setToast({
+      message: errorMessage,
+      type: "error",
+    });
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setIsSubmitting(true);
@@ -323,31 +334,19 @@ export const ConsultationFormCard: React.FC<ConsultationFormCardProps> = ({
       });
 
     if (emptyFields.length > 0) {
-      setIsSubmitting(false);
-      setSubmitError(`Please fill in the following required fields: ${emptyFields.join(', ')}`);
-      setToast({
-        message: `Please fill in all required fields: ${emptyFields.join(', ')}`,
-        type: "error",
-      });
+      handleValidationError(`Please fill in all required fields: ${emptyFields.join(', ')}`);
       return;
     }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(requiredFields.email)) {
-      setIsSubmitting(false);
-      setSubmitError("Please enter a valid email address.");
-      setToast({
-        message: "Please enter a valid email address.",
-        type: "error",
-      });
+    // Validate email format using safe utility
+    if (!isValidEmail(requiredFields.email)) {
+      handleValidationError("Please enter a valid email address.");
       return;
     }
 
     // Validate phone number before submission
     if (businessDetails.phoneNumber && !validatePhoneNumber(businessDetails.phoneNumber)) {
-      setIsSubmitting(false);
-      setSubmitError("Please enter a valid phone number with digits only.");
+      handleValidationError("Please enter a valid phone number with digits only.");
       return;
     }
 

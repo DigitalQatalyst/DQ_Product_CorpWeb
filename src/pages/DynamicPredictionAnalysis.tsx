@@ -6,6 +6,7 @@ import { Header } from '../components/Header/Header';
 import { Footer } from '../components/Footer/Footer';
 import { NewsletterSubscription } from '../components/NewsletterSubscription';
 import { blogService } from '../admin-ui/utils/supabase';
+import { isValidEmail } from '../utils/emailValidation';
 
 // Add CSS styles for links in dangerouslySetInnerHTML content
 const linkStyles = `
@@ -918,10 +919,8 @@ ${window.location.href}`);
     const email = prompt('Enter your email address to subscribe to our weekly insights:');
 
     if (email) {
-      // Basic email validation
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-      if (emailRegex.test(email)) {
+      // Basic email validation using safe utility
+      if (isValidEmail(email)) {
         // Store subscription in localStorage (could be enhanced with API call later)
         const subscribers = JSON.parse(localStorage.getItem('newsletterSubscribers') || '[]');
 
