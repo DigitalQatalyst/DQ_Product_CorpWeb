@@ -6,7 +6,7 @@ import {
   StaggeredFadeIn,
 } from "./AnimationUtils";
 import { useNavigate } from "react-router-dom";
-import ModernDQChatbot from "./ModernDQChatbot";
+import { useChatbot } from "../contexts/ChatbotContext";
 
 interface HeroSectionProps {
   "data-id"?: string;
@@ -17,12 +17,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({ "data-id": dataId }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [chatbotMessage, setChatbotMessage] = useState<string | undefined>(
-    undefined,
-  );
   const [isLoaded, setIsLoaded] = useState(false);
 
   const navigate = useNavigate();
+  const { triggerChatbot } = useChatbot();
 
   // Trigger animation on component mount
   useEffect(() => {
@@ -35,13 +33,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({ "data-id": dataId }) => {
     setIsProcessing(true);
 
     try {
-      console.log("Hero Section: Setting chatbot message:", prompt);
-      // Set the message for the DQ chatbot and trigger it to open
-      setChatbotMessage(prompt);
+      console.log("Hero Section: Triggering global chatbot with message:", prompt);
+      // Trigger the global chatbot with the message
+      triggerChatbot(prompt);
       setPrompt(""); // Clear the input
       setIsProcessing(false);
     } catch (error) {
-      console.error("Error sending message to DQ chatbot:", error);
+      console.error("Error triggering global chatbot:", error);
       alert("There was an error connecting to the chat. Please try again.");
       setIsProcessing(false);
     }
@@ -77,12 +75,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({ "data-id": dataId }) => {
     setIsProcessing(true);
 
     try {
-      // Set the message for the DQ chatbot and trigger it to open
-      setChatbotMessage(suggestion);
+      // Trigger the global chatbot with the suggestion
+      triggerChatbot(suggestion);
       setPrompt(""); // Clear the input
       setIsProcessing(false);
     } catch (error) {
-      console.error("Error sending suggestion to DQ chatbot:", error);
+      console.error("Error triggering global chatbot with suggestion:", error);
       setIsProcessing(false);
       alert("There was an error connecting to the chat. Please try again.");
     }
@@ -253,12 +251,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({ "data-id": dataId }) => {
           scrollbar-width: none;
         }
       `}</style>
-
-      {/* DQ AI Chatbot */}
-      <ModernDQChatbot
-        initialMessage={chatbotMessage}
-        onMessageProcessed={() => setChatbotMessage(undefined)}
-      />
     </div>
   );
 };

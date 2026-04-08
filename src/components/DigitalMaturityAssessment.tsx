@@ -27,6 +27,7 @@ import {
 import { FadeInUpOnScroll } from "./AnimationUtils";
 import { openaiService, AssessmentResult } from "../services/openaiService";
 import { submitAssessmentLead } from "../services/airtableService";
+import { isValidEmail } from "../utils/emailValidation";
 
 interface AssessmentFormData {
   organizationDescription: string;
@@ -74,8 +75,7 @@ const DigitalMaturityAssessment: React.FC = () => {
       return false;
     }
     
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!isValidEmail(email)) {
       setEmailError("Please enter a valid email address");
       return false;
     }
@@ -136,8 +136,7 @@ Security & DevOps: ${formData.securityDevOps}`;
     if (!allFieldsFilled) return false;
     
     // Check email format without setting error (just validation check)
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(leadData.email);
+    return isValidEmail(leadData.email);
   };
 
   const handleAssess = async () => {

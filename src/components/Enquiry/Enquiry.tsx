@@ -25,6 +25,7 @@ import {
   AlertText,
   AlertClose,
 } from './styles';
+import { isValidEmail } from '../../utils/emailValidation';
 
 // GraphQL Mutations and Query
 const LOGIN_MUTATION = `
@@ -157,8 +158,7 @@ export const Enquiry: React.FC<EnquiryProps> = ({ id }) => {
   };
 
   const isValidEmail = (email: string): boolean => {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailRegex.test(email);
+    return isValidEmail(email);
   };
 
   const isFormValid = () => {

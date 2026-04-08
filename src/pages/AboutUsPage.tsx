@@ -11,7 +11,6 @@ import {
   LineChart,
   Shield,
 } from "lucide-react";
-import ModernDQChatbot from "../components/ModernDQChatbot";
 import { leadershipTeam } from "../data/leadershipTeam";
 import ClientLogosCarousel from "../components/ClientLogosCarousel";
 import CallToActionSimple from "../components/CallToActionSimple";
@@ -301,9 +300,6 @@ export default function AboutUsPage() {
       </main>
 
       <Footer isLoggedIn={false} />
-      
-      {/* DQ AI Chatbot */}
-      <ModernDQChatbot />
     </div>
   );
 }

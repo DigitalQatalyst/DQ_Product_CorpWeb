@@ -5,7 +5,6 @@ import { ProductCard } from "../components/ProductCard";
 import { ProductFilterSidebar } from "../components/ProductFilterSidebar";
 import { dqProducts } from "../utils/productData";
 import { HomeIcon, ChevronRightIcon, FilterIcon, XIcon, SearchIcon } from "lucide-react";
-import ModernDQChatbot from "../components/ModernDQChatbot";
 
 export function ProductMarketplacePage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -246,9 +245,6 @@ export function ProductMarketplacePage() {
       </main>
 
       <Footer isLoggedIn={false} />
-      
-      {/* DQ AI Chatbot */}
-      <ModernDQChatbot />
     </div>
   );
 }

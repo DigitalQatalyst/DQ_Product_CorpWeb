@@ -3,7 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     
-    <!-- Google tag (gtag.js) -->
+    <!-- Content Security Policy for enhanced security -->
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com;
+      connect-src 'self' https://www.google-analytics.com https://analytics.google.com;
+      img-src 'self' data: https: blob:;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      frame-src 'self';
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+    ">
+    
+    <!-- Google tag (gtag.js) - Note: SRI not applicable for dynamic Google Analytics scripts -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-V9C6LZRY7G"></script>
     <script>
       window.dataLayer = window.dataLayer || [];

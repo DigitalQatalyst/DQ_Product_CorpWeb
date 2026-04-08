@@ -1339,7 +1339,20 @@ const EcosystemMap: React.FC = () => {
             <div className="w-full h-full">
               <div ref={mapRef} className="w-full h-full"></div>
               {/* Map overlay when drawer is open */}
-              {isDrawerOpen && <div className="absolute inset-0 bg-black bg-opacity-10 z-[900] transition-opacity duration-300" onClick={handleCloseDrawer}></div>}
+              {isDrawerOpen && (
+                <div 
+                  className="absolute inset-0 bg-black bg-opacity-10 z-[900] transition-opacity duration-300" 
+                  onClick={handleCloseDrawer}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Escape') {
+                      handleCloseDrawer();
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  aria-label="Close drawer"
+                />
+              )}
               {/* In-Map Drawer - Desktop (Right Side) - Only render if not mobile */}
               {!isMobileView && <div className={`map-drawer map-drawer-desktop ${isDrawerOpen ? 'open' : ''}`}>
                   <div className="h-full flex flex-col">

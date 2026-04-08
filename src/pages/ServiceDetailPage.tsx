@@ -4,7 +4,7 @@ import { Footer } from "../components/Footer/Footer";
 import { ConsultationFormCard } from "../components/ConsultationFormCard";
 import React, { useEffect, useRef, useState } from "react";
 import { useMethodologySteps } from "../hooks/useMethodologySteps";
-import { getSidebarCtaContent, getOverviewClosingText, getServiceAreasTitle, getFaqSectionTitle } from "../data/serviceDetailData";
+import { getSidebarCtaContent, getOverviewClosingText, getFaqSectionTitle } from "../data/serviceDetailData";
 import { 
   ArrowRight,
   Target, 
@@ -2833,8 +2833,6 @@ export default function ServiceDetailPage() {
     );
   }
 
-  const Icon = service.icon;
-
   const toggleFaq = (index: number) => {
     setOpenFaq(openFaq === index ? null : index);
   };
@@ -2952,19 +2950,22 @@ export default function ServiceDetailPage() {
               <div ref={sidebarRef} style={sidebarStyle} className="bg-gray-50 p-6">
                 <h3 className="font-bold text-gray-900 mb-4">Our Services</h3>
                 <nav className="space-y-2 max-h-[60vh] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 hover:scrollbar-thumb-gray-400">
-                  {allServices.map((s) => (
-                    <Link
-                      key={s.slug}
-                      to={`/services/${s.slug}`}
-                      className={`block px-4 py-3 rounded-lg transition-colors ${
-                        s.slug === slug
-                          ? 'bg-primary text-white'
-                          : 'text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      {s.title}
-                    </Link>
-                  ))}
+                  {allServices.map((s) => {
+                    const isActive = s.slug === slug;
+                    const linkClasses = isActive 
+                      ? 'bg-primary text-white'
+                      : 'text-gray-700 hover:bg-gray-200';
+                    
+                    return (
+                      <Link
+                        key={s.slug}
+                        to={`/services/${s.slug}`}
+                        className={`block px-4 py-3 rounded-lg transition-colors ${linkClasses}`}
+                      >
+                        {s.title}
+                      </Link>
+                    );
+                  })}
                   <Link
                     to="/services"
                     className="block px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-200 transition-colors"

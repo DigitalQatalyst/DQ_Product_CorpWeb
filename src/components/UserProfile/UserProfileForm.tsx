@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "@/components/Header/context/AuthContext";
 import { updateUserProfile } from "@/lib/supabase";
 import { Mail, AlertCircle, CheckCircle, Loader } from "lucide-react";
+import { isValidEmail } from "../../utils/emailValidation";
 
 interface UserProfileFormProps {
   readonly onSuccess?: () => void;
@@ -16,12 +17,6 @@ export function UserProfileForm({ onSuccess }: Readonly<UserProfileFormProps>) {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [hasChanges, setHasChanges] = useState(false);
-
-  // Email validation regex - must match database constraint
-  const isValidEmail = (email: string): boolean => {
-    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-    return emailRegex.test(email);
-  };
 
   useEffect(() => {
     if (user) {

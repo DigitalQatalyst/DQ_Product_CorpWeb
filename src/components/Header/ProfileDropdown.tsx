@@ -94,7 +94,18 @@ export function ProfileDropdown() {
       </button>
       {isOpen && (
         <>
-          <div className="fixed inset-0 z-30" onClick={closeDropdown}></div>
+          <div 
+            className="fixed inset-0 z-30" 
+            onClick={closeDropdown}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') {
+                closeDropdown();
+              }
+            }}
+            role="button"
+            tabIndex={0}
+            aria-label="Close dropdown"
+          />
           <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-40">
             <div className="py-2">
               {/* My Dashboard */}

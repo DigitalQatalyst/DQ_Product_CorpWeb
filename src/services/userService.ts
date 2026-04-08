@@ -8,6 +8,7 @@
  */
 
 import { getPrimarySupabase } from "../lib/supabaseClients";
+import { isValidEmail } from "../utils/emailValidation";
 
 export type UserRole = "admin" | "creator" | "viewer";
 
@@ -330,9 +331,8 @@ export async function syncUserFromB2C(
     throw new Error("name is required for user sync");
   }
 
-  // Validate email format
-  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-  if (!emailRegex.test(email)) {
+  // Validate email format using safe utility
+  if (!isValidEmail(email)) {
     throw new Error(
       `Invalid email format: ${email}. Must match pattern: user@domain.com`,
     );
