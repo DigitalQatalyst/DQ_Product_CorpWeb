@@ -29,7 +29,7 @@ export const initGA = () => {
 
   // Initialize dataLayer and gtag
   globalThis.dataLayer = globalThis.dataLayer || [];
-  globalThis.gtag = function gtag(...args: any[]) {
+  globalThis.gtag = function gtag(...args: unknown[]) {
     globalThis.dataLayer.push(args);
   };
 
