@@ -37,7 +37,7 @@ export interface ServiceStat {
 }
 
 export interface ServiceCard {
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   title: string;
   description: string;
 }
@@ -81,7 +81,7 @@ export function createServiceStat(value: string, label: string): ServiceStat {
  * Create service card
  */
 export function createServiceCard(
-  icon: React.ComponentType<any>,
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>,
   title: string,
   description: string
 ): ServiceCard {
@@ -186,16 +186,23 @@ export const COMMON_SERVICE_STATS = {
 /**
  * Validate service detail content
  */
-export function validateServiceDetailContent(content: any): content is ServiceDetailContent {
+export function validateServiceDetailContent(content: unknown): content is ServiceDetailContent {
+  if (!content || typeof content !== 'object') return false;
+  
+  const obj = content as Record<string, unknown>;
+  
   return !!(
-    content &&
-    content.hero &&
-    content.hero.title &&
-    content.blueprintSection &&
-    content.stats &&
-    Array.isArray(content.stats) &&
-    content.industryExpertise &&
-    content.industryExpertise.cards &&
-    Array.isArray(content.industryExpertise.cards)
+    obj.hero &&
+    typeof obj.hero === 'object' &&
+    obj.hero !== null &&
+    (obj.hero as Record<string, unknown>).title &&
+    obj.blueprintSection &&
+    obj.stats &&
+    Array.isArray(obj.stats) &&
+    obj.industryExpertise &&
+    typeof obj.industryExpertise === 'object' &&
+    obj.industryExpertise !== null &&
+    (obj.industryExpertise as Record<string, unknown>).cards &&
+    Array.isArray((obj.industryExpertise as Record<string, unknown>).cards)
   );
 }

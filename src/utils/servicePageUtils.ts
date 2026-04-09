@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 
 export interface ServiceIcon {
-  [key: string]: React.ComponentType<any>;
+  [key: string]: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }
 
 export const SERVICE_ICONS: ServiceIcon = {
@@ -62,7 +62,7 @@ export function generateServiceBreadcrumbs(serviceTitle: string): BreadcrumbItem
 /**
  * Get service icon component
  */
-export function getServiceIcon(serviceKey: string): React.ComponentType<any> {
+export function getServiceIcon(serviceKey: string): React.ComponentType<React.SVGProps<SVGSVGElement>> {
   return SERVICE_ICONS[serviceKey] || Target;
 }
 
@@ -97,7 +97,7 @@ export interface ServiceFaq {
 export interface MethodologyStep {
   title: string;
   description: string;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   details?: string[];
 }
 
@@ -107,20 +107,25 @@ export interface MethodologyStep {
 export interface ServiceBenefit {
   title: string;
   description: string;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }
 
 /**
  * Validate service data structure
  */
-export function validateServiceData(data: any): boolean {
+export function validateServiceData(data: unknown): boolean {
+  if (!data || typeof data !== 'object') return false;
+  
+  const obj = data as Record<string, unknown>;
+  
   return !!(
-    data &&
-    data.hero &&
-    data.hero.title &&
-    data.hero.subtitle &&
-    data.overview &&
-    data.benefits
+    obj.hero &&
+    typeof obj.hero === 'object' &&
+    obj.hero !== null &&
+    (obj.hero as Record<string, unknown>).title &&
+    (obj.hero as Record<string, unknown>).subtitle &&
+    obj.overview &&
+    obj.benefits
   );
 }
 

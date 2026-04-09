@@ -26,12 +26,7 @@ import {
   ServiceBenefit,
   WhereToStartItem,
   ServiceArea,
-  ServiceFaq,
-  ServiceDomainData,
-  createServiceBenefit,
-  createWhereToStartItem,
-  createServiceArea,
-  createFaq
+  ServiceFaq
 } from '../utils/commonDataTypes';
 
 // Extended interfaces for service-specific needs

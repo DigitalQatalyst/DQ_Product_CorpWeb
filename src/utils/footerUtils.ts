@@ -16,7 +16,7 @@ export interface FooterSection {
 export interface SocialLink {
   name: string;
   href: string;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }
 
 /**
@@ -46,7 +46,7 @@ export function createFooterSection(
 export function createSocialLink(
   name: string,
   href: string,
-  icon: React.ComponentType<any>
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
 ): SocialLink {
   return { name, href, icon };
 }
@@ -189,12 +189,15 @@ export const FOOTER_STYLES = {
 /**
  * Validate footer configuration
  */
-export function validateFooterConfig(config: any): boolean {
+export function validateFooterConfig(config: unknown): boolean {
+  if (!config || typeof config !== 'object') return false;
+  
+  const obj = config as Record<string, unknown>;
+  
   return !!(
-    config &&
-    config.sections &&
-    Array.isArray(config.sections) &&
-    config.socialLinks &&
-    Array.isArray(config.socialLinks)
+    obj.sections &&
+    Array.isArray(obj.sections) &&
+    obj.socialLinks &&
+    Array.isArray(obj.socialLinks)
   );
 }
