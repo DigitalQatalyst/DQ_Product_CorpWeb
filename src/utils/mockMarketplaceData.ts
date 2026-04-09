@@ -17,7 +17,7 @@ const getFirstHeroImageFromContent = (content: string | null, type: string): str
       }
     }
   } catch (error) {
-    console.warn('Failed to parse whitepaper content for hero image extraction:', error);
+    // Failed to parse whitepaper content for hero image extraction
   }
 
   return null;
@@ -26,19 +26,8 @@ const getFirstHeroImageFromContent = (content: string | null, type: string): str
 // Function to fetch real blog data and map it to marketplace format
 export const fetchKnowledgeHubItems = async () => {
   try {
-    console.log('🔍 [Marketplace] Starting to fetch knowledge hub items from database...');
-
     // Fetch published media items from the database
     const mediaItems = await mediaService.getMediaItems({});
-
-    console.group('📡 [Marketplace] Database Fetch Details');
-    console.log('Total items fetched:', (mediaItems.data || []).length);
-    if (mediaItems.data && mediaItems.data.length > 0) {
-      console.log('Sample item from DB:', mediaItems.data[0]);
-      console.log('All IDs from DB:', mediaItems.data.map((i: any) => i.id));
-      console.log('All Types from DB:', mediaItems.data.map((i: any) => i.type));
-    }
-    console.groupEnd();
 
     if (!mediaItems.data || mediaItems.data.length === 0) {
       return [];
@@ -146,15 +135,6 @@ export const fetchKnowledgeHubItems = async () => {
       }
 
       return mappedEntry;
-    });
-
-    console.log('🎯 [Marketplace] Final mapped items for marketplace:', {
-      totalCount: mappedItems.length,
-      byType: mappedItems.reduce((acc, item) => {
-        acc[item.mediaType] = (acc[item.mediaType] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>),
-      sampleMapped: mappedItems.length > 0 ? mappedItems[0] : null
     });
 
     return mappedItems;
@@ -338,13 +318,8 @@ const formatEventDate = (item: any): string => {
 
 // Enhanced function that combines real data with mock data as fallback
 export const getKnowledgeHubItems = async () => {
-  console.log('🚀 [Marketplace] getKnowledgeHubItems called - starting data fetch...');
-
   try {
-    console.log('📊 [Marketplace] Fetching real items from database...');
     const realItems = await fetchKnowledgeHubItems();
-
-    console.log('📈 [Marketplace] Real items fetched:', realItems.length);
 
     // COMMENTED OUT - Now using only real database items
     // // Filter out mock items that have the same ID as real items to prevent duplicate keys
@@ -366,13 +341,6 @@ export const getKnowledgeHubItems = async () => {
     //   // Stable sort as fallback
     //   return String(b.id).localeCompare(String(a.id));
     // });
-
-    console.log('🎯 [Marketplace] Final real items list ready:', {
-      total: realItems.length,
-      // real: realItems.length,
-      // mock: uniqueMockItems.length,
-      top3: realItems.slice(0, 3).map(i => ({ id: i.id, title: i.title, date: i.date }))
-    });
 
     // return combinedItems;
     return realItems; // Only return real database items
