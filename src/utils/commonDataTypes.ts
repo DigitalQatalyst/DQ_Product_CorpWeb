@@ -137,41 +137,51 @@ export function createMediaItem(
 /**
  * Validate service domain data structure
  */
-export function validateServiceDomainData(data: any): data is ServiceDomainData {
+export function validateServiceDomainData(data: unknown): data is ServiceDomainData {
+  if (!data || typeof data !== 'object') return false;
+  
+  const obj = data as Record<string, unknown>;
+  
   return !!(
-    data &&
-    data.hero &&
-    data.hero.title &&
-    data.hero.subtitle &&
-    data.overview &&
-    data.overview.title &&
-    data.benefits &&
-    Array.isArray(data.benefits) &&
-    data.whereToStart &&
-    Array.isArray(data.whereToStart) &&
-    data.serviceAreas &&
-    Array.isArray(data.serviceAreas) &&
-    data.faqs &&
-    Array.isArray(data.faqs)
+    obj.hero &&
+    typeof obj.hero === 'object' &&
+    obj.hero !== null &&
+    (obj.hero as Record<string, unknown>).title &&
+    (obj.hero as Record<string, unknown>).subtitle &&
+    obj.overview &&
+    typeof obj.overview === 'object' &&
+    obj.overview !== null &&
+    (obj.overview as Record<string, unknown>).title &&
+    obj.benefits &&
+    Array.isArray(obj.benefits) &&
+    obj.whereToStart &&
+    Array.isArray(obj.whereToStart) &&
+    obj.serviceAreas &&
+    Array.isArray(obj.serviceAreas) &&
+    obj.faqs &&
+    Array.isArray(obj.faqs)
   );
 }
 
 /**
  * Validate sector data structure
  */
-export function validateSectorData(data: any): data is SectorData {
+export function validateSectorData(data: unknown): data is SectorData {
+  if (!data || typeof data !== 'object') return false;
+  
+  const obj = data as Record<string, unknown>;
+  
   return !!(
-    data &&
-    data.id &&
-    data.title &&
-    data.description &&
-    data.slug &&
-    data.overview &&
-    data.benefits &&
-    Array.isArray(data.benefits) &&
-    data.solutions &&
-    Array.isArray(data.solutions) &&
-    data.faqs &&
-    Array.isArray(data.faqs)
+    obj.id &&
+    obj.title &&
+    obj.description &&
+    obj.slug &&
+    obj.overview &&
+    obj.benefits &&
+    Array.isArray(obj.benefits) &&
+    obj.solutions &&
+    Array.isArray(obj.solutions) &&
+    obj.faqs &&
+    Array.isArray(obj.faqs)
   );
 }

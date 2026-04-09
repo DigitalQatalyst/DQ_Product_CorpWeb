@@ -60,7 +60,7 @@ export const COMMON_FORM_FIELDS = {
     placeholder: '+971 XX XXX XXXX',
     required: false,
     validation: {
-      pattern: /^[\+]?[0-9\s\-\(\)]{7,15}$/,
+      pattern: /^[+]?[0-9\s\-\(\)]{7,15}$/,
       message: 'Please enter a valid phone number'
     }
   },
