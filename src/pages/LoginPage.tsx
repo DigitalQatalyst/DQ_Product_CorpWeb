@@ -34,14 +34,12 @@ export const LoginPage: React.FC = () => {
   useEffect(() => {
     // If already authenticated, redirect to the requested page
     if (!isLoading && user) {
-      console.log(`[LoginPage] User authenticated, redirecting to: ${from}`);
       navigate(from, { replace: true });
       return;
     }
 
     // If not authenticated and not loading, trigger Azure B2C login
     if (!isLoading && !user) {
-      console.log("[LoginPage] No user authenticated, initiating login...");
       login();
     }
   }, [user, isLoading, login, navigate, from]);

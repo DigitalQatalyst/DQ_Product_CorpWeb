@@ -119,8 +119,6 @@ const RequestDemoPage: React.FC = () => {
         message: `Job Title: ${formData.jobTitle}\nCompany Size: ${formData.companySize}\n\n${formData.message}`,
       });
 
-      console.log("✅ Demo request saved to Airtable successfully");
-
       // Send email notification
       const emailFormData = new FormData();
       emailFormData.append("Name", formData.name);
@@ -143,10 +141,10 @@ const RequestDemoPage: React.FC = () => {
         mode: "no-cors",
       })
         .then(() => {
-          console.log("📧 Email notification sent via FormSubmit");
+          // Email notification sent successfully
         })
         .catch((error) => {
-          console.log("⚠️ Email notification failed (non-critical):", error);
+          console.error("Email notification failed:", error);
         });
 
       setFormSuccess(true);

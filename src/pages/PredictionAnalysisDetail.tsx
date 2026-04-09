@@ -894,8 +894,6 @@ const RelatedAnalyses = ({ analyses }: any) => {
 };
 
 const PredictionAnalysisDetail = () => {
-  console.log('PredictionAnalysisDetail component is rendering');
-
   // Handler functions for CTA buttons
   const handleShare = async () => {
     const shareData = {

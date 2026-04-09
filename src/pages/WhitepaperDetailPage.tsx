@@ -76,7 +76,6 @@ const WhitepaperDetailPage: React.FC = () => {
 
   const handleDownload = () => {
     // Implement download logic here
-    console.log('Downloading whitepaper...')
   }
 
   if (loading) {

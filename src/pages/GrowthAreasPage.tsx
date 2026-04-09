@@ -86,7 +86,6 @@ const GrowthAreasPage = () => {
     };
   }, []);
   const handleDownloadReport = sectorName => {
-    console.log(`Downloading ${sectorName} report...`);
     // Simulate download delay
     const button = document.getElementById(`download-${sectorName}`);
     if (button) {
