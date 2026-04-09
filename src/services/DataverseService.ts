@@ -38,7 +38,6 @@ interface DocumentMetadata {
  */
 export const createDocument = async (documentMetadata: DocumentMetadata) => {
   // For demo purposes, we'll simulate the API call
-  console.log("Creating document in Dataverse:", documentMetadata);
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 1000));
   // Return the document with an ID
@@ -90,7 +89,6 @@ export const createDocument = async (documentMetadata: DocumentMetadata) => {
  */
 export const getAllDocuments = async () => {
   // For demo purposes, we'll return empty array
-  console.log("Getting all documents from Dataverse");
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 500));
   return [];
@@ -138,7 +136,6 @@ export const getAllDocuments = async () => {
  */
 export const getDocumentById = async (id: string) => {
   // For demo purposes, we'll return null
-  console.log("Getting document by ID from Dataverse:", id);
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 500));
   return null;
@@ -190,7 +187,6 @@ export const updateDocument = async (
   documentMetadata: Partial<DocumentMetadata>
 ) => {
   // For demo purposes, we'll simulate the update
-  console.log("Updating document in Dataverse:", id, documentMetadata);
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 1000));
   // Return the updated metadata
@@ -251,7 +247,6 @@ export const updateDocument = async (
  */
 export const deleteDocument = async (id: string) => {
   // For demo purposes, we'll simulate the deletion
-  console.log("Deleting document from Dataverse:", id);
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 1000));
   /* Real implementation would be:
@@ -278,7 +273,6 @@ export const deleteDocument = async (id: string) => {
  */
 export const getDocumentVersions = async (documentId: string) => {
   // For demo purposes, we'll return empty array
-  console.log("Getting document versions from Dataverse:", documentId);
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 500));
   return [];
@@ -440,7 +434,6 @@ export const calculateMandatoryCompletion = (
 export const isOnboardingCompleted = () => {
   // Check localStorage first - this is the primary indicator
   const onboardingStatus = localStorage.getItem("onboardingComplete");
-  console.log("localStorage onboardingComplete:", onboardingStatus);
 
   if (onboardingStatus === "true") {
     return true;
@@ -454,7 +447,6 @@ export const resetOnboardingStatus = () => {
   localStorage.removeItem("onboardingComplete");
   localStorage.removeItem("onboardingProgress");
   localStorage.removeItem("profileData");
-  console.log("Onboarding status reset - user will see onboarding form");
 };
 // Generate mock data structure that simulates Dataverse API response
 function generateMockDataverseResponse() {

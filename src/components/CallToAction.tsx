@@ -142,7 +142,7 @@ const CallToAction: React.FC = () => {
   // Form states
   const [partnerFormData, setPartnerFormData] = useState({
     name: "",
-    email: "",
+    phone: "",
     serviceCategory: "",
     message: "",
   });
@@ -185,14 +185,40 @@ const CallToAction: React.FC = () => {
   );
 
   // Handle form submissions
-
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmittingContact(true);
     setContactSubmitError(null);
 
+    // Validate required fields
+    if (!contactFormData.name.trim()) {
+      setContactSubmitError("Please enter your name.");
+      setIsSubmittingContact(false);
+      return;
+    }
+
+    if (!contactFormData.email.trim()) {
+      setContactSubmitError("Please enter your email address.");
+      setIsSubmittingContact(false);
+      return;
+    }
+
+    if (!contactFormData.message.trim()) {
+      setContactSubmitError("Please enter a message.");
+      setIsSubmittingContact(false);
+      return;
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(contactFormData.email)) {
+      setContactSubmitError("Please enter a valid email address.");
+      setIsSubmittingContact(false);
+      return;
+    }
+
     // Validate phone number before submission
-    if (partnerFormData.email && !validatePhoneNumber(partnerFormData.email)) {
+    if (partnerFormData.phone && !validatePhoneNumber(partnerFormData.phone)) {
       setIsSubmittingContact(false);
       setContactSubmitError("Please enter a valid phone number with digits only.");
       return;
@@ -204,7 +230,7 @@ const CallToAction: React.FC = () => {
         name: contactFormData.name,
         email: contactFormData.email,
         company: partnerFormData.name || "",
-        phone: partnerFormData.email || "",
+        phone: partnerFormData.phone || "",
         sector: partnerFormData.serviceCategory || "",
         interest: partnerFormData.message || "",
         message: contactFormData.message,
@@ -217,7 +243,7 @@ const CallToAction: React.FC = () => {
       formData.append("Name", contactFormData.name);
       formData.append("Email Address", contactFormData.email);
       formData.append("Company Name", partnerFormData.name || "Not provided");
-      formData.append("Phone Number", partnerFormData.email || "Not provided");
+      formData.append("Phone Number", partnerFormData.phone || "Not provided");
       formData.append(
         "Sector Interest",
         partnerFormData.serviceCategory || "Not provided",
@@ -266,20 +292,34 @@ const CallToAction: React.FC = () => {
         });
         setPartnerFormData({
           name: "",
-          email: "",
+          phone: "",
           serviceCategory: "",
           message: "",
         });
       }, 3000);
     } catch (error) {
       console.error("❌ Error submitting consultation form:", error);
-      setContactSubmitError(
-        error instanceof Error
-          ? error.message
-          : "Network error. Please try again or contact us directly at info@digitalqatalyst.com",
-      );
+      
+      let errorMessage = "Failed to send request. Please try again.";
+      
+      if (error instanceof Error) {
+        // Provide more specific error messages based on the error
+        if (error.message.includes('Missing Airtable configuration')) {
+          errorMessage = "Configuration error. Please contact support.";
+        } else if (error.message.includes('authentication failed')) {
+          errorMessage = "Service authentication error. Please contact support.";
+        } else if (error.message.includes('Network error')) {
+          errorMessage = "Network error. Please check your internet connection and try again.";
+        } else if (error.message.includes('required fields')) {
+          errorMessage = "Please fill in all required fields.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
+      setContactSubmitError(errorMessage);
       setToast({
-        message: "Failed to send request. Please try again.",
+        message: errorMessage,
         type: "error",
       });
     } finally {
@@ -421,12 +461,12 @@ const CallToAction: React.FC = () => {
                               : 'border-gray-300 focus:ring-primary focus:border-primary'
                           }`}
                           placeholder="+971 XX XXX XXXX"
-                          value={partnerFormData.email}
+                          value={partnerFormData.phone}
                           onChange={(e) => {
                             const value = e.target.value;
                             setPartnerFormData({
                               ...partnerFormData,
-                              email: value,
+                              phone: value,
                             });
                             // Validate in real-time as user types
                             if (value.trim()) {

@@ -88,8 +88,6 @@ export async function getPublicJobPostings(): Promise<{ data: JobPosting[]; erro
   try {
     const supabase = getJobsSupabase();
     
-    console.log('[JobPostingService] Fetching public job postings...');
-    
     // Query directly from job_postings table for open positions
     // Temporarily remove status filter to debug
     const { data, error } = await supabase
@@ -102,11 +100,6 @@ export async function getPublicJobPostings(): Promise<{ data: JobPosting[]; erro
       console.error('[JobPostingService] Supabase query error:', error);
       throw new Error(error.message);
     }
-
-    console.log('[JobPostingService] Successfully fetched jobs:', {
-      count: data?.length || 0,
-      jobs: data?.map(j => ({ id: j.id, title: j.title, status: j.status }))
-    });
 
     return { data: data || [] };
   } catch (error) {

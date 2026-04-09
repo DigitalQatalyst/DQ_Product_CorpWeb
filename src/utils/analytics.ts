@@ -18,11 +18,8 @@ export const initGA = () => {
 
   // Check if gtag is already available (from static script)
   if (globalThis.gtag && typeof globalThis.gtag === 'function') {
-    console.log('✅ Google Analytics already loaded via static script');
     return;
   }
-
-  console.log('🔍 Loading Google Analytics dynamically');
 
   // Load gtag script
   const script = document.createElement('script');

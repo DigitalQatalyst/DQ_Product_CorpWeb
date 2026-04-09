@@ -41,7 +41,6 @@ export const fetchCourses = async (
       search: searchQuery || undefined,
     };
     const data = await graphqlClient.request(GET_COURSES, variables);
-    console.log(data);
     return data.courses;
   } catch (error) {
     console.error("Error fetching courses:", error);
