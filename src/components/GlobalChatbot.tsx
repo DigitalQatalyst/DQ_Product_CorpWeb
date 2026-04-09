@@ -106,7 +106,7 @@ const GlobalChatbot: React.FC = () => {
       };
       setMessages(prev => prev.slice(0, -1).concat(errorMessage));
     }
-  }, [inputMessage, session.messages]);
+  }, [inputMessage, session]);
 
   // Handle pending message from context (e.g., from HeroSection)
   useEffect(() => {
