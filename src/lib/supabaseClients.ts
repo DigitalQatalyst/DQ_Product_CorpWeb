@@ -19,6 +19,10 @@ export function getPrimarySupabase(): SupabaseClient {
     primaryClient = createClient(PRIMARY_SUPABASE_URL, PRIMARY_SUPABASE_KEY, {
       auth: {
         lock: undefined, // Disable Navigator LockManager to prevent timeout issues
+        persistSession: true,
+        storage: localStorage,
+        storageKey: 'sb-auth-token',
+        detectSessionInUrl: true,
       },
     });
   }
@@ -39,6 +43,10 @@ export function getJobsSupabase(): SupabaseClient {
     secondaryClient = createClient(SECONDARY_SUPABASE_URL, SECONDARY_SUPABASE_KEY, {
       auth: {
         lock: undefined, // Disable Navigator LockManager to prevent timeout issues
+        persistSession: true,
+        storage: localStorage,
+        storageKey: 'sb-jobs-token',
+        detectSessionInUrl: true,
       },
     });
   }

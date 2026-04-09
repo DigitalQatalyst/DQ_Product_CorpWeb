@@ -26,6 +26,10 @@ export function getSupabase(): SupabaseClient<Database> {
   _client = createClient<Database>(SUPABASE_URL, SUPABASE_ANON_KEY, {
     auth: {
       lock: undefined, // Disable Navigator LockManager to prevent timeout issues
+      persistSession: true,
+      storage: localStorage,
+      storageKey: 'sb-auth-token',
+      detectSessionInUrl: true,
     },
   })
   return _client
