@@ -1,0 +1,21 @@
+diff --git a/src/components/Enquiry/Enquiry.tsx b/src/components/Enquiry/Enquiry.tsx
+--- a/src/components/Enquiry/Enquiry.tsx
++++ b/src/components/Enquiry/Enquiry.tsx
+@@ -423,1 +423,1 @@
+-        data.errors.forEach((error: any, index: number) => {
++        data.errors.forEach((error: unknown, index: number) => {
+diff --git a/src/utils/formUtils.ts b/src/utils/formUtils.ts
+--- a/src/utils/formUtils.ts
++++ b/src/utils/formUtils.ts
+@@ -63,1 +63,1 @@
+-      pattern: /^[+]?[0-9\s\-\(\)]{7,15}$/,
++      pattern: /^[+]?[0-9\s\-(\)]{7,15}$/,
+diff --git a/src/utils/mockMarketplaceData.ts b/src/utils/mockMarketplaceData.ts
+--- a/src/utils/mockMarketplaceData.ts
++++ b/src/utils/mockMarketplaceData.ts
+@@ -38,1 +38,1 @@
+-      console.log('All IDs from DB:', mediaItems.data.map((i: any) => i.id));
++      console.log('All IDs from DB:', mediaItems.data.map((i: unknown) => i.id));
+@@ -39,1 +39,1 @@
+-      console.log('All Types from DB:', mediaItems.data.map((i: any) => i.type));
++      console.log('All Types from DB:', mediaItems.data.map((i: unknown) => i.type));

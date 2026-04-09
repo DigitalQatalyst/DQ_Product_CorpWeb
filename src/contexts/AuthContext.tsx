@@ -923,13 +923,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // ────────────────────────────────────────────────
   const signIn = useCallback(async (credentials: SignInWithPasswordCredentials) => {
     setError(null);
+    setIsLoading(true);
     try {
       const response = await supabase.auth.signInWithPassword(credentials);
-      if (response.error) setError(response.error);
+      if (response.error) {
+        setError(response.error);
+        setIsLoading(false);
+      }
       return response;
     } catch (err: any) {
       const errObj = { message: 'Sign in failed' } as AuthError;
       setError(errObj);
+      setIsLoading(false);
       return { data: { user: null, session: null }, error: errObj };
     }
   }, []);

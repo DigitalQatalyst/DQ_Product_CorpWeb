@@ -22,13 +22,22 @@ import { CaseStudiesPage } from "./pages/case-studies/CaseStudiesPage";
 
 // Simple role-based route guard
 const RoleGuard = ({ children, allowedRoles }: { children: React.ReactNode; allowedRoles: string[] }) => {
-  const { loggedrole } = useAuth();
+  const { loggedrole, isLoading } = useAuth();
   const userRole = loggedrole?.role?.toLowerCase() || "";
-  
-  if (!allowedRoles.includes(userRole)) {
-    return <Navigate to="/admin-ui/dashboard" replace />;
+
+  // Wait for auth to finish loading before making redirect decisions
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-secondary-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+      </div>
+    );
   }
-  
+
+  if (!allowedRoles.includes(userRole)) {
+    return <Navigate to="/login" replace />;
+  }
+
   return <>{children}</>;
 };
 // Admin UI (integrated)
