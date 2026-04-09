@@ -2,22 +2,17 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { X, Send, Star, Bot } from 'lucide-react';
 import { dqChatbotService, ChatSession } from '../services/dqChatbotService';
 import { useChatbot } from '../hooks/useChatbot';
-
-interface Message {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp: Date;
-  isLoading?: boolean;
-}
-
-const TRENDING_QUESTIONS = [
-  "How can my organization start its digital transformation journey?",
-  "What service areas does DQ serve?",
-  "How is DQ's digital transformation different?",
-  "What products does DQ offer?",
-  "Tell me about the DT 2.0 methodology"
-];
+import {
+  Message,
+  TRENDING_QUESTIONS,
+  createUserMessage,
+  createAssistantMessage,
+  createLoadingMessage,
+  scrollToBottom,
+  focusInput,
+  setBodyScroll,
+  handleChatbotError
+} from '../utils/chatbotUtils';
 
 const GlobalChatbot: React.FC = () => {
   const { isOpen, setIsOpen, pendingMessage, clearPendingMessage } = useChatbot();
@@ -29,51 +24,32 @@ const GlobalChatbot: React.FC = () => {
   const trendingContainerRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when new messages arrive
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const scrollToBottomCallback = useCallback(() => {
+    scrollToBottom(messagesEndRef);
+  }, []);
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    scrollToBottomCallback();
+  }, [messages, scrollToBottomCallback]);
 
   // Focus input when chat opens
   useEffect(() => {
     if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 100);
+      focusInput(inputRef);
     }
   }, [isOpen]);
 
   // Prevent body scroll when modal is open
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
+    return setBodyScroll(isOpen);
   }, [isOpen]);
 
   const handleSendMessage = useCallback(async (message?: string) => {
     const messageToSend = message || inputMessage.trim();
     if (!messageToSend) return;
 
-    const userMessage: Message = {
-      id: `msg_${Date.now()}_user`,
-      role: 'user',
-      content: messageToSend,
-      timestamp: new Date()
-    };
-
-    const loadingMessage: Message = {
-      id: `msg_${Date.now()}_bot_loading`,
-      role: 'assistant',
-      content: '',
-      timestamp: new Date(),
-      isLoading: true
-    };
+    const userMessage = createUserMessage(messageToSend);
+    const loadingMessage = createLoadingMessage();
 
     setMessages(prev => [...prev, userMessage, loadingMessage]);
     if (!message) setInputMessage('');
@@ -86,24 +62,13 @@ const GlobalChatbot: React.FC = () => {
         response = dqChatbotService.getFallbackResponse(messageToSend);
       }
 
-      const botMessage: Message = {
-        id: `msg_${Date.now()}_bot`,
-        role: 'assistant',
-        content: response,
-        timestamp: new Date()
-      };
+      const botMessage = createAssistantMessage(response);
 
       setMessages(prev => prev.slice(0, -1).concat(botMessage));
       dqChatbotService.addMessage(session, 'user', messageToSend);
       dqChatbotService.addMessage(session, 'assistant', response);
     } catch (error) {
-      console.error('GlobalChatbot error:', error);
-      const errorMessage: Message = {
-        id: `msg_${Date.now()}_bot_error`,
-        role: 'assistant',
-        content: "I apologize, but I'm experiencing some technical difficulties. Please try again or contact DigitalQatalyst directly for assistance.",
-        timestamp: new Date()
-      };
+      const errorMessage = handleChatbotError(error);
       setMessages(prev => prev.slice(0, -1).concat(errorMessage));
     }
   }, [inputMessage, session]);

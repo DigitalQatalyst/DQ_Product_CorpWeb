@@ -22,33 +22,31 @@ import {
   Handshake
 } from "lucide-react";
 
-export interface ServiceBenefit {
-  icon: any;
-  title: string;
-  description: string;
-}
+import {
+  ServiceBenefit,
+  WhereToStartItem,
+  ServiceArea,
+  ServiceFaq,
+  ServiceDomainData,
+  createServiceBenefit,
+  createWhereToStartItem,
+  createServiceArea,
+  createFaq
+} from '../utils/commonDataTypes';
 
-export interface WhereToStartItem {
-  title: string;
-  description: string;
+// Extended interfaces for service-specific needs
+export interface ExtendedWhereToStartItem extends WhereToStartItem {
   cta?: string;
   question?: string;
   answer?: string;
 }
 
-export interface ServiceArea {
+export interface ExtendedServiceArea extends ServiceArea {
   number: string;
-  title: string;
-  description: string;
   icon?: any;
 }
 
-export interface ServiceFaq {
-  question: string;
-  answer: string;
-}
-
-export interface ServiceDomainData {
+export interface ExtendedServiceDomainData {
   icon: any;
   title: string;
   subtitle?: string;
@@ -59,8 +57,8 @@ export interface ServiceDomainData {
   videoThumbnail?: string;
   showImageInsteadOfVideo?: boolean;
   benefits?: ServiceBenefit[];
-  whereToStart?: WhereToStartItem[];
-  serviceAreas?: ServiceArea[];
+  whereToStart?: ExtendedWhereToStartItem[];
+  serviceAreas?: ExtendedServiceArea[];
   faqs?: ServiceFaq[];
   keyFeatures?: any[];
   caseStudies?: any[];
@@ -70,7 +68,7 @@ export interface ServiceDomainData {
 }
 
 // Service data mapping
-export const serviceData: Record<string, ServiceDomainData> = {
+export const serviceData: Record<string, ExtendedServiceDomainData> = {
   "design-4-0": {
     icon: Palette,
     title: "Design 4.0"
