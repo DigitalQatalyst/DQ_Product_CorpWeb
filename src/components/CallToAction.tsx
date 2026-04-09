@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CheckCircle, X, ArrowRight } from "lucide-react";
 import { FadeInUpOnScroll, useInView } from "./AnimationUtils";
 import { submitConsultationRequest } from "../services/airtableService";
+import { SAFE_EXTERNAL_URLS } from "../config/externalUrls";
 
 // Form input component
 const FormInput = ({
@@ -243,10 +244,10 @@ const CallToAction: React.FC = () => {
     formData.append("_subject", "🚀 New Consultation Request - DigitalQatalyst");
     formData.append("_captcha", "false");
     formData.append("_template", "table");
-    formData.append("_next", "https://digitalqatalyst.com/thank-you");
+    formData.append("_next", SAFE_EXTERNAL_URLS.thankYouPage());
     formData.append("_cc", "leads@digitalqatalyst.com");
 
-    fetch("https://formsubmit.co/info@digitalqatalyst.com", {
+    fetch(SAFE_EXTERNAL_URLS.formSubmit(), {
       method: "POST",
       body: formData,
       mode: "no-cors",
