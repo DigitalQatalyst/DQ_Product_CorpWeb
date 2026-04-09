@@ -30,7 +30,6 @@ const ResearchReportDetailPage: React.FC = () => {
                 try {
                     data = await blogService.getBlogBySlug(slug);
                 } catch (e) {
-                    console.log("Slug search failed, trying ID search for:", slug);
                     // If slug fails, it might be a UUID. Try fetching by ID.
                     try {
                         data = await blogService.getBlogById(slug);

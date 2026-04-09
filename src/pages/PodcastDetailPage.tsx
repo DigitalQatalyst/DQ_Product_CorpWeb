@@ -47,12 +47,8 @@ const PodcastDetailPage: React.FC = () => {
         setLoading(true)
         setError(null)
 
-        console.log('Fetching podcast with slug:', id)
-
         // Fetch podcast by slug
         const data = await mediaService.getMediaItemBySlug(id)
-
-        console.log('Fetched podcast data:', data)
 
         // Validate that this is a podcast
         if (data.type !== 'podcast') {
@@ -63,7 +59,6 @@ const PodcastDetailPage: React.FC = () => {
         let parsedContent: any = {}
         try {
           parsedContent = typeof data.content === 'string' ? JSON.parse(data.content) : data.content
-          console.log('Parsed podcast content:', parsedContent)
         } catch (e) {
           console.error('Error parsing podcast content:', e)
           console.error('Raw content:', data.content)
@@ -82,8 +77,6 @@ const PodcastDetailPage: React.FC = () => {
           type: 'podcast',
           limit: 5
         })
-
-        console.log('Fetched more episodes:', moreEpisodes?.length || 0)
 
         // Map the data to match the expected structure
         const mappedPodcast = {
