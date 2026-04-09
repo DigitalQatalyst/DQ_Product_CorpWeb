@@ -447,8 +447,6 @@ function SupabaseArticleView({ slug }: { slug: string }) {
         const result = await blogService.getBlogs({ slug });
         if (result.data.length > 0) {
           const fetchedArticle = result.data[0];
-          console.log('📰 Fetched Article Data:', fetchedArticle);
-          console.log('👤 Author Object:', fetchedArticle.author);
           setArticle(fetchedArticle);
         }
       } catch (err) {
@@ -472,8 +470,6 @@ function SupabaseArticleView({ slug }: { slug: string }) {
     // Fallback to Sanity if not in Supabase
     return <SanityArticleView slug={slug} />;
   }
-
-  console.log('🎨 Rendering Article with Author:', article.author);
 
   return (
     <ArticleLayout

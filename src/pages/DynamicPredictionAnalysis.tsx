@@ -959,7 +959,6 @@ ${window.location.href}`);
         if (itemId) {
           try {
             blogData = await blogService.getBlogById(itemId);
-            console.log('Successfully fetched blog data from Supabase:', blogData);
             
             // Validate that fetched data is a prediction analysis
             if (blogData && 'type' in blogData && blogData.type !== 'prediction-analysis') {
@@ -982,7 +981,6 @@ ${window.location.href}`);
           const marketplaceState = JSON.parse(localStorage.getItem('marketplacePredictionState') || '{}');
           if (marketplaceState && marketplaceState.item) {
             blogData = marketplaceState.item;
-            console.log('Using localStorage data as fallback');
           }
         }
         
