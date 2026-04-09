@@ -184,48 +184,106 @@ const CallToAction: React.FC = () => {
     null,
   );
 
+  // Validation helper function
+  const validateFormData = (): string | null => {
+    if (!contactFormData.name.trim()) {
+      return "Please enter your name.";
+    }
+    if (!contactFormData.email.trim()) {
+      return "Please enter your email address.";
+    }
+    if (!contactFormData.message.trim()) {
+      return "Please enter a message.";
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(contactFormData.email)) {
+      return "Please enter a valid email address.";
+    }
+    
+    if (partnerFormData.phone && !validatePhoneNumber(partnerFormData.phone)) {
+      return "Please enter a valid phone number with digits only.";
+    }
+    
+    return null;
+  };
+
+  // Error message helper function
+  const getErrorMessage = (error: unknown): string => {
+    if (!(error instanceof Error)) {
+      return "Failed to send request. Please try again.";
+    }
+    
+    if (error.message.includes('Missing Airtable configuration')) {
+      return "Configuration error. Please contact support.";
+    }
+    if (error.message.includes('authentication failed')) {
+      return "Service authentication error. Please contact support.";
+    }
+    if (error.message.includes('Network error')) {
+      return "Network error. Please check your internet connection and try again.";
+    }
+    if (error.message.includes('required fields')) {
+      return "Please fill in all required fields.";
+    }
+    
+    return error.message;
+  };
+
+  // Email notification helper function
+  const sendEmailNotification = () => {
+    const formData = new FormData();
+    formData.append("Name", contactFormData.name);
+    formData.append("Email Address", contactFormData.email);
+    formData.append("Company Name", partnerFormData.name || "Not provided");
+    formData.append("Phone Number", partnerFormData.phone || "Not provided");
+    formData.append("Sector Interest", partnerFormData.serviceCategory || "Not provided");
+    formData.append("General Interest", partnerFormData.message || "Not provided");
+    formData.append("Message", contactFormData.message);
+    formData.append("_subject", "🚀 New Consultation Request - DigitalQatalyst");
+    formData.append("_captcha", "false");
+    formData.append("_template", "table");
+    formData.append("_next", "https://digitalqatalyst.com/thank-you");
+    formData.append("_cc", "leads@digitalqatalyst.com");
+
+    fetch("https://formsubmit.co/info@digitalqatalyst.com", {
+      method: "POST",
+      body: formData,
+      mode: "no-cors",
+    })
+      .then(() => console.log("📧 Email notification sent via FormSubmit"))
+      .catch((error) => console.log("⚠️ Email notification failed (non-critical):", error));
+  };
+
+  // Success handler function
+  const handleSubmissionSuccess = () => {
+    setContactFormSuccess(true);
+    setToast({
+      message: "Thank you! Your consultation request has been recorded and we'll respond within 24 hours.",
+      type: "success",
+    });
+
+    setTimeout(() => {
+      setContactFormSuccess(false);
+      setContactFormData({ name: "", email: "", message: "" });
+      setPartnerFormData({ name: "", phone: "", serviceCategory: "", message: "" });
+    }, 3000);
+  };
+
   // Handle form submissions
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmittingContact(true);
     setContactSubmitError(null);
 
-    // Validate required fields
-    if (!contactFormData.name.trim()) {
-      setContactSubmitError("Please enter your name.");
+    const validationError = validateFormData();
+    if (validationError) {
+      setContactSubmitError(validationError);
       setIsSubmittingContact(false);
-      return;
-    }
-
-    if (!contactFormData.email.trim()) {
-      setContactSubmitError("Please enter your email address.");
-      setIsSubmittingContact(false);
-      return;
-    }
-
-    if (!contactFormData.message.trim()) {
-      setContactSubmitError("Please enter a message.");
-      setIsSubmittingContact(false);
-      return;
-    }
-
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(contactFormData.email)) {
-      setContactSubmitError("Please enter a valid email address.");
-      setIsSubmittingContact(false);
-      return;
-    }
-
-    // Validate phone number before submission
-    if (partnerFormData.phone && !validatePhoneNumber(partnerFormData.phone)) {
-      setIsSubmittingContact(false);
-      setContactSubmitError("Please enter a valid phone number with digits only.");
       return;
     }
 
     try {
-      // Submit to Airtable (primary data storage)
       await submitConsultationRequest({
         name: contactFormData.name,
         email: contactFormData.email,
@@ -236,92 +294,13 @@ const CallToAction: React.FC = () => {
         message: contactFormData.message,
       });
 
-      console.log("✅ Consultation request saved to Airtable successfully");
-
-      // Also send email notification via FormSubmit (backup notification system)
-      const formData = new FormData();
-      formData.append("Name", contactFormData.name);
-      formData.append("Email Address", contactFormData.email);
-      formData.append("Company Name", partnerFormData.name || "Not provided");
-      formData.append("Phone Number", partnerFormData.phone || "Not provided");
-      formData.append(
-        "Sector Interest",
-        partnerFormData.serviceCategory || "Not provided",
-      );
-      formData.append(
-        "General Interest",
-        partnerFormData.message || "Not provided",
-      );
-      formData.append("Message", contactFormData.message);
-      formData.append(
-        "_subject",
-        "🚀 New Consultation Request - DigitalQatalyst",
-      );
-      formData.append("_captcha", "false");
-      formData.append("_template", "table");
-      formData.append("_next", "https://digitalqatalyst.com/thank-you");
-      formData.append("_cc", "leads@digitalqatalyst.com");
-
-      // Send email notification (runs in background, don't wait for it)
-      fetch("https://formsubmit.co/info@digitalqatalyst.com", {
-        method: "POST",
-        body: formData,
-        mode: "no-cors",
-      })
-        .then(() => {
-          console.log("📧 Email notification sent via FormSubmit");
-        })
-        .catch((error) => {
-          console.log("⚠️ Email notification failed (non-critical):", error);
-        });
-
-      setContactFormSuccess(true);
-      setToast({
-        message:
-          "Thank you! Your consultation request has been recorded and we'll respond within 24 hours.",
-        type: "success",
-      });
-
-      // Reset form after 3 seconds
-      setTimeout(() => {
-        setContactFormSuccess(false);
-        setContactFormData({
-          name: "",
-          email: "",
-          message: "",
-        });
-        setPartnerFormData({
-          name: "",
-          phone: "",
-          serviceCategory: "",
-          message: "",
-        });
-      }, 3000);
+      sendEmailNotification();
+      handleSubmissionSuccess();
     } catch (error) {
       console.error("❌ Error submitting consultation form:", error);
-      
-      let errorMessage = "Failed to send request. Please try again.";
-      
-      if (error instanceof Error) {
-        // Provide more specific error messages based on the error
-        if (error.message.includes('Missing Airtable configuration')) {
-          errorMessage = "Configuration error. Please contact support.";
-        } else if (error.message.includes('authentication failed')) {
-          errorMessage = "Service authentication error. Please contact support.";
-        } else if (error.message.includes('Network error')) {
-          errorMessage = "Network error. Please check your internet connection and try again.";
-        } else if (error.message.includes('required fields')) {
-          errorMessage = "Please fill in all required fields.";
-        } else {
-          errorMessage = error.message;
-        }
-      }
-      
+      const errorMessage = getErrorMessage(error);
       setContactSubmitError(errorMessage);
-      setToast({
-        message: errorMessage,
-        type: "error",
-      });
+      setToast({ message: errorMessage, type: "error" });
     } finally {
       setIsSubmittingContact(false);
     }
