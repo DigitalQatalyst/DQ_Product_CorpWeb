@@ -27,6 +27,7 @@ import {
 import { FadeInUpOnScroll } from "./AnimationUtils";
 import { openaiService, AssessmentResult } from "../services/openaiService";
 import { submitAssessmentLead } from "../services/airtableService";
+import { isValidEmail } from "../utils/emailValidation";
 
 interface AssessmentFormData {
   organizationDescription: string;
@@ -74,8 +75,7 @@ const DigitalMaturityAssessment: React.FC = () => {
       return false;
     }
     
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!isValidEmail(email)) {
       setEmailError("Please enter a valid email address");
       return false;
     }
@@ -136,8 +136,7 @@ Security & DevOps: ${formData.securityDevOps}`;
     if (!allFieldsFilled) return false;
     
     // Check email format without setting error (just validation check)
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(leadData.email);
+    return isValidEmail(leadData.email);
   };
 
   const handleAssess = async () => {
@@ -304,11 +303,14 @@ Security & DevOps: ${formData.securityDevOps}`;
           <FadeInUpOnScroll className="max-w-4xl mx-auto">
             <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
               <div className="grid md:grid-cols-3 gap-6 mb-8">
-                <div className="text-center p-6 bg-blue-50 rounded-xl">
-                  <BrainCircuit
-                    size={32}
-                    className="text-blue-600 mx-auto mb-3"
-                  />
+                <div className="text-center p-6 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                    <BrainCircuit
+                      size={32}
+                      className="text-primary"
+                      strokeWidth={1.5}
+                    />
+                  </div>
                   <h3 className="font-semibold text-gray-900 mb-2">
                     AI-Powered Analysis
                   </h3>
@@ -317,8 +319,14 @@ Security & DevOps: ${formData.securityDevOps}`;
                     Towers
                   </p>
                 </div>
-                <div className="text-center p-6 bg-indigo-50 rounded-xl">
-                  <Target size={32} className="text-indigo-600 mx-auto mb-3" />
+                <div className="text-center p-6 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                    <Target 
+                      size={32} 
+                      className="text-primary" 
+                      strokeWidth={1.5}
+                    />
+                  </div>
                   <h3 className="font-semibold text-gray-900 mb-2">
                     DQ Framework
                   </h3>
@@ -326,11 +334,14 @@ Security & DevOps: ${formData.securityDevOps}`;
                     Based on proven Digital Business Platform methodology
                   </p>
                 </div>
-                <div className="text-center p-6 bg-purple-50 rounded-xl">
-                  <Sparkles
-                    size={32}
-                    className="text-purple-600 mx-auto mb-3"
-                  />
+                <div className="text-center p-6 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                    <Sparkles
+                      size={32}
+                      className="text-primary"
+                      strokeWidth={1.5}
+                    />
+                  </div>
                   <h3 className="font-semibold text-gray-900 mb-2">
                     Strategic Insights
                   </h3>
@@ -385,7 +396,8 @@ Security & DevOps: ${formData.securityDevOps}`;
                       handleLeadInputChange("name", e.target.value)
                     }
                     placeholder="Enter your full name"
-                    className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-3 py-2.5 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all duration-200 text-sm"
+                    style={{ outline: 'none' }}
                   />
                 </div>
 
@@ -401,7 +413,8 @@ Security & DevOps: ${formData.securityDevOps}`;
                       handleLeadInputChange("company", e.target.value)
                     }
                     placeholder="Enter your company name"
-                    className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-3 py-2.5 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all duration-200 text-sm"
+                    style={{ outline: 'none' }}
                   />
                 </div>
 
@@ -425,11 +438,12 @@ Security & DevOps: ${formData.securityDevOps}`;
                       }
                     }}
                     placeholder="Enter your email address"
-                    className={`w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary transition-all ${
+                    className={`w-full px-3 py-2.5 border rounded-md focus:outline-none focus:ring-1 focus:ring-primary transition-all duration-200 text-sm ${
                       emailError
                         ? 'border-red-500 focus:border-red-500'
-                        : 'border-gray-300 focus:border-transparent'
+                        : 'border-gray-200 focus:border-primary'
                     }`}
+                    style={{ outline: 'none' }}
                   />
                   {emailError && (
                     <p className="mt-1 text-sm text-red-600">{emailError}</p>
@@ -689,17 +703,10 @@ Security & DevOps: ${formData.securityDevOps}`;
           // Assessment Input Screen
           <FadeInUpOnScroll className="max-w-5xl mx-auto">
             <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center space-x-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-sm font-medium border border-blue-100">
+              <div className="flex items-center space-x-2 bg-primary/10 text-primary px-4 py-2 rounded-lg text-sm font-medium border border-primary/20">
                 <BrainCircuit className="w-4 h-4" />
                 <span>AI-Driven Analysis</span>
               </div>
-              <button
-                onClick={loadSampleData}
-                className="flex items-center space-x-1.5 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-medium rounded-lg transition-colors"
-              >
-                <FileText className="w-3 h-3" />
-                <span>Load Sample Data</span>
-              </button>
             </div>
 
             <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
@@ -730,7 +737,9 @@ Security & DevOps: ${formData.securityDevOps}`;
                       )
                     }
                     placeholder="Brief description of your organization, business model, and current digital transformation stage..."
-                    className="w-full h-24 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm"
+                    className="w-full px-3 py-2.5 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all duration-200 resize-none text-sm"
+                    style={{ outline: 'none' }}
+                    rows={4}
                   />
                 </div>
 
@@ -746,7 +755,15 @@ Security & DevOps: ${formData.securityDevOps}`;
                       onChange={(e) =>
                         handleInputChange("industry", e.target.value)
                       }
-                      className="w-full p-3 pr-10 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm appearance-none bg-white"
+                      className="w-full px-3 py-2.5 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all duration-200 text-sm appearance-none bg-white"
+                      style={{
+                        backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
+                        backgroundPosition: "right 0.5rem center",
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "1.5em 1.5em",
+                        paddingRight: "2.5rem",
+                        outline: 'none'
+                      }}
                     >
                       <option value="">Select your industry...</option>
                       <option value="Experience 4.0">Experience 4.0</option>
@@ -759,26 +776,11 @@ Security & DevOps: ${formData.securityDevOps}`;
                       <option value="Government 4.0">Government 4.0</option>
                       <option value="Hospitality 4.0">Hospitality 4.0</option>
                       <option value="Retail 4.0">Retail 4.0</option>
-                      <option value="Service 4.0">Service 4.0</option>
+                      <option value="Services 4.0">Services 4.0</option>
                       <option value="Logistics 4.0">Logistics 4.0</option>
                       <option value="Wellness 4.0">Wellness 4.0</option>
                       <option value="Other">Other</option>
                     </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                      <svg
-                        className="w-4 h-4 text-gray-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </div>
                   </div>
                 </div>
 
@@ -794,7 +796,15 @@ Security & DevOps: ${formData.securityDevOps}`;
                       onChange={(e) =>
                         handleInputChange("companySize", e.target.value)
                       }
-                      className="w-full p-3 pr-10 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm appearance-none bg-white"
+                      className="w-full px-3 py-2.5 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all duration-200 text-sm appearance-none bg-white"
+                      style={{
+                        backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
+                        backgroundPosition: "right 0.5rem center",
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "1.5em 1.5em",
+                        paddingRight: "2.5rem",
+                        outline: 'none'
+                      }}
                     >
                       <option value="">Select company size...</option>
                       <option value="1-50 employees">
@@ -813,21 +823,6 @@ Security & DevOps: ${formData.securityDevOps}`;
                         Global Enterprise (5,000+ employees)
                       </option>
                     </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                      <svg
-                        className="w-4 h-4 text-gray-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </div>
                   </div>
                 </div>
 
@@ -843,7 +838,9 @@ Security & DevOps: ${formData.securityDevOps}`;
                       handleInputChange("customerChannels", e.target.value)
                     }
                     placeholder="Describe how customers interact with your business (website, mobile app, physical locations, call centers, etc.)..."
-                    className="w-full h-24 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm"
+                    className="w-full px-3 py-2.5 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all duration-200 resize-none text-sm"
+                    style={{ outline: 'none' }}
+                    rows={4}
                   />
                 </div>
 
@@ -859,7 +856,9 @@ Security & DevOps: ${formData.securityDevOps}`;
                       handleInputChange("internalProcesses", e.target.value)
                     }
                     placeholder="Describe your internal workflows, collaboration tools, automation level, and operational processes..."
-                    className="w-full h-24 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm"
+                    className="w-full px-3 py-2.5 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all duration-200 resize-none text-sm"
+                    style={{ outline: 'none' }}
+                    rows={4}
                   />
                 </div>
 
@@ -875,7 +874,9 @@ Security & DevOps: ${formData.securityDevOps}`;
                       handleInputChange("dataIntelligence", e.target.value)
                     }
                     placeholder="Describe your data infrastructure, analytics capabilities, reporting systems, and AI/ML initiatives..."
-                    className="w-full h-24 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm"
+                    className="w-full px-3 py-2.5 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all duration-200 resize-none text-sm"
+                    style={{ outline: 'none' }}
+                    rows={4}
                   />
                 </div>
               </div>
@@ -892,7 +893,9 @@ Security & DevOps: ${formData.securityDevOps}`;
                     handleInputChange("securityDevOps", e.target.value)
                   }
                   placeholder="Describe your security posture, development practices, CI/CD pipelines, infrastructure management, and compliance frameworks..."
-                  className="w-full h-24 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm"
+                  className="w-full px-3 py-2.5 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all duration-200 resize-none text-sm"
+                  style={{ outline: 'none' }}
+                  rows={4}
                 />
               </div>
 

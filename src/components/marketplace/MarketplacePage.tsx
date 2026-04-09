@@ -615,14 +615,14 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({
       
       // Check if these are digital sector filter IDs
       const sectorMapping: Record<string, string> = {
-        "experience40": "Cross-Sector Domain (Experience4.0)",
-        "agility40": "Cross-Sector Domain (Agility4.0)",
-        "farming40": "Primary Sector (Farming4.0)",
-        "plant40": "Secondary Sector (Plant4.0)",
-        "infrastructure40": "Secondary Sector (Infrastructure4.0)",
-        "government40": "Tertiary Sector (Government4.0)",
-        "hospitality40": "Tertiary Sector (Hospitality4.0)",
-        "retail40": "Tertiary Sector (Retail4.0)",
+        "experience40": "Cross-Sector Domain (Experience 4.0)",
+        "agility40": "Cross-Sector Domain (Agility 4.0)",
+        "farming40": "Primary Sector (Farming 4.0)",
+        "plant40": "Secondary Sector (Plant 4.0)",
+        "infrastructure40": "Secondary Sector (Infrastructure 4.0)",
+        "government40": "Tertiary Sector (Government 4.0)",
+        "hospitality40": "Tertiary Sector (Hospitality 4.0)",
+        "retail40": "Tertiary Sector (Retail 4.0)",
         "service40": "Quaternary Sector (Service4.0)",
         "logistics40": "Quaternary Sector (Logistics4.0)",
         "wellness40": "Quinary Sector (Wellness4.0)",
@@ -863,14 +863,14 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({
     ];
 
     const sectorsList = [
-      "Cross-Sector Domain (Experience4.0)",
-      "Cross-Sector Domain (Agility4.0)",
-      "Primary Sector (Farming4.0)",
-      "Secondary Sector (Plant4.0)",
-      "Secondary Sector (Infrastructure4.0)",
-      "Tertiary Sector (Government4.0)",
-      "Tertiary Sector (Hospitality4.0)",
-      "Tertiary Sector (Retail4.0)",
+      "Cross-Sector Domain (Experience 4.0)",
+      "Cross-Sector Domain (Agility 4.0)",
+      "Primary Sector (Farming 4.0)",
+      "Secondary Sector (Plant 4.0)",
+      "Secondary Sector (Infrastructure 4.0)",
+      "Tertiary Sector (Government 4.0)",
+      "Tertiary Sector (Hospitality 4.0)",
+      "Tertiary Sector (Retail 4.0)",
       "Quaternary Sector (Service4.0)",
       "Quaternary Sector (Logistics4.0)",
       "Quinary Sector (Wellness4.0)",
@@ -1854,14 +1854,14 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({
 
     // Map digital sector filter IDs to database values
     const sectorMapping: Record<string, string> = {
-      experience40: "Cross-Sector Domain (Experience4.0)",
-      agility40: "Cross-Sector Domain (Agility4.0)",
-      farming40: "Primary Sector (Farming4.0)",
-      plant40: "Secondary Sector (Plant4.0)",
-      infrastructure40: "Secondary Sector (Infrastructure4.0)",
-      government40: "Tertiary Sector (Government4.0)",
-      hospitality40: "Tertiary Sector (Hospitality4.0)",
-      retail40: "Tertiary Sector (Retail4.0)",
+      experience40: "Cross-Sector Domain (Experience 4.0)",
+      agility40: "Cross-Sector Domain (Agility 4.0)",
+      farming40: "Primary Sector (Farming 4.0)",
+      plant40: "Secondary Sector (Plant 4.0)",
+      infrastructure40: "Secondary Sector (Infrastructure 4.0)",
+      government40: "Tertiary Sector (Government 4.0)",
+      hospitality40: "Tertiary Sector (Hospitality 4.0)",
+      retail40: "Tertiary Sector (Retail 4.0)",
       service40: "Quaternary Sector (Service4.0)",
       logistics40: "Quaternary Sector (Logistics4.0)",
       wellness40: "Quinary Sector (Wellness4.0)",
@@ -2075,8 +2075,8 @@ export const MarketplacePage: React.FC<MarketplacePageProps> = ({
                         : "On-premise deployment services for secure and controlled digital infrastructure."}
                 </p>
               </div>
-              <span className="ml-4 px-6 py-1 text-sm font-medium text-white bg-primary rounded-full whitespace-nowrap">
-                Tab overview
+              <span className="ml-4 px-3 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full whitespace-nowrap">
+                Overview
               </span>
             </div>
           </div>

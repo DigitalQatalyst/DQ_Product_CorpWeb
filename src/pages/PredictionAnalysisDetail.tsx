@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header/Header';
 import { Footer } from '../components/Footer/Footer';
 import { NewsletterSubscription } from '../components/NewsletterSubscription';
+import { isValidEmail } from '../utils/emailValidation';
 
 // Add CSS styles for links in dangerouslySetInnerHTML content
 const linkStyles = `
@@ -893,8 +894,6 @@ const RelatedAnalyses = ({ analyses }: any) => {
 };
 
 const PredictionAnalysisDetail = () => {
-  console.log('PredictionAnalysisDetail component is rendering');
-
   // Handler functions for CTA buttons
   const handleShare = async () => {
     const shareData = {
@@ -968,10 +967,8 @@ const PredictionAnalysisDetail = () => {
     const email = prompt('Enter your email address to subscribe to our weekly insights:');
 
     if (email) {
-      // Basic email validation
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-      if (emailRegex.test(email)) {
+      // Basic email validation using safe utility
+      if (isValidEmail(email)) {
         // Store subscription in localStorage (could be enhanced with API call later)
         const subscribers = JSON.parse(localStorage.getItem('newsletterSubscribers') || '[]');
 

@@ -6,10 +6,6 @@ import { getMarketplaceConfig } from "../../utils/marketplaceConfig";
 // Create a simple mock GraphQL client since we don't have access to graphql-request
 const mockGraphQLClient = {
   request: async (query: string, variables: any = {}) => {
-    console.log("Mock GraphQL request:", {
-      query,
-      variables,
-    });
     // Return mock data based on the query
     return getMockResponse(query, variables);
   },
@@ -24,8 +20,6 @@ export const getMockResponse = (
   variables: any,
   marketplaceType?: string
 ) => {
-  console.log(`Using mock data fallback for query: ${queryName}`);
-
   // If marketplaceType is provided, use the mockData from the config
   if (marketplaceType) {
     try {

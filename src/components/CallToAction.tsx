@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CheckCircle, X, ArrowRight } from "lucide-react";
 import { FadeInUpOnScroll, useInView } from "./AnimationUtils";
 import { submitConsultationRequest } from "../services/airtableService";
+import { SAFE_EXTERNAL_URLS } from "../config/externalUrls";
 
 // Form input component
 const FormInput = ({
@@ -142,7 +143,7 @@ const CallToAction: React.FC = () => {
   // Form states
   const [partnerFormData, setPartnerFormData] = useState({
     name: "",
-    email: "",
+    phone: "",
     serviceCategory: "",
     message: "",
   });
@@ -184,104 +185,123 @@ const CallToAction: React.FC = () => {
     null,
   );
 
-  // Handle form submissions
+  // Validation helper function
+  const validateFormData = (): string | null => {
+    if (!contactFormData.name.trim()) {
+      return "Please enter your name.";
+    }
+    if (!contactFormData.email.trim()) {
+      return "Please enter your email address.";
+    }
+    if (!contactFormData.message.trim()) {
+      return "Please enter a message.";
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(contactFormData.email)) {
+      return "Please enter a valid email address.";
+    }
+    
+    if (partnerFormData.phone && !validatePhoneNumber(partnerFormData.phone)) {
+      return "Please enter a valid phone number with digits only.";
+    }
+    
+    return null;
+  };
 
+  // Error message helper function
+  const getErrorMessage = (error: unknown): string => {
+    if (!(error instanceof Error)) {
+      return "Failed to send request. Please try again.";
+    }
+    
+    if (error.message.includes('Missing Airtable configuration')) {
+      return "Configuration error. Please contact support.";
+    }
+    if (error.message.includes('authentication failed')) {
+      return "Service authentication error. Please contact support.";
+    }
+    if (error.message.includes('Network error')) {
+      return "Network error. Please check your internet connection and try again.";
+    }
+    if (error.message.includes('required fields')) {
+      return "Please fill in all required fields.";
+    }
+    
+    return error.message;
+  };
+
+  // Email notification helper function
+  const sendEmailNotification = () => {
+    const formData = new FormData();
+    formData.append("Name", contactFormData.name);
+    formData.append("Email Address", contactFormData.email);
+    formData.append("Company Name", partnerFormData.name || "Not provided");
+    formData.append("Phone Number", partnerFormData.phone || "Not provided");
+    formData.append("Sector Interest", partnerFormData.serviceCategory || "Not provided");
+    formData.append("General Interest", partnerFormData.message || "Not provided");
+    formData.append("Message", contactFormData.message);
+    formData.append("_subject", "🚀 New Consultation Request - DigitalQatalyst");
+    formData.append("_captcha", "false");
+    formData.append("_template", "table");
+    formData.append("_next", SAFE_EXTERNAL_URLS.thankYouPage());
+    formData.append("_cc", "leads@digitalqatalyst.com");
+
+    fetch(SAFE_EXTERNAL_URLS.formSubmit(), {
+      method: "POST",
+      body: formData,
+      mode: "no-cors",
+    })
+      .then(() => console.log("📧 Email notification sent via FormSubmit"))
+      .catch((error) => console.log("⚠️ Email notification failed (non-critical):", error));
+  };
+
+  // Success handler function
+  const handleSubmissionSuccess = () => {
+    setContactFormSuccess(true);
+    setToast({
+      message: "Thank you! Your consultation request has been recorded and we'll respond within 24 hours.",
+      type: "success",
+    });
+
+    setTimeout(() => {
+      setContactFormSuccess(false);
+      setContactFormData({ name: "", email: "", message: "" });
+      setPartnerFormData({ name: "", phone: "", serviceCategory: "", message: "" });
+    }, 3000);
+  };
+
+  // Handle form submissions
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmittingContact(true);
     setContactSubmitError(null);
 
-    // Validate phone number before submission
-    if (partnerFormData.email && !validatePhoneNumber(partnerFormData.email)) {
+    const validationError = validateFormData();
+    if (validationError) {
+      setContactSubmitError(validationError);
       setIsSubmittingContact(false);
-      setContactSubmitError("Please enter a valid phone number with digits only.");
       return;
     }
 
     try {
-      // Submit to Airtable (primary data storage)
       await submitConsultationRequest({
         name: contactFormData.name,
         email: contactFormData.email,
         company: partnerFormData.name || "",
-        phone: partnerFormData.email || "",
+        phone: partnerFormData.phone || "",
         sector: partnerFormData.serviceCategory || "",
         interest: partnerFormData.message || "",
         message: contactFormData.message,
       });
 
-      console.log("✅ Consultation request saved to Airtable successfully");
-
-      // Also send email notification via FormSubmit (backup notification system)
-      const formData = new FormData();
-      formData.append("Name", contactFormData.name);
-      formData.append("Email Address", contactFormData.email);
-      formData.append("Company Name", partnerFormData.name || "Not provided");
-      formData.append("Phone Number", partnerFormData.email || "Not provided");
-      formData.append(
-        "Sector Interest",
-        partnerFormData.serviceCategory || "Not provided",
-      );
-      formData.append(
-        "General Interest",
-        partnerFormData.message || "Not provided",
-      );
-      formData.append("Message", contactFormData.message);
-      formData.append(
-        "_subject",
-        "🚀 New Consultation Request - DigitalQatalyst",
-      );
-      formData.append("_captcha", "false");
-      formData.append("_template", "table");
-      formData.append("_next", "https://digitalqatalyst.com/thank-you");
-      formData.append("_cc", "leads@digitalqatalyst.com");
-
-      // Send email notification (runs in background, don't wait for it)
-      fetch("https://formsubmit.co/info@digitalqatalyst.com", {
-        method: "POST",
-        body: formData,
-        mode: "no-cors",
-      })
-        .then(() => {
-          console.log("📧 Email notification sent via FormSubmit");
-        })
-        .catch((error) => {
-          console.log("⚠️ Email notification failed (non-critical):", error);
-        });
-
-      setContactFormSuccess(true);
-      setToast({
-        message:
-          "Thank you! Your consultation request has been recorded and we'll respond within 24 hours.",
-        type: "success",
-      });
-
-      // Reset form after 3 seconds
-      setTimeout(() => {
-        setContactFormSuccess(false);
-        setContactFormData({
-          name: "",
-          email: "",
-          message: "",
-        });
-        setPartnerFormData({
-          name: "",
-          email: "",
-          serviceCategory: "",
-          message: "",
-        });
-      }, 3000);
+      sendEmailNotification();
+      handleSubmissionSuccess();
     } catch (error) {
       console.error("❌ Error submitting consultation form:", error);
-      setContactSubmitError(
-        error instanceof Error
-          ? error.message
-          : "Network error. Please try again or contact us directly at info@digitalqatalyst.com",
-      );
-      setToast({
-        message: "Failed to send request. Please try again.",
-        type: "error",
-      });
+      const errorMessage = getErrorMessage(error);
+      setContactSubmitError(errorMessage);
+      setToast({ message: errorMessage, type: "error" });
     } finally {
       setIsSubmittingContact(false);
     }
@@ -421,12 +441,12 @@ const CallToAction: React.FC = () => {
                               : 'border-gray-300 focus:ring-primary focus:border-primary'
                           }`}
                           placeholder="+971 XX XXX XXXX"
-                          value={partnerFormData.email}
+                          value={partnerFormData.phone}
                           onChange={(e) => {
                             const value = e.target.value;
                             setPartnerFormData({
                               ...partnerFormData,
-                              email: value,
+                              phone: value,
                             });
                             // Validate in real-time as user types
                             if (value.trim()) {
@@ -452,23 +472,23 @@ const CallToAction: React.FC = () => {
                       <FormSelect
                         label="Which sector are you interested in?"
                         options={[
-                          { value: "experience-4.0", label: "Experience 4.0" },
-                          { value: "agility-4.0", label: "Agility 4.0" },
-                          { value: "farming-4.0", label: "Farming 4.0" },
-                          { value: "plant-4.0", label: "Plant 4.0" },
+                          { value: "experience-4-0", label: "Experience 4.0" },
+                          { value: "agility-4-0", label: "Agility 4.0" },
+                          { value: "farming-4-0", label: "Farming 4.0" },
+                          { value: "plant-4-0", label: "Plant 4.0" },
                           {
-                            value: "infrastructure-4.0",
+                            value: "infrastructure-4-0",
                             label: "Infrastructure 4.0",
                           },
-                          { value: "government-4.0", label: "Government 4.0" },
+                          { value: "government-4-0", label: "Government 4.0" },
                           {
-                            value: "hospitality-4.0",
+                            value: "hospitality-4-0",
                             label: "Hospitality 4.0",
                           },
-                          { value: "retail-4.0", label: "Retail 4.0" },
-                          { value: "service-4.0", label: "Service 4.0" },
-                          { value: "logistics-4.0", label: "Logistics 4.0" },
-                          { value: "wellness-4.0", label: "Wellness 4.0" },
+                          { value: "retail-4-0", label: "Retail 4.0" },
+                          { value: "service-4-0", label: "Services 4.0" },
+                          { value: "logistics-4-0", label: "Logistics 4.0" },
+                          { value: "wellness-4-0", label: "Wellness 4.0" },
                         ]}
                         value={partnerFormData.serviceCategory}
                         onChange={(e) =>

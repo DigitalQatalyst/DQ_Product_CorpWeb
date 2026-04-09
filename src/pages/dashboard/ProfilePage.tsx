@@ -6,6 +6,7 @@ import {
   updateUserProfile,
 } from "../../lib/supabase";
 import { User, Briefcase, Tag, Camera, Loader2 } from "lucide-react";
+import { isValidEmail } from "../../utils/emailValidation";
 
 const ProfilePage = () => {
   const { user, refreshAvatar } = useAuth();
@@ -77,10 +78,9 @@ const ProfilePage = () => {
   const handleSaveChanges = async () => {
     if (!user?.id || !userRowId) return;
 
-    // Validate email format before saving
+    // Validate email format before saving using safe utility
     if (personalInfo.email) {
-      const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-      if (!emailRegex.test(personalInfo.email)) {
+      if (!isValidEmail(personalInfo.email)) {
         setErrorMessage(
           `Invalid email format: ${personalInfo.email}. Must match pattern: user@domain.com`,
         );
@@ -336,17 +336,13 @@ const ProfilePage = () => {
                       }
                       className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent hover:border-gray-400 transition-colors ${
                         personalInfo.email &&
-                        !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(
-                          personalInfo.email,
-                        )
+                        !isValidEmail(personalInfo.email)
                           ? "border-red-300"
                           : "border-gray-300"
                       }`}
                     />
                     {personalInfo.email &&
-                      !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(
-                        personalInfo.email,
-                      ) && (
+                      !isValidEmail(personalInfo.email) && (
                         <p className="mt-1 text-sm text-red-600">
                           Invalid email format (e.g., user@domain.com)
                         </p>

@@ -95,47 +95,14 @@ export async function listPublicMedia({
   format,
   popularity,
 }: ListPublicMediaParams = {}): Promise<ListPublicMediaResult> {
-  console.log("🔍 [KnowledgeHubGrid] listPublicMedia called with params:", {
-    limit,
-    after,
-    tag,
-    q,
-    subMarketplace,
-    digital_perspective,
-    digital_stream,
-    digital_domain,
-    digital_sector,
-    content_type,
-    format,
-    popularity,
-  });
-
   try {
     // Use our enhanced getKnowledgeHubItems function that combines real + mock data
-    console.log(
-      "📊 [KnowledgeHubGrid] Fetching items using getKnowledgeHubItems...",
-    );
     const allItems = await getKnowledgeHubItems();
-
-    console.log("✅ [KnowledgeHubGrid] Got items from getKnowledgeHubItems:", {
-      totalCount: allItems.length,
-      types: allItems.reduce(
-        (acc, item) => {
-          acc[item.mediaType] = (acc[item.mediaType] || 0) + 1;
-          return acc;
-        },
-        {} as Record<string, number>,
-      ),
-    });
 
     let filteredItems = allItems;
 
     // Apply sub-marketplace filter
     if (subMarketplace) {
-      console.log(
-        "🔽 [KnowledgeHubGrid] Applying sub-marketplace filter:",
-        subMarketplace,
-      );
       if (subMarketplace === "written") {
         filteredItems = filteredItems.filter((item) =>
           [
@@ -155,15 +122,10 @@ export async function listPublicMedia({
           ["Video", "Podcast", "Event"].includes(item.mediaType),
         );
       }
-      console.log(
-        "📝 [KnowledgeHubGrid] After sub-marketplace filter:",
-        filteredItems.length,
-      );
     }
 
     // Apply tag/type filter
     if (tag) {
-      console.log("🏷️ [KnowledgeHubGrid] Applying tag/type filter:", tag);
       const filterTypes = tag.split(",").map((t) => t.trim().toLowerCase());
 
       filteredItems = filteredItems.filter((item) => {
@@ -182,15 +144,10 @@ export async function listPublicMedia({
 
         return typeMatch || tagMatch;
       });
-      console.log(
-        "📝 [KnowledgeHubGrid] After tag/type filter:",
-        filteredItems.length,
-      );
     }
 
     // Apply search filter
     if (q && q.trim()) {
-      console.log("🔍 [KnowledgeHubGrid] Applying search filter:", q);
       const searchQuery = q.toLowerCase();
       filteredItems = filteredItems.filter(
         (item) =>
@@ -201,10 +158,6 @@ export async function listPublicMedia({
             item.tags.some((tag) =>
               String(tag).toLowerCase().includes(searchQuery),
             )),
-      );
-      console.log(
-        "📝 [KnowledgeHubGrid] After search filter:",
-        filteredItems.length,
       );
     }
 
@@ -219,16 +172,6 @@ export async function listPublicMedia({
       popularity,
     ].filter((f) => f).length;
     if (hasMarketplaceFilters) {
-      console.log("🎯 [KnowledgeHubGrid] Applying marketplace filters:", {
-        digital_perspective,
-        digital_stream,
-        digital_domain,
-        digital_sector,
-        content_type,
-        format,
-        popularity,
-      });
-
       filteredItems = filteredItems.filter((item) => {
         if (
           digital_perspective &&
@@ -246,10 +189,6 @@ export async function listPublicMedia({
         if (popularity && item.popularity !== popularity) return false;
         return true;
       });
-      console.log(
-        "📝 [KnowledgeHubGrid] After marketplace filters:",
-        filteredItems.length,
-      );
     }
 
     // Convert marketplace items to PublicMediaItem format
@@ -278,11 +217,6 @@ export async function listPublicMedia({
       provider: item.provider,
     }));
 
-    console.log(
-      "🔄 [KnowledgeHubGrid] Converted to PublicMediaItem format:",
-      publicItems.length,
-    );
-
     // Proper pagination using cursor
     const cursor = decodeCursor(after);
     const startIndex =
@@ -290,27 +224,11 @@ export async function listPublicMedia({
     const endIndex = startIndex + limit;
     const paginatedItems = publicItems.slice(startIndex, endIndex);
 
-    console.log("📄 [KnowledgeHubGrid] Paginated result:", {
-      requested: limit,
-      returned: paginatedItems.length,
-      startIndex,
-      endIndex,
-      totalItems: publicItems.length,
-      hasMore: endIndex < publicItems.length,
-    });
-
     // Simple next cursor
     const nextCursor =
       paginatedItems.length === limit && endIndex < publicItems.length
         ? encodeCursor({ p: new Date().toISOString(), id: String(endIndex) })
         : null;
-
-    console.log("🎯 [KnowledgeHubGrid] Final result:", {
-      itemCount: paginatedItems.length,
-      totalCount: publicItems.length,
-      hasNextCursor: !!nextCursor,
-      sampleTitles: paginatedItems.slice(0, 3).map((item) => item.title),
-    });
 
     return {
       items: paginatedItems,
@@ -371,11 +289,6 @@ export async function listPublicMedia({
           ? encodeCursor({ p: (last as any).publish_date, id: last.id })
           : null;
 
-      console.log(
-        "⚠️ [KnowledgeHubGrid] Used fallback Supabase query, returned:",
-        items.length,
-        "items",
-      );
       return { items, nextCursor, totalCount: items.length }; // Fallback count is just current set
     } catch (supabaseError) {
       console.error(

@@ -1,5 +1,6 @@
 import * as yup from "yup";
 import { FormSchema, FormField } from "../FormPreview";
+import { isValidEmail } from "../../../utils/emailValidation";
 
 // Define the form schema for the "Reallocation of Loan Disbursement" form
 export const reallocationLoanSchema: FormSchema = {
@@ -81,10 +82,6 @@ export const reallocationLoanSchema: FormSchema = {
               type: "email",
               required: true,
               placeholder: "Enter email address",
-              validation: {
-                pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
-                message: "Invalid email address",
-              },
             } as FormField,
             {
               id: "telephone",
@@ -238,10 +235,9 @@ export const reallocationLoanValidationSchema = yup.object({
   email: yup
     .string()
     .required("Email is required")
-    .matches(
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      "Invalid email address"
-    ),
+    .test("email-validation", "Invalid email address", (value) => {
+      return value ? isValidEmail(value) : false;
+    }),
   telephone: yup
     .string()
     .required("Telephone number is required")

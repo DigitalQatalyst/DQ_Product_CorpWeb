@@ -2840,7 +2840,6 @@ const MediaDetailPage: React.FC = () => {
                 onSubmit={(e) => {
                   e.preventDefault()
                   // Handle form submission
-                  console.log('Registration data:', registrationData)
                   alert('Registration submitted successfully!')
                   setShowRegistrationModal(false)
                   // Reset form

@@ -9,7 +9,6 @@ import { FeaturedBlogs } from "./components/FeaturedBlogs";
 import { DigitalDomains } from "./components/DigitalDomains";
 import { MarketplaceOfMinds } from "./components/MarketplaceOfMinds";
 import { FeaturedContent } from "./components/FeaturedContent";
-import ModernDQChatbot from "../../components/ModernDQChatbot";
 
 const DtmiLandingPage = () => {
   return (
@@ -28,9 +27,6 @@ const DtmiLandingPage = () => {
         <NewsletterSignupForm />
       </main>
       <Footer />
-
-      {/* DQ AI Chatbot */}
-      <ModernDQChatbot />
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ExternalLink, ArrowRight, ChevronDown, ChevronUp, Linkedin, Instagram } from 'lucide-react';
+import { isValidEmail } from '../../utils/emailValidation';
 
 // Custom X (Twitter) icon component
 const XIcon = ({ size = 16, className = "" }) => (
@@ -40,8 +41,7 @@ export function Footer({
 }: FooterProps) {
   // Email validation function
   const validateEmail = (email: string) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
+    return isValidEmail(email);
   };
 
   // State for email input and validation
@@ -209,7 +209,7 @@ export function Footer({
                 </a>
               </li>
               <li>
-                <a href="https://x.com/drstephane_" className="text-gray-300 hover:text-primary transition-colors text-sm flex items-center gap-2" target="_blank" rel="noopener noreferrer">
+                <a href="https://x.com/DigitalQatalyst" className="text-gray-300 hover:text-primary transition-colors text-sm flex items-center gap-2" target="_blank" rel="noopener noreferrer">
                   <XIcon size={16} />
                   X
                 </a>
@@ -364,7 +364,7 @@ export function Footer({
                 </a>
               </li>
               <li>
-                <a href="https://x.com/drstephane_" className="text-gray-300 hover:text-primary transition-colors text-sm flex items-center gap-2" target="_blank" rel="noopener noreferrer">
+                <a href="https://x.com/DigitalQatalyst" className="text-gray-300 hover:text-primary transition-colors text-sm flex items-center gap-2" target="_blank" rel="noopener noreferrer">
                   <XIcon size={16} />
                   X
                 </a>

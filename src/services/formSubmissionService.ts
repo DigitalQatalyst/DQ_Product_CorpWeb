@@ -337,8 +337,6 @@ export const submitContactForm = async (formData: {
     userAgent: navigator.userAgent
   };
 
-  console.log('📤 Submitting Contact Form:', enhancedPayload);
-
   try {
     const response = await fetch('/api/forms/submit', {
       method: 'POST',

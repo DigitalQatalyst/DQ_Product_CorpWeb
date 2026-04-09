@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
 import { submitWhitepaperAccess } from '../services/airtableService';
+import { isValidEmail } from '../utils/emailValidation';
 
 interface WhitepaperAccessModalProps {
   isOpen: boolean;
@@ -25,8 +26,7 @@ export function WhitepaperAccessModal({
   if (!isOpen) return null;
 
   const validateEmail = (email: string) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
+    return isValidEmail(email);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

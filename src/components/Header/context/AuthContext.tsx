@@ -19,11 +19,7 @@ import {
   getUserByAuthId,
 } from "../../../lib/supabase";
 
-// Email validation function - matches the database constraint
-const isValidEmail = (email: string): boolean => {
-  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-  return emailRegex.test(email);
-};
+import { isValidEmail } from "../../../utils/emailValidation";
 
 type UserRole = "admin" | "creator" | "viewer" | "HR-Admin" | "HR-viewer";
 

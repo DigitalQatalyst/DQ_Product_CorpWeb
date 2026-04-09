@@ -17,7 +17,6 @@ export const initializeLocalMedia = async (
   video = false
 ): Promise<MediaStream> => {
   try {
-    console.log("Requesting media access with video:", video);
     // Request with exact constraints for better browser compatibility
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: {
@@ -33,7 +32,6 @@ export const initializeLocalMedia = async (
           }
         : false,
     });
-    console.log("Media access granted:", stream);
     // Verify we actually got audio tracks
     const audioTracks = stream.getAudioTracks();
     if (audioTracks.length === 0) {
@@ -245,11 +243,10 @@ export const createPeerConnection = (): RTCPeerConnection => {
   };
   // Log connection state changes
   peerConnection.oniceconnectionstatechange = () => {
-    console.log("ICE connection state:", peerConnection.iceConnectionState);
+    // ICE connection state tracking
   };
   // Log connection state changes
   peerConnection.onconnectionstatechange = () => {
-    console.log("Connection state:", peerConnection.connectionState);
     // Handle connection failures
     if (
       peerConnection.connectionState === "failed" ||
@@ -262,7 +259,6 @@ export const createPeerConnection = (): RTCPeerConnection => {
   };
   // Handle ICE connection state changes
   peerConnection.oniceconnectionstatechange = () => {
-    console.log("ICE connection state:", peerConnection.iceConnectionState);
     if (
       peerConnection.iceConnectionState === "failed" ||
       peerConnection.iceConnectionState === "disconnected"
@@ -296,7 +292,7 @@ export const startVoiceCall = async (
     });
     await peerConnection.setLocalDescription(offer);
     // In a real app, you would send this offer to the remote peer via a signaling server
-    console.log("Created and set local offer:", offer);
+
     // For demo purposes, we'll simulate receiving an answer after a delay
     setTimeout(async () => {
       try {
@@ -307,7 +303,6 @@ export const startVoiceCall = async (
         } as RTCSessionDescriptionInit;
         // Set the remote description with the simulated answer
         await peerConnection.setRemoteDescription(simulatedAnswer);
-        console.log("Set remote description with simulated answer");
       } catch (error) {
         console.error("Error handling simulated answer:", error);
       }
@@ -367,7 +362,6 @@ export const startCall = async (
   // Set up remote stream handler
   peerConnection.ontrack = (event) => {
     const remoteStream = event.streams[0];
-    console.log("Remote track received:", event.track.kind);
     // Update remote stream for displaying
     updateRemoteStream(remoteStream);
     return remoteStream;
@@ -424,7 +418,7 @@ export const createDummyRemoteStream = async (): Promise<MediaStream> => {
         stream.addTrack(audioTrack);
       }
     } catch (e) {
-      console.warn("Could not add audio to dummy stream:", e);
+      // Could not add audio to dummy stream
     }
 
     // Draw video frames to canvas
@@ -486,7 +480,6 @@ export const handleIncomingAnswer = async (
 export const sendIceCandidate = (candidate: RTCIceCandidate) => {
   // Send the candidate via signaling server
   // signalingChannel.send({ type: 'candidate', candidate });
-  console.log("Sending ICE candidate:", candidate);
 };
 
 /**
@@ -496,7 +489,6 @@ export const sendIceCandidate = (candidate: RTCIceCandidate) => {
 export const sendOffer = (offer: RTCSessionDescription) => {
   // Send the offer via signaling server
   // signalingChannel.send({ type: 'offer', offer });
-  console.log("Sending offer:", offer);
 };
 
 /**
@@ -506,7 +498,6 @@ export const sendOffer = (offer: RTCSessionDescription) => {
 export const sendAnswer = (answer: RTCSessionDescription) => {
   // Send the answer via signaling server
   // signalingChannel.send({ type: 'answer', answer });
-  console.log("Sending answer:", answer);
 };
 
 /**
@@ -515,7 +506,6 @@ export const sendAnswer = (answer: RTCSessionDescription) => {
  */
 export const updateRemoteStream = (remoteStream: MediaStream) => {
   // Implement UI update for remote stream (e.g., attach it to a video element)
-  console.log("Remote stream received:", remoteStream);
   // Example: remoteVideoElement.srcObject = remoteStream;
 };
 

@@ -91,9 +91,9 @@ const ServiceCard = ({
   const [isHovered, setIsHovered] = useState(false);
   return (
     <div
-      className={`rounded-xl shadow-md overflow-hidden transition-all duration-500 transform p-5 h-full min-h-[290px] flex flex-col ${isComingSoon
-          ? "bg-gradient-to-br from-gray-400 to-gray-500 opacity-75 hover:opacity-85"
-          : `bg-gradient-to-br ${service.gradientFrom} ${service.gradientTo} hover:shadow-lg hover:-translate-y-1 hover:scale-102 cursor-pointer`
+      className={`rounded-xl border overflow-hidden transition-all duration-500 transform p-6 h-full min-h-[290px] flex flex-col ${isComingSoon
+          ? "bg-gray-50 border-gray-200 opacity-75 hover:opacity-85"
+          : "bg-white border-gray-200 hover:shadow-lg hover:-translate-y-1 hover:scale-102 cursor-pointer hover:border-primary/20"
         }`}
       onClick={isComingSoon ? undefined : onClick}
       onMouseEnter={() => setIsHovered(true)}
@@ -107,32 +107,34 @@ const ServiceCard = ({
           </div>
         )}
         <div
-          className={`w-14 h-14 rounded-full flex items-center justify-center mb-4 shadow-sm transition-all duration-500 ${isHovered ? "transform -translate-y-2 animate-pulse" : ""
-            }`}
-          style={{
-            background: "white",
-          }}
+          className={`w-14 h-14 rounded-xl flex items-center justify-center mb-4 transition-all duration-500 ${
+            isHovered ? "transform -translate-y-1" : ""
+          } ${
+            isComingSoon 
+              ? "bg-gray-100" 
+              : "bg-primary/5 border border-primary/10"
+          }`}
         >
           <div
-            className={isComingSoon ? "text-gray-500" : "text-secondary-900"}
+            className={isComingSoon ? "text-gray-400" : "text-primary"}
           >
             {cloneElement(service.icon, {
               size: 24,
-              className: isComingSoon ? "text-gray-500" : "text-secondary-900",
+              className: isComingSoon ? "text-gray-400" : "text-primary",
             })}
           </div>
         </div>
-        <h2 className="font-display text-lg font-semibold text-white mb-1 whitespace-nowrap overflow-hidden truncate">
+        <h2 className="font-display text-lg font-semibold text-gray-900 mb-2 whitespace-nowrap overflow-hidden truncate">
           {service.title}
         </h2>
-        <p className="font-body text-sm text-white/90 mb-4 flex-grow line-clamp-4 min-h-[5rem]">
+        <p className="font-body text-sm text-gray-600 mb-6 flex-grow line-clamp-4 min-h-[5rem]">
           {service.description}
         </p>
         <button
-          className={`mt-auto px-4 py-2 rounded-md font-medium w-full transition-all duration-500 flex items-center justify-center ${isComingSoon
-              ? "bg-white text-gray-500 cursor-not-allowed"
-              : "bg-white text-secondary-900 hover:bg-secondary-50 border border-white/20"
-            } ${isHovered && !isComingSoon ? "opacity-100" : "opacity-80"}`}
+          className={`mt-auto px-4 py-2.5 rounded-lg font-medium w-full transition-all duration-300 flex items-center justify-center ${isComingSoon
+              ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+              : "bg-primary text-white hover:bg-primary-600"
+            }`}
           disabled={isComingSoon}
           onClick={(e) => {
             if (!isComingSoon) {
@@ -143,22 +145,12 @@ const ServiceCard = ({
         >
           {isComingSoon ? <Lock size={14} className="mr-2" /> : "Explore Now"}
           {!isComingSoon && (
-            <ChevronRight
-              size={16}
-              className={`ml-2 transition-transform duration-300 ${isHovered ? "translate-x-1" : ""
-                }`}
+            <ArrowRight
+              size={18}
+              className="group-hover:translate-x-1 transition-transform duration-300"
             />
           )}
         </button>
-        {/* Background animation on hover */}
-        {!isComingSoon && (
-          <div
-            className="absolute inset-0 bg-white/5 opacity-0 transition-opacity duration-500"
-            style={{
-              opacity: isHovered ? 1 : 0,
-            }}
-          ></div>
-        )}
       </div>
     </div>
   );
@@ -370,8 +362,8 @@ export const HomePage: React.FC = () => {
             "Maximize ROI with our affordable, data-driven and architecture-led digital transformation services",
           icon: <Briefcase />,
           path: "/marketplace/services",
-          gradientFrom: "from-blue-500",
-          gradientTo: "to-blue-400",
+          gradientFrom: "from-primary",
+          gradientTo: "to-primary-600",
           isActive: true,
         },
         {
@@ -381,8 +373,8 @@ export const HomePage: React.FC = () => {
             "Discover digital products engineered for your organization's success in the digital economy",
           icon: <Package />,
           path: "/products",
-          gradientFrom: "from-indigo-500",
-          gradientTo: "to-indigo-400",
+          gradientFrom: "from-primary",
+          gradientTo: "to-primary-600",
           isActive: true,
         },
         {
@@ -392,8 +384,8 @@ export const HomePage: React.FC = () => {
             "Discover exciting career opportunities and join our team of digital transformation experts",
           icon: <Users />,
           path: "/careers",
-          gradientFrom: "from-purple-500",
-          gradientTo: "to-purple-400",
+          gradientFrom: "from-primary",
+          gradientTo: "to-primary-600",
           isActive: true,
         },
       ],

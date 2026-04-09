@@ -117,7 +117,7 @@ export const submitServiceRequest = async (data: ServiceRequestData): Promise<vo
     }
 
     const result = await response.json();
-    console.log('Service request submitted to Airtable:', result.id);
+    // Successfully submitted service request
   } catch (error) {
     console.error('Error submitting to Airtable:', error);
     throw new Error('Failed to submit service request');
@@ -128,8 +128,32 @@ export const submitConsultationRequest = async (data: ConsultationRequestData): 
   try {
     // Validate required environment variables
     if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID || !AIRTABLE_CONSULTATION_TABLE_ID) {
-      throw new Error('Missing Airtable configuration for consultation form. Please check environment variables.');
+      const missingVars = [];
+      if (!AIRTABLE_API_KEY) missingVars.push('VITE_AIRTABLE_API_KEY');
+      if (!AIRTABLE_BASE_ID) missingVars.push('VITE_AIRTABLE_BASE_ID');
+      if (!AIRTABLE_CONSULTATION_TABLE_ID) missingVars.push('VITE_AIRTABLE_CONSULTATION_TABLE_ID');
+      
+      throw new Error(`Missing Airtable configuration: ${missingVars.join(', ')}. Please check your .env file.`);
     }
+
+    // Validate data
+    if (!data.name || !data.email) {
+      throw new Error('Name and email are required fields.');
+    }
+
+    const requestPayload = {
+      fields: {
+        'Name': data.name,
+        'Email': data.email,
+        'Company': data.company || '',
+        'Phone': data.phone || '',
+        'Sector': data.sector || '',
+        'Interest': data.interest || '',
+        'Message': data.message,
+        'Submission Date': new Date().toISOString().split('T')[0],
+        'Form Source': 'Website Consultation Form',
+      },
+    };
 
     // Use fetch API instead of Airtable SDK to avoid import issues
     const response = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_CONSULTATION_TABLE_ID}`, {
@@ -138,31 +162,35 @@ export const submitConsultationRequest = async (data: ConsultationRequestData): 
         'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        fields: {
-          'Name': data.name,
-          'Email': data.email,
-          'Company': data.company || '',
-          'Phone': data.phone || '',
-          'Sector': data.sector || '',
-          'Interest': data.interest || '',
-          'Message': data.message,
-          'Submission Date': new Date().toISOString().split('T')[0], // YYYY-MM-DD format
-          'Form Source': 'Website Consultation Form',
-        },
-      }),
+      body: JSON.stringify(requestPayload),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`Airtable API error: ${response.status} - ${errorText}`);
+      
+      // Provide more specific error messages based on status code
+      if (response.status === 401) {
+        throw new Error('Airtable API authentication failed. Please check your API key.');
+      } else if (response.status === 404) {
+        throw new Error('Airtable base or table not found. Please check your base ID and table ID.');
+      } else if (response.status === 422) {
+        throw new Error('Invalid data format. Please check the field names and data types.');
+      } else {
+        throw new Error(`Airtable API error: ${response.status} - ${errorText}`);
+      }
     }
 
     const result = await response.json();
-    console.log('Consultation request submitted to Airtable:', result.id);
+    // Successfully submitted consultation request
   } catch (error) {
-    console.error('Error submitting consultation request to Airtable:', error);
-    throw new Error('Failed to submit consultation request');
+    console.error('❌ [AirtableService] Error submitting consultation request to Airtable:', error);
+    
+    // Re-throw with more user-friendly message if it's a network error
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      throw new Error('Network error. Please check your internet connection and try again.');
+    }
+    
+    throw error instanceof Error ? error : new Error('Failed to submit consultation request');
   }
 };
 
@@ -201,7 +229,7 @@ export const submitWaitlistRequest = async (data: WaitlistRequestData): Promise<
     }
 
     const result = await response.json();
-    console.log('Waitlist request submitted to Airtable:', result.id);
+    // Successfully submitted waitlist request
   } catch (error) {
     console.error('Error submitting waitlist request to Airtable:', error);
     throw new Error('Failed to submit waitlist request');
@@ -241,7 +269,6 @@ export const submitNewsletterSubscription = async (data: NewsletterSubscriptionD
     }
 
     const result = await response.json();
-    console.log('Newsletter subscription submitted to Airtable:', result.id);
     
     // Send confirmation email (non-blocking)
     // Import dynamically to avoid circular dependencies
@@ -299,7 +326,7 @@ export const submitTourRequest = async (data: TourRequestData): Promise<void> =>
     }
 
     const result = await response.json();
-    console.log('Tour request submitted to Airtable:', result.id);
+    // Successfully submitted tour request
   } catch (error) {
     console.error('Error submitting tour request to Airtable:', error);
     throw new Error('Failed to submit tour request');
@@ -340,7 +367,7 @@ export const submitWhitepaperAccess = async (data: WhitepaperAccessData): Promis
     }
 
     const result = await response.json();
-    console.log('Whitepaper access submitted to Airtable:', result.id);
+    // Successfully submitted whitepaper access
   } catch (error) {
     console.error('Error submitting whitepaper access to Airtable:', error);
     throw new Error('Failed to submit whitepaper access');
@@ -354,9 +381,6 @@ export const submitAssessmentLead = async (data: AssessmentLeadData): Promise<vo
       throw new Error('Missing Airtable configuration for assessment lead capture. Please check environment variables.');
     }
 
-    console.log('Submitting assessment lead:', data);
-    console.log('Using table ID:', AIRTABLE_NEWSLETTER_TABLE_ID);
-
     // Try to get user's IP address
     let userIP = '';
     try {
@@ -366,7 +390,7 @@ export const submitAssessmentLead = async (data: AssessmentLeadData): Promise<vo
         userIP = ipData.ip;
       }
     } catch (ipError) {
-      console.log('Could not fetch IP address:', ipError);
+      // Could not fetch IP address
     }
 
     const payload = {
@@ -383,8 +407,6 @@ export const submitAssessmentLead = async (data: AssessmentLeadData): Promise<vo
       },
     };
 
-    console.log('Payload being sent:', JSON.stringify(payload, null, 2));
-
     // Use fetch API instead of Airtable SDK to avoid import issues
     const response = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_NEWSLETTER_TABLE_ID}`, {
       method: 'POST',
@@ -395,8 +417,6 @@ export const submitAssessmentLead = async (data: AssessmentLeadData): Promise<vo
       body: JSON.stringify(payload),
     });
 
-    console.log('Response status:', response.status);
-
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Airtable API error response:', errorText);
@@ -404,10 +424,88 @@ export const submitAssessmentLead = async (data: AssessmentLeadData): Promise<vo
     }
 
     const result = await response.json();
-    console.log('Assessment lead submitted to Airtable successfully:', result.id);
+    // Successfully submitted assessment lead
   } catch (error) {
     console.error('Error submitting assessment lead to Airtable:', error);
     throw new Error('Failed to submit assessment lead');
+  }
+};
+
+// Test function to verify Airtable connection specifically for consultation table
+export const testConsultationConnection = async (): Promise<{ success: boolean; message: string }> => {
+  try {
+    console.log("🧪 [AirtableService] Testing consultation table connection...");
+    
+    // First, test basic network connectivity
+    console.log("🧪 [AirtableService] Testing basic network connectivity...");
+    try {
+      const networkTest = await fetch('https://httpbin.org/get', { 
+        method: 'GET',
+        mode: 'cors'
+      });
+      console.log("🧪 [AirtableService] Network test result:", networkTest.ok);
+    } catch (networkError) {
+      console.error("🧪 [AirtableService] Network test failed:", networkError);
+      return {
+        success: false,
+        message: `Network connectivity test failed: ${networkError instanceof Error ? networkError.message : 'Unknown network error'}`
+      };
+    }
+    
+    if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID || !AIRTABLE_CONSULTATION_TABLE_ID) {
+      const missing = [];
+      if (!AIRTABLE_API_KEY) missing.push('AIRTABLE_API_KEY');
+      if (!AIRTABLE_BASE_ID) missing.push('AIRTABLE_BASE_ID');
+      if (!AIRTABLE_CONSULTATION_TABLE_ID) missing.push('AIRTABLE_CONSULTATION_TABLE_ID');
+      
+      return {
+        success: false,
+        message: `Missing environment variables: ${missing.join(', ')}`
+      };
+    }
+
+    console.log("🧪 [AirtableService] Environment variables OK, testing Airtable API...");
+    console.log("🧪 [AirtableService] API Key format:", AIRTABLE_API_KEY.substring(0, 10) + "...");
+    console.log("🧪 [AirtableService] Base ID:", AIRTABLE_BASE_ID);
+    console.log("🧪 [AirtableService] Table ID:", AIRTABLE_CONSULTATION_TABLE_ID);
+
+    // Test connection by fetching table schema (just 1 record to minimize API usage)
+    const testUrl = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_CONSULTATION_TABLE_ID}?maxRecords=1`;
+    console.log("🧪 [AirtableService] Test URL:", testUrl);
+    
+    const response = await fetch(testUrl, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    console.log("🧪 [AirtableService] Response status:", response.status);
+    console.log("🧪 [AirtableService] Response headers:", Object.fromEntries(response.headers.entries()));
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("🧪 [AirtableService] Airtable API error:", errorText);
+      return {
+        success: false,
+        message: `Airtable API error: ${response.status} - ${errorText}`
+      };
+    }
+
+    const result = await response.json();
+    console.log("✅ [AirtableService] Consultation table connection successful:", result);
+    
+    return {
+      success: true,
+      message: 'Airtable consultation table connection successful'
+    };
+  } catch (error) {
+    console.error("❌ [AirtableService] Consultation table connection test failed:", error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : 'Connection test failed'
+    };
   }
 };
 

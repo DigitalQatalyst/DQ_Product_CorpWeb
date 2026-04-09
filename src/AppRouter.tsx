@@ -5,6 +5,8 @@ import { msalInstance, initializeMsal } from "./services/auth/msal";
 import { CourseType } from "./utils/mockData";
 import { AuthProvider } from "./components/Header/context/AuthContext";
 import { GoogleAnalytics } from "./components/GoogleAnalytics";
+import GlobalChatbot from "./components/GlobalChatbot";
+import { ChatbotProvider } from "./contexts/ChatbotContext";
 import { MarketplaceRouter } from "./pages/marketplace/MarketplaceRouter";
 import { ProductMarketplacePage } from "./pages/ProductMarketplacePage";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
@@ -128,7 +130,8 @@ export function AppRouter() {
       <GoogleAnalytics />
       <MsalProvider instance={msalInstance}>
         <AuthProvider>
-          <Routes>
+          <ChatbotProvider>
+            <Routes>
             <Route path="/" element={<App />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/courses" element={<App />} />
@@ -413,7 +416,11 @@ export function AppRouter() {
             <Route path="/404" element={<NotFound />} />
 
             <Route path="*" element={<Navigate to="/404" replace />} />
-          </Routes>
+            </Routes>
+            
+            {/* Global DQ AI Chatbot - appears on all pages */}
+            <GlobalChatbot />
+          </ChatbotProvider>
         </AuthProvider>
       </MsalProvider>
     </BrowserRouter>

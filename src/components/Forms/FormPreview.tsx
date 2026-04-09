@@ -38,6 +38,7 @@ import {
   EyeOff,
 } from "lucide-react";
 import {useScrollLock} from "../../hooks/useScrollLock.ts";
+import { isValidEmail } from "../../utils/emailValidation";
 
 // Types
 export interface FormField {
@@ -191,8 +192,7 @@ const validateField = (field: FormField, value: any): string | null => {
   }
 
   if (field.type === "email" && value) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(value)) {
+    if (!isValidEmail(value)) {
       return "Please enter a valid email address";
     }
   }

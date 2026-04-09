@@ -481,8 +481,8 @@ const sectorsData: Record<string, SectorData> = {
   },
   'service': {
     id: 'service',
-    name: 'Service 4.0',
-    title: 'Service 4.0',
+    name: 'Services 4.0',
+    title: 'Services 4.0',
     subtitle: 'Digitization of Service-Based Industries',
     focus: 'Refers to the digitization of service-based industries, enhancing the customer experience by offering automation, AI-driven service management, and seamless interactions between customers and service providers.',
     technologies: [

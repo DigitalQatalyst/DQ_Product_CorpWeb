@@ -20,7 +20,6 @@ export const enrollInCourse = async (courseId: string, userId: string): Promise<
   try {
     // This is a mock implementation since we don't have the actual mutation yet
     // In a real implementation, you would call the GraphQL mutation
-    console.log(`Enrolling user ${userId} in course ${courseId}`);
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 500));
     // Return success response
@@ -47,7 +46,6 @@ export const toggleCourseBookmark = async (courseId: string, userId: string, isC
   try {
     // This is a mock implementation since we don't have the actual mutation yet
     // In a real implementation, you would call the GraphQL mutation
-    console.log(`${isCurrentlyBookmarked ? 'Removing' : 'Adding'} bookmark for user ${userId} on course ${courseId}`);
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 300));
     // Return updated bookmark status (opposite of current status)
@@ -73,7 +71,6 @@ export const addCourseToComparison = async (courseId: string, userId: string): P
   try {
     // This is a mock implementation since we don't have the actual mutation yet
     // In a real implementation, you would call the GraphQL mutation
-    console.log(`Adding course ${courseId} to comparison list for user ${userId}`);
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 300));
     // Return success response
@@ -100,7 +97,6 @@ export const removeCourseFromComparison = async (courseId: string, userId: strin
   try {
     // This is a mock implementation since we don't have the actual mutation yet
     // In a real implementation, you would call the GraphQL mutation
-    console.log(`Removing course ${courseId} from comparison list for user ${userId}`);
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 300));
     // Return success response

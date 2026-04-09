@@ -23,7 +23,6 @@ export const generateUploadSasUrl = async (
   expiryMinutes = 15
 ): Promise<string> => {
   // For demo purposes, return a placeholder URL
-  console.log("Generating upload SAS URL for:", blobName, contentType);
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 500));
   return `https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net/${CONTAINER_NAME}/${blobName}?sv=demo&sig=demo`;
@@ -40,7 +39,6 @@ export const generateDownloadSasUrl = async (
   expiryMinutes = 60
 ): Promise<string> => {
   // For demo purposes, return a placeholder URL
-  console.log("Generating download SAS URL for:", blobName);
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 500));
   return `https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net/${CONTAINER_NAME}/${blobName}?sv=demo&sig=demo`;
@@ -59,18 +57,11 @@ export const uploadFileToBlobStorage = async (
 ): Promise<string> => {
   // Use the file name if blobName is not provided
   const finalBlobName = blobName || `${Date.now()}-${file.name}`;
-  console.log(
-    "Uploading file to blob storage:",
-    finalBlobName,
-    file.size,
-    "bytes"
-  );
   // Simulate upload delay based on file size
   const uploadDelay = Math.min(2000, Math.max(500, file.size / 1000));
   await new Promise((resolve) => setTimeout(resolve, uploadDelay));
   // Return a demo URL
   const demoUrl = `https://${STORAGE_ACCOUNT_NAME}.blob.core.windows.net/${CONTAINER_NAME}/${finalBlobName}`;
-  console.log("File uploaded successfully to:", demoUrl);
   return demoUrl;
 };
 
@@ -80,10 +71,8 @@ export const uploadFileToBlobStorage = async (
  * @returns A promise that resolves when the blob is deleted
  */
 export const deleteBlob = async (blobName: string): Promise<void> => {
-  console.log("Deleting blob from storage:", blobName);
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 500));
-  console.log("Blob deleted successfully:", blobName);
 };
 
 /**
@@ -92,7 +81,6 @@ export const deleteBlob = async (blobName: string): Promise<void> => {
  * @returns A promise that resolves to true if the blob exists, false otherwise
  */
 export const blobExists = async (blobName: string): Promise<boolean> => {
-  console.log("Checking if blob exists:", blobName);
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 300));
   // For demo purposes, return true for any blob name
@@ -105,7 +93,6 @@ export const blobExists = async (blobName: string): Promise<boolean> => {
  * @returns The blob properties
  */
 export const getBlobProperties = async (blobName: string) => {
-  console.log("Getting blob properties:", blobName);
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 300));
   // Return demo properties

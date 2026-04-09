@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   Calendar,
   BookOpen,
@@ -31,8 +31,8 @@ interface TabItem {
   icon: React.ReactNode;
 }
 
-// Update SegmentedTabs props interface
-interface SegmentedTabsProps {
+// Update SimpleTabs props interface
+interface SimpleTabsProps {
   tabs: TabItem[];
   activeTab: number;
   setActiveTab: (index: number) => void;
@@ -73,65 +73,30 @@ const articlesData: NewsItem[] = [
     imageUrl: "/images/Article 03_hero image.png",
   },
 ];
-// Segmented Tab Component
-const SegmentedTabs: React.FC<SegmentedTabsProps> = ({
+// Simple Tab Component (matching services marketplace style)
+const SimpleTabs: React.FC<SimpleTabsProps> = ({
   tabs,
   activeTab,
   setActiveTab,
 }) => {
-  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const [indicatorStyle, setIndicatorStyle] = useState({
-    left: 0,
-    width: 0,
-  });
-  useEffect(() => {
-    const activeTabElement = tabRefs.current[activeTab];
-    if (activeTabElement) {
-      setIndicatorStyle({
-        left: activeTabElement.offsetLeft,
-        width: activeTabElement.offsetWidth,
-      });
-    }
-  }, [activeTab]);
   return (
-    <div className="relative inline-flex bg-white rounded-full shadow-sm p-1 mx-auto mb-8 border border-gray-200">
-      {/* Animated background indicator */}
-      <div
-        className="absolute bottom-0 h-full bg-primary-100 rounded-full transition-all duration-300 z-0"
-        style={{
-          left: `${indicatorStyle.left}px`,
-          width: `${indicatorStyle.width}px`,
-        }}
-      ></div>
-      {/* Animated underline */}
-      <div
-        className="absolute bottom-1 h-0.5 bg-primary-500 rounded-full transition-all duration-300 z-10"
-        style={{
-          left: `${indicatorStyle.left + 8}px`,
-          width: `${indicatorStyle.width - 16}px`,
-        }}
-      ></div>
-      {tabs.map((tab, index) => (
-        <button
-          key={tab.id}
-          ref={(el) => {
-            tabRefs.current[index] = el;
-          }}
-          onClick={() => setActiveTab(index)}
-          className={`relative z-10 px-5 py-2 text-sm font-medium rounded-full transition-all duration-300 flex items-center
-            ${activeTab === index
-              ? "text-primary-700"
-              : "text-secondary-600 hover:text-secondary-800"
+    <div className="border-b border-gray-200 mb-8">
+      <div className="flex justify-center space-x-8">
+        {tabs.map((tab, index) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(index)}
+            className={`pb-4 px-1 border-b-2 font-medium text-sm transition-colors flex items-center ${
+              activeTab === index
+                ? 'border-primary text-primary'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
             }`}
-        >
-          {tab.icon}
-          <span className="ml-1">{tab.label}</span>
-          {/* Ripple effect */}
-          {activeTab === index && (
-            <span className="absolute inset-0 rounded-full animate-ping bg-primary-200 opacity-30"></span>
-          )}
-        </button>
-      ))}
+          >
+            {tab.icon}
+            <span className="ml-2">{tab.label}</span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
@@ -302,9 +267,9 @@ const KnowledgeHubContent = () => {
             </a>
           </div> */}
         </FadeInUpOnScroll>
-        {/* Segmented Tabs */}
+        {/* Simple Tabs */}
         <div className="flex justify-center mb-8">
-          <SegmentedTabs
+          <SimpleTabs
             tabs={tabs}
             activeTab={activeTab}
             setActiveTab={handleTabChange}

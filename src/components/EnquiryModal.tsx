@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, Send } from 'lucide-react';
+import { isValidEmail } from '../utils/emailValidation';
 
 interface EnquiryModalProps {
   'data-id'?: string;
@@ -39,7 +40,7 @@ const EnquiryModal: React.FC<EnquiryModalProps> = ({ 'data-id': dataId, isOpen, 
     else if (!/^[A-Za-z]+$/.test(formData.lastName)) newErrors.lastName = 'Only letters allowed';
 
     if (!formData.email.trim()) newErrors.email = 'Email is required';
-    else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)) newErrors.email = 'Invalid email';
+    else if (!isValidEmail(formData.email)) newErrors.email = 'Invalid email';
 
     if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
     else if (!/^[0-9]{1,11}$/.test(formData.phone)) newErrors.phone = 'Use 1-11 digits only';
@@ -98,7 +99,16 @@ const EnquiryModal: React.FC<EnquiryModalProps> = ({ 'data-id': dataId, isOpen, 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto" data-id={`${dataId}-modal`}>
       <div className="flex items-center justify-center min-h-screen px-4">
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
+        <button 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm border-0 p-0 cursor-default" 
+          onClick={onClose}
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') {
+              onClose();
+            }
+          }}
+          aria-label="Close modal"
+        />
         
         <div className="bg-white rounded-xl shadow-2xl w-full max-w-md relative z-10">
           <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">

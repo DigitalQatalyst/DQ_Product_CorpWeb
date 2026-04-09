@@ -4,6 +4,7 @@
  */
 
 import { createClient } from "@supabase/supabase-js";
+import { isValidEmail } from "../utils/emailValidation";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
@@ -42,9 +43,8 @@ export async function syncUserFromB2C(
       throw new Error("name is required for user sync");
     }
 
-    // Validate email format matches database constraint
-    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-    if (!emailRegex.test(email)) {
+    // Validate email format using safe utility
+    if (!isValidEmail(email)) {
       throw new Error(
         `Invalid email format: ${email}. Must match pattern: user@domain.com`,
       );

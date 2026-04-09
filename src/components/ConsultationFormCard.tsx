@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ArrowRight, CheckCircle, X } from "lucide-react";
 import { submitConsultationRequest } from "../services/airtableService";
+import { isValidEmail } from "../utils/emailValidation";
 
 type ToastType = "success" | "error";
 
@@ -45,17 +46,17 @@ interface ConsultationFormCardProps {
 }
 
 const sectorOptions = [
-  { value: "experience-4.0", label: "Experience 4.0" },
-  { value: "agility-4.0", label: "Agility 4.0" },
-  { value: "farming-4.0", label: "Farming 4.0" },
-  { value: "plant-4.0", label: "Plant 4.0" },
-  { value: "infrastructure-4.0", label: "Infrastructure 4.0" },
-  { value: "government-4.0", label: "Government 4.0" },
-  { value: "hospitality-4.0", label: "Hospitality 4.0" },
-  { value: "retail-4.0", label: "Retail 4.0" },
-  { value: "service-4.0", label: "Service 4.0" },
-  { value: "logistics-4.0", label: "Logistics 4.0" },
-  { value: "wellness-4.0", label: "Wellness 4.0" },
+  { value: "experience-4-0", label: "Experience 4.0" },
+  { value: "agility-4-0", label: "Agility 4.0" },
+  { value: "farming-4-0", label: "Farming 4.0" },
+  { value: "plant-4-0", label: "Plant 4.0" },
+  { value: "infrastructure-4-0", label: "Infrastructure 4.0" },
+  { value: "government-4-0", label: "Government 4.0" },
+  { value: "hospitality-4-0", label: "Hospitality 4.0" },
+  { value: "retail-4-0", label: "Retail 4.0" },
+  { value: "service-4-0", label: "Services 4.0" },
+  { value: "logistics-4-0", label: "Logistics 4.0" },
+  { value: "wellness-4-0", label: "Wellness 4.0" },
 ];
 
 const getSectorDisplayName = (sectorValue: string): string => {
@@ -83,6 +84,7 @@ const FormInput: React.FC<FormInputProps> = ({
   <div className="mb-4">
     <label className="block text-sm font-medium text-gray-700 mb-1">
       {label}
+      {required && <span className="text-red-500 ml-1">*</span>}
     </label>
     <input
       type={type}
@@ -139,6 +141,7 @@ const FormTextarea: React.FC<FormTextareaProps> = ({
   <div className="mb-4">
     <label className="block text-sm font-medium text-gray-700 mb-1">
       {label}
+      {required && <span className="text-red-500 ml-1">*</span>}
     </label>
     <textarea
       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
@@ -254,6 +257,12 @@ export const ConsultationFormCard: React.FC<ConsultationFormCardProps> = ({
         ...prev,
         sector: defaultSector
       }));
+    } else if (defaultSector && !businessDetails.sector) {
+      // If defaultSector is provided but no sector is set, set it
+      setBusinessDetails(prev => ({
+        ...prev,
+        sector: defaultSector
+      }));
     }
   }, [disableSectorSelection, defaultSector, businessDetails.sector]);
 
@@ -290,15 +299,54 @@ export const ConsultationFormCard: React.FC<ConsultationFormCardProps> = ({
     });
   };
 
+  // Utility function to handle validation errors
+  const handleValidationError = (errorMessage: string) => {
+    setIsSubmitting(false);
+    setSubmitError(errorMessage);
+    setToast({
+      message: errorMessage,
+      type: "error",
+    });
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setIsSubmitting(true);
     setSubmitError(null);
 
+    // Validate required fields
+    const requiredFields = {
+      name: contactFormData.name.trim(),
+      email: contactFormData.email.trim(),
+      message: contactFormData.message.trim(),
+    };
+
+    // Check if any required field is empty
+    const emptyFields = Object.entries(requiredFields)
+      .filter(([, value]) => !value)
+      .map(([field]) => {
+        switch (field) {
+          case 'name': return 'Name';
+          case 'email': return 'Email Address';
+          case 'message': return 'Message';
+          default: return field;
+        }
+      });
+
+    if (emptyFields.length > 0) {
+      handleValidationError(`Please fill in all required fields: ${emptyFields.join(', ')}`);
+      return;
+    }
+
+    // Validate email format using safe utility
+    if (!isValidEmail(requiredFields.email)) {
+      handleValidationError("Please enter a valid email address.");
+      return;
+    }
+
     // Validate phone number before submission
     if (businessDetails.phoneNumber && !validatePhoneNumber(businessDetails.phoneNumber)) {
-      setIsSubmitting(false);
-      setSubmitError("Please enter a valid phone number with digits only.");
+      handleValidationError("Please enter a valid phone number with digits only.");
       return;
     }
 

@@ -11,7 +11,6 @@ import {
   LineChart,
   Shield,
 } from "lucide-react";
-import ModernDQChatbot from "../components/ModernDQChatbot";
 import { leadershipTeam } from "../data/leadershipTeam";
 import ClientLogosCarousel from "../components/ClientLogosCarousel";
 import CallToActionSimple from "../components/CallToActionSimple";
@@ -77,7 +76,7 @@ export default function AboutUsPage() {
 
       <main className="flex-grow">
         {/* Hero */}
-        <section className="relative overflow-hidden">
+        <section className="relative overflow-hidden" style={{ height: "100vh" }}>
           <div className="absolute inset-0">
             <img 
               src="/images/about_us_hero.png" 
@@ -86,24 +85,23 @@ export default function AboutUsPage() {
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-r from-secondary-900/95 via-secondary-900/70 to-secondary-900/30" />
-          <div className="relative container mx-auto px-4 py-24 text-white text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-white/70 mb-4">
-              DigitalQatalyst
-            </p>
-            <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6 mx-auto max-w-4xl">
-              Transform Your Business for the Digital Future
-            </h1>
-            <p className="text-lg md:text-xl text-white/80 max-w-3xl mb-10 mx-auto">
-              We simplify digital transformation, combining strategy, technology, and expertise to guide your success in the digital economy.
-            </p>
-            <div className="flex justify-center">
-              <a 
-                href="/consultation"
-                className="px-8 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-600 transition-all inline-flex items-center gap-2"
-              >
-                Start Your Transformation Journey
-                <ArrowRight size={18} />
-              </a>
+          <div className="container mx-auto px-4 h-full flex flex-col justify-center items-center relative z-10">
+            <div className="text-center max-w-4xl mx-auto">
+              <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6 mx-auto max-w-4xl text-white">
+                Transform Your Business for the Digital Future
+              </h1>
+              <p className="text-lg md:text-xl text-white/80 max-w-3xl mb-10 mx-auto">
+                We simplify digital transformation, combining strategy, technology, and expertise to guide your success in the digital economy
+              </p>
+              <div className="flex justify-center">
+                <a 
+                  href="/consultation"
+                  className="px-8 py-4 bg-primary text-white font-bold rounded-full hover:bg-primary-600 transition-all transform hover:-translate-y-1 hover:shadow-xl inline-flex items-center gap-2 group"
+                >
+                  Start Your Transformation Journey
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
+                </a>
+              </div>
             </div>
           </div>
         </section>
@@ -170,10 +168,10 @@ export default function AboutUsPage() {
                 return (
                   <article
                     key={value.title}
-                    className="rounded-3xl bg-white shadow-sm border border-gray-100 p-6 hover:-translate-y-1 transition-transform"
+                    className="bg-white p-6 rounded-xl border border-gray-100 flex flex-col h-full"
                   >
-                    <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4">
-                      <Icon size={22} />
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                      <Icon className="text-primary" size={22} />
                     </div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">
                       {value.title}
@@ -206,12 +204,12 @@ export default function AboutUsPage() {
                 return (
                   <article
                     key={belief.title}
-                    className="rounded-3xl bg-white/5 border border-white/10 p-6 backdrop-blur-sm"
+                    className="bg-white/5 p-6 rounded-xl border border-white/10 backdrop-blur-sm flex flex-col h-full"
                   >
-                    <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-4">
-                      <Icon size={22} />
+                    <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center mb-4">
+                      <Icon className="text-white" size={22} />
                     </div>
-                    <h3 className="text-xl font-semibold mb-3">
+                    <h3 className="text-xl font-semibold text-white mb-3">
                       {belief.title}
                     </h3>
                     <p className="text-white/80 text-sm">{belief.description}</p>
@@ -274,7 +272,7 @@ export default function AboutUsPage() {
                 return (
                 <article
                   key={leader.name}
-                  className="bg-white rounded-2xl border border-gray-100 p-8 text-center shadow-sm hover:-translate-y-1 transition-transform"
+                  className="bg-white p-6 rounded-xl border border-gray-100 text-center flex flex-col h-full"
                 >
                   <div className="w-24 h-24 rounded-full mx-auto mb-4 overflow-hidden bg-gray-100 flex items-center justify-center">
                     {leader.image ? (
@@ -290,7 +288,7 @@ export default function AboutUsPage() {
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">
                     {leader.name}
                   </h3>
-                  <p className="text-sm text-gray-500 font-medium mb-4">{leader.role}</p>
+                  <p className="text-sm text-gray-500 font-medium">{leader.role}</p>
                 </article>
               )})}
             </div>
@@ -302,9 +300,6 @@ export default function AboutUsPage() {
       </main>
 
       <Footer isLoggedIn={false} />
-      
-      {/* DQ AI Chatbot */}
-      <ModernDQChatbot />
     </div>
   );
 }
