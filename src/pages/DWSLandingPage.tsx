@@ -80,7 +80,7 @@ const DWSLandingPage: React.FC = () => {
                 
                 {/* Sub-headline */}
                 <p className="font-body text-xl text-white/90 mb-8">
-                  DWS is a modern digital working space designed for professionals and teams who need more than just a desk. From focused workdays to team collaboration and client meetings, DWS gives you the environment, flexibility, and smart support to move work forward.
+                  Modern workspaces for professionals who need more than just a desk. Focus, collaborate, and grow with smart support.
                 </p>
               </FadeInUpOnScroll>
 
@@ -93,7 +93,7 @@ const DWSLandingPage: React.FC = () => {
                   onClick={() => navigate("/forms/tour-request")}
                   className="px-8 py-4 bg-primary hover:bg-primary-600 text-white font-bold rounded-lg shadow-lg transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex items-center justify-center text-lg overflow-hidden group"
                 >
-                  <span className="relative z-10">Book a Tour</span>
+                  <span className="relative z-10">Book Your Space</span>
                   <ArrowRight
                     size={20}
                     className="ml-2 relative z-10 group-hover:translate-x-1 transition-transform duration-300"
@@ -162,8 +162,7 @@ const DWSLandingPage: React.FC = () => {
                   </h2>
                   
                   <p className="text-xl text-gray-700 leading-relaxed mb-8">
-                    DWS is built for the realities of modern work. It is where focus meets flexibility, 
-                    collaboration meets professionalism, and everyday work turns into meaningful progress.
+                    Where focus meets flexibility. Work smarter, not harder.
                   </p>
 
                   <div className="space-y-6">
@@ -175,8 +174,7 @@ const DWSLandingPage: React.FC = () => {
                           Professional Environment
                         </h3>
                         <p className="text-gray-600 leading-relaxed">
-                          Step into a space designed for serious work. From client meetings to focused deep work, 
-                          DWS provides the professional atmosphere that elevates your business presence.
+                          Professional spaces that elevate your business presence.
                         </p>
                       </div>
                     </div>
@@ -189,8 +187,7 @@ const DWSLandingPage: React.FC = () => {
                           Flexible Solutions
                         </h3>
                         <p className="text-gray-600 leading-relaxed">
-                          Whether you need a dedicated desk for daily focus, a private office for your team, 
-                          or meeting rooms for important presentations, DWS adapts to how you work best.
+                          Dedicated desks, private offices, or meeting rooms - we adapt to how you work.
                         </p>
                       </div>
                     </div>
@@ -203,8 +200,7 @@ const DWSLandingPage: React.FC = () => {
                           Smart Infrastructure
                         </h3>
                         <p className="text-gray-600 leading-relaxed">
-                          High-speed internet, modern technology, and thoughtfully designed spaces that reduce 
-                          friction and keep you focused on what matters most - your work and growth.
+                          High-speed internet and modern tech that keeps you focused on growth.
                         </p>
                       </div>
                     </div>
@@ -286,8 +282,7 @@ const DWSLandingPage: React.FC = () => {
                     A workspace designed around outcomes
                   </h2>
                   <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                    At DWS, every experience is built to support better work. Whether you need a space for focus, 
-                    collaboration, or growth, DWS is designed to enhance your professional journey.
+                    Built for better work. Designed for your success.
                   </p>
                 </div>
               </FadeInUpOnScroll>
@@ -342,7 +337,7 @@ const DWSLandingPage: React.FC = () => {
                   </h2>
                   
                   <p className="text-xl text-gray-700 leading-relaxed mb-8">
-                    Our workspace offers flexible options to support different ways of working, from individual focus to team collaboration.
+                    Flexible options for every way you work.
                   </p>
 
                   <div className="space-y-6">
@@ -354,7 +349,7 @@ const DWSLandingPage: React.FC = () => {
                           Dedicated Desks
                         </h3>
                         <p className="text-gray-600 leading-relaxed">
-                          Personal workstations with storage and consistent setup for professionals who need a reliable, focused environment every day.
+                          Your personal workspace with storage and consistent setup.
                         </p>
                       </div>
                     </div>
@@ -367,7 +362,7 @@ const DWSLandingPage: React.FC = () => {
                           Private Offices
                         </h3>
                         <p className="text-gray-600 leading-relaxed">
-                          Fully enclosed spaces equipped for teams that require privacy, confidentiality, and room to collaborate without distractions.
+                          Enclosed spaces for teams that need privacy and collaboration.
                         </p>
                       </div>
                     </div>
@@ -380,7 +375,7 @@ const DWSLandingPage: React.FC = () => {
                           Meeting Rooms
                         </h3>
                         <p className="text-gray-600 leading-relaxed">
-                          Professional meeting spaces available for presentations, client meetings, workshops, and collaborative sessions of all sizes.
+                          Professional spaces for presentations, client meetings, and workshops.
                         </p>
                       </div>
                     </div>
@@ -392,7 +387,7 @@ const DWSLandingPage: React.FC = () => {
                       onClick={() => navigate("/forms/tour-request")}
                       className="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary-600 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105"
                     >
-                      Book a Tour
+                      Book Your Space
                       <ArrowRight size={18} className="ml-2" />
                     </button>
                   </div>
@@ -458,7 +453,7 @@ const DWSLandingPage: React.FC = () => {
                   </h2>
                   
                   <p className="text-xl text-gray-600 mb-10 leading-relaxed">
-                    Join the digital transformation revolution. Book a tour of our Nairobi studio and discover 
+                    Join the digital transformation revolution. Book your space at our Nairobi studio and discover 
                     how Digital Working Studios can accelerate your productivity and innovation.
                   </p>
 
@@ -467,7 +462,7 @@ const DWSLandingPage: React.FC = () => {
                       onClick={() => navigate("/forms/tour-request")}
                       className="px-8 py-4 bg-primary hover:bg-primary-600 text-white font-bold rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center"
                     >
-                      Book a Tour
+                      Book Your Space
                       <ArrowRight size={20} className="ml-2" />
                     </button>
                   </div>

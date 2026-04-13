@@ -189,7 +189,7 @@ const TourRequestForm: React.FC = () => {
             <div className="flex items-center justify-center p-8 lg:p-16">
               <div className="text-white max-w-lg">
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                  Request Studio Tour
+                  Book Your Workspace
                 </h1>
                 <h2 className="text-2xl font-semibold mb-6 text-primary-300">
                   Digital Working Studios (DWS)
@@ -199,25 +199,25 @@ const TourRequestForm: React.FC = () => {
                   <span className="text-lg">Nairobi, Kenya - Babadogo Area</span>
                 </div>
                 <p className="text-xl text-white/90 mb-8 leading-relaxed">
-                  Experience the future of work. Visit our Digital Working Studio and see how human-machine collaboration transforms productivity in Economy 4.0.
+                  Ready to upgrade your workspace? Secure your spot at our premium Digital Working Studio and start working smarter today.
                 </p>
                 
                 <ul className="space-y-4">
                   <li className="flex items-center text-white">
                     <CheckCircle size={24} className="text-white mr-4 flex-shrink-0" />
-                    <span className="text-lg">AI-ready workstations demonstration</span>
+                    <span className="text-lg">Premium workspace access</span>
                   </li>
                   <li className="flex items-center text-white">
                     <CheckCircle size={24} className="text-white mr-4 flex-shrink-0" />
-                    <span className="text-lg">Collaborative spaces tour</span>
+                    <span className="text-lg">AI-powered productivity tools</span>
                   </li>
                   <li className="flex items-center text-white">
                     <CheckCircle size={24} className="text-white mr-4 flex-shrink-0" />
-                    <span className="text-lg">Digital worker methodology overview</span>
+                    <span className="text-lg">Professional meeting facilities</span>
                   </li>
                   <li className="flex items-center text-white">
                     <CheckCircle size={24} className="text-white mr-4 flex-shrink-0" />
-                    <span className="text-lg">Membership options discussion</span>
+                    <span className="text-lg">Flexible membership plans</span>
                   </li>
                 </ul>
               </div>
@@ -227,7 +227,7 @@ const TourRequestForm: React.FC = () => {
             <div className="flex items-center justify-center p-8 lg:p-16">
               <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-xl">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-                  Schedule Your Tour
+                  Reserve Your Space
                 </h3>
                 
                 <form onSubmit={handleSubmit}>
@@ -243,9 +243,9 @@ const TourRequestForm: React.FC = () => {
                         <CheckCircle size={32} className="text-green-600" />
                       </div>
                       <h4 className="text-lg font-medium text-gray-900 mb-2">
-                        Tour Request Submitted!
+                        Booking Confirmed!
                       </h4>
-                      <p className="text-gray-600">Our team will contact you within 24 hours to confirm your studio tour appointment.</p>
+                      <p className="text-gray-600">Our team will contact you within 24 hours to finalize your workspace setup and membership details.</p>
                     </div>
                   ) : (
                     <>
@@ -329,8 +329,8 @@ const TourRequestForm: React.FC = () => {
                       </div>
 
                       <FormTextarea
-                        label="Additional Information"
-                        placeholder="Tell us about your specific interests, any accessibility requirements, or special requests for the tour..."
+                        label="Workspace Requirements"
+                        placeholder="Tell us about your specific workspace needs, team size, preferred setup, or any special requirements..."
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       />
@@ -367,7 +367,7 @@ const TourRequestForm: React.FC = () => {
                           </>
                         ) : (
                           <>
-                            Request Tour
+                            Book Your Space
                             <ArrowRight size={18} className="ml-2" />
                           </>
                         )}
@@ -379,7 +379,7 @@ const TourRequestForm: React.FC = () => {
                 {/* Direct Contact Options - Outside Form */}
                 <div className="mt-8 pt-6 border-t border-gray-200">
                   <h4 className="text-lg font-semibold text-gray-900 mb-4 text-center">
-                    Or Contact Us Directly
+                    Need Immediate Assistance?
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <a

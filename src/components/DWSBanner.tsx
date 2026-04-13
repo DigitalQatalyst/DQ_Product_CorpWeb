@@ -31,12 +31,12 @@ const DWSBanner: React.FC = () => {
                   
                   {/* Main Headline */}
                   <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 leading-tight">
-                    Is your current workspace holding your business back?
+                    Premium Workspaces in Nairobi
                   </h2>
                   
-                  {/* Subheadline */}
+                  {/* Subheadline - Simplified and punchy */}
                   <p className="text-white/90 text-base md:text-lg leading-relaxed max-w-2xl mb-6">
-                    Your best work requires zero distractions. DWS eliminates the friction of the modern workday with smart-integrated rooms, seamless connectivity, and a professional atmosphere that commands focus. Whether you're scaling a startup or perfecting a craft, we provide the space; you provide the progress.
+                    Smart workspaces. Zero distractions. Maximum focus.
                   </p>
                 </div>
 
@@ -54,7 +54,7 @@ const DWSBanner: React.FC = () => {
                     onClick={() => navigate("/forms/tour-request")}
                     className="px-6 py-3 bg-transparent border-2 border-white text-white hover:bg-white/10 font-bold rounded-lg transform transition-all duration-300 hover:scale-105 flex items-center justify-center"
                   >
-                    Book a Tour
+                    Book Your Space
                   </button>
                 </div>
               </div>
