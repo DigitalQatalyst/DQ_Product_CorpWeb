@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import { securityPlugin } from "./vite-security-plugin";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -14,7 +15,10 @@ export default defineConfig(({ mode }) => {
         "@": path.resolve(__dirname, "./src"),
       },
     },
-    plugins: [react()],
+    plugins: [
+      react(),
+      securityPlugin() // Add security plugin
+    ],
     server: {
       port: 3000,
       strictPort: true,

@@ -5,8 +5,8 @@
  * Tests the implemented security measures to ensure sensitive paths are blocked
  */
 
-const https = require('https');
-const http = require('http');
+import https from 'https';
+import http from 'http';
 
 // Configuration
 const BASE_URL = process.env.TEST_URL || 'http://localhost:3000';
@@ -264,11 +264,9 @@ async function runSecurityTests() {
 }
 
 // Run tests if this script is executed directly
-if (require.main === module) {
-  runSecurityTests().catch(error => {
-    console.error('❌ Test suite failed:', error.message);
-    process.exit(1);
-  });
-}
+runSecurityTests().catch(error => {
+  console.error('❌ Test suite failed:', error.message);
+  process.exit(1);
+});
 
-module.exports = { runSecurityTests, testSecurityHeaders, testBlockedPaths };
+export { runSecurityTests, testSecurityHeaders, testBlockedPaths };
