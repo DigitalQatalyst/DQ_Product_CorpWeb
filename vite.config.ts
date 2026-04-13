@@ -19,6 +19,8 @@ export default defineConfig(({ mode }) => {
       port: 3000,
       strictPort: true,
       host: "localhost",
+      // Security: Configure middleware to block sensitive paths
+      middlewareMode: false,
       proxy: {
         "/api": {
           target: "http://localhost:3001",
@@ -26,6 +28,24 @@ export default defineConfig(({ mode }) => {
           secure: false,
         },
       },
+      // Security: Block access to sensitive files during development
+      fs: {
+        deny: [
+          '.env*',
+          'package*.json',
+          'yarn.lock',
+          'tsconfig*.json',
+          'vite.config.*',
+          'webpack.config.*',
+          '**/.git/**',
+          '**/node_modules/**',
+          '**/*.bak',
+          '**/*.backup',
+          '**/*.old',
+          '**/*.tmp',
+          '**/*.temp'
+        ]
+      }
     },
     preview: {
       port: 3000,

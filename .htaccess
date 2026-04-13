@@ -1,0 +1,84 @@
+# Security-hardened .htaccess for Apache servers
+# This file provides additional security for Apache-based deployments
+
+# Prevent access to sensitive files and directories
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# Block access to WEB-INF and similar Java/Spring paths
+<LocationMatch "^/(WEB-INF|META-INF|classes|lib)/">
+    Require all denied
+</LocationMatch>
+
+# Block access to configuration files
+<FilesMatch "\.(xml|properties|yml|yaml|conf|config|ini|env)$">
+    Require all denied
+</FilesMatch>
+
+# Block access to backup and temporary files
+<FilesMatch "\.(bak|backup|old|tmp|temp|swp|swo|~)$">
+    Require all denied
+</FilesMatch>
+
+# Block access to source code files
+<FilesMatch "\.(ts|tsx|jsx|scss|sass|less|coffee)$">
+    Require all denied
+</FilesMatch>
+
+# Block access to package files and configs
+<FilesMatch "^(package\.json|package-lock\.json|yarn\.lock|\.env|\.env\..+|tsconfig\.json|vite\.config\..+|webpack\.config\..+|gulpfile\..+|Gruntfile\..+)$">
+    Require all denied
+</FilesMatch>
+
+# Block access to version control directories
+<DirectoryMatch "^.*\.(git|svn|hg|bzr)">
+    Require all denied
+</DirectoryMatch>
+
+# Block access to node_modules
+<DirectoryMatch "^.*/node_modules">
+    Require all denied
+</DirectoryMatch>
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    
+    # Content Security Policy
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https: wss:; frame-ancestors 'self';"
+</IfModule>
+
+# Hide server information
+ServerTokens Prod
+<IfModule mod_headers.c>
+    Header unset Server
+    Header unset X-Powered-By
+</IfModule>
+
+# Prevent access to specific paths that might be probed
+RewriteEngine On
+
+# Block WEB-INF access attempts
+RewriteRule ^WEB-INF/ - [F,L]
+RewriteRule ^META-INF/ - [F,L]
+RewriteRule ^classes/ - [F,L]
+RewriteRule ^lib/ - [F,L]
+
+# Block common attack patterns
+RewriteRule \.(xml|properties|yml|yaml|conf|config|ini)$ - [F,L]
+RewriteRule \.(bak|backup|old|tmp|temp|swp|swo|~)$ - [F,L]
+
+# Rate limiting (if mod_evasive is available)
+<IfModule mod_evasive24.c>
+    DOSHashTableSize    2048
+    DOSPageCount        10
+    DOSSiteCount        50
+    DOSPageInterval     1
+    DOSSiteInterval     1
+    DOSBlockingPeriod   600
+</IfModule>

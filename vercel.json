@@ -1,4 +1,87 @@
 {
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-Content-Type-Options", 
+          "value": "nosniff"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https: wss:; frame-ancestors 'self';"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/WEB-INF/:path*",
+      "destination": "/404",
+      "permanent": false
+    },
+    {
+      "source": "/META-INF/:path*", 
+      "destination": "/404",
+      "permanent": false
+    },
+    {
+      "source": "/classes/:path*",
+      "destination": "/404", 
+      "permanent": false
+    },
+    {
+      "source": "/lib/:path*",
+      "destination": "/404",
+      "permanent": false
+    },
+    {
+      "source": "/.env*",
+      "destination": "/404",
+      "permanent": false
+    },
+    {
+      "source": "/package*.json",
+      "destination": "/404",
+      "permanent": false
+    },
+    {
+      "source": "/yarn.lock",
+      "destination": "/404",
+      "permanent": false
+    },
+    {
+      "source": "/tsconfig*.json",
+      "destination": "/404",
+      "permanent": false
+    },
+    {
+      "source": "/vite.config.*",
+      "destination": "/404",
+      "permanent": false
+    },
+    {
+      "source": "/webpack.config.*",
+      "destination": "/404",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/" }
