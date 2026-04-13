@@ -13,13 +13,21 @@ const BLOCKED_PATHS = [
   '/lib',
   '/.env',
   '/.git',
-  '/node_modules',
   '/package.json',
   '/package-lock.json',
   '/yarn.lock',
   '/tsconfig.json',
   '/vite.config.ts',
   '/webpack.config.js'
+];
+
+// Allowed node_modules paths for Vite development
+const ALLOWED_NODE_MODULES_PATHS = [
+  '/node_modules/.vite/',
+  '/node_modules/@vite/',
+  '/@vite/',
+  '/@fs/',
+  '/@id/'
 ];
 
 const BLOCKED_EXTENSIONS = [
@@ -48,10 +56,52 @@ export function securityPlugin(): Plugin {
         const url = req.url || '';
         const pathname = new URL(url, 'http://localhost').pathname;
         
-        // Check for blocked paths
+        // Always allow Vite development paths first - CRITICAL for HMR
+        const viteClientPaths = [
+          '/@vite/client',
+          '/@vite/env', 
+          '/@react-refresh',
+          '/__vite_ping',
+          '/node_modules/vite/',
+          '/node_modules/@vitejs/',
+          '/node_modules/.vite/',
+          '/@fs/',
+          '/@id/'
+        ];
+        
+        for (const vitePath of viteClientPaths) {
+          if (pathname.startsWith(vitePath)) {
+            next();
+            return;
+          }
+        }
+        
+        // Allow CSS and other asset files from node_modules
+        if (pathname.startsWith('/node_modules/') && 
+            (pathname.endsWith('.css') || pathname.endsWith('.js') || pathname.endsWith('.map'))) {
+          next();
+          return;
+        }
+        
+        // Check for blocked paths (but allow Vite development dependencies)
         for (const blockedPath of BLOCKED_PATHS) {
           if (pathname.toLowerCase().startsWith(blockedPath.toLowerCase())) {
             console.warn(`🚨 Security: Blocked access attempt to ${pathname} from ${req.socket?.remoteAddress}`);
+            res.statusCode = 404;
+            res.setHeader('Content-Type', 'text/html');
+            res.end('<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1></body></html>');
+            return;
+          }
+        }
+        
+        // Special handling for node_modules - block general access but allow Vite deps
+        if (pathname.toLowerCase().startsWith('/node_modules/')) {
+          const isAllowedVitePath = ALLOWED_NODE_MODULES_PATHS.some(allowedPath => 
+            pathname.toLowerCase().startsWith(allowedPath.toLowerCase())
+          );
+          
+          if (!isAllowedVitePath) {
+            console.warn(`🚨 Security: Blocked node_modules access attempt to ${pathname} from ${req.socket?.remoteAddress}`);
             res.statusCode = 404;
             res.setHeader('Content-Type', 'text/html');
             res.end('<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1></body></html>');

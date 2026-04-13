@@ -17,12 +17,12 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
-      securityPlugin() // Add security plugin
+      securityPlugin() // Re-enabled with proper Vite client support
     ],
     server: {
       port: 3000,
       strictPort: true,
-      host: "localhost",
+      host: "0.0.0.0", // Changed from "localhost" to bind to all interfaces
       // Security: Configure middleware to block sensitive paths
       middlewareMode: false,
       proxy: {
@@ -42,7 +42,7 @@ export default defineConfig(({ mode }) => {
           'vite.config.*',
           'webpack.config.*',
           '**/.git/**',
-          '**/node_modules/**',
+          // Removed '**/node_modules/**' to allow CSS and asset imports
           '**/*.bak',
           '**/*.backup',
           '**/*.old',
