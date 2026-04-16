@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ElementType } from "react";
 
 export interface ProductType {
   id: string;
@@ -9,15 +9,6 @@ export interface ProductType {
   demoUrl: string;
   learnMoreUrl: string;
   category: string;
-  icon?: ReactNode;
+  icon?: ElementType;
   imageUrl?: string;
-}
-
-export interface ProductCardProps {
-  product: ProductType;
-  onClick?: () => void;
-}
-
-export interface ProductGridProps {
-  products: ProductType[];
 }

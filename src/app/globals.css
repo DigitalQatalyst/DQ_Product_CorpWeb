@@ -1,0 +1,284 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* ── Radius ─────────────────────────────────────────── */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* ── Semantic color mappings (CSS var → Tailwind token) */
+  --color-background:         hsl(var(--background));
+  --color-foreground:         hsl(var(--foreground));
+
+  --color-card:               hsl(var(--card));
+  --color-card-foreground:    hsl(var(--card-foreground));
+
+  --color-popover:            hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-primary:            hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary:          hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted:              hsl(var(--muted));
+  --color-muted-foreground:   hsl(var(--muted-foreground));
+
+  --color-accent:             hsl(var(--accent));
+  --color-accent-foreground:  hsl(var(--accent-foreground));
+
+  --color-destructive:        hsl(var(--destructive));
+
+  --color-border:             hsl(var(--border));
+  --color-input:              hsl(var(--input));
+  --color-ring:               hsl(var(--ring));
+
+  /* ── Sidebar ─────────────────────────────────────────── */
+  --color-sidebar:                    hsl(var(--sidebar));
+  --color-sidebar-foreground:         hsl(var(--sidebar-foreground));
+  --color-sidebar-primary:            hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent:             hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground:  hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border:             hsl(var(--sidebar-border));
+  --color-sidebar-ring:               hsl(var(--sidebar-ring));
+
+  /* ── Typography ──────────────────────────────────────── */
+  --font-sans:    "DM Sans", sans-serif;
+  --font-display: "Plus Jakarta Sans", sans-serif;
+  --font-mono:    ui-monospace, "Cascadia Code", monospace;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LIGHT MODE
+   primary   = DQ Navy   #030F35  (hsl 228 93% 11%)
+   accent    = DQ Coral  #FF6B4D  (hsl 11 100% 65%)
+═══════════════════════════════════════════════════════════ */
+:root {
+  --radius: 0.5rem;
+
+  --background:         0 0% 100%;
+  --foreground:         228 93% 11%;       /* navy text on white */
+
+  --card:               0 0% 100%;
+  --card-foreground:    228 93% 11%;
+
+  --popover:            0 0% 100%;
+  --popover-foreground: 228 93% 11%;
+
+  /* PRIMARY = Navy — used for nav, headings, filled buttons */
+  --primary:            228 93% 11%;       /* #030F35 */
+  --primary-foreground: 0 0% 100%;
+
+  /* SECONDARY = Coral — used for CTA buttons, highlights */
+  --secondary:          11 100% 65%;       /* #FF6B4D */
+  --secondary-foreground: 0 0% 100%;
+
+  --muted:              220 14% 96%;
+  --muted-foreground:   220 9% 46%;
+
+  /* ACCENT = Coral (same as secondary — for badges, tags, links) */
+  --accent:             11 100% 65%;       /* #FF6B4D */
+  --accent-foreground:  0 0% 100%;
+
+  --destructive:        0 84% 60%;
+
+  --border:             220 13% 91%;
+  --input:              220 13% 91%;
+  --ring:               228 93% 11%;       /* focus ring = navy */
+
+  /* Sidebar */
+  --sidebar:                    228 93% 11%;   /* navy sidebar */
+  --sidebar-foreground:         0 0% 98%;
+  --sidebar-primary:            11 100% 65%;   /* coral active item */
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent:             228 60% 18%;   /* slightly lighter navy hover */
+  --sidebar-accent-foreground:  0 0% 98%;
+  --sidebar-border:             228 60% 18%;
+  --sidebar-ring:               11 100% 65%;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DARK MODE
+═══════════════════════════════════════════════════════════ */
+.dark {
+  --background:         228 50% 6%;
+  --foreground:         210 40% 98%;
+
+  --card:               228 45% 10%;
+  --card-foreground:    210 40% 98%;
+
+  --popover:            228 45% 10%;
+  --popover-foreground: 210 40% 98%;
+
+  /* PRIMARY stays navy-ish but lightened for dark bg */
+  --primary:            228 60% 55%;
+  --primary-foreground: 0 0% 100%;
+
+  /* SECONDARY = Coral stays the same — pops on dark */
+  --secondary:          11 100% 65%;
+  --secondary-foreground: 0 0% 100%;
+
+  --muted:              228 35% 18%;
+  --muted-foreground:   215 20% 65%;
+
+  --accent:             11 100% 65%;
+  --accent-foreground:  0 0% 100%;
+
+  --destructive:        0 72% 51%;
+
+  --border:             228 30% 18%;
+  --input:              228 30% 18%;
+  --ring:               11 100% 65%;       /* coral focus ring in dark */
+
+  /* Sidebar */
+  --sidebar:                    228 50% 8%;
+  --sidebar-foreground:         210 40% 98%;
+  --sidebar-primary:            11 100% 65%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent:             228 40% 14%;
+  --sidebar-accent-foreground:  210 40% 98%;
+  --sidebar-border:             228 30% 14%;
+  --sidebar-ring:               11 100% 65%;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BASE RESETS
+═══════════════════════════════════════════════════════════ */
+* {
+  border-color: hsl(var(--border));
+  outline-color: hsl(var(--ring) / 0.5);
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TYPOGRAPHY UTILITIES
+═══════════════════════════════════════════════════════════ */
+.font-display { font-family: var(--font-display); }
+.font-sans    { font-family: var(--font-sans); }
+
+.text-gradient {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LAYOUT UTILITIES
+═══════════════════════════════════════════════════════════ */
+.app-clamp {
+  inline-size: 100%;
+  max-inline-size: 100dvw;
+  overflow-x: clip;
+  overscroll-behavior-x: contain;
+}
+.app-clamp, .app-clamp * { min-inline-size: 0; }
+.app-clamp .w-screen     { width: 100% !important; max-width: 100% !important; }
+.app-clamp img,
+.app-clamp video,
+.app-clamp svg           { max-width: 100%; height: auto; }
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLLBAR UTILITIES
+═══════════════════════════════════════════════════════════ */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--border)) transparent;
+}
+.scrollbar-thin::-webkit-scrollbar       { width: 6px; }
+.scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 3px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GLASS / SURFACE UTILITIES
+═══════════════════════════════════════════════════════════ */
+.glass {
+  background: hsl(var(--card) / 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid hsl(var(--border));
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RICH TEXT / BLOG CONTENT
+═══════════════════════════════════════════════════════════ */
+.prose-dq {
+  color: hsl(var(--foreground));
+}
+.prose-dq h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: hsl(var(--primary));
+}
+.prose-dq h3 {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: hsl(var(--primary));
+}
+.prose-dq p  { line-height: 1.75; margin-bottom: 1rem; }
+.prose-dq ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+.prose-dq ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
+.prose-dq li { margin-bottom: 0.5rem; line-height: 1.75; }
+.prose-dq blockquote {
+  border-left: 4px solid hsl(var(--accent));
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  background: hsl(var(--accent) / 0.06);
+  font-style: italic;
+}
+.prose-dq a {
+  color: hsl(var(--accent));
+  text-decoration: underline;
+}
+.prose-dq strong { font-weight: 600; }
+.prose-dq code {
+  background: hsl(var(--muted));
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-family: var(--font-mono);
+}
+.prose-dq pre {
+  background: hsl(var(--primary));
+  color: hsl(0 0% 98%);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+.prose-dq pre code { background: transparent; padding: 0; }
+
+/* TipTap editor mirrors prose-dq */
+.tiptap { color: hsl(var(--foreground)); font-family: var(--font-sans); }
