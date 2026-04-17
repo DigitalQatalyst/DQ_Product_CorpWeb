@@ -23,8 +23,8 @@ src/
 │   ├── jobs/         # Job listings
 │   ├── products/     # Products pages
 │   ├── services/     # Services pages
-│   ├── terms/        # Terms of service
-│   └── privacy-policy/
+│   ├── terms/        # Terms of use
+│   └── privacy-policy/ # Privacy notice
 ├── components/
 │   ├── layout/       # Header, Footer
 │   └── ui/           # shadcn/ui components
