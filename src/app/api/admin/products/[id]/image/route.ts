@@ -2,6 +2,17 @@ import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 import { requireAdminAuth, requireServiceRoleConfigured } from "../../../_utils";
 
+/** Matches `product-images` bucket `allowed_mime_types` / `file_size_limit` in Supabase. */
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+const ALLOWED_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
+
+const MIME_TO_EXT: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+  "image/gif": "gif",
+};
+
 function sanitizeFilename(name: string): string {
   return name.replaceAll(/[^a-zA-Z0-9._-]/g, "_");
 }
@@ -23,9 +34,24 @@ export async function POST(
     return NextResponse.json({ error: "file is required" }, { status: 400 });
   }
 
+  const mime = (file.type || "").toLowerCase().split(";")[0]?.trim() ?? "";
+  if (!ALLOWED_IMAGE_TYPES.has(mime)) {
+    return NextResponse.json(
+      { error: "Only JPEG, PNG, WebP, and GIF images are allowed." },
+      { status: 400 },
+    );
+  }
+  if (file.size > MAX_IMAGE_BYTES) {
+    return NextResponse.json(
+      { error: "Image must be 5 MB or smaller." },
+      { status: 400 },
+    );
+  }
+
   const safeName = sanitizeFilename(file.name || "image");
-  const ext = safeName.includes(".") ? safeName.split(".").pop() : "";
-  const objectPath = `products/${id}/hero.${ext || "png"}`;
+  const extFromName = safeName.includes(".") ? safeName.split(".").pop() : "";
+  const ext = MIME_TO_EXT[mime] ?? extFromName ?? "png";
+  const objectPath = `products/${id}/hero.${ext}`;
 
   const { error: uploadError } = await getSupabaseAdmin().storage
     .from("product-images")
