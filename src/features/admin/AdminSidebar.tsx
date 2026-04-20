@@ -11,6 +11,7 @@ import {
   TrendingUp,
   Settings,
   LogOut,
+  Package,
 } from "lucide-react";
 import {
   Sidebar,
@@ -27,11 +28,11 @@ import { supabaseBrowser } from "@/lib/supabaseBrowser";
 
 const navItems = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { label: "Products", href: "/admin/products", icon: LayoutDashboard },
+  { label: "Products", href: "/admin/products", icon: Package },
+  { label: "Profiles", href: "/admin/profiles", icon: Users },
   { label: "Job Postings", href: "/admin/job-postings", icon: Briefcase },
   { label: "Applications", href: "/admin/applications", icon: FileText },
   { label: "Interviews", href: "/admin/interviews", icon: Calendar },
-  { label: "Users", href: "/admin/users", icon: Users },
   { label: "Analytics", href: "/admin/analytics", icon: TrendingUp },
   { label: "Settings", href: "/admin/settings", icon: Settings },
 ];
@@ -55,7 +56,10 @@ export function AdminSidebar() {
           <SidebarMenu>
             {navItems.map(({ label, href, icon: Icon }) => (
               <SidebarMenuItem key={href}>
-                <SidebarMenuButton render={<Link href={href} />} isActive={pathname === href}>
+                <SidebarMenuButton
+                  render={<Link href={href} />}
+                  isActive={pathname === href || (href !== "/admin" && pathname.startsWith(`${href}/`))}
+                >
                   <Icon size={16} />
                   <span>{label}</span>
                 </SidebarMenuButton>
@@ -77,7 +81,7 @@ export function AdminSidebar() {
             <SidebarMenuButton
               onClick={async () => {
                 await supabaseBrowser.auth.signOut();
-                globalThis.location.href = "/admin/login";
+                globalThis.location.href = "/login";
               }}
             >
               <LogOut size={16} />

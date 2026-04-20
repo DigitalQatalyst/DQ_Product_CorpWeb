@@ -7,64 +7,93 @@ import { AdminSidebar } from "@/features/admin/AdminSidebar";
 import { Separator } from "@/components/ui/separator";
 import { supabaseBrowser } from "@/lib/supabaseBrowser";
 
-const LOGIN_PATH = "/admin/login";
+const LOGIN_PATH = "/login";
+
+async function fetchAdminMe(accessToken: string): Promise<number> {
+  const res = await fetch("/api/admin/me", {
+    headers: { authorization: `Bearer ${accessToken}` },
+    cache: "no-store",
+  });
+  return res.status;
+}
 
 export function AdminRouteShell({ children }: { readonly children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const isLogin = pathname === LOGIN_PATH;
-  const [dashboardReady, setDashboardReady] = useState(false);
+  const [allowed, setAllowed] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
 
-    async function run() {
-      if (isLogin) {
-        const { data } = await supabaseBrowser.auth.getSession();
-        if (data.session && !cancelled) router.replace("/admin");
+    async function ensureAdminDashboard() {
+      const { data } = await supabaseBrowser.auth.getSession();
+      const session = data.session;
+      if (!session) {
+        if (!cancelled) {
+          router.replace(`${LOGIN_PATH}?next=${encodeURIComponent(pathname)}`);
+        }
         return;
       }
 
-      const { data } = await supabaseBrowser.auth.getSession();
-      if (!data.session) {
-        if (!cancelled) router.replace(LOGIN_PATH);
+      const status = await fetchAdminMe(session.access_token);
+      if (cancelled) return;
+
+      if (status === 401 || status === 403) {
+        await supabaseBrowser.auth.signOut();
+        router.replace(`${LOGIN_PATH}?error=not_admin`);
         return;
       }
-      if (!cancelled) setDashboardReady(true);
+
+      if (status >= 400) {
+        await supabaseBrowser.auth.signOut();
+        router.replace(`${LOGIN_PATH}?error=admin_check_failed`);
+        return;
+      }
+
+      setAllowed(true);
     }
 
-    void run();
+    setAllowed(false);
+    void ensureAdminDashboard();
 
     const {
       data: { subscription },
     } = supabaseBrowser.auth.onAuthStateChange((_event, session) => {
       if (cancelled) return;
-      if (isLogin) {
-        if (session) router.replace("/admin");
-        return;
-      }
       if (!session) {
-        setDashboardReady(false);
-        router.replace(LOGIN_PATH);
+        setAllowed(false);
+        router.replace(`${LOGIN_PATH}?next=${encodeURIComponent(pathname)}`);
         return;
       }
-      setDashboardReady(true);
+      void (async () => {
+        const status = await fetchAdminMe(session.access_token);
+        if (cancelled) return;
+        if (status === 401 || status === 403) {
+          await supabaseBrowser.auth.signOut();
+          setAllowed(false);
+          router.replace(`${LOGIN_PATH}?error=not_admin`);
+          return;
+        }
+        if (status >= 400) {
+          await supabaseBrowser.auth.signOut();
+          setAllowed(false);
+          router.replace(`${LOGIN_PATH}?error=admin_check_failed`);
+          return;
+        }
+        setAllowed(true);
+      })();
     });
 
     return () => {
       cancelled = true;
       subscription.unsubscribe();
     };
-  }, [isLogin, pathname, router]);
+  }, [pathname, router]);
 
-  if (isLogin) {
-    return <div className="min-h-screen bg-muted/30">{children}</div>;
-  }
-
-  if (!dashboardReady) {
+  if (!allowed) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-muted/30 text-sm text-muted-foreground">
-        Checking session…
+        Verifying admin access…
       </div>
     );
   }

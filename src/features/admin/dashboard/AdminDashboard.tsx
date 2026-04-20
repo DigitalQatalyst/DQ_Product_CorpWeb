@@ -97,7 +97,7 @@ export function AdminDashboard() {
             .select("*")
             .order("created_at", { ascending: false }),
           supabase
-            .from("admin_users")
+            .from("profiles")
             .select("*")
             .order("created_at", { ascending: false }),
         ],
@@ -106,7 +106,7 @@ export function AdminDashboard() {
       const applications = (appsRes.data ?? []) as RecentApp[];
       const interviewRows = (interviewsRes.data ?? []) as RecentInterview[];
       const postingRows = (postingsRes.data ?? []) as RecentPosting[];
-      const adminUsers = (usersRes.data ?? []) as Array<{ is_active: boolean }>;
+      const profileRows = (usersRes.data ?? []) as Array<{ role: string }>;
 
       if (applications.length > 0) {
         setApps(getRecentApplications(applications));
@@ -134,11 +134,11 @@ export function AdminDashboard() {
           openPositions: countOpenPositions(postingRows),
         }));
       }
-      if (adminUsers.length > 0) {
+      if (profileRows.length > 0) {
         setStats((current) => ({
           ...current,
-          totalUsers: adminUsers.length,
-          activeUsers: countActiveUsers(adminUsers),
+          totalUsers: profileRows.length,
+          activeUsers: countAdminProfiles(profileRows),
         }));
       }
 
@@ -158,7 +158,7 @@ export function AdminDashboard() {
       value: stats.upcomingInterviews,
       icon: Calendar,
     },
-    { label: "Active Users", value: stats.activeUsers, icon: UserCheck },
+    { label: "Admin profiles", value: stats.activeUsers, icon: UserCheck },
     { label: "Open Positions", value: stats.openPositions, icon: Briefcase },
   ];
 
@@ -274,10 +274,10 @@ export function AdminDashboard() {
             Recruitment, content, and business operations.
           </p>
         </div>
-        <Link
-          href="/admin/analytics"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-background border border-border text-sm font-medium rounded-md hover:bg-muted transition-colors"
-        >
+            <Link
+              href="/admin/analytics"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-border bg-background text-sm font-medium shadow-xs hover:bg-muted transition-colors"
+            >
           <TrendingUp size={16} /> View Analytics
         </Link>
       </div>
@@ -422,8 +422,8 @@ function countOpenPositions(postings: RecentPosting[]) {
   return postings.filter(({ status }) => status === "open").length;
 }
 
-function countActiveUsers(users: Array<{ is_active: boolean }>) {
-  return users.filter(({ is_active }) => is_active).length;
+function countAdminProfiles(rows: Array<{ role: string }>) {
+  return rows.filter(({ role }) => (role ?? "").toLowerCase() === "admin").length;
 }
 
 function getInitials(firstName: string, lastName: string) {

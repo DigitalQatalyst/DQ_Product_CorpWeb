@@ -1,9 +1,5 @@
-import type { Metadata } from "next";
-import { AdminLoginPage } from "@/features/admin/auth/AdminLoginPage";
-
-export const metadata: Metadata = { title: "Admin Login | DigitalQatalyst" };
+import { redirect } from "next/navigation";
 
 export default function Page() {
-  return <AdminLoginPage />;
+  redirect("/login");
 }
-
