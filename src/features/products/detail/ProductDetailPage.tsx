@@ -9,61 +9,60 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { dqProducts } from "@/data/products";
-import {
-  getFeatureDescription,
-  getAboutParagraphs,
-  getProductContent,
-  getCategoryDescription,
-} from "./data/product-detail.data";
 import { WaitlistModal } from "./components/WaitlistModal";
 import type { ProductType } from "@/types/product";
+import type { ProductCtaType, ProductDetail } from "../api/products.queries";
 
-// Products that use "Request Demo" instead of "Join Waitlist"
-const DEMO_PRODUCTS = ["dtmp", "plant40"];
-// Products that use "Request Tour"
-const TOUR_PRODUCTS = ["dtmcc"];
-
-function CtaButton({ product, onWaitlist }: { product: ProductType; onWaitlist: () => void }) {
+function CtaButton({
+  product,
+  ctaType,
+  onWaitlist,
+}: {
+  readonly product: ProductType;
+  readonly ctaType: ProductCtaType;
+  readonly onWaitlist: () => void;
+}) {
   const router = useRouter();
 
-  if (DEMO_PRODUCTS.includes(product.id)) {
+  if (ctaType === "demo") {
     return (
       <Button onClick={() => router.push(`/forms/product-demo/${product.code.toLowerCase()}`)}>
         Request Product Demo
       </Button>
     );
   }
-  if (TOUR_PRODUCTS.includes(product.id)) {
+  if (ctaType === "tour") {
     return <Button onClick={() => router.push("/forms/tour-request")}>Request Tour</Button>;
   }
   return <Button onClick={onWaitlist}>Join Waitlist</Button>;
 }
 
-export function ProductDetailPage({ productId }: { productId: string }) {
+export function ProductDetailPage({
+  product,
+  detail,
+  ctaType,
+}: {
+  readonly product: ProductType;
+  readonly detail: ProductDetail;
+  readonly ctaType: ProductCtaType;
+}) {
   const [waitlistOpen, setWaitlistOpen] = useState(false);
 
-  const product = dqProducts.find((p) => p.id === productId);
-
-  if (!product) {
-    return (
-      <div className="container mx-auto px-4 py-20 text-center">
-        <h2 className="text-xl font-medium text-foreground mb-2">Product Not Found</h2>
-        <p className="text-muted-foreground mb-6">
-          The product you&apos;re looking for doesn&apos;t exist or has been removed.
-        </p>
-        <Button variant="outline">
-          <Link href="/products">Back to Products</Link>
-        </Button>
-      </div>
-    );
-  }
-
   const Icon = product.icon as React.ElementType | undefined;
-  const content = getProductContent(product.id);
-  const aboutParagraphs = getAboutParagraphs(product.id);
-
-  const showWaitlist = !DEMO_PRODUCTS.includes(product.id) && !TOUR_PRODUCTS.includes(product.id);
+  const showWaitlist = ctaType === "waitlist";
+  const featureDescriptionForTag = (tag: string) =>
+    detail.featureDescriptions[tag] ??
+    `Comprehensive ${tag.toLowerCase()} capabilities designed to accelerate your digital transformation journey.`;
+  // match prior special casing while still allowing admin overrides later
+  const categoryDescription = (() => {
+    if (product.id === "dtmcc") {
+      return "Digital Working Studios belongs to the Collaboration category, enabling digital workers who thrive through human-machine collaboration. In Economy 4.0, our studios provide the environment where professionals seamlessly integrate AI and machine intelligence into their work.";
+    }
+    if (product.id === "dtmi") {
+      return "DTMI belongs to the Intelligence category, providing comprehensive management insights and research-driven intelligence for digital transformation. This category focuses on delivering structured knowledge, industry analysis, and strategic insights that inform decision-making.";
+    }
+    return `This product belongs to the ${product.category} category, providing specialized solutions for organizations looking to enhance their digital transformation capabilities through strategic guidance, proven methodologies, and practical tools.`;
+  })();
 
   return (
     <>
@@ -83,7 +82,7 @@ export function ProductDetailPage({ productId }: { productId: string }) {
       </div>
 
       {/* Hero banner */}
-      <div className="w-full bg-gradient-to-r from-orange-50 to-red-50 border-b border-border">
+      <div className="w-full bg-linear-to-r from-orange-50 to-red-50 border-b border-border">
         <div className="container mx-auto px-4 py-12">
           <div className="flex flex-col lg:flex-row items-start gap-8">
             {/* Left */}
@@ -103,7 +102,7 @@ export function ProductDetailPage({ productId }: { productId: string }) {
                 {product.description}
               </p>
 
-              <CtaButton product={product} onWaitlist={() => setWaitlistOpen(true)} />
+              <CtaButton product={product} ctaType={ctaType} onWaitlist={() => setWaitlistOpen(true)} />
             </div>
 
             {/* Right — product image */}
@@ -117,16 +116,18 @@ export function ProductDetailPage({ productId }: { productId: string }) {
                     className="object-cover"
                     sizes="(max-width: 1024px) 100vw, 33vw"
                   />
-                ) : Icon ? (
-                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-orange-100 to-red-100">
-                    <div className="text-center">
-                      <div className="w-24 h-24 mx-auto flex items-center justify-center mb-2">
-                        <Icon size={48} className="text-primary" />
+                ) : (
+                  Icon && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-linear-to-br from-orange-100 to-red-100">
+                      <div className="text-center">
+                        <div className="w-24 h-24 mx-auto flex items-center justify-center mb-2">
+                          <Icon size={48} className="text-primary" />
+                        </div>
+                        <p className="text-muted-foreground font-medium">{product.code}</p>
                       </div>
-                      <p className="text-muted-foreground font-medium">{product.code}</p>
                     </div>
-                  </div>
-                ) : null}
+                  )
+                )}
               </div>
             </div>
           </div>
@@ -147,7 +148,7 @@ export function ProductDetailPage({ productId }: { productId: string }) {
                   <div>
                     <h3 className="font-semibold text-foreground mb-2">{tag}</h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">
-                      {getFeatureDescription(product.id, tag)}
+                      {featureDescriptionForTag(tag)}
                     </p>
                   </div>
                 </CardContent>
@@ -160,8 +161,8 @@ export function ProductDetailPage({ productId }: { productId: string }) {
         <section className="bg-muted/40 rounded-xl p-8 border border-border">
           <h2 className="text-3xl font-bold text-foreground mb-6">About {product.code}</h2>
           <div className="space-y-4">
-            {aboutParagraphs.map((p, i) => (
-              <p key={i} className="text-muted-foreground leading-relaxed">{p}</p>
+            {detail.aboutParagraphs.map((p, i) => (
+              <p key={p} className="text-muted-foreground leading-relaxed">{p}</p>
             ))}
           </div>
         </section>
@@ -170,19 +171,19 @@ export function ProductDetailPage({ productId }: { productId: string }) {
         <section className="space-y-8">
           <div>
             <h3 className="text-2xl font-bold text-foreground mb-4">The Problem Space</h3>
-            <p className="text-muted-foreground leading-relaxed">{content.problemStatement}</p>
+            <p className="text-muted-foreground leading-relaxed">{detail.problemStatement}</p>
           </div>
 
           <div>
             <h3 className="text-2xl font-bold text-foreground mb-4">Our Unique Solution</h3>
-            <p className="text-muted-foreground leading-relaxed">{content.solutionStatement}</p>
+            <p className="text-muted-foreground leading-relaxed">{detail.solutionStatement}</p>
           </div>
 
-          {content.capabilities.length > 0 && (
+          {detail.capabilities.length > 0 && (
             <div>
-              <h3 className="text-2xl font-bold text-foreground mb-4">{content.capabilitiesLabel}</h3>
+              <h3 className="text-2xl font-bold text-foreground mb-4">{detail.capabilitiesLabel}</h3>
               <div className="space-y-4">
-                {content.capabilities.map((cap) => (
+                {detail.capabilities.map((cap) => (
                   <div
                     key={cap.title}
                     className={`border-l-4 p-4 rounded-r-lg ${
@@ -199,12 +200,12 @@ export function ProductDetailPage({ productId }: { productId: string }) {
             </div>
           )}
 
-          {content.practicalValues.length > 0 && (
+          {detail.practicalValues.length > 0 && (
             <div>
               <h3 className="text-2xl font-bold text-foreground mb-6">Practical Value</h3>
               <Card>
                 <CardContent className="p-0 divide-y divide-border">
-                  {content.practicalValues.map((pv) => (
+                  {detail.practicalValues.map((pv) => (
                     <div key={pv.title} className="flex items-center gap-6 p-6">
                       <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
                         <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -226,7 +227,7 @@ export function ProductDetailPage({ productId }: { productId: string }) {
         {/* Product Category */}
         <section>
           <h2 className="text-3xl font-bold text-foreground mb-6">Product Category</h2>
-          <div className="bg-gradient-to-br from-orange-50 via-background to-red-50 rounded-xl p-8 border border-orange-100 shadow-sm">
+          <div className="bg-linear-to-br from-orange-50 via-background to-red-50 rounded-xl p-8 border border-orange-100 shadow-sm">
             <div className="flex items-start gap-6">
               <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center shadow-lg shrink-0">
                 <svg className="w-8 h-8 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -243,7 +244,7 @@ export function ProductDetailPage({ productId }: { productId: string }) {
                 </div>
 
                 <p className="text-muted-foreground leading-relaxed text-lg mb-6">
-                  {getCategoryDescription(product.id, product.category)}
+                  {categoryDescription}
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

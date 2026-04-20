@@ -23,9 +23,11 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { supabaseBrowser } from "@/lib/supabaseBrowser";
 
 const navItems = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
+  { label: "Products", href: "/admin/products", icon: LayoutDashboard },
   { label: "Job Postings", href: "/admin/job-postings", icon: Briefcase },
   { label: "Applications", href: "/admin/applications", icon: FileText },
   { label: "Interviews", href: "/admin/interviews", icon: Calendar },
@@ -69,6 +71,17 @@ export function AdminSidebar() {
             <SidebarMenuButton render={<Link href="/" />}>
               <LogOut size={16} />
               <span>Back to Site</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={async () => {
+                await supabaseBrowser.auth.signOut();
+                globalThis.location.href = "/admin/login";
+              }}
+            >
+              <LogOut size={16} />
+              <span>Sign out</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

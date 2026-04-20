@@ -2,29 +2,31 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { HomeIcon, ChevronRight, Filter, X, Search } from "lucide-react";
+import { HomeIcon, ChevronRight, Filter, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Card, CardContent } from "@/components/ui/card";
-import { dqProducts } from "@/data/products";
 import { ProductCard } from "./components/ProductCard";
 import { FilterSidebar } from "./components/FilterSidebar";
+import type { ProductType } from "@/types/product";
 
 type Filters = { category: string; tag: string };
 
-export function ProductsMarketplacePage() {
+export function ProductsMarketplacePage({ products }: { readonly products: ProductType[] }) {
   const [filters, setFilters] = useState<Filters>({ category: "", tag: "" });
   const [search, setSearch] = useState("");
 
   const categories = useMemo(
-    () => Array.from(new Set(dqProducts.map((p) => p.category))).sort(),
-    []
+    () =>
+      Array.from(new Set(products.map((p) => p.category))).sort((a, b) =>
+        a.localeCompare(b),
+      ),
+    [products]
   );
 
   const filtered = useMemo(
     () =>
-      dqProducts.filter((p) => {
+      products.filter((p) => {
         const q = search.toLowerCase();
         return (
           (!filters.category || p.category === filters.category) &&
@@ -32,7 +34,7 @@ export function ProductsMarketplacePage() {
           (!q || p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q))
         );
       }),
-    [filters, search]
+    [filters, search, products]
   );
 
   const handleFilterChange = (type: keyof Filters, value: string) =>
@@ -87,7 +89,7 @@ export function ProductsMarketplacePage() {
         </div>
         <div className="flex items-center gap-3 text-sm text-muted-foreground shrink-0">
           <span className="px-3 py-1 rounded-lg bg-muted text-foreground whitespace-nowrap">
-            Showing {filtered.length} of {dqProducts.length} products
+            Showing {filtered.length} of {products.length} products
           </span>
           {hasActiveFilters && (
             <button onClick={clearAll} className="text-primary font-medium hover:text-primary/80 transition-colors">
