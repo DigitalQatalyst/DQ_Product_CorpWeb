@@ -14,15 +14,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -33,7 +24,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -43,10 +33,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  arrayToLines,
   createJobPosting,
   deleteJobPosting,
-  linesToArray,
   listDepartments,
   listJobPostingsAdmin,
   updateJobPosting,
@@ -55,10 +43,10 @@ import {
   type JobPostingStatus,
   type JobPostingType,
 } from "@/features/careers/api";
-
-type EditorMode =
-  | { kind: "create" }
-  | { kind: "edit"; posting: JobPostingType };
+import {
+  JobPostingEditorDialog,
+  type JobPostingEditorMode,
+} from "@/features/careers/admin/JobPostingEditorDialog";
 
 function statusBadge(status: JobPostingStatus) {
   const cls =
@@ -74,23 +62,6 @@ function statusBadge(status: JobPostingStatus) {
   );
 }
 
-function emptyDraft(): JobPostingCreateInput {
-  return {
-    title: "",
-    department: "",
-    location: "",
-    type: "Full-time",
-    level: "Mid",
-    description: "",
-    responsibilities: [],
-    requirements: [],
-    skills: { core: [], behavioral: [] },
-    openPositions: 1,
-    postedDate: new Date().toISOString(),
-    status: "open",
-  };
-}
-
 export function JobPostingsAdminPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -102,8 +73,7 @@ export function JobPostingsAdminPage() {
   const [status, setStatus] = useState<JobPostingStatus | "all">("all");
 
   const [editorOpen, setEditorOpen] = useState(false);
-  const [mode, setMode] = useState<EditorMode>({ kind: "create" });
-  const [draft, setDraft] = useState<JobPostingCreateInput>(emptyDraft());
+  const [mode, setMode] = useState<JobPostingEditorMode>({ kind: "create" });
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -148,62 +118,23 @@ export function JobPostingsAdminPage() {
 
   function openCreate() {
     setMode({ kind: "create" });
-    setDraft(emptyDraft());
     setEditorOpen(true);
   }
 
   function openEdit(posting: JobPostingType) {
     setMode({ kind: "edit", posting });
-    setDraft({
-      title: posting.title,
-      department: posting.department,
-      location: posting.location,
-      type: posting.type,
-      level: posting.level,
-      description: posting.description,
-      responsibilities: posting.responsibilities ?? [],
-      requirements: posting.requirements ?? [],
-      skills: posting.skills ?? { core: [], behavioral: [] },
-      openPositions: posting.openPositions ?? null,
-      postedDate: posting.postedDate ?? null,
-      status: posting.status,
-    });
     setEditorOpen(true);
   }
 
-  async function onSave() {
+  async function onSave(draft: JobPostingCreateInput) {
     setError(null);
     setSaving(true);
     try {
-      const normalized: JobPostingCreateInput = {
-        ...draft,
-        department: draft.department.trim(),
-        title: draft.title.trim(),
-        location: draft.location.trim(),
-        type: draft.type.trim(),
-        level: draft.level.trim(),
-        description: draft.description.trim(),
-        requirements: draft.requirements ?? [],
-        responsibilities: draft.responsibilities ?? [],
-        skills: draft.skills ?? null,
-        postedDate: draft.postedDate || null,
-        openPositions:
-          typeof draft.openPositions === "number" ? draft.openPositions : null,
-        status: draft.status,
-      };
-
-      if (!normalized.title) throw new Error("Title is required.");
-      if (!normalized.department) throw new Error("Department is required.");
-      if (!normalized.location) throw new Error("Location is required.");
-      if (!normalized.type) throw new Error("Employment type is required.");
-      if (!normalized.level) throw new Error("Level is required.");
-      if (!normalized.description) throw new Error("Description is required.");
-
       if (mode.kind === "create") {
-        const created = await createJobPosting(normalized);
+        const created = await createJobPosting(draft);
         setPostings((prev) => [created, ...prev]);
       } else {
-        const updated = await updateJobPosting(mode.posting.id, normalized);
+        const updated = await updateJobPosting(mode.posting.id, draft);
         setPostings((prev) =>
           prev.map((p) => (p.id === updated.id ? updated : p)),
         );
@@ -404,231 +335,14 @@ export function JobPostingsAdminPage() {
         </CardContent>
       </Card>
 
-      <Dialog open={editorOpen} onOpenChange={setEditorOpen}>
-        <DialogTrigger className="hidden" />
-        <DialogContent className="sm:max-w-3xl">
-          <DialogHeader>
-            <DialogTitle>
-              {mode.kind === "create" ? "New Job Posting" : "Edit Job Posting"}
-            </DialogTitle>
-            <DialogDescription>
-              Fields like requirements and responsibilities should be entered one per line.
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="md:col-span-2">
-              <label className="text-sm font-medium text-foreground">Title</label>
-              <Input
-                value={draft.title}
-                onChange={(e) => setDraft((d) => ({ ...d, title: e.target.value }))}
-                placeholder="e.g. Senior Data Engineer"
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-foreground">Department</label>
-              <Select
-                value={draft.department}
-                onValueChange={(v) =>
-                  setDraft((d) => ({ ...d, department: v ?? "" }))
-                }
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a department" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {departments.length > 0 ? (
-                      departments.map((d) => (
-                        <SelectItem key={d.id} value={d.name}>
-                          {d.name}
-                        </SelectItem>
-                      ))
-                    ) : (
-                      <SelectItem value={draft.department || "General"}>
-                        {draft.department || "General"}
-                      </SelectItem>
-                    )}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <p className="text-xs text-muted-foreground mt-1">
-                If departments fail to load, you can still type below.
-              </p>
-              <Input
-                value={draft.department}
-                onChange={(e) =>
-                  setDraft((d) => ({ ...d, department: e.target.value }))
-                }
-                placeholder="Department name"
-                className="mt-2"
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-foreground">Location</label>
-              <Input
-                value={draft.location}
-                onChange={(e) =>
-                  setDraft((d) => ({ ...d, location: e.target.value }))
-                }
-                placeholder="e.g. Dubai (Hybrid)"
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-foreground">
-                Employment type
-              </label>
-              <Input
-                value={draft.type}
-                onChange={(e) => setDraft((d) => ({ ...d, type: e.target.value }))}
-                placeholder="e.g. Full-time"
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-foreground">Level</label>
-              <Input
-                value={draft.level}
-                onChange={(e) =>
-                  setDraft((d) => ({ ...d, level: e.target.value }))
-                }
-                placeholder="e.g. Senior"
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-foreground">
-                Open positions
-              </label>
-              <Input
-                type="number"
-                value={draft.openPositions ?? ""}
-                onChange={(e) =>
-                  setDraft((d) => ({
-                    ...d,
-                    openPositions: e.target.value ? Number(e.target.value) : null,
-                  }))
-                }
-                min={0}
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-foreground">Status</label>
-              <Select
-                value={draft.status}
-                onValueChange={(v) =>
-                  setDraft((d) => ({ ...d, status: v as JobPostingStatus }))
-                }
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="open">Open</SelectItem>
-                    <SelectItem value="closed">Closed</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="md:col-span-2">
-              <label className="text-sm font-medium text-foreground">
-                Description
-              </label>
-              <Textarea
-                value={draft.description}
-                onChange={(e) =>
-                  setDraft((d) => ({ ...d, description: e.target.value }))
-                }
-                placeholder="Short overview shown on the listing + detail page."
-                className="min-h-28"
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-foreground">
-                Responsibilities (one per line)
-              </label>
-              <Textarea
-                value={arrayToLines(draft.responsibilities)}
-                onChange={(e) =>
-                  setDraft((d) => ({
-                    ...d,
-                    responsibilities: linesToArray(e.target.value),
-                  }))
-                }
-                className="min-h-40"
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-foreground">
-                Requirements (one per line)
-              </label>
-              <Textarea
-                value={arrayToLines(draft.requirements)}
-                onChange={(e) =>
-                  setDraft((d) => ({
-                    ...d,
-                    requirements: linesToArray(e.target.value),
-                  }))
-                }
-                className="min-h-40"
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-foreground">
-                Skills (core, one per line)
-              </label>
-              <Textarea
-                value={arrayToLines(draft.skills?.core ?? [])}
-                onChange={(e) =>
-                  setDraft((d) => ({
-                    ...d,
-                    skills: {
-                      core: linesToArray(e.target.value),
-                      behavioral: d.skills?.behavioral ?? [],
-                    },
-                  }))
-                }
-                className="min-h-32"
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-foreground">
-                Skills (behavioral, one per line)
-              </label>
-              <Textarea
-                value={arrayToLines(draft.skills?.behavioral ?? [])}
-                onChange={(e) =>
-                  setDraft((d) => ({
-                    ...d,
-                    skills: {
-                      core: d.skills?.core ?? [],
-                      behavioral: linesToArray(e.target.value),
-                    },
-                  }))
-                }
-                className="min-h-32"
-              />
-            </div>
-          </div>
-
-          <DialogFooter showCloseButton>
-            <Button onClick={onSave} disabled={saving}>
-              {saving ? <Loader className="animate-spin" /> : null}
-              {mode.kind === "create" ? "Create" : "Save changes"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <JobPostingEditorDialog
+        open={editorOpen}
+        onOpenChange={setEditorOpen}
+        mode={mode}
+        departments={departments}
+        saving={saving}
+        onSave={onSave}
+      />
     </div>
   );
 }
