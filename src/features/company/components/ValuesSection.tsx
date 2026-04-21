@@ -9,16 +9,24 @@ export function ValuesSection() {
           Values That Drive Your Digital Transformation
         </h2>
         <p className="text-muted-foreground text-center max-w-3xl mx-auto mb-8">
-          At DQ, our values are the foundation of everything we do. They guide how we operate and ensure we create lasting, impactful transformation for our clients.
+          At DQ, our values are the foundation of everything we do. They guide
+          how we operate and ensure we create lasting, impactful transformation
+          for our clients.
         </p>
         <div className="grid md:grid-cols-3 gap-6">
           {values.map(({ icon: Icon, title, description }) => (
             <Card key={title}>
               <CardContent className="p-6">
                 <div className="w-16 h-16 bg-secondary/10 rounded-xl flex items-center justify-center mb-6">
-                  <Icon className="text-secondary" size={28} strokeWidth={1.5} />
+                  <Icon
+                    className="text-secondary"
+                    size={28}
+                    strokeWidth={1.5}
+                  />
                 </div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">{title}</h3>
+                <h3 className="text-xl font-semibold text-foreground mb-2">
+                  {title}
+                </h3>
                 <p className="text-muted-foreground text-sm">{description}</p>
               </CardContent>
             </Card>

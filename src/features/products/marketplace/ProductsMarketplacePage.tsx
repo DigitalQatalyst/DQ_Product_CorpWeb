@@ -5,38 +5,53 @@ import Link from "next/link";
 import { HomeIcon, ChevronRight, Filter, X, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Card, CardContent } from "@/components/ui/card";
-import { dqProducts } from "@/data/products";
+import type { ProductType } from "@/types/product";
 import { ProductCard } from "./components/ProductCard";
 import { FilterSidebar } from "./components/FilterSidebar";
 
 type Filters = { category: string; tag: string };
 
-export function ProductsMarketplacePage() {
+export function ProductsMarketplacePage({
+  products,
+}: {
+  products: ProductType[];
+}) {
   const [filters, setFilters] = useState<Filters>({ category: "", tag: "" });
   const [search, setSearch] = useState("");
 
   const categories = useMemo(
-    () => Array.from(new Set(dqProducts.map((p) => p.category))).sort(),
-    []
+    () => Array.from(new Set(products.map((p) => p.category))).sort(),
+    [products],
   );
 
   const filtered = useMemo(
     () =>
-      dqProducts.filter((p) => {
+      products.filter((p) => {
         const q = search.toLowerCase();
         return (
           (!filters.category || p.category === filters.category) &&
           (!filters.tag || p.tags.includes(filters.tag)) &&
-          (!q || p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q))
+          (!q ||
+            p.name.toLowerCase().includes(q) ||
+            p.description.toLowerCase().includes(q))
         );
       }),
-    [filters, search]
+    [filters, search, products],
   );
 
   const handleFilterChange = (type: keyof Filters, value: string) =>
-    setFilters((prev) => ({ ...prev, [type]: prev[type] === value ? "" : value }));
+    setFilters((prev) => ({
+      ...prev,
+      [type]: prev[type] === value ? "" : value,
+    }));
 
   const hasActiveFilters = !!(filters.category || filters.tag || search);
 
@@ -56,8 +71,14 @@ export function ProductsMarketplacePage() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm text-muted-foreground mb-6">
-        <Link href="/products" className="inline-flex items-center gap-1 hover:text-foreground transition-colors">
+      <nav
+        aria-label="Breadcrumb"
+        className="flex items-center gap-1 text-sm text-muted-foreground mb-6"
+      >
+        <Link
+          href="/products"
+          className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
+        >
           <HomeIcon size={14} />
           Home
         </Link>
@@ -67,17 +88,22 @@ export function ProductsMarketplacePage() {
 
       {/* Page header */}
       <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Explore Products</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+          Explore Products
+        </h1>
         <p className="text-muted-foreground text-lg">
-          Discover curated digital products and accelerators engineered for growth and success in
-          the digital economy.
+          Discover curated digital products and accelerators engineered for
+          growth and success in the digital economy.
         </p>
       </div>
 
       {/* Search + count row */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
+          <Search
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+            size={16}
+          />
           <Input
             placeholder="Search by product name, capability, or description"
             value={search}
@@ -87,10 +113,13 @@ export function ProductsMarketplacePage() {
         </div>
         <div className="flex items-center gap-3 text-sm text-muted-foreground shrink-0">
           <span className="px-3 py-1 rounded-lg bg-muted text-foreground whitespace-nowrap">
-            Showing {filtered.length} of {dqProducts.length} products
+            Showing {filtered.length} of {products.length} products
           </span>
           {hasActiveFilters && (
-            <button onClick={clearAll} className="text-secondary font-medium hover:text-secondary/80 transition-colors">
+            <button
+              onClick={clearAll}
+              className="text-secondary font-medium hover:text-secondary/80 transition-colors"
+            >
               Clear All
             </button>
           )}
@@ -152,9 +181,12 @@ export function ProductsMarketplacePage() {
                 </div>
               ) : (
                 <div className="rounded-xl border border-dashed border-border bg-muted/30 p-12 text-center">
-                  <h3 className="text-xl font-semibold text-foreground mb-2">No products found</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-2">
+                    No products found
+                  </h3>
                   <p className="text-muted-foreground mb-4">
-                    Try adjusting your search or filters to explore more offerings.
+                    Try adjusting your search or filters to explore more
+                    offerings.
                   </p>
                   <button
                     onClick={clearAll}
