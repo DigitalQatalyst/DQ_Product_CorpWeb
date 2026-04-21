@@ -238,7 +238,6 @@ export function DigitalMaturityAssessment() {
                         size={32}
                         strokeWidth={1.5}
                         className="text-[#030F35]"
-                        strokeWidth={1.5}
                       />
                     </div>
                     <h3 className="font-semibold text-gray-900 mb-2">
