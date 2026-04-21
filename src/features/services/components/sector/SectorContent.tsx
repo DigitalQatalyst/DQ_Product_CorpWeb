@@ -28,7 +28,7 @@ export function SectorContent({ sector }: { sector: SectorData }) {
               const [title, ...rest] = benefit.split(":");
               return (
                 <div key={benefit} className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                  <CheckCircle className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
                   <p className="text-muted-foreground text-sm leading-relaxed">
                     {rest.length > 0 ? <><span className="font-semibold text-foreground">{title}:</span>{rest.join(":")}</> : benefit}
                   </p>

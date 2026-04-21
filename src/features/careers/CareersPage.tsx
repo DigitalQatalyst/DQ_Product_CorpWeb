@@ -12,7 +12,11 @@ export function CareersPage() {
       <section className="relative overflow-hidden h-screen">
         <div className="absolute inset-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/about_us_hero.png" alt="" className="w-full h-full object-cover" />
+          <img
+            src="/images/about_us_hero.png"
+            alt=""
+            className="w-full h-full object-cover"
+          />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/85 to-primary/60" />
         <div className="container mx-auto px-4 h-full flex flex-col justify-center items-center relative z-10">
@@ -21,7 +25,8 @@ export function CareersPage() {
               Shape the Future of Digital Transformation
             </h1>
             <p className="text-xl text-primary-foreground/90 mb-10 leading-relaxed">
-              Join a team of innovators, strategists, and technologists building Digital Cognitive Organizations for Economy 4.0.
+              Join a team of innovators, strategists, and technologists building
+              Digital Cognitive Organizations for Economy 4.0.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
@@ -29,7 +34,10 @@ export function CareersPage() {
                 className="h-14 inline-flex items-center justify-center gap-2 bg-secondary text-secondary-foreground px-8 rounded-lg font-bold hover:bg-secondary/80 transition-all hover:scale-105 shadow-lg group"
               >
                 View Open Positions
-                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                <ArrowRight
+                  size={20}
+                  className="group-hover:translate-x-1 transition-transform"
+                />
               </Link>
               <a
                 href="#why-join-us"
@@ -48,7 +56,9 @@ export function CareersPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {careerStats.map((stat) => (
               <div key={stat.label} className="text-center">
-                <p className="text-4xl md:text-5xl font-bold text-primary mb-2">{stat.value}</p>
+                <p className="text-4xl md:text-5xl font-bold text-primary mb-2">
+                  {stat.value}
+                </p>
                 <Separator className="w-12 mx-auto mb-2 bg-secondary h-0.5" />
                 <p className="text-muted-foreground text-sm">{stat.label}</p>
               </div>
@@ -61,20 +71,31 @@ export function CareersPage() {
       <section id="why-join-us" className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Why Join DigitalQatalyst?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Why Join DigitalQatalyst?
+            </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              We&apos;re building the future of digital transformation, and we want you to be part of it.
+              We&apos;re building the future of digital transformation, and we
+              want you to be part of it.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {benefits.map(({ icon: Icon, title, description }) => (
               <Card key={title} className="hover:shadow-md transition-shadow">
                 <CardContent className="p-8">
-                  <div className="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
-                    <Icon className="text-primary" size={28} />
+                  <div className="w-16 h-16 bg-secondary/10 rounded-xl flex items-center justify-center mb-6">
+                    <Icon
+                      className="text-secondary"
+                      size={32}
+                      strokeWidth={1.5}
+                    />
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-3">{title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{description}</p>
+                  <h3 className="text-xl font-bold text-foreground mb-3">
+                    {title}
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {description}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -86,18 +107,29 @@ export function CareersPage() {
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Our Core Values</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Our Core Values
+            </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
               These principles guide everything we do and shape our culture.
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {values.map(({ icon: Icon, title, description }) => (
-              <div key={title} className="text-center p-8 rounded-xl bg-muted/30 border border-border">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Icon className="text-primary" size={32} />
+              <div
+                key={title}
+                className="text-center p-8 rounded-xl bg-muted/30 border border-border"
+              >
+                <div className="w-16 h-16 bg-gray-50 rounded-xl flex items-center justify-center mx-auto mb-6">
+                  <Icon
+                    className="text-secondary"
+                    size={32}
+                    strokeWidth={1.5}
+                  />
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-3">{title}</h3>
+                <h3 className="text-xl font-bold text-foreground mb-3">
+                  {title}
+                </h3>
                 <p className="text-muted-foreground">{description}</p>
               </div>
             ))}

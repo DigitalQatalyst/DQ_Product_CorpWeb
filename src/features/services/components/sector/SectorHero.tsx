@@ -1,19 +1,41 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronRight } from "lucide-react";
 import type { SectorData } from "@/features/services/data/sectors.data";
 
 export function SectorHero({ sector }: { sector: SectorData }) {
   return (
-    <section className="relative min-h-[400px] flex items-center overflow-hidden">
+    <section className="relative min-h-[500px] flex items-center overflow-hidden">
       <Image src={sector.heroImage} alt={sector.name} fill className="object-cover" priority sizes="100vw" />
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/85 to-primary/60" />
-      <div className="relative container mx-auto px-4 py-16 text-center">
-        <h1 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight max-w-4xl mx-auto">{sector.title}</h1>
-        <p className="text-lg text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">{sector.subtitle}</p>
-        <Link href="/services" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-primary font-semibold rounded-lg hover:bg-white/90 transition-colors group">
-          Explore Resources <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-        </Link>
+      <div className="absolute inset-0 bg-primary/80" />
+      <div className="relative container mx-auto px-4 md:px-6 py-20">
+        <div className="max-w-2xl pl-4">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+            {sector.name}
+          </h1>
+          <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed">
+            {sector.subtitle}
+          </p>
+          <Link 
+            href="/contact" 
+            className="inline-flex items-center gap-2 px-6 py-3 bg-secondary text-white font-semibold rounded-lg hover:bg-secondary/90 transition-colors group"
+          >
+            Get in Touch <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
+
+        {/* Breadcrumb Navigation - Bottom Left */}
+        <nav className="absolute bottom-8 left-4 md:left-6 pl-4 flex items-center gap-2 text-sm text-white/70">
+          <Link href="/" className="hover:text-white transition-colors">
+            Home
+          </Link>
+          <ChevronRight size={16} />
+          <Link href="/services" className="hover:text-white transition-colors">
+            Services
+          </Link>
+          <ChevronRight size={16} />
+          <span className="text-white">{sector.name}</span>
+        </nav>
       </div>
     </section>
   );

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { JobPostingsAdminPage } from "@/features/careers/admin/JobPostingsAdminPage";
+import { JobPostingsAdminPage } from "@/features/admin/careers/JobPostingsAdminPage";
 
 export const metadata: Metadata = { title: "Job Postings | DQ Admin" };
 

@@ -112,13 +112,13 @@ function ServiceCard({ service }: { service: (typeof serviceItems)[0] }) {
       <CardFooter className="border-t border-border px-4 py-4 gap-2">
         <Link
           href={`/services/${service.id}`}
-          className="px-4 py-2 text-sm font-medium text-primary border border-primary rounded-md hover:bg-primary/5 transition-colors flex-1 text-center"
+          className="px-4 py-2 text-sm font-medium text-secondary border border-secondary rounded-md hover:bg-secondary/5 transition-colors flex-1 text-center"
         >
           View Details
         </Link>
         <Link
           href={`/services/${service.id}?action=true`}
-          className="px-4 py-2 text-sm font-bold text-primary-foreground bg-primary hover:bg-primary/80 rounded-md transition-colors flex-1 text-center"
+          className="px-4 py-2 text-sm font-bold text-secondary-foreground bg-secondary hover:bg-secondary/80 rounded-md transition-colors flex-1 text-center"
         >
           Request Service
         </Link>
@@ -252,7 +252,7 @@ export function ServicesMarketplacePage() {
                 </SheetContent>
               </Sheet>
               {hasActiveFilters && (
-                <button onClick={resetFilters} className="ml-2 text-primary text-sm font-medium whitespace-nowrap px-3 py-2">Reset</button>
+                <button onClick={resetFilters} className="ml-2 text-secondary text-sm font-medium whitespace-nowrap px-3 py-2">Reset</button>
               )}
             </div>
           </div>
@@ -263,7 +263,7 @@ export function ServicesMarketplacePage() {
               <div className="flex justify-between items-center p-4 border-b border-border shrink-0">
                 <h2 className="text-base font-semibold text-foreground">Filters</h2>
                 {hasActiveFilters && (
-                  <button onClick={resetFilters} className="text-primary text-sm font-medium">Reset All</button>
+                  <button onClick={resetFilters} className="text-secondary text-sm font-medium">Reset All</button>
                 )}
               </div>
               <div className="p-4 overflow-y-auto">{sidebar}</div>

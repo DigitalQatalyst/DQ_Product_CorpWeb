@@ -11,8 +11,8 @@ export function MainServiceCard({
   return (
     <Card className="rounded-xl hover:shadow-md transition-all">
       <CardContent className="p-6">
-        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-          <Icon className="w-6 h-6 text-primary" />
+        <div className="w-16 h-16 bg-secondary/10 rounded-xl flex items-center justify-center mb-6">
+          <Icon className="w-8 h-8 text-secondary" strokeWidth={1.5} />
         </div>
         <h3 className="text-lg font-semibold text-foreground mb-2">
           {service.cardTitle}
@@ -33,7 +33,7 @@ export function MainServiceCard({
         </div>
         <Link
           href={`/services/${service.slug}`}
-          className="inline-flex items-center gap-1 text-primary hover:text-primary/80 font-medium text-sm transition-colors"
+          className="inline-flex items-center gap-1 text-secondary hover:text-secondary/80 font-medium text-sm transition-colors"
         >
           Read more <ChevronRight className="w-4 h-4" />
         </Link>

@@ -256,7 +256,7 @@ export function CallToAction() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className={`w-full px-6 py-3.5 mt-2 font-bold text-sm rounded-lg shadow-lg bg-[#030F35] hover:bg-[#1F2F5C] text-white transition-all duration-300 flex items-center justify-center ${submitting ? "opacity-70 cursor-not-allowed" : ""}`}
+                  className={`w-full px-6 py-3.5 mt-2 font-bold text-sm rounded-lg shadow-lg bg-secondary hover:bg-secondary/80 text-white transition-all duration-300 flex items-center justify-center ${submitting ? "opacity-70 cursor-not-allowed" : ""}`}
                 >
                   {submitting ? (
                     <>

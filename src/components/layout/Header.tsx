@@ -1,15 +1,23 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRight, ChevronDown, Menu, X, ChevronRight, Building2, Package, Users, Home, Briefcase, Info, Phone } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu, X, ChevronRight, Building2, Package, Users, Phone } from "lucide-react";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 
 const NAV = [
   { name: "Home", href: "/" },
   { name: "Services", href: "/services" },
   { name: "Products", href: "/products" },
-  { name: "Company", href: "/about-us" },
+  { name: "Company", href: "/company" },
 ];
 
 const MARKETPLACES = [
@@ -20,49 +28,44 @@ const MARKETPLACES = [
 
 // ── Explore Dropdown ──────────────────────────────────────────────────────────
 function ExploreDropdown() {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
-    if (open) document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, [open]);
-
   return (
-    <div className="relative" ref={ref}>
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className="flex items-center text-white hover:text-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-white/20 rounded-md px-2 py-1"
-        aria-expanded={open}
-      >
-        Explore
-        <ChevronDown size={16} className={`ml-1 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
-      </button>
-
-      {open && (
-        <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50 py-2">
-          <div className="px-4 py-2 border-b border-gray-100">
-            <h3 className="text-sm font-semibold text-gray-800">Explore Marketplaces</h3>
-            <p className="text-xs text-gray-500 mt-1">Discover DigitalQatalyst&apos;s services, products, and transformation resources</p>
-          </div>
-          {MARKETPLACES.map((m) => {
-            const Icon = m.icon;
-            return (
-              <Link key={m.id} href={m.href} onClick={() => setOpen(false)}
-                className="flex items-start px-4 py-3 hover:bg-gray-50 transition-colors"
-              >
-                <Icon size={20} className="text-[#FF6B4D] mt-0.5 shrink-0" />
-                <div className="ml-3">
-                  <p className="text-sm font-medium text-gray-900">{m.name}</p>
-                  <p className="text-xs text-gray-500 mt-1 line-clamp-2">{m.description}</p>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      )}
-    </div>
+    <NavigationMenu className="flex-0">
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger className="h-auto bg-transparent px-2 py-1 text-white hover:bg-white/10 hover:text-gray-200 focus:bg-white/10 focus:text-white data-open:bg-white/10 data-popup-open:bg-white/10">
+            Explore
+          </NavigationMenuTrigger>
+          <NavigationMenuContent className="p-0">
+            <div className="w-80 bg-white rounded-lg shadow-xl border border-gray-200 py-2">
+              <div className="px-4 py-2 border-b border-gray-100">
+                <h3 className="text-sm font-semibold text-gray-800">Explore Marketplaces</h3>
+                <p className="text-xs text-gray-500 mt-1">
+                  Discover DigitalQatalyst&apos;s services, products, and transformation resources
+                </p>
+              </div>
+              <div className="py-1">
+                {MARKETPLACES.map((m) => {
+                  const Icon = m.icon;
+                  return (
+                    <NavigationMenuLink
+                      key={m.id}
+                      href={m.href}
+                      className="flex items-start px-4 py-3 hover:bg-gray-50 transition-colors rounded-none"
+                    >
+                      <Icon size={20} className="text-[#FF6B4D] mt-0.5 shrink-0" />
+                      <div className="ml-3">
+                        <p className="text-sm font-medium text-gray-900">{m.name}</p>
+                        <p className="text-xs text-gray-500 mt-1 line-clamp-2">{m.description}</p>
+                      </div>
+                    </NavigationMenuLink>
+                  );
+                })}
+              </div>
+            </div>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
   );
 }
 
@@ -83,7 +86,7 @@ function MobileDrawer() {
       const y = document.body.style.top;
       document.body.style.position = "";
       document.body.style.top = "";
-      window.scrollTo(0, parseInt(y || "0") * -1);
+      window.scrollTo(0, Number.parseInt(y || "0") * -1);
     }
   }, [open]);
 
@@ -112,8 +115,8 @@ function MobileDrawer() {
 
       {open && (
         <>
-          <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={close} />
-          <div className="fixed top-0 right-0 h-full w-80 bg-gradient-to-b from-gray-50 to-white shadow-xl z-50 lg:hidden flex flex-col">
+          <button type="button" aria-label="Close menu" className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={close} />
+          <div className="fixed top-0 right-0 h-full w-80 bg-linear-to-b from-gray-50 to-white shadow-xl z-50 lg:hidden flex flex-col">
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-white">
               <h2 className="text-xl font-bold text-gray-900">Menu</h2>
               <button onClick={close} className="p-2 hover:bg-gray-100 rounded-lg transition-colors"><X size={20} className="text-gray-600" /></button>
@@ -190,7 +193,7 @@ export function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#030F35] shadow-md text-white transition-all duration-300">
+    <header className="fixed inset-x-0 top-0 z-50 w-full min-h-[72px] bg-[#030F35] shadow-md text-white transition-all duration-300">
       <div className="container mx-auto px-4 md:px-6 py-3">
         <div className="flex items-center justify-between gap-6">
           {/* Logo */}

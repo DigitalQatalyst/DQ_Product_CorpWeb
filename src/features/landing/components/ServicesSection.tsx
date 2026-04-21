@@ -60,11 +60,11 @@ function ServiceCard({
         <div
           className={`w-14 h-14 rounded-xl flex items-center justify-center mb-4 transition-all duration-500 ${
             isHovered ? "transform -translate-y-1" : ""
-          } ${isActive ? "bg-[#030F35]/5 border border-[#030F35]/10" : "bg-gray-100"}`}
+          } ${isActive ? "bg-secondary/10 border border-secondary/20" : "bg-gray-100"}`}
         >
           {cloneElement(service.icon as React.ReactElement<{ size?: number; className?: string }>, {
             size: 24,
-            className: isActive ? "text-[#030F35]" : "text-gray-400",
+            className: isActive ? "text-secondary" : "text-gray-400",
           })}
         </div>
 
@@ -78,7 +78,7 @@ function ServiceCard({
         {isActive ? (
           <Link
             href={service.href}
-            className="mt-auto px-4 py-2.5 rounded-lg font-medium w-full transition-all duration-300 flex items-center justify-center bg-[#030F35] text-white hover:bg-[#1F2F5C]"
+            className="mt-auto px-4 py-2.5 rounded-lg font-medium w-full transition-all duration-300 flex items-center justify-center bg-secondary text-white hover:bg-secondary/80"
           >
             Explore Now
             <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform duration-300" />
