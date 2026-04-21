@@ -75,7 +75,7 @@ function JobCard({ job }: { job: JobListing }) {
           <span className="text-xs text-muted-foreground">
             {new Date(job.postedDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
           </span>
-          <Link href={`/jobs/${job.id}`} className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary/80 transition-colors">
+          <Link href={`/jobs/${job.id}`} className="inline-flex items-center gap-1 text-sm font-semibold text-secondary hover:text-secondary/80 transition-colors">
             View Job <ArrowRight size={14} />
           </Link>
         </div>
@@ -173,7 +173,7 @@ export function JobsListingPage() {
             <Card className="sticky top-24 py-0 gap-0">
               <div className="flex justify-between items-center p-4 border-b border-border">
                 <h2 className="font-semibold text-foreground">Filters</h2>
-                {hasActive && <button onClick={resetFilters} className="text-primary text-sm font-medium">Reset All</button>}
+                {hasActive && <button onClick={resetFilters} className="text-secondary text-sm font-medium">Reset All</button>}
               </div>
               <div className="p-4">{sidebar}</div>
             </Card>
@@ -183,13 +183,13 @@ export function JobsListingPage() {
           <div className="xl:w-3/4">
             {loading ? (
               <div className="flex justify-center py-20">
-                <Loader className="animate-spin text-primary" size={36} />
+                <Loader className="animate-spin text-secondary" size={36} />
               </div>
             ) : (
               <>
                 <div className="flex justify-between items-center mb-4 text-sm text-muted-foreground">
                   <span>Showing {filtered.length} of {jobs.length} positions</span>
-                  {hasActive && <button onClick={resetFilters} className="text-primary font-medium">Clear filters</button>}
+                  {hasActive && <button onClick={resetFilters} className="text-secondary font-medium">Clear filters</button>}
                 </div>
                 {filtered.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -200,7 +200,7 @@ export function JobsListingPage() {
                     <CardContent className="p-10 text-center">
                       <h3 className="text-xl font-semibold text-foreground mb-2">No positions found</h3>
                       <p className="text-muted-foreground mb-4">Try adjusting your filters or search query.</p>
-                      <button onClick={resetFilters} className="text-primary font-semibold">Reset Filters</button>
+                      <button onClick={resetFilters} className="text-secondary font-semibold">Reset Filters</button>
                     </CardContent>
                   </Card>
                 )}

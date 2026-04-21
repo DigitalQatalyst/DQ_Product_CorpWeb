@@ -67,7 +67,7 @@ export function TransformationStats() {
             </p>
             <Link
               href="/consultation"
-              className="inline-flex items-center px-6 py-3 bg-[#030F35] hover:bg-[#1F2F5C] text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              className="inline-flex items-center px-6 py-3 bg-secondary hover:bg-secondary/80 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
               Book Your Free Consultation
               <ArrowRight className="ml-2 w-4 h-4" />

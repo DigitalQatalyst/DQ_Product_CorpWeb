@@ -34,7 +34,7 @@ export function JobDetailPage({ jobId }: { jobId: string }) {
 
   if (loading) return (
     <div className="flex justify-center items-center min-h-[400px]">
-      <Loader className="animate-spin text-primary" size={36} />
+      <Loader className="animate-spin text-secondary" size={36} />
     </div>
   );
 
@@ -42,7 +42,7 @@ export function JobDetailPage({ jobId }: { jobId: string }) {
     <div className="container mx-auto px-4 py-20 text-center">
       <h2 className="text-xl font-semibold text-foreground mb-2">Job Not Found</h2>
       <p className="text-muted-foreground mb-4">This position doesn&apos;t exist or has been filled.</p>
-      <Link href="/jobs" className="text-primary font-semibold hover:underline">Back to Job Listings</Link>
+      <Link href="/jobs" className="text-secondary font-semibold hover:underline">Back to Job Listings</Link>
     </div>
   );
 
@@ -91,7 +91,7 @@ export function JobDetailPage({ jobId }: { jobId: string }) {
               <div className="flex flex-wrap gap-3">
                 <Link
                   href={`/jobs/${jobId}/apply`}
-                  className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/80 transition-colors shadow-md"
+                  className="px-6 py-3 bg-secondary text-secondary-foreground font-semibold rounded-lg hover:bg-secondary/80 transition-colors shadow-md"
                 >
                   Apply Now
                 </Link>
@@ -112,8 +112,8 @@ export function JobDetailPage({ jobId }: { jobId: string }) {
                     {metaItems.map(({ icon: Icon, label, value }, i, arr) => (
                       <div key={label}>
                         <div className="flex items-start gap-3 py-3">
-                          <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                            <Icon size={18} className="text-primary" />
+                          <div className="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center shrink-0">
+                            <Icon size={20} className="text-secondary" strokeWidth={1.5} />
                           </div>
                           <div>
                             <p className="text-xs text-muted-foreground mb-0.5">{label}</p>
@@ -141,7 +141,7 @@ export function JobDetailPage({ jobId }: { jobId: string }) {
               <ul className="space-y-4">
                 {job.responsibilities.map((r, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <CheckCircle size={22} className="text-primary shrink-0 mt-0.5" />
+                    <CheckCircle size={22} className="text-secondary shrink-0 mt-0.5" />
                     <span className="text-muted-foreground leading-relaxed">{r}</span>
                   </li>
                 ))}
@@ -211,7 +211,7 @@ export function JobDetailPage({ jobId }: { jobId: string }) {
             </p>
             <Link
               href={`/jobs/${jobId}/apply`}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/80 transition-colors shadow-md text-lg"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-secondary text-secondary-foreground font-semibold rounded-lg hover:bg-secondary/80 transition-colors shadow-md text-lg"
             >
               Apply for this Position
             </Link>

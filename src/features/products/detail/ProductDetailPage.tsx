@@ -121,7 +121,7 @@ export function ProductDetailPage({ productId }: { productId: string }) {
                   <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-orange-100 to-red-100">
                     <div className="text-center">
                       <div className="w-24 h-24 mx-auto flex items-center justify-center mb-2">
-                        <Icon size={48} className="text-primary" />
+                        <Icon size={48} className="text-secondary" />
                       </div>
                       <p className="text-muted-foreground font-medium">{product.code}</p>
                     </div>
@@ -143,7 +143,7 @@ export function ProductDetailPage({ productId }: { productId: string }) {
             {product.tags.map((tag) => (
               <Card key={tag} className="hover:shadow-md transition-shadow">
                 <CardContent className="p-6 flex items-start gap-4">
-                  <CheckCircle size={24} className="text-primary mt-0.5 shrink-0" />
+                  <CheckCircle size={24} className="text-secondary mt-0.5 shrink-0" />
                   <div>
                     <h3 className="font-semibold text-foreground mb-2">{tag}</h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">
@@ -206,8 +206,8 @@ export function ProductDetailPage({ productId }: { productId: string }) {
                 <CardContent className="p-0 divide-y divide-border">
                   {content.practicalValues.map((pv) => (
                     <div key={pv.title} className="flex items-center gap-6 p-6">
-                      <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
-                        <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="w-16 h-16 bg-secondary/10 rounded-xl flex items-center justify-center shrink-0">
+                        <svg className="w-8 h-8 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={pv.icon} />
                         </svg>
                       </div>
@@ -228,8 +228,8 @@ export function ProductDetailPage({ productId }: { productId: string }) {
           <h2 className="text-3xl font-bold text-foreground mb-6">Product Category</h2>
           <div className="bg-gradient-to-br from-orange-50 via-background to-red-50 rounded-xl p-8 border border-orange-100 shadow-sm">
             <div className="flex items-start gap-6">
-              <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center shadow-lg shrink-0">
-                <svg className="w-8 h-8 text-primary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-16 h-16 bg-secondary rounded-xl flex items-center justify-center shadow-lg shrink-0">
+                <svg className="w-8 h-8 text-secondary-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                 </svg>
               </div>
@@ -254,8 +254,8 @@ export function ProductDetailPage({ productId }: { productId: string }) {
                   ].map((item) => (
                     <Card key={item.title}>
                       <CardContent className="p-4 flex items-center gap-3">
-                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
-                          <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center shrink-0">
+                          <svg className="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
                           </svg>
                         </div>

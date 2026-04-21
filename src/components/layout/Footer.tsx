@@ -184,8 +184,8 @@ export function Footer() {
     { label: "About DigitalQatalyst", href: "/company" },
     { label: "Products", href: "/products" },
     { label: "Careers", href: "/careers" },
-    { label: "Terms & Conditions", href: "/terms" },
-    { label: "Privacy Policy", href: "/privacy-policy" },
+    { label: "Terms of Use", href: "/terms" },
+    { label: "Privacy Notice", href: "/privacy-policy" },
   ];
 
   const serviceLinks = [

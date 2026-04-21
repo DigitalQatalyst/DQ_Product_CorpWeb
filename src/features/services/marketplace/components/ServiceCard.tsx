@@ -35,7 +35,7 @@ export function ServiceCard({ service }: Readonly<Props>) {
         </Link>
         <Link
           href={`/services/${service.id}?action=true`}
-          className="flex-1 inline-flex items-center justify-center h-8 px-3 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/80 transition-colors"
+          className="flex-1 inline-flex items-center justify-center h-8 px-3 text-sm font-medium rounded-md bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors"
         >
           Request Service
         </Link>

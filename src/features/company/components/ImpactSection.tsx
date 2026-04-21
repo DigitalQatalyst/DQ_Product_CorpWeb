@@ -13,7 +13,7 @@ export function ImpactSection() {
           {impactStats.map((stat) => (
             <div key={stat.label}>
               <p className="text-4xl md:text-5xl font-bold text-foreground mb-3">{stat.value}</p>
-              <Separator className="w-12 mb-3 bg-primary h-1" />
+              <Separator className="w-12 mb-3 bg-secondary h-1" />
               <p className="text-xs uppercase tracking-wide text-muted-foreground">{stat.label}</p>
             </div>
           ))}

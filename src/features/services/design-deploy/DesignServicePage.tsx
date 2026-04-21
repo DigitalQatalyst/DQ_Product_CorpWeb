@@ -53,7 +53,7 @@ export function DesignServicePage({ serviceId }: { serviceId: string }) {
             <h2 className="text-3xl md:text-4xl font-bold text-foreground">{blueprintSection.title}</h2>
             <p className="text-muted-foreground text-lg">{blueprintSection.description}</p>
             <div className="flex flex-wrap gap-4">
-              <Link href={blueprintSection.primaryCta.href} className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-full hover:bg-primary/90 transition-colors">
+              <Link href={blueprintSection.primaryCta.href} className="inline-flex items-center gap-2 px-6 py-3 bg-secondary text-secondary-foreground font-semibold rounded-full hover:bg-secondary/90 transition-colors">
                 {blueprintSection.primaryCta.label} <ArrowRight size={16} />
               </Link>
               <Link href={blueprintSection.secondaryCta.href} className="inline-flex items-center px-6 py-3 border border-border text-foreground font-semibold rounded-full hover:bg-muted transition-colors">
@@ -137,8 +137,8 @@ export function DesignServicePage({ serviceId }: { serviceId: string }) {
               return (
                 <Card key={card.title} className="flex flex-col">
                   <CardContent className="p-6 flex flex-col flex-1">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-6">
-                      <Icon className="w-6 h-6 text-primary" strokeWidth={1.5} />
+                    <div className="w-16 h-16 rounded-xl bg-secondary/10 flex items-center justify-center mb-6">
+                      <Icon className="w-8 h-8 text-secondary" strokeWidth={1.5} />
                     </div>
                     <h3 className="text-xl font-semibold text-foreground mb-2">{card.title}</h3>
                     <Separator className="mb-4" />
@@ -149,7 +149,7 @@ export function DesignServicePage({ serviceId }: { serviceId: string }) {
             })}
           </div>
           <div className="text-center">
-            <Link href="/services" className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-full hover:bg-primary/90 transition-colors">
+            <Link href="/services" className="inline-flex items-center gap-2 px-6 py-3 bg-secondary text-secondary-foreground font-semibold rounded-full hover:bg-secondary/90 transition-colors">
               {industryExpertise.ctaLabel} <ArrowRight size={16} />
             </Link>
           </div>

@@ -182,6 +182,37 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════
+   ICON UTILITIES
+═══════════════════════════════════════════════════════════ */
+.icon-accent {
+  color: hsl(var(--secondary));
+}
+
+.icon-bg {
+  background-color: hsl(var(--secondary) / 0.1);
+  border: 1px solid hsl(var(--secondary) / 0.2);
+}
+
+/* Standard icon container style - light orange background with coral icon */
+.icon-container {
+  width: 4rem;
+  height: 4rem;
+  background-color: rgba(255, 107, 77, 0.08); /* light orange/coral */
+  border-radius: 0.75rem; /* rounded-xl */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-container svg,
+.icon-container [class*="lucide"] {
+  width: 2rem;
+  height: 2rem;
+  color: hsl(var(--secondary));
+  stroke-width: 1.5;
+}
+
+/* ═══════════════════════════════════════════════════════════
    LAYOUT UTILITIES
 ═══════════════════════════════════════════════════════════ */
 .app-clamp {

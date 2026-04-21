@@ -10,8 +10,8 @@ export function ProductCard({ product }: { readonly product: ProductType }) {
 
   const iconFallback = Icon ? (
     <div className="absolute inset-0 flex items-center justify-center">
-      <div className="w-16 h-16 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
-        <Icon size={32} className="text-primary" />
+      <div className="w-16 h-16 rounded-xl bg-secondary/10 flex items-center justify-center">
+        <Icon size={32} className="text-secondary" strokeWidth={1.5} />
       </div>
     </div>
   ) : null;
@@ -63,7 +63,7 @@ export function ProductCard({ product }: { readonly product: ProductType }) {
 
         <Link
           href={`/products/${product.id}`}
-          className="inline-flex items-center gap-1 text-primary hover:text-primary/80 text-sm font-medium transition-colors group mt-auto"
+          className="inline-flex items-center gap-1 text-secondary hover:text-secondary/80 text-sm font-medium transition-colors group mt-auto"
         >
           Learn more
           <ArrowRight

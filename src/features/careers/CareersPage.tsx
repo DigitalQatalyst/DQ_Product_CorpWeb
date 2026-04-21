@@ -70,8 +70,8 @@ export function CareersPage() {
             {benefits.map(({ icon: Icon, title, description }) => (
               <Card key={title} className="hover:shadow-md transition-shadow">
                 <CardContent className="p-8">
-                  <div className="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
-                    <Icon className="text-primary" size={28} />
+                  <div className="w-16 h-16 bg-secondary/10 rounded-xl flex items-center justify-center mb-6">
+                    <Icon className="text-secondary" size={32} strokeWidth={1.5} />
                   </div>
                   <h3 className="text-xl font-bold text-foreground mb-3">{title}</h3>
                   <p className="text-muted-foreground leading-relaxed">{description}</p>
@@ -94,8 +94,8 @@ export function CareersPage() {
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {values.map(({ icon: Icon, title, description }) => (
               <div key={title} className="text-center p-8 rounded-xl bg-muted/30 border border-border">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Icon className="text-primary" size={32} />
+                <div className="w-16 h-16 bg-gray-50 rounded-xl flex items-center justify-center mx-auto mb-6">
+                  <Icon className="text-secondary" size={32} strokeWidth={1.5} />
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-3">{title}</h3>
                 <p className="text-muted-foreground">{description}</p>
