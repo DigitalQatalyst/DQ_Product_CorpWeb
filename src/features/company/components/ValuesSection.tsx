@@ -15,8 +15,8 @@ export function ValuesSection() {
           {values.map(({ icon: Icon, title, description }) => (
             <Card key={title}>
               <CardContent className="p-6">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <Icon className="text-primary" size={22} />
+                <div className="w-16 h-16 bg-secondary/10 rounded-xl flex items-center justify-center mb-6">
+                  <Icon className="text-secondary" size={28} strokeWidth={1.5} />
                 </div>
                 <h3 className="text-xl font-semibold text-foreground mb-2">{title}</h3>
                 <p className="text-muted-foreground text-sm">{description}</p>

@@ -208,8 +208,8 @@ export function AdminDashboard() {
             key={iv.id}
             className="px-6 py-4 flex items-center gap-3 hover:bg-muted/30 transition-colors"
           >
-            <div className="bg-primary/10 p-2 rounded-lg shrink-0">
-              <Calendar className="text-primary" size={16} />
+            <div className="bg-secondary/10 p-3 rounded-lg shrink-0">
+              <Calendar className="text-secondary" size={20} strokeWidth={1.5} />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-foreground truncate">
@@ -244,8 +244,8 @@ export function AdminDashboard() {
             key={posting.id}
             className="px-6 py-4 flex items-center gap-3 hover:bg-muted/30 transition-colors"
           >
-            <div className="bg-primary/10 p-2 rounded-lg shrink-0">
-              <Briefcase className="text-primary" size={16} />
+            <div className="bg-secondary/10 p-3 rounded-lg shrink-0">
+              <Briefcase className="text-secondary" size={20} strokeWidth={1.5} />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-foreground truncate">
@@ -296,8 +296,8 @@ export function AdminDashboard() {
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">{label}</p>
               </div>
-              <div className="bg-primary/10 p-2 rounded-lg">
-                <Icon className="text-primary" size={20} />
+              <div className="bg-secondary/10 p-3 rounded-lg">
+                <Icon className="text-secondary" size={24} strokeWidth={1.5} />
               </div>
             </CardContent>
           </Card>

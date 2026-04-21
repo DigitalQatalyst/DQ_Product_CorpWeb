@@ -27,8 +27,8 @@ export function ValueProps({ items }: ValuePropsProps) {
                 key={index}
                 className="bg-gray-50 rounded-2xl p-8 text-center hover:shadow-md transition-all duration-300"
               >
-                <div className="w-14 h-14 bg-secondary/10 rounded-xl flex items-center justify-center mx-auto mb-5">
-                  <Icon className="w-7 h-7 text-secondary" strokeWidth={1.5} />
+                <div className="w-16 h-16 bg-secondary/10 rounded-xl flex items-center justify-center mx-auto mb-6">
+                  <Icon className="w-8 h-8 text-secondary" strokeWidth={1.5} />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">
                   {prop.title}

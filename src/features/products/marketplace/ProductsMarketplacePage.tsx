@@ -90,7 +90,7 @@ export function ProductsMarketplacePage() {
             Showing {filtered.length} of {dqProducts.length} products
           </span>
           {hasActiveFilters && (
-            <button onClick={clearAll} className="text-primary font-medium hover:text-primary/80 transition-colors">
+            <button onClick={clearAll} className="text-secondary font-medium hover:text-secondary/80 transition-colors">
               Clear All
             </button>
           )}
@@ -104,7 +104,7 @@ export function ProductsMarketplacePage() {
             <Filter size={16} />
             Filters
             {filters.category && (
-              <span className="ml-auto bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              <span className="ml-auto bg-secondary text-secondary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
                 1
               </span>
             )}
@@ -129,7 +129,7 @@ export function ProductsMarketplacePage() {
                 {filters.category && (
                   <button
                     onClick={() => setFilters((f) => ({ ...f, category: "" }))}
-                    className="text-primary text-sm font-medium hover:text-primary/80 transition-colors"
+                    className="text-secondary text-sm font-medium hover:text-secondary/80 transition-colors"
                   >
                     Reset All
                   </button>

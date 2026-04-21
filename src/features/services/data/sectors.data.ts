@@ -4,6 +4,23 @@ export interface CorePillar { title: string; description: string }
 export interface WhyReason { icon: LucideIcon; title: string; description: string }
 export interface Stat { value: string; label: string }
 
+export interface KeyBenefit {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+}
+
+export interface WhereToStartItem {
+  title: string;
+  description: string;
+}
+
+export interface FocusAreaItem {
+  number: string;
+  title: string;
+  description: string;
+}
+
 export interface SectorData {
   id: string;
   name: string;
@@ -17,6 +34,12 @@ export interface SectorData {
   useCases: string[];
   stats: [Stat, Stat, Stat];
   heroImage: string;
+  overviewImage?: string;
+  overviewVideo?: string;
+  overviewDescription?: string;
+  keyBenefits?: KeyBenefit[];
+  whereToStartItems?: WhereToStartItem[];
+  focusAreasItems?: FocusAreaItem[];
 }
 
 const sectorsData: Record<string, SectorData> = {
@@ -41,6 +64,35 @@ const sectorsData: Record<string, SectorData> = {
     useCases: ["Agile Transformation in Software Development: Streamline software development processes", "DevOps for Continuous Deployment: Automate testing, deployment, and monitoring", "Automated Testing for Quicker Feedback: Identify issues early in the development process", "Cloud-Native Application Development: Develop scalable applications quickly", "Real-Time Feedback Loops: Collect feedback from customers continuously"],
     stats: [{ label: "Faster Time-to-Market", value: "40%" }, { label: "Increased Productivity", value: "35%" }, { label: "Reduced Costs", value: "30%" }],
     heroImage: "/images/agility-hero.png",
+    overviewDescription: "Transform your organization's ability to respond to market changes with Agility 4.0. By implementing DevOps practices, CI/CD pipelines, and agile methodologies, you'll accelerate software delivery, improve team collaboration, and reduce operational costs. Our proven frameworks help you build a culture of continuous improvement where teams deliver value faster while maintaining quality and reliability.",
+    keyBenefits: [
+      { icon: TrendingUp, title: "Accelerated Delivery Cycles", description: "Reduce time-to-market by 40% through iterative development and continuous integration practices." },
+      { icon: Zap, title: "Enhanced Team Collaboration", description: "Break down silos between development and operations, fostering seamless communication and shared responsibility." },
+      { icon: CheckCircle, title: "Improved Quality & Reliability", description: "Automated testing and continuous feedback loops catch issues early, ensuring higher quality releases." },
+      { icon: Users, title: "Increased Business Agility", description: "Respond quickly to market changes and customer needs with flexible, adaptive development processes." },
+    ],
+    whereToStartItems: [
+      { title: "Agile Transformation", description: "Implement Scrum or Kanban frameworks to enable iterative development and faster feedback cycles." },
+      { title: "CI/CD Pipeline Setup", description: "Establish continuous integration and deployment pipelines to automate testing and release processes." },
+      { title: "DevOps Culture Adoption", description: "Bridge development and operations teams to streamline collaboration and shared accountability." },
+      { title: "Cloud-Native Development", description: "Migrate to cloud platforms for scalable, flexible infrastructure that supports rapid deployment." },
+      { title: "Automated Testing", description: "Implement comprehensive test automation to identify issues early and maintain code quality." },
+      { title: "Microservices Architecture", description: "Break monolithic applications into microservices for independent deployment and scaling." },
+      { title: "Infrastructure as Code", description: "Manage infrastructure through code to ensure consistency and enable rapid provisioning." },
+      { title: "Continuous Monitoring", description: "Deploy real-time monitoring and observability tools to track performance and detect issues proactively." },
+      { title: "Agile Metrics & KPIs", description: "Establish metrics like velocity, cycle time, and deployment frequency to measure progress." },
+      { title: "Team Upskilling", description: "Invest in training programs to build agile and DevOps capabilities across your organization." },
+    ],
+    focusAreasItems: [
+      { number: "01", title: "Sprint Planning", description: "Organize work into time-boxed sprints with clear goals and deliverables for focused execution." },
+      { number: "02", title: "Continuous Integration", description: "Automate code integration and testing to detect issues early and maintain code quality." },
+      { number: "03", title: "Deployment Automation", description: "Streamline release processes with automated deployment pipelines for faster, reliable releases." },
+      { number: "04", title: "Feedback Loops", description: "Establish continuous feedback mechanisms from users and stakeholders to guide development." },
+      { number: "05", title: "Cross-Functional Teams", description: "Build teams with diverse skills working collaboratively toward shared objectives." },
+      { number: "06", title: "Lean Practices", description: "Eliminate waste and focus on value-adding activities to maximize efficiency." },
+      { number: "07", title: "Version Control", description: "Implement robust version control systems to manage code changes and enable collaboration." },
+      { number: "08", title: "Performance Monitoring", description: "Track application performance in real-time to ensure optimal user experiences." },
+    ],
   },
   experience: {
     id: "experience", name: "Experience 4.0",
@@ -63,6 +115,35 @@ const sectorsData: Record<string, SectorData> = {
     useCases: ["AI-Powered Personalization: Improve product recommendations for higher sales", "Virtual Showrooms & AR Visualization: Let customers explore products in immersive environments", "Intelligent Customer Support: Resolve queries instantly with chatbots", "Predictive Customer Analytics: Anticipate needs before customers take action", "Omnichannel Engagement: Ensure seamless interaction across all touchpoints"],
     stats: [{ label: "Increase in customer satisfaction", value: "45%" }, { label: "Boost in conversion rates", value: "38%" }, { label: "Improvement in customer retention", value: "42%" }],
     heroImage: "/images/experience 4.0-hero.png",
+    overviewDescription: "Elevate every customer interaction with Experience 4.0. Leverage AI-powered personalization, omnichannel integration, and real-time analytics to create seamless, memorable experiences that drive loyalty and revenue. From intelligent chatbots to immersive AR experiences, our solutions help you understand and anticipate customer needs, delivering the right message at the right time across every touchpoint.",
+    keyBenefits: [
+      { icon: TrendingUp, title: "Hyper-Personalized Experiences", description: "Deliver tailored interactions that increase customer satisfaction by 45% through AI-driven personalization." },
+      { icon: Zap, title: "Seamless Omnichannel Journeys", description: "Create consistent experiences across all touchpoints, from mobile apps to physical stores." },
+      { icon: CheckCircle, title: "Increased Conversion Rates", description: "Optimize customer journeys to boost conversions by 38% through reduced friction and intelligent engagement." },
+      { icon: Users, title: "Enhanced Customer Loyalty", description: "Build lasting relationships through meaningful, personalized interactions that drive 42% improvement in retention." },
+    ],
+    whereToStartItems: [
+      { title: "Customer Data Platform", description: "Unify customer data from all sources to create a single, comprehensive view of each customer." },
+      { title: "AI Personalization Engine", description: "Deploy machine learning algorithms to deliver real-time, personalized product recommendations." },
+      { title: "Omnichannel Strategy", description: "Integrate online, mobile, and in-store experiences for seamless customer journeys." },
+      { title: "Chatbot Implementation", description: "Launch AI-powered chatbots for instant, 24/7 customer support and engagement." },
+      { title: "Journey Mapping", description: "Analyze and optimize every touchpoint in the customer journey to eliminate friction." },
+      { title: "Behavioral Analytics", description: "Track customer behavior in real-time to understand preferences and predict needs." },
+      { title: "AR/VR Experiences", description: "Create immersive product visualizations and virtual showrooms for enhanced engagement." },
+      { title: "Voice Commerce", description: "Enable voice-based shopping and support for hands-free convenience." },
+      { title: "Predictive Analytics", description: "Anticipate customer needs and proactively deliver relevant offers and content." },
+      { title: "Feedback Systems", description: "Implement real-time feedback collection to continuously improve customer experiences." },
+    ],
+    focusAreasItems: [
+      { number: "01", title: "Personalization at Scale", description: "Leverage AI to deliver individualized experiences to millions of customers simultaneously." },
+      { number: "02", title: "Real-Time Engagement", description: "Respond to customer actions instantly with intelligent, context-aware interactions." },
+      { number: "03", title: "Predictive Intelligence", description: "Anticipate customer needs before they arise using behavioral data and machine learning." },
+      { number: "04", title: "Omnichannel Consistency", description: "Ensure seamless experiences whether customers engage online, mobile, or in-store." },
+      { number: "05", title: "Conversational AI", description: "Deploy intelligent chatbots and virtual assistants for natural, helpful interactions." },
+      { number: "06", title: "Immersive Technologies", description: "Use AR and VR to create engaging, memorable brand experiences." },
+      { number: "07", title: "Customer Analytics", description: "Gain deep insights into behavior patterns to optimize every touchpoint." },
+      { number: "08", title: "Loyalty Programs", description: "Design gamified, personalized loyalty programs that drive engagement and retention." },
+    ],
   },
   farming: {
     id: "farming", name: "Farming 4.0",
@@ -85,6 +166,35 @@ const sectorsData: Record<string, SectorData> = {
     useCases: ["Precision Agriculture with IoT Sensors: Monitor soil conditions and optimize irrigation", "Drone-Based Crop Monitoring: Track crop health using drones and aerial imagery", "AI-Powered Yield Prediction: Predict crop yields based on environmental factors", "Automated Irrigation Systems: Reduce water usage and improve crop health", "Blockchain-Based Food Traceability: Ensure transparency from farm to table"],
     stats: [{ label: "Yield Improvement", value: "25%" }, { label: "Resource Efficiency", value: "35%" }, { label: "Cost Reduction", value: "28%" }],
     heroImage: "/images/farming-hero.svg",
+    overviewDescription: "Revolutionize your agricultural operations with Farming 4.0. Deploy IoT sensors, drone monitoring, and AI-powered analytics to optimize crop yields, reduce water usage, and implement sustainable farming practices. Our precision agriculture solutions provide real-time insights into soil conditions, weather patterns, and crop health, enabling data-driven decisions that increase productivity while minimizing environmental impact.",
+    keyBenefits: [
+      { icon: TrendingUp, title: "Optimized Crop Yields", description: "Increase crop production by 25% through precision farming and data-driven decision-making." },
+      { icon: Zap, title: "Resource Efficiency", description: "Reduce water usage by 35% and optimize fertilizer application with IoT sensors and smart irrigation." },
+      { icon: CheckCircle, title: "Sustainable Practices", description: "Minimize environmental impact while maintaining productivity through precision agriculture techniques." },
+      { icon: Users, title: "Real-Time Monitoring", description: "Track soil moisture, temperature, and crop health in real-time for proactive farm management." },
+    ],
+    whereToStartItems: [
+      { title: "IoT Soil Sensors", description: "Deploy sensors to monitor soil moisture, pH, and nutrient levels for optimized irrigation and fertilization." },
+      { title: "Drone Crop Monitoring", description: "Use aerial imagery and drones to track crop health, identify issues, and assess field conditions." },
+      { title: "Weather Forecasting", description: "Integrate weather data and predictive analytics to plan planting, irrigation, and harvesting schedules." },
+      { title: "Automated Irrigation", description: "Implement smart irrigation systems that adjust water delivery based on real-time soil and weather data." },
+      { title: "Yield Prediction Models", description: "Use AI to forecast crop yields based on environmental factors and historical data." },
+      { title: "Precision Fertilization", description: "Apply fertilizers precisely where needed using GPS-guided equipment and soil analysis." },
+      { title: "Pest & Disease Detection", description: "Deploy AI-powered image recognition to identify pests and diseases early for targeted treatment." },
+      { title: "Farm Management Software", description: "Centralize data from all sources to make informed decisions and track farm performance." },
+      { title: "Supply Chain Integration", description: "Connect directly with buyers and distributors through digital marketplaces and traceability systems." },
+      { title: "Blockchain Traceability", description: "Ensure transparency from farm to table with blockchain-based product tracking." },
+    ],
+    focusAreasItems: [
+      { number: "01", title: "Precision Irrigation", description: "Optimize water usage with IoT sensors that deliver the right amount of water at the right time." },
+      { number: "02", title: "Crop Health Monitoring", description: "Use drones and satellite imagery to detect issues before they impact yields." },
+      { number: "03", title: "Soil Analysis", description: "Continuously monitor soil conditions to optimize nutrient management and crop rotation." },
+      { number: "04", title: "Yield Forecasting", description: "Predict harvest outcomes using AI and historical data for better planning." },
+      { number: "05", title: "Automated Equipment", description: "Deploy GPS-guided tractors and harvesters for precise, efficient field operations." },
+      { number: "06", title: "Climate Adaptation", description: "Use predictive models to adapt farming practices to changing weather patterns." },
+      { number: "07", title: "Resource Optimization", description: "Minimize waste of water, fertilizer, and energy through data-driven management." },
+      { number: "08", title: "Market Connectivity", description: "Access digital platforms to connect with buyers and optimize pricing strategies." },
+    ],
   },
   government: {
     id: "government", name: "Government 4.0",
@@ -107,6 +217,7 @@ const sectorsData: Record<string, SectorData> = {
     useCases: ["E-government portals and services", "Smart city infrastructure management", "Digital identity and authentication", "Blockchain-based public records", "AI-powered citizen service chatbots"],
     stats: [{ label: "Service Efficiency", value: "50%" }, { label: "Citizen Satisfaction", value: "42%" }, { label: "Cost Savings", value: "35%" }],
     heroImage: "/images/government-hero.png",
+    overviewDescription: "Modernize public services with Government 4.0 digital transformation solutions. Implement e-government platforms, blockchain for transparency, and AI-driven governance to improve citizen engagement, streamline bureaucracy, and enhance service delivery. Our solutions help government agencies become more efficient, accountable, and responsive to citizen needs while reducing operational costs and improving data-driven policy making.",
   },
   hospitality: {
     id: "hospitality", name: "Hospitality 4.0",
@@ -129,6 +240,7 @@ const sectorsData: Record<string, SectorData> = {
     useCases: ["Smart hotel rooms with IoT controls", "AI-powered concierge services", "Contactless payment and check-in", "Predictive maintenance for facilities", "Dynamic pricing and revenue optimization"],
     stats: [{ label: "Guest Satisfaction", value: "48%" }, { label: "Operational Efficiency", value: "40%" }, { label: "Revenue Growth", value: "32%" }],
     heroImage: "/images/hospitality-hero.png",
+    overviewDescription: "Elevate guest experiences with Hospitality 4.0 digital solutions. Deploy smart room technology, AI-driven personalization, and contactless operations to create memorable stays while optimizing back-office efficiency. Our integrated systems enable dynamic pricing, predictive maintenance, and personalized service delivery that increase guest satisfaction, drive revenue growth, and streamline hotel operations.",
   },
   infrastructure: {
     id: "infrastructure", name: "Infrastructure 4.0",
@@ -151,6 +263,8 @@ const sectorsData: Record<string, SectorData> = {
     useCases: ["Smart city infrastructure management", "Intelligent transportation systems", "Smart grid energy distribution", "Water management and conservation", "Digital twin simulations for urban planning"],
     stats: [{ label: "Energy Efficiency", value: "45%" }, { label: "Cost Reduction", value: "38%" }, { label: "Sustainability Improvement", value: "52%" }],
     heroImage: "/images/infrastructure-hero.png",
+    overviewImage: "/images/infrastructure-hero.png",
+    overviewDescription: "Build smarter, more sustainable cities with Infrastructure 4.0 solutions. Implement smart grids, IoT sensors, and digital twins to optimize resource management, enhance public safety, and improve sustainability. Our integrated systems provide real-time monitoring and predictive maintenance for transportation networks, utilities, and urban infrastructure, reducing costs while meeting environmental goals.",
   },
   logistics: {
     id: "logistics", name: "Logistics 4.0",
@@ -173,6 +287,7 @@ const sectorsData: Record<string, SectorData> = {
     useCases: ["Autonomous delivery vehicles", "Blockchain-based supply chain tracking", "AI-powered demand forecasting", "Robotic warehouse automation", "Real-time fleet management"],
     stats: [{ label: "Delivery Speed", value: "35%" }, { label: "Cost Reduction", value: "42%" }, { label: "Accuracy Improvement", value: "48%" }],
     heroImage: "/images/logistics-hero.png",
+    overviewDescription: "Optimize your supply chain with Logistics 4.0 digital transformation. Deploy AI-powered route optimization, real-time tracking, and warehouse automation to reduce delivery times, lower costs, and improve accuracy. Our solutions provide end-to-end visibility across your supply chain, enabling proactive decision-making and seamless coordination from warehouse to final delivery.",
   },
   mining: {
     id: "mining", name: "Mining 4.0",
@@ -195,6 +310,7 @@ const sectorsData: Record<string, SectorData> = {
     useCases: ["Autonomous mining vehicles: Deploy self-driving trucks to enhance safety", "Predictive maintenance: Use IoT and AI to predict equipment failures", "Digital twin technology: Create virtual replicas to simulate operations", "Remote operations centers: Control equipment from safe locations", "Environmental monitoring: Track air quality, water usage, and emissions"],
     stats: [{ label: "Safety Improvement", value: "60%" }, { label: "Downtime Reduction", value: "45%" }, { label: "Cost Savings", value: "35%" }],
     heroImage: "/images/infrastructure-hero.png",
+    overviewDescription: "Transform mining operations with Mining 4.0 autonomous and intelligent systems. Deploy self-driving vehicles, predictive maintenance, and real-time monitoring to enhance worker safety, reduce downtime, and optimize resource extraction. Our solutions enable remote operations, environmental compliance monitoring, and data-driven decision-making that maximize productivity while ensuring sustainable, responsible mining practices.",
   },
   plant: {
     id: "plant", name: "Plant 4.0",
@@ -217,6 +333,35 @@ const sectorsData: Record<string, SectorData> = {
     useCases: ["Smart factory automation", "Predictive maintenance systems", "Digital twin simulations", "Robotic assembly lines", "AI-powered quality control"],
     stats: [{ label: "Production Efficiency", value: "55%" }, { label: "Downtime Reduction", value: "48%" }, { label: "Quality Improvement", value: "40%" }],
     heroImage: "/images/plant-hero.png",
+    overviewDescription: "Modernize your manufacturing operations with Plant 4.0 smart factory solutions. Implement Industrial IoT sensors, predictive maintenance, and digital twins to maximize production efficiency, reduce downtime, and improve product quality. Our integrated systems provide real-time visibility into every aspect of your operations, enabling proactive decision-making and continuous optimization of your manufacturing processes.",
+    keyBenefits: [
+      { icon: TrendingUp, title: "Predictive Maintenance", description: "Reduce unplanned downtime by 48% through IoT sensors and AI that predict equipment failures before they occur." },
+      { icon: Zap, title: "Production Optimization", description: "Increase manufacturing efficiency by 55% with real-time monitoring and intelligent process optimization." },
+      { icon: CheckCircle, title: "Quality Assurance", description: "Improve product quality by 40% using AI-powered inspection systems that detect defects in real-time." },
+      { icon: Users, title: "Worker Safety", description: "Enhance workplace safety with smart monitoring systems that identify hazards and protect personnel." },
+    ],
+    whereToStartItems: [
+      { title: "IIoT Sensor Deployment", description: "Install sensors on critical equipment to monitor vibration, temperature, pressure, and performance metrics." },
+      { title: "Predictive Analytics", description: "Implement AI models that analyze sensor data to forecast equipment failures and schedule maintenance." },
+      { title: "Digital Twin Creation", description: "Build virtual replicas of production lines for simulation, testing, and optimization without disrupting operations." },
+      { title: "Automated Quality Control", description: "Deploy computer vision systems to inspect products and identify defects faster than manual inspection." },
+      { title: "Robotic Automation", description: "Integrate collaborative robots (cobots) for repetitive tasks, freeing workers for higher-value activities." },
+      { title: "Real-Time Dashboards", description: "Create centralized monitoring systems that provide visibility into all plant operations and KPIs." },
+      { title: "Energy Management", description: "Track and optimize energy consumption across the plant to reduce costs and environmental impact." },
+      { title: "Supply Chain Integration", description: "Connect production systems with suppliers and logistics for just-in-time manufacturing." },
+      { title: "Workforce Training", description: "Use VR and digital twins to train operators on new equipment and processes safely." },
+      { title: "Flexible Manufacturing", description: "Implement modular production systems that can quickly adapt to different products and volumes." },
+    ],
+    focusAreasItems: [
+      { number: "01", title: "Equipment Monitoring", description: "Continuous tracking of machine health through IoT sensors to prevent unexpected failures." },
+      { number: "02", title: "Process Optimization", description: "Use AI to identify bottlenecks and optimize production workflows for maximum efficiency." },
+      { number: "03", title: "Quality Analytics", description: "Real-time defect detection and root cause analysis to maintain consistent product quality." },
+      { number: "04", title: "Asset Performance", description: "Maximize equipment utilization and lifespan through data-driven maintenance strategies." },
+      { number: "05", title: "Production Planning", description: "AI-powered scheduling that balances demand, capacity, and resource availability." },
+      { number: "06", title: "Safety Systems", description: "Smart sensors and alerts that protect workers from hazardous conditions." },
+      { number: "07", title: "Energy Efficiency", description: "Monitor and reduce energy consumption without compromising production output." },
+      { number: "08", title: "Supply Chain Sync", description: "Real-time coordination with suppliers and distributors for lean manufacturing." },
+    ],
   },
   retail: {
     id: "retail", name: "Retail 4.0",
@@ -239,6 +384,35 @@ const sectorsData: Record<string, SectorData> = {
     useCases: ["AI-powered product recommendations", "Virtual try-on and fitting rooms", "Smart shelves and inventory tracking", "Personalized marketing campaigns", "Cashierless checkout systems"],
     stats: [{ label: "Sales Growth", value: "38%" }, { label: "Customer Engagement", value: "45%" }, { label: "Conversion Rate", value: "42%" }],
     heroImage: "/images/retail-hero.png",
+    overviewDescription: "Transform your retail business with Retail 4.0 solutions that blend physical and digital experiences. Implement AI-driven personalization, smart inventory management, and omnichannel strategies to increase sales and customer loyalty. From virtual try-ons to cashierless checkout, our technologies help you create frictionless shopping experiences that meet modern consumer expectations while optimizing operations and reducing costs.",
+    keyBenefits: [
+      { icon: TrendingUp, title: "AI-Powered Personalization", description: "Increase sales by 38% through intelligent product recommendations and personalized marketing campaigns." },
+      { icon: Zap, title: "Omnichannel Excellence", description: "Create seamless shopping experiences across online, mobile, and physical stores for 45% higher engagement." },
+      { icon: CheckCircle, title: "Smart Inventory Management", description: "Optimize stock levels with IoT sensors and predictive analytics to reduce waste and stockouts." },
+      { icon: Users, title: "Enhanced Customer Insights", description: "Leverage data analytics to understand shopping behaviors and preferences for targeted strategies." },
+    ],
+    whereToStartItems: [
+      { title: "AI Recommendations", description: "Deploy machine learning algorithms to provide personalized product suggestions based on browsing and purchase history." },
+      { title: "Omnichannel Platform", description: "Integrate online, mobile, and in-store systems for unified inventory and customer data management." },
+      { title: "Smart Shelves", description: "Install IoT sensors on shelves to track inventory in real-time and automate restocking processes." },
+      { title: "Virtual Try-On", description: "Implement AR technology for customers to visualize products before purchase, reducing returns." },
+      { title: "Dynamic Pricing", description: "Use AI to adjust prices in real-time based on demand, competition, and inventory levels." },
+      { title: "Cashierless Checkout", description: "Deploy automated checkout systems using computer vision and sensors for frictionless shopping." },
+      { title: "Customer Analytics", description: "Collect and analyze shopping data to understand preferences and optimize merchandising strategies." },
+      { title: "Mobile Commerce", description: "Develop mobile apps with features like scan-and-go, mobile payments, and personalized offers." },
+      { title: "Loyalty Programs", description: "Create digital loyalty programs with personalized rewards and gamification elements." },
+      { title: "Supply Chain Visibility", description: "Implement end-to-end tracking systems to optimize logistics and ensure product availability." },
+    ],
+    focusAreasItems: [
+      { number: "01", title: "Personalized Marketing", description: "Deliver targeted campaigns based on individual customer preferences and shopping behavior." },
+      { number: "02", title: "Inventory Optimization", description: "Use predictive analytics to maintain optimal stock levels and reduce carrying costs." },
+      { number: "03", title: "Frictionless Checkout", description: "Eliminate checkout lines with automated payment systems and mobile solutions." },
+      { number: "04", title: "Customer Journey Mapping", description: "Analyze and optimize every touchpoint from discovery to purchase and beyond." },
+      { number: "05", title: "AR Shopping Experiences", description: "Enable customers to visualize products in their space before buying." },
+      { number: "06", title: "Real-Time Analytics", description: "Monitor sales, inventory, and customer behavior in real-time for agile decision-making." },
+      { number: "07", title: "Social Commerce", description: "Integrate shopping capabilities directly into social media platforms." },
+      { number: "08", title: "Sustainable Practices", description: "Track and communicate sustainability metrics to eco-conscious consumers." },
+    ],
   },
   service: {
     id: "service", name: "Services 4.0",
@@ -261,6 +435,7 @@ const sectorsData: Record<string, SectorData> = {
     useCases: ["AI-powered customer service chatbots", "Automated service ticketing systems", "Predictive service maintenance", "Personalized service recommendations", "Self-service portals"],
     stats: [{ label: "Service Speed", value: "50%" }, { label: "Customer Satisfaction", value: "46%" }, { label: "Cost Efficiency", value: "40%" }],
     heroImage: "/images/service-hero.png",
+    overviewDescription: "Digitize service delivery with Services 4.0 automation and AI-driven management. Implement intelligent chatbots, automated ticketing, and predictive analytics to accelerate service delivery, reduce costs, and improve customer satisfaction. Our platforms enable seamless interactions between customers and service providers, scaling efficiently to handle growing volumes without proportional cost increases.",
   },
   wellness: {
     id: "wellness", name: "Wellness 4.0",
@@ -283,6 +458,7 @@ const sectorsData: Record<string, SectorData> = {
     useCases: ["Wearable health monitoring devices", "AI-powered health diagnostics", "Telemedicine consultations", "Personalized fitness and nutrition plans", "Predictive health risk assessment"],
     stats: [{ label: "Health Outcomes", value: "42%" }, { label: "Patient Engagement", value: "55%" }, { label: "Cost Savings", value: "38%" }],
     heroImage: "/images/wellness-hero.png",
+    overviewDescription: "Revolutionize healthcare delivery with Wellness 4.0 digital health solutions. Deploy IoT wearables, telemedicine platforms, and predictive health analytics to improve patient outcomes, expand access to care, and reduce costs. Our solutions enable continuous health monitoring, early disease detection, and personalized care plans that keep patients actively engaged in their own health and wellness journey.",
   },
   intelligence: {
     id: "intelligence", name: "Intelligence 4.0",
@@ -305,6 +481,7 @@ const sectorsData: Record<string, SectorData> = {
     useCases: ["Predictive analytics: Forecast demand, churn, and market trends", "AI-powered dashboards: Real-time KPI monitoring across all business units", "Customer intelligence: Understand behavior patterns to personalize at scale", "Risk modeling: Identify and mitigate risks before they materialize", "Automated reporting: Eliminate manual data aggregation"],
     stats: [{ label: "Decision Speed", value: "70%" }, { label: "Forecast Accuracy", value: "85%" }, { label: "Risk Reduction", value: "50%" }],
     heroImage: "/images/service-hero.png",
+    overviewDescription: "Transform data into strategic advantage with Intelligence 4.0 AI-driven analytics. Deploy predictive modeling, business intelligence platforms, and machine learning to accelerate decision-making, forecast trends, and reduce risk. Our solutions provide real-time insights across all business operations, enabling proactive strategies and competitive intelligence that drive growth and operational excellence.",
   },
   workspace: {
     id: "workspace", name: "Workspace 4.0",
@@ -327,6 +504,7 @@ const sectorsData: Record<string, SectorData> = {
     useCases: ["Digital collaboration: Unified communication platforms for seamless teamwork", "Workspace automation: Automate routine tasks to free time for strategic work", "Employee experience: Personalized digital environments that boost engagement", "Smart office management: IoT-enabled space optimization", "Remote work enablement: Secure cloud-based tools for distributed teams"],
     stats: [{ label: "Productivity Increase", value: "45%" }, { label: "Employee Satisfaction", value: "60%" }, { label: "Overhead Reduction", value: "30%" }],
     heroImage: "/images/Service_landing_hero_image.png",
+    overviewDescription: "Revolutionize how teams work with Workspace 4.0 digital collaboration solutions. Implement unified platforms, intelligent automation, and smart office technologies to boost productivity, enable flexible work, and improve employee satisfaction. Our solutions break down silos, streamline workflows, and create engaging digital environments that support remote, hybrid, and in-office work seamlessly.",
   },
   governance: {
     id: "governance", name: "Governance 4.0",
@@ -349,6 +527,7 @@ const sectorsData: Record<string, SectorData> = {
     useCases: ["Compliance management: Automated monitoring and reporting", "Risk assessment: Intelligent frameworks identifying threats", "Policy governance: Centralized creation and compliance tracking", "Audit preparation: Always-ready documentation and process trails", "Regulatory adaptation: Flexible frameworks that evolve with regulations"],
     stats: [{ label: "Compliance Rate", value: "99%" }, { label: "Risk Reduction", value: "55%" }, { label: "Audit Readiness", value: "100%" }],
     heroImage: "/images/government-hero.png",
+    overviewDescription: "Strengthen organizational governance with Governance 4.0 automated compliance and risk management. Deploy intelligent systems for continuous regulatory monitoring, policy management, and audit readiness. Our solutions ensure consistent compliance, proactive risk mitigation, and strategic alignment across all business units, reducing costs while maintaining the highest standards of governance and accountability.",
   },
   backoffice: {
     id: "backoffice", name: "Backoffice 4.0",
@@ -371,6 +550,7 @@ const sectorsData: Record<string, SectorData> = {
     useCases: ["Invoice processing: Automated extraction, validation, and payment processing", "HR operations: Digital onboarding, payroll, and employee record management", "Contract management: AI-powered review, approval, and storage workflows", "Financial reporting: Automated data aggregation and report generation", "Compliance tracking: Automated audit trails and regulatory documentation"],
     stats: [{ label: "Cost Reduction", value: "50%" }, { label: "Processing Speed", value: "80%" }, { label: "Error Elimination", value: "95%" }],
     heroImage: "/images/infrastructure-hero.png",
+    overviewDescription: "Transform back-office operations with Backoffice 4.0 intelligent automation. Deploy RPA, AI document processing, and workflow orchestration to reduce costs by 50%, accelerate processing times, and eliminate manual errors. Our solutions free your team from repetitive tasks, enabling them to focus on high-value work while ensuring scalable, efficient operations that support business growth.",
   },
 };
 
