@@ -19,5 +19,5 @@ export default async function Page({ params }: Readonly<Props>) {
   const { productId } = await params;
   const { product, detail } = await getPublishedProductWithDetails(productId);
   if (!product || !detail) notFound();
-  return <ProductDetailPage product={product} detail={detail} ctaType={product.ctaType} />;
+  return <ProductDetailPage product={product} detail={detail} />;
 }

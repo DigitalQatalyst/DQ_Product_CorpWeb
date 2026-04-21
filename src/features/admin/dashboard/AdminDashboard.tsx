@@ -97,7 +97,7 @@ export function AdminDashboard() {
             .select("*")
             .order("created_at", { ascending: false }),
           supabase
-            .from("profiles")
+            .from("admin_users")
             .select("*")
             .order("created_at", { ascending: false }),
         ],
@@ -106,7 +106,7 @@ export function AdminDashboard() {
       const applications = (appsRes.data ?? []) as RecentApp[];
       const interviewRows = (interviewsRes.data ?? []) as RecentInterview[];
       const postingRows = (postingsRes.data ?? []) as RecentPosting[];
-      const profileRows = (usersRes.data ?? []) as Array<{ role: string }>;
+      const adminUsers = (usersRes.data ?? []) as Array<{ is_active: boolean }>;
 
       if (applications.length > 0) {
         setApps(getRecentApplications(applications));
@@ -134,11 +134,11 @@ export function AdminDashboard() {
           openPositions: countOpenPositions(postingRows),
         }));
       }
-      if (profileRows.length > 0) {
+      if (adminUsers.length > 0) {
         setStats((current) => ({
           ...current,
-          totalUsers: profileRows.length,
-          activeUsers: countAdminProfiles(profileRows),
+          totalUsers: adminUsers.length,
+          activeUsers: countActiveUsers(adminUsers),
         }));
       }
 
@@ -158,7 +158,7 @@ export function AdminDashboard() {
       value: stats.upcomingInterviews,
       icon: Calendar,
     },
-    { label: "Admin profiles", value: stats.activeUsers, icon: UserCheck },
+    { label: "Active Users", value: stats.activeUsers, icon: UserCheck },
     { label: "Open Positions", value: stats.openPositions, icon: Briefcase },
   ];
 
@@ -208,8 +208,12 @@ export function AdminDashboard() {
             key={iv.id}
             className="px-6 py-4 flex items-center gap-3 hover:bg-muted/30 transition-colors"
           >
-            <div className="bg-primary/10 p-2 rounded-lg shrink-0">
-              <Calendar className="text-primary" size={16} />
+            <div className="bg-secondary/10 p-3 rounded-lg shrink-0">
+              <Calendar
+                className="text-secondary"
+                size={20}
+                strokeWidth={1.5}
+              />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-foreground truncate">
@@ -244,8 +248,12 @@ export function AdminDashboard() {
             key={posting.id}
             className="px-6 py-4 flex items-center gap-3 hover:bg-muted/30 transition-colors"
           >
-            <div className="bg-primary/10 p-2 rounded-lg shrink-0">
-              <Briefcase className="text-primary" size={16} />
+            <div className="bg-secondary/10 p-3 rounded-lg shrink-0">
+              <Briefcase
+                className="text-secondary"
+                size={20}
+                strokeWidth={1.5}
+              />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-foreground truncate">
@@ -274,10 +282,10 @@ export function AdminDashboard() {
             Recruitment, content, and business operations.
           </p>
         </div>
-            <Link
-              href="/admin/analytics"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-border bg-background text-sm font-medium shadow-xs hover:bg-muted transition-colors"
-            >
+        <Link
+          href="/admin/analytics"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-background border border-border text-sm font-medium rounded-md hover:bg-muted transition-colors"
+        >
           <TrendingUp size={16} /> View Analytics
         </Link>
       </div>
@@ -296,8 +304,8 @@ export function AdminDashboard() {
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">{label}</p>
               </div>
-              <div className="bg-primary/10 p-2 rounded-lg">
-                <Icon className="text-primary" size={20} />
+              <div className="bg-secondary/10 p-3 rounded-lg">
+                <Icon className="text-secondary" size={24} strokeWidth={1.5} />
               </div>
             </CardContent>
           </Card>
@@ -422,8 +430,8 @@ function countOpenPositions(postings: RecentPosting[]) {
   return postings.filter(({ status }) => status === "open").length;
 }
 
-function countAdminProfiles(rows: Array<{ role: string }>) {
-  return rows.filter(({ role }) => (role ?? "").toLowerCase() === "admin").length;
+function countActiveUsers(users: Array<{ is_active: boolean }>) {
+  return users.filter(({ is_active }) => is_active).length;
 }
 
 function getInitials(firstName: string, lastName: string) {

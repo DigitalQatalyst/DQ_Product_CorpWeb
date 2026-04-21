@@ -45,7 +45,7 @@ export function ProductOfferings() {
             >
               {tab.label}
               {selected === tab.id && (
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-secondary" />
               )}
             </button>
           ))}
@@ -62,8 +62,8 @@ export function ProductOfferings() {
               {cls.items.map((item) => (
                 <Card key={item.title} className="flex flex-col h-full">
                   <CardContent className="p-6 flex flex-col flex-1">
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
-                      <item.icon className="text-primary" size={24} />
+                    <div className="w-16 h-16 bg-secondary/10 rounded-xl flex items-center justify-center mb-6">
+                      <item.icon className="text-secondary" size={32} strokeWidth={1.5} />
                     </div>
                     <h4 className="text-xl font-bold text-foreground mb-4">{item.title}</h4>
                     <p className="text-muted-foreground flex-1 mb-6 leading-relaxed">
@@ -71,7 +71,7 @@ export function ProductOfferings() {
                     </p>
                     <Link
                       href={item.href}
-                      className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors mt-auto"
+                      className="inline-flex items-center gap-2 text-secondary hover:text-secondary/80 font-medium transition-colors mt-auto"
                     >
                       {item.linkLabel} <ArrowRight size={18} />
                     </Link>

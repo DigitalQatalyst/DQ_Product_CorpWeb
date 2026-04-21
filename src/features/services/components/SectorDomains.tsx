@@ -39,7 +39,7 @@ export function SectorDomains() {
                     <div className="text-sm font-medium text-foreground mb-1">{item.title}</div>
                     <Link
                       href={`/services/sectors/${item.slug}`}
-                      className="text-primary hover:text-primary/80 text-xs font-semibold transition-colors"
+                      className="text-secondary hover:text-secondary/80 text-xs font-semibold transition-colors"
                     >
                       Read more →
                     </Link>

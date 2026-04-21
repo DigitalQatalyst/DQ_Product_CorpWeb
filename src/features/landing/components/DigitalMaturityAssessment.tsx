@@ -233,11 +233,11 @@ export function DigitalMaturityAssessment() {
                     key={title}
                     className="text-center p-6 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
                   >
-                    <div className="w-16 h-16 bg-[#030F35]/5 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                    <div className="w-16 h-16 bg-secondary/10 rounded-xl flex items-center justify-center mx-auto mb-3">
                       <Icon
                         size={32}
-                        className="text-[#030F35]"
                         strokeWidth={1.5}
+                        className="text-[#030F35]"
                       />
                     </div>
                     <h3 className="font-semibold text-gray-900 mb-2">
@@ -253,7 +253,7 @@ export function DigitalMaturityAssessment() {
                     setIsStarted(true);
                     scroll();
                   }}
-                  className="inline-flex items-center px-8 py-4 bg-[#030F35] text-white font-semibold rounded-xl hover:bg-[#1F2F5C] transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  className="inline-flex items-center px-8 py-4 bg-secondary text-white font-semibold rounded-xl hover:bg-secondary/80 transition-all duration-300 transform hover:scale-105 shadow-lg"
                 >
                   Unlock Your Digital Maturity{" "}
                   <ArrowRight size={20} className="ml-2" />
@@ -408,7 +408,7 @@ export function DigitalMaturityAssessment() {
                 <button
                   onClick={handleAssess}
                   disabled={!formValid || isLoading}
-                  className="px-8 py-4 bg-[#030F35] hover:bg-[#1F2F5C] text-white font-semibold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 shadow-lg"
+                  className="px-8 py-4 bg-secondary hover:bg-secondary/80 text-white font-semibold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 shadow-lg"
                 >
                   {isLoading ? (
                     <>
@@ -504,7 +504,7 @@ export function DigitalMaturityAssessment() {
                 <button
                   onClick={handleAccessReport}
                   disabled={!leadValid || isLoading}
-                  className="w-full px-8 py-4 bg-[#030F35] hover:bg-[#1F2F5C] text-white font-semibold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 shadow-lg"
+                  className="w-full px-8 py-4 bg-secondary hover:bg-secondary/80 text-white font-semibold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 shadow-lg"
                 >
                   {isLoading ? (
                     <>
@@ -717,7 +717,7 @@ export function DigitalMaturityAssessment() {
                   </button>
                   <Link
                     href="/consultation"
-                    className="px-6 py-3 bg-[#030F35] hover:bg-[#1F2F5C] text-white rounded-xl font-medium transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg"
+                    className="px-6 py-3 bg-secondary hover:bg-secondary/80 text-white rounded-xl font-medium transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg"
                   >
                     <span>Get Expert Consultation</span>
                     <ArrowRight className="w-4 h-4" />

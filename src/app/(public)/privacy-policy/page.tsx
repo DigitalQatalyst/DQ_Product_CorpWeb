@@ -1,102 +1,155 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/features/legal/LegalPage";
 
-export const metadata: Metadata = { title: "Privacy Policy | DigitalQatalyst" };
+export const metadata: Metadata = { title: "Privacy Notice | DigitalQatalyst" };
 
 export default function Page() {
   return (
     <LegalPage
-      title="Privacy Policy"
+      title="Privacy Notice"
       lastUpdated="February 10, 2025"
       sections={[
         {
-          title: "Introduction",
+          title: "Overview",
+          content: (
+            <p className="leading-relaxed">
+              This Privacy Notice explains how Digital Qatalyst collects, uses, and protects personal data when you use our website, contact us, submit a form, or interact with us online.
+            </p>
+          ),
+        },
+        {
+          title: "Who We Are",
+          content: (
+            <p className="leading-relaxed">
+              Digital Qatalyst is responsible for personal data collected through this website.
+            </p>
+          ),
+        },
+        {
+          title: "Data We Collect",
+          content: (
+            <>
+              <p className="mb-4 leading-relaxed">We may collect:</p>
+              <ul className="list-disc pl-6 space-y-3 leading-relaxed">
+                <li>your name, company name, job title, email address, phone number, and any information you submit through forms or emails;</li>
+                <li>technical information such as IP address, browser type, device data, and website usage information;</li>
+                <li>cookie and analytics data, where applicable.</li>
+              </ul>
+            </>
+          ),
+        },
+        {
+          title: "How We Use Your Data",
+          content: (
+            <>
+              <p className="mb-4 leading-relaxed">We may use your personal data to:</p>
+              <ul className="list-disc pl-6 space-y-2 leading-relaxed">
+                <li>respond to your inquiries or requests;</li>
+                <li>provide information about our services, products, content, or events;</li>
+                <li>operate, maintain, and improve our website;</li>
+                <li>manage communications and business relationships;</li>
+                <li>comply with legal or regulatory obligations.</li>
+              </ul>
+            </>
+          ),
+        },
+        {
+          title: "Legal Basis",
+          content: (
+            <>
+              <p className="mb-4 leading-relaxed">Where applicable, we process personal data on the basis of:</p>
+              <ul className="list-disc pl-6 space-y-2 leading-relaxed">
+                <li>your consent;</li>
+                <li>our legitimate interests;</li>
+                <li>contractual necessity;</li>
+                <li>legal obligations.</li>
+              </ul>
+            </>
+          ),
+        },
+        {
+          title: "Cookies",
+          content: (
+            <p className="leading-relaxed">
+              We may use cookies and similar technologies to operate the website, understand usage, and improve performance. Where required by law, we will request consent for non-essential cookies.
+            </p>
+          ),
+        },
+        {
+          title: "Sharing of Data",
+          content: (
+            <>
+              <p className="mb-4 leading-relaxed">We may share personal data with:</p>
+              <ul className="list-disc pl-6 space-y-2 leading-relaxed">
+                <li>our affiliates;</li>
+                <li>service providers supporting our website, systems, communications, or analytics;</li>
+                <li>professional advisers or authorities where required by law.</li>
+              </ul>
+            </>
+          ),
+        },
+        {
+          title: "International Transfers",
+          content: (
+            <p className="leading-relaxed">
+              Because we operate across multiple locations and may use international service providers, personal data may be transferred outside your country. Where required, we apply appropriate safeguards.
+            </p>
+          ),
+        },
+        {
+          title: "Retention",
+          content: (
+            <p className="leading-relaxed">
+              We retain personal data only for as long as necessary for the purposes described in this Notice, or as required by law.
+            </p>
+          ),
+        },
+        {
+          title: "Your Rights",
+          content: (
+            <>
+              <p className="mb-4 leading-relaxed">Depending on applicable law, you may have the right to:</p>
+              <ul className="list-disc pl-6 space-y-2 leading-relaxed">
+                <li>access your personal data;</li>
+                <li>correct inaccurate data;</li>
+                <li>request deletion of data;</li>
+                <li>object to or restrict certain processing;</li>
+                <li>withdraw consent where applicable.</li>
+              </ul>
+              <p className="mt-4 leading-relaxed">
+                To exercise your rights, contact us at: <a href="mailto:digital.support@DigitalQatalyst.com" className="text-blue-600 hover:text-blue-800 underline font-semibold">digital.support@DigitalQatalyst.com</a>
+              </p>
+            </>
+          ),
+        },
+        {
+          title: "Security",
+          content: (
+            <p className="leading-relaxed">
+              We take reasonable technical and organizational measures to protect personal data, but no system can be completely secure.
+            </p>
+          ),
+        },
+        {
+          title: "Changes to This Notice",
+          content: (
+            <p className="leading-relaxed">
+              We may update this Privacy Notice from time to time. Any changes will be posted on this page with an updated date.
+            </p>
+          ),
+        },
+        {
+          title: "Contact Us",
           content: (
             <>
               <p className="mb-4 leading-relaxed">
-                At DigitalQatalyst <strong className="text-foreground">("DQ," "we," "us," or "our")</strong>, we prioritize the privacy and security of our users <strong className="text-foreground">("you," "your")</strong>. This Privacy Policy outlines how we collect, use, and protect your personal information when you interact with our website <strong className="text-foreground">("Site")</strong>.
+                If you have questions about this Privacy Notice or our handling of personal data, please contact:
               </p>
-              <p className="leading-relaxed">By using the Site, you consent to the practices described in this policy.</p>
+              <p className="leading-relaxed">
+                <strong className="text-foreground">Digital Qatalyst</strong><br />
+                <strong className="text-foreground">Email:</strong> <a href="mailto:digital.support@DigitalQatalyst.com" className="text-blue-600 hover:text-blue-800 underline font-semibold">digital.support@DigitalQatalyst.com</a>
+              </p>
             </>
-          ),
-        },
-        {
-          title: "Information We Collect",
-          content: (
-            <>
-              <p className="mb-4 leading-relaxed">We may collect the following types of information:</p>
-              <ul className="list-disc pl-6 space-y-3 leading-relaxed">
-                <li><strong className="text-foreground">Personal Information:</strong> Includes your name, email address, phone number, and other details you provide when filling out forms or contacting us.</li>
-                <li><strong className="text-foreground">Usage Data:</strong> Includes information about how you access and interact with the Site, such as IP addresses, browser type, and pages visited.</li>
-                <li><strong className="text-foreground">Cookies and Tracking Technologies:</strong> We use cookies to enhance your browsing experience and gather analytics.</li>
-              </ul>
-            </>
-          ),
-        },
-        {
-          title: "How We Use Your Information",
-          content: (
-            <>
-              <p className="mb-4 leading-relaxed">We use the information collected for the following purposes:</p>
-              <ul className="list-disc pl-6 space-y-2 leading-relaxed">
-                <li>To provide, operate, and improve our Site and services.</li>
-                <li>To respond to your inquiries and communicate with you.</li>
-                <li>To personalize your experience and display relevant content.</li>
-                <li>To analyze website performance and usage trends.</li>
-                <li>To ensure security and prevent fraudulent activities.</li>
-              </ul>
-            </>
-          ),
-        },
-        {
-          title: "Sharing Your Information",
-          content: (
-            <>
-              <p className="mb-4 leading-relaxed">We do not sell, rent, or trade your personal information. However, we may share your information with:</p>
-              <ul className="list-disc pl-6 space-y-3 leading-relaxed">
-                <li><strong className="text-foreground">Service Providers:</strong> Third-party vendors who assist us in operating our Site or providing services, subject to confidentiality agreements.</li>
-                <li><strong className="text-foreground">Legal Compliance:</strong> Authorities or organizations when required to comply with legal obligations or enforce our rights.</li>
-                <li><strong className="text-foreground">Business Transfers:</strong> In case of mergers, acquisitions, or sales of assets, your information may be transferred to the relevant parties.</li>
-              </ul>
-            </>
-          ),
-        },
-        {
-          title: "Cookies and Tracking Technologies",
-          content: (
-            <>
-              <p className="mb-4 leading-relaxed">We use cookies and similar technologies to:</p>
-              <ul className="list-disc pl-6 space-y-2 leading-relaxed">
-                <li>Recognize returning visitors.</li>
-                <li>Understand and save user preferences for future visits.</li>
-                <li>Compile aggregate data about Site traffic and interactions for optimization.</li>
-              </ul>
-              <p className="mt-4 leading-relaxed">You can manage your cookie preferences through your browser settings.</p>
-            </>
-          ),
-        },
-        {
-          title: "Data Security",
-          content: (
-            <p className="leading-relaxed">
-              We implement appropriate technical and organizational measures to protect your personal information from unauthorized access, disclosure, or alteration. However, no method of transmission over the Internet is completely secure, and we cannot guarantee absolute security.
-            </p>
-          ),
-        },
-        {
-          title: "Third-Party Links",
-          content: (
-            <p className="leading-relaxed">
-              Our Site may contain links to third-party websites. We are not responsible for the privacy practices or content of those websites. We encourage you to review their privacy policies.
-            </p>
-          ),
-        },
-        {
-          title: "Changes to This Policy",
-          content: (
-            <p className="leading-relaxed">
-              We reserve the right to update this Privacy Policy at any time. Changes will be effective upon posting to the Site. Your continued use of the Site after changes are posted constitutes your acceptance of the revised policy.
-            </p>
           ),
         },
       ]}

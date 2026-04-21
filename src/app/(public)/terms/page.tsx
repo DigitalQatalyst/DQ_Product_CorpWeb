@@ -2,25 +2,28 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPage } from "@/features/legal/LegalPage";
 
-export const metadata: Metadata = { title: "Terms of Service | DigitalQatalyst" };
+export const metadata: Metadata = { title: "Terms of Use | DigitalQatalyst" };
 
 export default function Page() {
   return (
     <LegalPage
-      title="Terms of Service"
+      title="Terms of Use"
       lastUpdated="February 10, 2025"
       sections={[
         {
-          title: "About DigitalQatalyst.com",
+          title: "About These Terms",
           content: (
-            <>
-              <p className="mb-4 leading-relaxed">
-                DigitalQatalyst.com <strong className="text-foreground">("DQ," "we," "us," or "our")</strong> is a premier platform dedicated to empowering businesses through digital transformation. We provide cutting-edge tools, resources, and frameworks designed to help organizations thrive in the digital age by accelerating their digital transformation journeys and unlocking a wealth of insights and solutions tailored to meet the demands of the modern business landscape.
-              </p>
-              <p className="leading-relaxed">
-                By accessing or using our website <strong className="text-foreground">("Site")</strong>, you agree to comply with and be bound by these Terms of Service <strong className="text-foreground">("Terms")</strong>. If you do not agree to these Terms, please refrain from using the Site.
-              </p>
-            </>
+            <p className="leading-relaxed">
+              These Terms of Use govern your access to and use of the Digital Qatalyst website (the <strong className="text-foreground">"Site"</strong>). By using the Site, you agree to these Terms. If you do not agree, please do not use the Site.
+            </p>
+          ),
+        },
+        {
+          title: "About Us",
+          content: (
+            <p className="leading-relaxed">
+              This Site is operated by Digital Qatalyst (<strong className="text-foreground">"Digital Qatalyst", "DQ", "we", "us", or "our"</strong>).
+            </p>
           ),
         },
         {
@@ -28,12 +31,15 @@ export default function Page() {
           content: (
             <>
               <p className="mb-4 leading-relaxed">
-                You agree to use the <strong className="text-foreground">Site</strong> solely for lawful purposes and in compliance with all applicable laws and regulations. You may not:
+                You may use the Site only for lawful purposes and in accordance with these Terms.
               </p>
+              <p className="mb-4 leading-relaxed">You must not:</p>
               <ul className="list-disc pl-6 space-y-2 leading-relaxed">
-                <li>Use the Site in any manner that disrupts, damages, or impairs the Site&apos;s functionality.</li>
-                <li>Engage in unauthorized access, interference, or reverse engineering of the Site.</li>
-                <li>Upload, transmit, or distribute malicious software or unauthorized content.</li>
+                <li>use the Site in any way that violates applicable law or regulation;</li>
+                <li>attempt to gain unauthorized access to the Site or related systems;</li>
+                <li>interfere with the Site's operation or security;</li>
+                <li>upload or transmit malware, harmful code, or disruptive material;</li>
+                <li>copy, misuse, or exploit Site content without permission.</li>
               </ul>
             </>
           ),
@@ -41,26 +47,34 @@ export default function Page() {
         {
           title: "Intellectual Property",
           content: (
-            <p className="leading-relaxed">
-              All content on the <strong className="text-foreground">Site</strong>, including but not limited to text, graphics, logos, images, and software, is the property of DigitalQatalyst or its licensors and is protected by copyright, trademark, and other intellectual property laws. Unauthorized use of any content is strictly prohibited.
-            </p>
+            <>
+              <p className="mb-4 leading-relaxed">
+                All content on this Site, including text, graphics, branding, logos, reports, downloads, and design elements, is owned by or licensed to Digital Qatalyst unless otherwise stated.
+              </p>
+              <p className="leading-relaxed">
+                You may use Site content for personal or internal business reference only. You may not reproduce, distribute, modify, or reuse Site content without our prior written permission.
+              </p>
+            </>
           ),
         },
         {
-          title: "User Submissions",
+          title: "Disclaimer",
           content: (
-            <p className="leading-relaxed">
-              By submitting content to the <strong className="text-foreground">Site</strong>, including inquiries or feedback, you grant us a non-exclusive, worldwide, royalty-free license to use, reproduce, and modify such content for our business purposes. You warrant that your submissions do not infringe on any third-party rights.
-            </p>
+            <>
+              <p className="mb-4 leading-relaxed">
+                This Site and its content are provided for general information only and on an <strong className="text-foreground">"as is"</strong> and <strong className="text-foreground">"as available"</strong> basis.
+              </p>
+              <p className="leading-relaxed">
+                We do not guarantee that the Site will always be available, secure, error-free, or fully accurate.
+              </p>
+            </>
           ),
         },
         {
-          title: "Privacy Policy",
+          title: "Limitation of Liability",
           content: (
             <p className="leading-relaxed">
-              Your use of the <strong className="text-foreground">Site</strong> is subject to our Privacy Policy, which outlines how we collect, use, and protect your personal information. Please review our{" "}
-              <Link href="/privacy-policy" className="text-primary hover:underline font-medium">Privacy Policy</Link>{" "}
-              for more details.
+              To the fullest extent permitted by law, Digital Qatalyst shall not be liable for any indirect, incidental, special, or consequential loss or damage arising from or related to your use of, or inability to use, the Site.
             </p>
           ),
         },
@@ -68,32 +82,54 @@ export default function Page() {
           title: "Third-Party Links",
           content: (
             <p className="leading-relaxed">
-              The <strong className="text-foreground">Site</strong> may include links to third-party websites or services. DigitalQatalyst is not responsible for the content, policies, or practices of any third-party websites. Access and use of such websites are at your own risk.
+              The Site may contain links to third-party websites or services. We are not responsible for their content, availability, or privacy practices.
             </p>
           ),
         },
         {
-          title: "Disclaimers",
+          title: "Privacy",
           content: (
             <p className="leading-relaxed">
-              The <strong className="text-foreground">Site</strong> and its content are provided <strong className="text-foreground">"as is"</strong> without warranties of any kind, either express or implied. DigitalQatalyst does not warrant that the Site will be error-free, secure, or available at all times. We disclaim all liability for any loss or damage arising from your use of the Site.
+              Our use of personal data is described in our{" "}
+              <Link href="/privacy-policy" className="text-primary hover:underline font-medium">Privacy Notice</Link>.
             </p>
           ),
         },
         {
-          title: "Termination",
+          title: "Changes to These Terms",
           content: (
             <p className="leading-relaxed">
-              We reserve the right to terminate or suspend your access to the Site without notice if you violate these Terms or engage in any conduct that harms DigitalQatalyst or its users.
+              We may update these Terms from time to time. Any changes will be posted on this page with an updated date.
             </p>
           ),
         },
         {
-          title: "Governing Law",
+          title: "Governing Law and Jurisdiction",
           content: (
-            <p className="leading-relaxed">
-              These Terms are governed by and construed in accordance with the laws of the United Arab Emirates (UAE), without regard to its conflict of law principles. Any disputes arising from these Terms shall be resolved exclusively in the courts located in the United Arab Emirates (UAE).
-            </p>
+            <>
+              <p className="mb-4 leading-relaxed">
+                These Terms shall be governed by and construed in accordance with the laws of the United Arab Emirates and, where applicable, the laws of the Emirate of Dubai.
+              </p>
+              <p className="leading-relaxed">
+                Any dispute arising out of or in connection with these Terms or your use of the Site shall be subject to the exclusive jurisdiction of the courts of the Emirate of Dubai, unless otherwise required by mandatory applicable law.
+              </p>
+            </>
+          ),
+        },
+        {
+          title: "Contact Us",
+          content: (
+            <>
+              <p className="mb-4 leading-relaxed">
+                If you have any questions about these Terms, please contact us at:
+              </p>
+              <p className="leading-relaxed">
+                <strong className="text-foreground">Email:</strong>{" "}
+                <a href="mailto:digital.support@DigitalQatalyst.com" className="text-primary hover:underline font-medium">
+                  digital.support@DigitalQatalyst.com
+                </a>
+              </p>
+            </>
           ),
         },
       ]}
