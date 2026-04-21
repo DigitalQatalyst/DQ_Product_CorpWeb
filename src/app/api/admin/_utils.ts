@@ -1,57 +1,77 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { createServerClient } from "@supabase/ssr";
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 import { hasSupabaseSecretKey } from "@/lib/supabase-env";
 import { isAdminProfileRole } from "@/lib/admin-role";
 
 export type AdminAuthResult =
-  | { ok: true }
+  | { ok: true; userId: string }
   | { ok: false; response: NextResponse };
 
 /**
- * Validates ADMIN_TOKEN, or Bearer user JWT + `public.profiles.role` = `admin`.
+ * Authenticates an admin API request.
+ * Reads the session from cookies (set by @supabase/ssr) and verifies the user
+ * has the admin role in the profiles table.
  */
-export async function authenticateAdminRequest(request: Request): Promise<AdminAuthResult> {
-  const expectedToken = process.env.ADMIN_TOKEN;
-  const gotToken = request.headers.get("x-admin-token") ?? "";
-  if (expectedToken && gotToken === expectedToken) {
-    return { ok: true };
-  }
+export async function authenticateAdminRequest(
+  request: NextRequest | Request,
+): Promise<AdminAuthResult> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const anonKey =
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-  const authz = request.headers.get("authorization") ?? "";
-  const match = /^Bearer\s+(.+)$/i.exec(authz);
-  const jwt = match?.[1];
-  if (!jwt) {
+  // Build a response to capture any cookie refreshes
+  const response = new NextResponse();
+
+  const supabase = createServerClient(url, anonKey, {
+    cookies: {
+      getAll: () =>
+        "cookies" in request && typeof (request as NextRequest).cookies?.getAll === "function"
+          ? (request as NextRequest).cookies.getAll()
+          : [],
+      setAll: (toSet) =>
+        toSet.forEach(({ name, value, options }) =>
+          response.cookies.set(name, value, options),
+        ),
+    },
+  });
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
     return { ok: false, response: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
   }
 
-  try {
-    const admin = getSupabaseAdmin();
-    const { data, error } = await admin.auth.getUser(jwt);
-    if (error || !data?.user) {
-      return { ok: false, response: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
-    }
+  // Fast path: role already in JWT claims
+  const claimRole =
+    (user.user_metadata?.role as string | undefined) ??
+    (user.app_metadata?.role as string | undefined);
 
-    const user = data.user;
-    if (!user.email) {
-      return { ok: false, response: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
-    }
-
-    const { data: profile } = await admin
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .maybeSingle();
-
-    if (!isAdminProfileRole(profile?.role as string | undefined)) {
-      return { ok: false, response: NextResponse.json({ error: "Forbidden" }, { status: 403 }) };
-    }
-    return { ok: true };
-  } catch {
-    return { ok: false, response: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
+  if (isAdminProfileRole(claimRole)) {
+    return { ok: true, userId: user.id };
   }
+
+  // Slow path: check profiles table
+  const admin = getSupabaseAdmin();
+  const { data: profile } = await admin
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if (!isAdminProfileRole(profile?.role as string | undefined)) {
+    return { ok: false, response: NextResponse.json({ error: "Forbidden" }, { status: 403 }) };
+  }
+
+  return { ok: true, userId: user.id };
 }
 
-export async function requireAdminAuth(request: Request): Promise<NextResponse | null> {
+export async function requireAdminAuth(
+  request: NextRequest | Request,
+): Promise<NextResponse | null> {
   const missingKey = requireServiceRoleConfigured();
   if (missingKey) return missingKey;
 
@@ -63,10 +83,7 @@ export async function requireAdminAuth(request: Request): Promise<NextResponse |
 export function requireServiceRoleConfigured(): NextResponse | null {
   if (hasSupabaseSecretKey()) return null;
   return NextResponse.json(
-    {
-      error:
-        "Server Supabase secret is not configured. Set SUPABASE_SECRET_KEY (new) or SUPABASE_SERVICE_ROLE_KEY (legacy).",
-    },
+    { error: "SUPABASE_SECRET_KEY is not configured on the server." },
     { status: 500 },
   );
 }

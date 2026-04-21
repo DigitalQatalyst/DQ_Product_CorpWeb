@@ -13,7 +13,6 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import type { ProductCtaType, ProductDetail } from "@/features/products/api/products.queries";
 import type { AdminProductWithDetail } from "./admin-products.types";
-import { supabaseBrowser } from "@/lib/supabaseBrowser";
 
 type Props =
   | { readonly mode: "create"; readonly productId?: never }
@@ -106,10 +105,7 @@ export function AdminProductEditorPage(props: Props) {
     async function load() {
       setLoading(true);
       try {
-        const { data: sessionData } = await supabaseBrowser.auth.getSession();
-        const accessToken = sessionData.session?.access_token;
         const res = await fetch(`/api/admin/products/${encodeURIComponent(productId)}`, {
-          headers: accessToken ? { authorization: `Bearer ${accessToken}` } : {},
           cache: "no-store",
         });
         if (!res.ok) throw new Error(`Failed to load (${res.status})`);
@@ -151,8 +147,6 @@ export function AdminProductEditorPage(props: Props) {
   async function save() {
     setSaveState({ kind: "saving" });
     try {
-      const { data: sessionData } = await supabaseBrowser.auth.getSession();
-      const accessToken = sessionData.session?.access_token;
       const payload = {
         id: product.id,
         name: product.name,
@@ -167,10 +161,7 @@ export function AdminProductEditorPage(props: Props) {
 
       const res = await fetch("/api/admin/products", {
         method: props.mode === "create" ? "POST" : "PATCH",
-        headers: {
-          "content-type": "application/json",
-          ...(accessToken ? { authorization: `Bearer ${accessToken}` } : {}),
-        },
+        headers: { "content-type": "application/json" },
         body: JSON.stringify(
           props.mode === "create" ? payload : { ...payload, id: props.productId },
         ),
@@ -185,7 +176,6 @@ export function AdminProductEditorPage(props: Props) {
         fd.set("file", imageFile);
         const uploadRes = await fetch(`/api/admin/products/${encodeURIComponent(data.id)}/image`, {
           method: "POST",
-          headers: accessToken ? { authorization: `Bearer ${accessToken}` } : {},
           body: fd,
         });
         if (!uploadRes.ok) throw new Error(`Image upload failed (${uploadRes.status})`);

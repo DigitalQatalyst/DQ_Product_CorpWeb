@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { RefreshCw, UserCircle } from "lucide-react";
-import { supabaseBrowser } from "@/lib/supabaseBrowser";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,12 +36,6 @@ import { isAdminProfileRole } from "@/lib/admin-role";
 
 const ROLE_OPTIONS = ["user", "admin"] as const;
 
-async function authHeaders(): Promise<HeadersInit> {
-  const { data } = await supabaseBrowser.auth.getSession();
-  const token = data.session?.access_token;
-  return token ? { authorization: `Bearer ${token}` } : {};
-}
-
 export function AdminProfilesPage() {
   const [profiles, setProfiles] = useState<AdminProfileRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -55,7 +48,6 @@ export function AdminProfilesPage() {
     setError(null);
     try {
       const res = await fetch("/api/admin/profiles", {
-        headers: { ...(await authHeaders()) },
         cache: "no-store",
       });
       if (!res.ok) {
@@ -82,10 +74,7 @@ export function AdminProfilesPage() {
     try {
       const res = await fetch(`/api/admin/profiles/${encodeURIComponent(editing.id)}`, {
         method: "PATCH",
-        headers: {
-          "content-type": "application/json",
-          ...(await authHeaders()),
-        },
+        headers: { "content-type": "application/json" },
         body: JSON.stringify({
           role: editing.role,
           first_name: editing.first_name,

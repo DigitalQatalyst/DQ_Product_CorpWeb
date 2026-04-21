@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/lib/supabase";
 
@@ -282,12 +283,9 @@ export function AdminDashboard() {
             Recruitment, content, and business operations.
           </p>
         </div>
-        <Link
-          href="/admin/analytics"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-background border border-border text-sm font-medium rounded-md hover:bg-muted transition-colors"
-        >
+        <Button variant="outline" render={<Link href="/admin/analytics" />}>
           <TrendingUp size={16} /> View Analytics
-        </Link>
+        </Button>
       </div>
 
       {/* Stat cards */}
@@ -320,12 +318,9 @@ export function AdminDashboard() {
             <h3 className="font-semibold text-foreground">
               Recent Applications
             </h3>
-            <Link
-              href="/admin/applications"
-              className="text-xs text-muted-foreground hover:text-foreground underline underline-offset-4"
-            >
+            <Button variant="link" size="sm" className="text-xs h-auto p-0" render={<Link href="/admin/applications" />}>
               View All
-            </Link>
+            </Button>
           </CardHeader>
           <CardContent className="p-0">{recentApplicationsContent}</CardContent>
         </Card>
@@ -336,12 +331,9 @@ export function AdminDashboard() {
             <h3 className="font-semibold text-foreground">
               Upcoming Interviews
             </h3>
-            <Link
-              href="/admin/interviews"
-              className="text-xs text-muted-foreground hover:text-foreground underline underline-offset-4"
-            >
+            <Button variant="link" size="sm" className="text-xs h-auto p-0" render={<Link href="/admin/interviews" />}>
               View All
-            </Link>
+            </Button>
           </CardHeader>
           <CardContent className="p-0">{upcomingInterviewsContent}</CardContent>
         </Card>
@@ -352,12 +344,9 @@ export function AdminDashboard() {
             <h3 className="font-semibold text-foreground">
               Active Job Postings
             </h3>
-            <Link
-              href="/admin/job-postings"
-              className="text-xs text-muted-foreground hover:text-foreground underline underline-offset-4"
-            >
+            <Button variant="link" size="sm" className="text-xs h-auto p-0" render={<Link href="/admin/job-postings" />}>
               View All
-            </Link>
+            </Button>
           </CardHeader>
           <CardContent className="p-0">{activePostingsContent}</CardContent>
         </Card>
@@ -442,11 +431,9 @@ function StatusBadge({ status }: Readonly<{ status: string }>) {
   const cls =
     STATUS_COLORS[status] ?? "bg-muted text-muted-foreground border-border";
   return (
-    <span
-      className={`px-2 py-1 rounded-lg text-xs font-medium capitalize border shrink-0 ${cls}`}
-    >
+    <Badge variant="outline" className={`capitalize shrink-0 ${cls}`}>
       {status.replace("_", " ")}
-    </span>
+    </Badge>
   );
 }
 

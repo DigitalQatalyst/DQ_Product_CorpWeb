@@ -10,7 +10,6 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch";
 import type { AdminProduct } from "./admin-products.types";
-import { supabaseBrowser } from "@/lib/supabaseBrowser";
 
 type LoadState =
   | { kind: "idle" }
@@ -19,12 +18,7 @@ type LoadState =
   | { kind: "ready" };
 
 async function fetchJson<T>(url: string): Promise<T> {
-  const { data } = await supabaseBrowser.auth.getSession();
-  const accessToken = data.session?.access_token;
-  const res = await fetch(url, {
-    headers: accessToken ? { authorization: `Bearer ${accessToken}` } : {},
-    cache: "no-store",
-  });
+  const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) {
     const text = await res.text().catch(() => "");
     throw new Error(text || `Request failed (${res.status})`);
@@ -71,14 +65,9 @@ export function AdminProductsListPage() {
       prev.map((p) => (p.id === productId ? { ...p, isPublished: next } : p)),
     );
     try {
-      const { data } = await supabaseBrowser.auth.getSession();
-      const accessToken = data.session?.access_token;
       const res = await fetch(`/api/admin/products/${encodeURIComponent(productId)}`, {
         method: "PATCH",
-        headers: {
-          "content-type": "application/json",
-          ...(accessToken ? { authorization: `Bearer ${accessToken}` } : {}),
-        },
+        headers: { "content-type": "application/json" },
         body: JSON.stringify({ isPublished: next }),
       });
       if (!res.ok) throw new Error(`Publish update failed (${res.status})`);
