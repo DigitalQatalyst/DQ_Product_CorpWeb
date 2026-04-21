@@ -79,34 +79,24 @@ function ServiceCard({ service }: { service: (typeof serviceItems)[0] }) {
   return (
     <Card className="flex flex-col min-h-[340px] rounded-lg py-0 gap-0 hover:shadow-md transition-shadow">
       <CardContent className="flex-grow flex flex-col px-4 py-5">
-        <div className="flex items-start mb-5">
+        <div className="flex items-start mb-4">
           <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center shrink-0 mr-3 text-xs font-bold text-muted-foreground">
             DQ
           </div>
-          <div className="flex-grow min-h-[72px] flex flex-col justify-center">
-            <h3 className="font-bold text-foreground line-clamp-2 min-h-[48px] leading-snug">{service.title}</h3>
-            <p className="text-sm text-muted-foreground min-h-[20px] mt-1">{service.provider}</p>
+          <div className="flex-grow flex flex-col">
+            <h3 className="font-bold text-foreground line-clamp-2 leading-snug mb-0.5">{service.title}</h3>
+            <p className="text-sm text-muted-foreground">{service.provider}</p>
           </div>
         </div>
-        <p className="text-sm text-muted-foreground line-clamp-3 min-h-[60px] leading-relaxed mb-5">
+        <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed mb-2">
           {service.description}
         </p>
-        <div className="flex justify-between items-center mt-auto">
-          <div className="flex flex-wrap gap-1 max-w-[70%]">
-            {service.tags.slice(0, 2).map((tag, i) => (
-              <Badge key={tag} variant={i === 0 ? "default" : "secondary"} className="text-xs rounded-full">
-                {tag}
-              </Badge>
-            ))}
-          </div>
-          <div className="flex space-x-2 shrink-0">
-            <button className="p-1.5 rounded-full bg-muted text-muted-foreground hover:bg-muted/80" aria-label="Bookmark">
-              <BookmarkIcon size={16} />
-            </button>
-            <button className="p-1.5 rounded-full bg-muted text-muted-foreground hover:bg-muted/80" aria-label="Compare">
-              <ScaleIcon size={16} />
-            </button>
-          </div>
+        <div className="flex flex-wrap gap-1 mt-auto">
+          {service.tags.slice(0, 2).map((tag, i) => (
+            <Badge key={tag} variant={i === 0 ? "default" : "secondary"} className="text-xs rounded-full">
+              {tag}
+            </Badge>
+          ))}
         </div>
       </CardContent>
       <CardFooter className="border-t border-border px-4 py-4 gap-2">
@@ -168,7 +158,8 @@ export function ServicesMarketplacePage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-muted/30">
-      <div className="container mx-auto px-4 py-8 flex-grow">
+      <div className="container mx-auto px-4 md:px-6 py-8 flex-grow">
+        <div className="pl-4">
 
         <Breadcrumb className="mb-4">
           <BreadcrumbList>
@@ -204,15 +195,15 @@ export function ServicesMarketplacePage() {
         </Card>
 
         {/* Tabs */}
-        <div className="border-b border-border mb-6">
-          <div className="flex space-x-8">
+        <div className="mb-6">
+          <div className="flex space-x-8 border-b border-border">
             {SERVICE_TABS.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => { setActiveTab(tab.id); setSearch(""); }}
                 className={`pb-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                   activeTab === tab.id
-                    ? "border-primary text-primary"
+                    ? "border-secondary text-secondary"
                     : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
                 }`}
               >
@@ -304,6 +295,7 @@ export function ServicesMarketplacePage() {
               </Card>
             )}
           </div>
+        </div>
         </div>
       </div>
     </div>

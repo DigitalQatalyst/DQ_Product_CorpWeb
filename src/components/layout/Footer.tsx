@@ -225,7 +225,8 @@ export function Footer() {
 
   return (
     <footer className="bg-[#030F35] text-white w-full">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      <div className="container mx-auto px-4 md:px-6 py-8 sm:py-12">
+        <div className="pl-4">
         {/* ── Mobile ── */}
         <div className="block lg:hidden">
           <div className="mb-6">
@@ -402,6 +403,7 @@ export function Footer() {
             </p>
             <p className="text-gray-400 text-sm">Dubai, UAE</p>
           </div>
+        </div>
         </div>
       </div>
     </footer>
