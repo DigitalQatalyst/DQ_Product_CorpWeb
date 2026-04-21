@@ -31,6 +31,7 @@ import type {
   ServiceCategory,
   ServiceCategoryInput,
 } from "@/features/services/api/serviceCategories";
+import { ImageUploadField } from "./ImageUploadField";
 
 // ─── Schema ──────────────────────────────────────────────────────────────────
 
@@ -450,11 +451,12 @@ export function ServiceCategoryForm({
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Background Image Path</FieldLabel>
-                  <Input
-                    {...field}
+                  <FieldLabel>Background Image</FieldLabel>
+                  <ImageUploadField
+                    value={field.value}
+                    onChange={field.onChange}
+                    folder="hero"
                     placeholder="/images/hero.png"
-                    aria-invalid={fieldState.invalid}
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -547,8 +549,13 @@ export function ServiceCategoryForm({
                 control={form.control}
                 render={({ field }) => (
                   <Field>
-                    <FieldLabel>Primary Image Path</FieldLabel>
-                    <Input {...field} placeholder="/images/primary.svg" />
+                    <FieldLabel>Primary Image</FieldLabel>
+                    <ImageUploadField
+                      value={field.value}
+                      onChange={field.onChange}
+                      folder="blueprint"
+                      placeholder="/images/primary.svg"
+                    />
                   </Field>
                 )}
               />
@@ -557,8 +564,13 @@ export function ServiceCategoryForm({
                 control={form.control}
                 render={({ field }) => (
                   <Field>
-                    <FieldLabel>Overlay Image Path</FieldLabel>
-                    <Input {...field} placeholder="/images/overlay.svg" />
+                    <FieldLabel>Overlay Image</FieldLabel>
+                    <ImageUploadField
+                      value={field.value}
+                      onChange={field.onChange}
+                      folder="blueprint"
+                      placeholder="/images/overlay.svg"
+                    />
                   </Field>
                 )}
               />
@@ -678,8 +690,13 @@ export function ServiceCategoryForm({
                 control={form.control}
                 render={({ field }) => (
                   <Field>
-                    <FieldLabel>Image Path</FieldLabel>
-                    <Input {...field} placeholder="/images/method.svg" />
+                    <FieldLabel>Image</FieldLabel>
+                    <ImageUploadField
+                      value={field.value}
+                      onChange={field.onChange}
+                      folder="methodology"
+                      placeholder="/images/method.svg"
+                    />
                   </Field>
                 )}
               />
