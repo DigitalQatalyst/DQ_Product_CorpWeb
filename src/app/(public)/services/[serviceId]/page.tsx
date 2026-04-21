@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { designDeployData } from "@/features/services/data/design-deploy.data";
 import { serviceRegistry } from "@/features/services/data/service-detail.data";
 import { serviceItems } from "@/features/services/marketplace/data/service.data";
-import { DesignServicePage } from "@/features/services/design-deploy/DesignServicePage";
+import { ServiceCategoryPage } from "@/features/services/components/ServiceCategoryPage";
 import { ServiceDetailPage } from "@/features/services/marketplace/components/ServiceDetailPage";
 
 type Props = { params: Promise<{ serviceId: string }> };
@@ -31,7 +31,7 @@ export default async function Page({ params }: Props) {
   const { serviceId } = await params;
 
   const dd = designDeployData.find((s) => s.slug === serviceId);
-  if (dd) return <DesignServicePage serviceId={serviceId} />;
+  if (dd) return <ServiceCategoryPage slug={serviceId} />;
 
   const ms = serviceItems.find((s) => s.id === serviceId);
   if (ms) return <ServiceDetailPage service={ms} />;

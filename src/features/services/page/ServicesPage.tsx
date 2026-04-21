@@ -1,9 +1,8 @@
 import { ServiceHero } from "../components/ServiceHero";
-import { MainServiceCard } from "../components/MainServiceCard";
+import { ServiceCategoryCards } from "../components/ServiceCategoryCards";
 import { ValueProps } from "../components/ValueProps";
 import { SectorDomains } from "../components/SectorDomains";
 import { MarketplaceBanner } from "../components/MarketplaceBanner";
-import { designDeployData } from "../data/design-deploy.data";
 import { valueProps } from "../data/why-work-with-us";
 
 export function ServicesPage() {
@@ -23,11 +22,7 @@ export function ServicesPage() {
               plans for seamless, efficient implementation.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {designDeployData.map((service) => (
-              <MainServiceCard key={service.slug} service={service} />
-            ))}
-          </div>
+          <ServiceCategoryCards />
         </div>
       </section>
 
