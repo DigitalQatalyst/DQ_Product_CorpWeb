@@ -1,3 +1,5 @@
+import { supabaseBrowser } from "@/lib/supabaseBrowser";
+
 export type ApplicationStatus =
   | "pending"
   | "reviewing"
@@ -37,10 +39,24 @@ export type AdminJobApplication = {
 };
 
 export async function listAdminApplications(): Promise<AdminJobApplication[]> {
-  const res = await fetch("/api/admin/applications", { method: "GET" });
-  if (!res.ok) throw new Error("Failed to load applications.");
-  const json = (await res.json()) as { applications: AdminJobApplication[] };
-  return json.applications ?? [];
+  const { data, error } = await supabaseBrowser
+    .from("job_applications")
+    .select([
+      "id", "job_id", "job_posting_id", "job_title",
+      "first_name", "last_name", "email", "phone",
+      "linkedin_url", "portfolio_url", "current_location",
+      "years_of_experience", "current_company", "current_job_role",
+      "notice_period", "expected_salary", "cover_letter",
+      "resume_url", "resume_filename",
+      "additional_documents_url", "additional_documents_filename",
+      "application_status", "rejection_reason", "internal_notes",
+      "status_history", "applied_at", "updated_at",
+    ].join(","))
+    .order("applied_at", { ascending: false });
+
+  if (error) throw new Error(error.message);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (data ?? []) as unknown as AdminJobApplication[];
 }
 
 export async function updateAdminApplication(
@@ -51,21 +67,50 @@ export async function updateAdminApplication(
     internalNotes?: string | null;
     notifyMessage?: string | null;
   },
-) {
-  const res = await fetch(`/api/admin/applications/${id}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(input),
-  });
-  const text = await res.text().catch(() => "");
-  if (!res.ok) throw new Error(text || "Failed to update application.");
-  return JSON.parse(text) as { ok: true; notified: boolean };
+): Promise<void> {
+  const { data: existing, error: getErr } = await supabaseBrowser
+    .from("job_applications")
+    .select("application_status,status_history")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (getErr || !existing) throw new Error("Application not found.");
+
+  const prevStatus = (existing.application_status as string | null) ?? null;
+  const prevHistory = (existing.status_history as unknown) ?? [];
+  const historyArray = Array.isArray(prevHistory) ? prevHistory : [];
+  const now = new Date().toISOString();
+
+  const nextHistory = [
+    ...historyArray,
+    {
+      at: now,
+      from: prevStatus,
+      to: input.status,
+      message: input.status === "rejected" ? (input.rejectionReason ?? null) : null,
+    },
+  ];
+
+  const { error } = await supabaseBrowser
+    .from("job_applications")
+    .update({
+      application_status: input.status,
+      status_changed_at: now,
+      rejection_reason: input.status === "rejected" ? (input.rejectionReason ?? null) : null,
+      internal_notes: input.internalNotes ?? null,
+      status_history: nextHistory,
+      updated_at: now,
+    })
+    .eq("id", id);
+
+  if (error) throw new Error(error.message);
 }
 
-export async function deleteAdminApplication(id: string) {
-  const res = await fetch(`/api/admin/applications/${id}`, { method: "DELETE" });
-  const text = await res.text().catch(() => "");
-  if (!res.ok) throw new Error(text || "Failed to delete application.");
-  return JSON.parse(text) as { ok: true };
-}
+export async function deleteAdminApplication(id: string): Promise<void> {
+  const { error } = await supabaseBrowser
+    .from("job_applications")
+    .delete()
+    .eq("id", id);
 
+  if (error) throw new Error(error.message);
+}

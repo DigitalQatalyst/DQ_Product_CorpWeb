@@ -520,7 +520,7 @@ function Info({
   label,
   value,
   mono,
-}: Readonly<{ label: string; value: string; mono?: boolean }>) {
+}: Readonly<{ label: string; value: React.ReactNode; mono?: boolean }>) {
   return (
     <div className="rounded-lg border border-border bg-background p-3">
       <p className="text-xs text-muted-foreground">{label}</p>

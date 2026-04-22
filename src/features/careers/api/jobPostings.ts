@@ -56,7 +56,7 @@ export async function listJobPostingsAdmin() {
 }
 
 export async function listPublishedJobPostings() {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseBrowser
     .from("job_postings")
     .select("*")
     .eq("status", "open")
