@@ -57,7 +57,8 @@ export function ProductDetailPage({ product, detail }: Props) {
 
   return (
     <>
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-4 md:px-6 py-4">
+        <div className="pl-4">
         <nav
           aria-label="Breadcrumb"
           className="flex items-center gap-1 text-sm text-muted-foreground"
@@ -78,11 +79,13 @@ export function ProductDetailPage({ product, detail }: Props) {
           <ChevronRight size={14} />
           <span className="text-foreground">{product.code}</span>
         </nav>
+        </div>
       </div>
 
       {/* Hero banner */}
       <div className="w-full bg-linear-to-r from-orange-50 to-red-50 border-b border-border">
-        <div className="container mx-auto px-4 py-12">
+        <div className="container mx-auto px-4 md:px-6 py-12">
+          <div className="pl-4">
           <div className="flex flex-col lg:flex-row items-start gap-8">
             <div className="lg:w-2/3">
               <h1 className="text-4xl font-bold text-foreground leading-tight mb-6">
@@ -126,11 +129,13 @@ export function ProductDetailPage({ product, detail }: Props) {
               </div>
             </div>
           </div>
+          </div>
         </div>
       </div>
 
       {/* Body */}
-      <div className="container mx-auto px-4 py-12 space-y-12">
+      <div className="container mx-auto px-4 md:px-6 py-12 space-y-12">
+        <div className="pl-4">
         {/* Key Features */}
         <section>
           <h2 className="text-3xl font-bold text-foreground mb-6">
@@ -352,6 +357,7 @@ export function ProductDetailPage({ product, detail }: Props) {
             </div>
           </div>
         </section>
+        </div>
       </div>
 
       {product.ctaType === "waitlist" && (

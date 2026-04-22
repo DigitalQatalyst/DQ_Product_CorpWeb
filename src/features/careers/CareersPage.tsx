@@ -31,11 +31,11 @@ export function CareersPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/jobs"
-                className="h-14 inline-flex items-center justify-center gap-2 bg-secondary text-secondary-foreground px-8 rounded-lg font-bold hover:bg-secondary/80 transition-all hover:scale-105 shadow-lg group"
+                className="inline-flex items-center gap-2 h-14 px-8 bg-secondary text-secondary-foreground font-bold rounded-lg hover:-translate-y-1 hover:shadow-xl transition-all group"
               >
                 View Open Positions
                 <ArrowRight
-                  size={20}
+                  size={18}
                   className="group-hover:translate-x-1 transition-transform"
                 />
               </Link>
