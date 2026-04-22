@@ -32,7 +32,7 @@ export function ServiceCategoryCards() {
               ))}
             </div>
             <Link
-              href={`/services/${cat.slug}`}
+              href={`/service-category/${cat.slug}`}
               className="inline-flex items-center gap-1 text-secondary hover:text-secondary/80 font-medium text-sm transition-colors"
             >
               Read more <ChevronRight className="w-4 h-4" />

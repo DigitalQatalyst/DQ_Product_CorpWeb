@@ -138,7 +138,7 @@ export const offeringClasses: OfferingClass[] = [
         title: "DBP Designs – Strategy, Architecture, Roadmaps",
         description:
           "Blueprint-based advisory defining digital strategy, architecture, operating models, and sector transformation roadmaps.",
-        href: "/services/design-4-0",
+        href: "/service-category/design-services",
         linkLabel: "Learn More",
       },
       {
@@ -146,7 +146,7 @@ export const offeringClasses: OfferingClass[] = [
         title: "DBP Deploys – Platform Implementation",
         description:
           "Blueprint-driven implementation of Experience 4.0, Agility 4.0, Intelligence 4.0, Workspace 4.0, and Sector 4.0 platforms.",
-        href: "/services/deploy-4-0",
+        href: "/service-category/deploy-services",
         linkLabel: "Learn More",
       },
     ],
