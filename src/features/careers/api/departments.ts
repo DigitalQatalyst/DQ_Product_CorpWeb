@@ -66,3 +66,8 @@ export async function createDepartment(name: string) {
   throw error;
 }
 
+export async function deleteDepartment(id: Department["id"]) {
+  const { error } = await supabaseBrowser.from("departments").delete().eq("id", id);
+  if (error) throw error;
+}
+

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Loader, Plus } from "lucide-react";
+import { ArrowLeft, Loader, Plus, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,6 +19,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
   Select,
   SelectContent,
   SelectGroup,
@@ -30,6 +41,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   createJobPosting,
   createDepartment,
+  deleteDepartment,
   getJobPostingById,
   listDepartments,
   updateJobPosting,
@@ -103,6 +115,7 @@ export function JobPostingEditorPage({ id }: Props) {
   const [departmentDialogOpen, setDepartmentDialogOpen] = useState(false);
   const [newDepartmentName, setNewDepartmentName] = useState("");
   const [addingDepartment, setAddingDepartment] = useState(false);
+  const [deletingDepartmentId, setDeletingDepartmentId] = useState<Department["id"] | null>(null);
 
   useEffect(() => {
     listDepartments()
@@ -157,6 +170,26 @@ export function JobPostingEditorPage({ id }: Props) {
       setDepartmentDialogOpen(false);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to add department.");
+    } finally {
+      setAddingDepartment(false);
+    }
+  }
+
+  async function handleDeleteDepartment(idToDelete: Department["id"]) {
+    setError(null);
+    setAddingDepartment(true);
+    try {
+      await deleteDepartment(idToDelete);
+      setDepartments((prev) => prev.filter((d) => d.id !== idToDelete));
+      if (draft.department && !departments.some((d) => d.id !== idToDelete && d.name === draft.department)) {
+        set("department", "");
+      }
+    } catch (e) {
+      setError(
+        e instanceof Error
+          ? e.message
+          : "Failed to delete department (it may be in use by existing job postings).",
+      );
     } finally {
       setAddingDepartment(false);
     }
@@ -231,24 +264,80 @@ export function JobPostingEditorPage({ id }: Props) {
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-md">
                     <DialogHeader>
-                      <DialogTitle>Add department</DialogTitle>
+                      <DialogTitle>Departments</DialogTitle>
                       <DialogDescription>
-                        Create a new department so it can be used for job postings.
+                        Add or remove departments used for job postings.
                       </DialogDescription>
                     </DialogHeader>
-                    <div className="space-y-2">
-                      <Label>Department name</Label>
-                      <Input
-                        value={newDepartmentName}
-                        onChange={(e) => setNewDepartmentName(e.target.value)}
-                        placeholder="e.g. People & Culture"
-                      />
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label>New department</Label>
+                        <div className="flex items-center gap-2">
+                          <Input
+                            value={newDepartmentName}
+                            onChange={(e) => setNewDepartmentName(e.target.value)}
+                            placeholder="e.g. People & Culture"
+                          />
+                          <Button
+                            onClick={handleAddDepartment}
+                            disabled={addingDepartment || !newDepartmentName.trim()}
+                          >
+                            {addingDepartment && <Loader className="animate-spin" size={16} />}
+                            Add
+                          </Button>
+                        </div>
+                      </div>
+
+                      <Separator />
+
+                      <div className="space-y-2">
+                        <Label>Existing departments</Label>
+                        {departments.length === 0 ? (
+                          <p className="text-xs text-muted-foreground">No departments found.</p>
+                        ) : (
+                          <div className="divide-y divide-border rounded-md border border-border bg-background">
+                            {departments.map((d) => (
+                              <div key={String(d.id)} className="flex items-center justify-between gap-2 px-3 py-2">
+                                <span className="text-sm text-foreground">{d.name}</span>
+                                <AlertDialog
+                                  open={deletingDepartmentId === d.id}
+                                  onOpenChange={(o) => setDeletingDepartmentId(o ? d.id : null)}
+                                >
+                                  <AlertDialogTrigger
+                                    render={<Button variant="destructive" size="icon-sm" />}
+                                  >
+                                    <Trash2 />
+                                    <span className="sr-only">Delete department</span>
+                                  </AlertDialogTrigger>
+                                  <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                      <AlertDialogTitle>Delete department?</AlertDialogTitle>
+                                      <AlertDialogDescription>
+                                        This will remove <span className="font-medium text-foreground">{d.name}</span>.
+                                        If it’s referenced by existing job postings, Supabase may block the delete.
+                                      </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                      <AlertDialogCancel disabled={addingDepartment}>Cancel</AlertDialogCancel>
+                                      <AlertDialogAction
+                                        variant="destructive"
+                                        disabled={addingDepartment}
+                                        onClick={() => handleDeleteDepartment(d.id)}
+                                      >
+                                        {addingDepartment && <Loader className="animate-spin" size={16} />}
+                                        Delete
+                                      </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                  </AlertDialogContent>
+                                </AlertDialog>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
                     <DialogFooter showCloseButton>
-                      <Button onClick={handleAddDepartment} disabled={addingDepartment}>
-                        {addingDepartment && <Loader className="animate-spin" size={16} />}
-                        Add
-                      </Button>
+                      <span />
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
@@ -276,12 +365,6 @@ export function JobPostingEditorPage({ id }: Props) {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              <Input
-                value={draft.department}
-                onChange={(e) => set("department", e.target.value)}
-                placeholder="Or type department name"
-                className="mt-1"
-              />
             </div>
 
             {/* Location */}
