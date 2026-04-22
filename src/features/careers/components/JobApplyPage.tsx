@@ -9,8 +9,9 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import type { JobListing } from "@/features/careers/data/careers.data";
+import type { JobPostingType } from "@/features/careers/api/types";
 import { createJobApplication } from "@/features/careers/api";
+import { getJobPostingById } from "@/features/careers/api/jobPostings";
 
 type FormState = {
   firstName: string;
@@ -47,7 +48,7 @@ function emptyForm(): FormState {
 }
 
 export function JobApplyPage({ jobId }: { jobId: string }) {
-  const [job, setJob] = useState<JobListing | null>(null);
+  const [job, setJob] = useState<JobPostingType | null>(null);
   const [loadingJob, setLoadingJob] = useState(true);
 
   const [form, setForm] = useState<FormState>(emptyForm());
@@ -57,8 +58,7 @@ export function JobApplyPage({ jobId }: { jobId: string }) {
 
   useEffect(() => {
     setLoadingJob(true);
-    fetch(`/api/jobs/${jobId}`)
-      .then((r) => (r.ok ? r.json() : null))
+    getJobPostingById(Number(jobId))
       .then((data) => setJob(data))
       .catch(() => setJob(null))
       .finally(() => setLoadingJob(false));
