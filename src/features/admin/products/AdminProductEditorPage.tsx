@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import type { ProductCtaType, ProductDetail } from "@/features/products/api/products.queries";
 import type { AdminProductWithDetail } from "./admin-products.types";
+import { adminFetch, adminFetchJson } from "@/lib/adminFetch";
 
 type Props =
   | { readonly mode: "create"; readonly productId?: never }
@@ -105,11 +106,9 @@ export function AdminProductEditorPage(props: Props) {
     async function load() {
       setLoading(true);
       try {
-        const res = await fetch(`/api/admin/products/${encodeURIComponent(productId)}`, {
-          cache: "no-store",
-        });
-        if (!res.ok) throw new Error(`Failed to load (${res.status})`);
-        const data = (await res.json()) as AdminProductWithDetail;
+        const data = await adminFetchJson<AdminProductWithDetail>(
+          `/api/admin/products/${encodeURIComponent(productId)}`,
+        );
         setProduct({
           id: data.product.id,
           name: data.product.name,
@@ -159,7 +158,7 @@ export function AdminProductEditorPage(props: Props) {
         detail,
       };
 
-      const res = await fetch("/api/admin/products", {
+      const data = await adminFetchJson<{ id: string }>("/api/admin/products", {
         method: props.mode === "create" ? "POST" : "PATCH",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(
@@ -167,17 +166,13 @@ export function AdminProductEditorPage(props: Props) {
         ),
       });
 
-      if (!res.ok) throw new Error(`Save failed (${res.status})`);
-
-      const data = (await res.json()) as { id: string };
-
       if (imageFile) {
         const fd = new FormData();
         fd.set("file", imageFile);
-        const uploadRes = await fetch(`/api/admin/products/${encodeURIComponent(data.id)}/image`, {
-          method: "POST",
-          body: fd,
-        });
+        const uploadRes = await adminFetch(
+          `/api/admin/products/${encodeURIComponent(data.id)}/image`,
+          { method: "POST", body: fd },
+        );
         if (!uploadRes.ok) throw new Error(`Image upload failed (${uploadRes.status})`);
       }
 

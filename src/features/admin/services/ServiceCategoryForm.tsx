@@ -674,33 +674,31 @@ export function ServiceCategoryForm({
                 </Field>
               )}
             />
-            <div className="grid grid-cols-2 gap-4">
-              <Controller
-                name="methodCtaLabel"
-                control={form.control}
-                render={({ field }) => (
-                  <Field>
-                    <FieldLabel>CTA Label</FieldLabel>
-                    <Input {...field} />
-                  </Field>
-                )}
-              />
-              <Controller
-                name="methodImage"
-                control={form.control}
-                render={({ field }) => (
-                  <Field>
-                    <FieldLabel>Image</FieldLabel>
-                    <ImageUploadField
-                      value={field.value}
-                      onChange={field.onChange}
-                      folder="methodology"
-                      placeholder="/images/method.svg"
-                    />
-                  </Field>
-                )}
-              />
-            </div>
+            <Controller
+              name="methodCtaLabel"
+              control={form.control}
+              render={({ field }) => (
+                <Field>
+                  <FieldLabel>CTA Label</FieldLabel>
+                  <Input {...field} />
+                </Field>
+              )}
+            />
+            <Controller
+              name="methodImage"
+              control={form.control}
+              render={({ field }) => (
+                <Field>
+                  <FieldLabel>Section Image</FieldLabel>
+                  <ImageUploadField
+                    value={field.value}
+                    onChange={field.onChange}
+                    folder="methodology"
+                    placeholder="/images/method.svg"
+                  />
+                </Field>
+              )}
+            />
           </FieldGroup>
           <Separator />
           <ArrayField

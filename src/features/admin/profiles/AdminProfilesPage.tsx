@@ -33,6 +33,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import type { AdminProfileRow } from "./admin-profiles.types";
 import { isAdminProfileRole } from "@/lib/admin-role";
+import { adminFetch, adminFetchJson } from "@/lib/adminFetch";
 
 const ROLE_OPTIONS = ["user", "admin"] as const;
 
@@ -47,14 +48,7 @@ export function AdminProfilesPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/admin/profiles", {
-        cache: "no-store",
-      });
-      if (!res.ok) {
-        const t = await res.text();
-        throw new Error(t || `Failed (${res.status})`);
-      }
-      const data = (await res.json()) as { profiles: AdminProfileRow[] };
+      const data = await adminFetchJson<{ profiles: AdminProfileRow[] }>("/api/admin/profiles");
       setProfiles(data.profiles ?? []);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to load profiles");
@@ -72,21 +66,19 @@ export function AdminProfilesPage() {
     setSaving(true);
     setError(null);
     try {
-      const res = await fetch(`/api/admin/profiles/${encodeURIComponent(editing.id)}`, {
-        method: "PATCH",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          role: editing.role,
-          first_name: editing.first_name,
-          last_name: editing.last_name,
-          email: editing.email,
-        }),
-      });
-      if (!res.ok) {
-        const t = await res.text();
-        throw new Error(t || `Save failed (${res.status})`);
-      }
-      const data = (await res.json()) as { profile: AdminProfileRow };
+      const data = await adminFetchJson<{ profile: AdminProfileRow }>(
+        `/api/admin/profiles/${encodeURIComponent(editing.id)}`,
+        {
+          method: "PATCH",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            role: editing.role,
+            first_name: editing.first_name,
+            last_name: editing.last_name,
+            email: editing.email,
+          }),
+        },
+      );
       setProfiles((prev) => prev.map((p) => (p.id === data.profile.id ? data.profile : p)));
       setEditing(null);
     } catch (e) {

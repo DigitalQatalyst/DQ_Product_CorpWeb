@@ -10,21 +10,13 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch";
 import type { AdminProduct } from "./admin-products.types";
+import { adminFetch, adminFetchJson } from "@/lib/adminFetch";
 
 type LoadState =
   | { kind: "idle" }
   | { kind: "loading" }
   | { kind: "error"; message: string }
   | { kind: "ready" };
-
-async function fetchJson<T>(url: string): Promise<T> {
-  const res = await fetch(url, { cache: "no-store" });
-  if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(text || `Request failed (${res.status})`);
-  }
-  return (await res.json()) as T;
-}
 
 export function AdminProductsListPage() {
   const router = useRouter();
@@ -48,7 +40,7 @@ export function AdminProductsListPage() {
   async function load() {
     setState({ kind: "loading" });
     try {
-      const data = await fetchJson<{ products: AdminProduct[] }>("/api/admin/products");
+      const data = await adminFetchJson<{ products: AdminProduct[] }>("/api/admin/products");
       setProducts(data.products);
       setState({ kind: "ready" });
     } catch (e) {
@@ -65,7 +57,7 @@ export function AdminProductsListPage() {
       prev.map((p) => (p.id === productId ? { ...p, isPublished: next } : p)),
     );
     try {
-      const res = await fetch(`/api/admin/products/${encodeURIComponent(productId)}`, {
+      const res = await adminFetch(`/api/admin/products/${encodeURIComponent(productId)}`, {
         method: "PATCH",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ isPublished: next }),

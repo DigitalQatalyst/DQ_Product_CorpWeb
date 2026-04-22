@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useCallback } from "react";
 import Link from "next/link";
-import { HomeIcon, Search, X, Filter, BookmarkIcon, ScaleIcon } from "lucide-react";
+import { HomeIcon, Search, X, Filter, BookmarkIcon, ScaleIcon, Loader } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -15,25 +15,53 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { serviceItems, SERVICE_TABS, FILTER_CONFIG, type ServiceTabId } from "./data/service.data";
+import { usePublishedServices, type Service } from "@/features/services/hooks/useServices";
+
+// ─── Constants ───────────────────────────────────────────────────────────────
+
+const SERVICE_TABS = [
+  { id: "Design Services",          label: "Design Services",          description: "Strategic design and architecture services to envision and blueprint your digital transformation." },
+  { id: "Deploy Services (SaaS)",   label: "Deploy Services (SaaS)",   description: "Cloud-based deployment services for scalable and flexible digital solutions." },
+  { id: "Deploy Services (On-Prem)", label: "Deploy Services (On-Prem)", description: "On-premise deployment services for secure and controlled digital infrastructure." },
+] as const;
+
+type TabId = (typeof SERVICE_TABS)[number]["id"];
+
+const FILTER_CONFIG = [
+  {
+    id: "serviceCategory",
+    title: "Service Category",
+    options: [
+      { id: "digital-experience",    label: "Digital Experience" },
+      { id: "digital-core-dws",      label: "Digital Core / DWS" },
+      { id: "connected-intelligence", label: "Connected Intelligence" },
+    ],
+  },
+  {
+    id: "serviceAvailability",
+    title: "Service Availability",
+    options: [
+      { id: "available",    label: "Available" },
+      { id: "coming-soon",  label: "Coming Soon" },
+    ],
+  },
+  {
+    id: "serviceReadiness",
+    title: "Service Readiness",
+    options: [
+      { id: "ready-to-order",  label: "Ready to Order" },
+      { id: "has-dependency",  label: "Has Dependency" },
+    ],
+  },
+] as const;
 
 type ActiveFilters = Record<string, string[]>;
-
-const TAB_CATEGORY_MAP: Record<ServiceTabId, string> = {
-  "design-services": "Design Services",
-  "deploy-services-saas": "Deploy Services (SaaS)",
-  "deploy-services-onprem": "Deploy Services (On-Prem)",
-};
-
-const TAB_DESCRIPTION_MAP: Record<ServiceTabId, string> = {
-  "design-services": "Strategic design and architecture services to envision and blueprint your digital transformation.",
-  "deploy-services-saas": "Cloud-based deployment services for scalable and flexible digital solutions.",
-  "deploy-services-onprem": "On-premise deployment services for secure and controlled digital infrastructure.",
-};
 
 function toSlug(v: string) {
   return v.toLowerCase().replace(/\s+/g, "-").replace(/[/()]/g, "").replace(/-+/g, "-");
 }
+
+// ─── Sub-components ───────────────────────────────────────────────────────────
 
 function FilterSidebar({ filters, onFilterChange, onReset }: {
   filters: ActiveFilters;
@@ -75,7 +103,7 @@ function FilterSidebar({ filters, onFilterChange, onReset }: {
   );
 }
 
-function ServiceCard({ service }: { service: (typeof serviceItems)[0] }) {
+function ServiceCard({ service }: { service: Service }) {
   return (
     <Card className="flex flex-col min-h-[340px] rounded-lg py-0 gap-0 hover:shadow-md transition-shadow">
       <CardContent className="flex-grow flex flex-col px-4 py-5">
@@ -127,8 +155,11 @@ function ServiceCard({ service }: { service: (typeof serviceItems)[0] }) {
   );
 }
 
+// ─── Main page ────────────────────────────────────────────────────────────────
+
 export function ServicesMarketplacePage() {
-  const [activeTab, setActiveTab] = useState<ServiceTabId>("design-services");
+  const { data: allServices = [], isLoading } = usePublishedServices();
+  const [activeTab, setActiveTab] = useState<TabId>("Design Services");
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<ActiveFilters>(() =>
     Object.fromEntries(FILTER_CONFIG.map((f) => [f.id, []]))
@@ -147,9 +178,8 @@ export function ServicesMarketplacePage() {
   }, []);
 
   const filtered = useMemo(() => {
-    const cat = TAB_CATEGORY_MAP[activeTab];
-    return serviceItems.filter((s) => {
-      if (s.category !== cat) return false;
+    return allServices.filter((s) => {
+      if (s.category !== activeTab) return false;
       const q = search.toLowerCase();
       if (q && !s.title.toLowerCase().includes(q) && !s.description.toLowerCase().includes(q) && !s.tags.some((t) => t.toLowerCase().includes(q))) return false;
       for (const [id, sel] of Object.entries(filters)) {
@@ -160,9 +190,11 @@ export function ServicesMarketplacePage() {
       }
       return true;
     });
-  }, [activeTab, search, filters]);
+  }, [allServices, activeTab, search, filters]);
 
-  const isComingSoon = activeTab !== "design-services";
+  const activeTabData = SERVICE_TABS.find((t) => t.id === activeTab)!;
+  const tabTotal = allServices.filter((s) => s.category === activeTab).length;
+  const isComingSoon = tabTotal === 0 && !isLoading;
   const hasActiveFilters = !!(search || Object.values(filters).some((v) => v.length > 0));
   const sidebar = <FilterSidebar filters={filters} onFilterChange={handleFilterChange} onReset={resetFilters} />;
 
@@ -195,8 +227,8 @@ export function ServicesMarketplacePage() {
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-2">Current Focus</span>
-                <h2 className="text-xl font-bold text-foreground mb-2">{TAB_CATEGORY_MAP[activeTab]}</h2>
-                <p className="text-muted-foreground">{TAB_DESCRIPTION_MAP[activeTab]}</p>
+                <h2 className="text-xl font-bold text-foreground mb-2">{activeTabData.label}</h2>
+                <p className="text-muted-foreground">{activeTabData.description}</p>
               </div>
               <Badge variant="secondary" className="ml-4 whitespace-nowrap rounded-full">Overview</Badge>
             </div>
@@ -272,11 +304,15 @@ export function ServicesMarketplacePage() {
 
           {/* Grid */}
           <div className="xl:w-3/4">
-            {isComingSoon ? (
+            {isLoading ? (
+              <div className="flex justify-center py-16">
+                <Loader className="animate-spin text-primary" size={32} />
+              </div>
+            ) : isComingSoon ? (
               <div className="text-center py-16">
                 <div className="bg-accent/10 rounded-xl p-12 max-w-lg mx-auto">
                   <div className="text-6xl mb-6">🚀</div>
-                  <h3 className="text-2xl font-bold text-foreground mb-4">{TAB_CATEGORY_MAP[activeTab]} — Coming Soon</h3>
+                  <h3 className="text-2xl font-bold text-foreground mb-4">{activeTabData.label} — Coming Soon</h3>
                   <p className="text-muted-foreground text-lg leading-relaxed">
                     We&apos;re working on bringing you comprehensive deployment services. Stay tuned!
                   </p>
@@ -287,7 +323,7 @@ export function ServicesMarketplacePage() {
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-semibold text-foreground hidden sm:block">Available Services ({filtered.length})</h2>
                   <p className="text-sm text-muted-foreground hidden sm:block">
-                    Showing {filtered.length} of {serviceItems.filter((s) => s.category === TAB_CATEGORY_MAP[activeTab]).length} services
+                    Showing {filtered.length} of {tabTotal} services
                   </p>
                   <h2 className="text-lg font-medium text-foreground sm:hidden">{filtered.length} Services Available</h2>
                 </div>

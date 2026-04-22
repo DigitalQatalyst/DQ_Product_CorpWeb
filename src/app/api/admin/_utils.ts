@@ -42,6 +42,34 @@ export async function authenticateAdminRequest(
   } = await supabase.auth.getUser();
 
   if (!user) {
+    // Also try Bearer token from Authorization header
+    const authHeader =
+      "headers" in request
+        ? (request as Request).headers.get("authorization")
+        : null;
+    const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
+
+    if (token) {
+      const { data: tokenUser } = await supabase.auth.getUser(token);
+      if (tokenUser.user) {
+        const claimRole =
+          (tokenUser.user.user_metadata?.role as string | undefined) ??
+          (tokenUser.user.app_metadata?.role as string | undefined);
+        if (isAdminProfileRole(claimRole)) return { ok: true, userId: tokenUser.user.id };
+
+        const admin = getSupabaseAdmin();
+        const { data: profile } = await admin
+          .from("profiles")
+          .select("role")
+          .eq("id", tokenUser.user.id)
+          .maybeSingle();
+        if (isAdminProfileRole(profile?.role as string | undefined)) {
+          return { ok: true, userId: tokenUser.user.id };
+        }
+        return { ok: false, response: NextResponse.json({ error: "Forbidden" }, { status: 403 }) };
+      }
+    }
+
     return { ok: false, response: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
   }
 
