@@ -38,7 +38,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import type { JobListing } from "../data/careers.data";
+import type { JobPostingType } from "../api/types";
 import { listPublishedJobPostings } from "../api/jobPostings";
 
 type Filters = { department: string[]; location: string[]; type: string[] };
@@ -49,7 +49,7 @@ function FilterGroups({
   onChange,
   onReset,
 }: {
-  jobs: JobListing[];
+  jobs: JobPostingType[];
   filters: Filters;
   onChange: (k: keyof Filters, v: string) => void;
   onReset: () => void;
@@ -112,7 +112,7 @@ function FilterGroups({
   );
 }
 
-function JobCard({ job }: { job: JobListing }) {
+function JobCard({ job }: { job: JobPostingType }) {
   return (
     <Card className="hover:shadow-md transition-shadow flex flex-col">
       <CardContent className="p-6 flex flex-col flex-1">
@@ -146,11 +146,13 @@ function JobCard({ job }: { job: JobListing }) {
         </p>
         <div className="flex items-center justify-between border-t border-border pt-4 mt-auto">
           <span className="text-xs text-muted-foreground">
-            {new Date(job.postedDate).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
+            {job.postedDate
+              ? new Date(job.postedDate).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })
+              : "—"}
           </span>
           <Link
             href={`/jobs/${job.id}`}
@@ -165,7 +167,7 @@ function JobCard({ job }: { job: JobListing }) {
 }
 
 export function JobsListingPage() {
-  const [jobs, setJobs] = useState<JobListing[]>([]);
+  const [jobs, setJobs] = useState<JobPostingType[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<Filters>({
