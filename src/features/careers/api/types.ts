@@ -26,7 +26,7 @@ export type JobPostingCreateInput = Omit<
 export type JobPostingUpdateInput = Partial<JobPostingCreateInput>;
 
 export type Department = {
-  id: number;
+  id: number | string;
   name: string;
 };
 

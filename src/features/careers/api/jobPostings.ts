@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabaseBrowser } from "@/lib/supabaseBrowser";
 import type {
   JobPostingCreateInput,
   JobPostingType,
@@ -46,7 +46,7 @@ function toWritePayload(input: JobPostingCreateInput | JobPostingUpdateInput) {
 }
 
 export async function listJobPostingsAdmin() {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseBrowser
     .from("job_postings")
     .select("*")
     .order("created_at", { ascending: false });
@@ -56,7 +56,7 @@ export async function listJobPostingsAdmin() {
 }
 
 export async function getJobPostingById(id: number) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseBrowser
     .from("job_postings")
     .select("*")
     .eq("id", id)
@@ -67,7 +67,7 @@ export async function getJobPostingById(id: number) {
 }
 
 export async function createJobPosting(input: JobPostingCreateInput) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseBrowser
     .from("job_postings")
     .insert(toWritePayload(input))
     .select("*")
@@ -78,7 +78,7 @@ export async function createJobPosting(input: JobPostingCreateInput) {
 }
 
 export async function updateJobPosting(id: number, input: JobPostingUpdateInput) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseBrowser
     .from("job_postings")
     .update(toWritePayload(input))
     .eq("id", id)
@@ -90,7 +90,10 @@ export async function updateJobPosting(id: number, input: JobPostingUpdateInput)
 }
 
 export async function deleteJobPosting(id: number) {
-  const { error } = await supabase.from("job_postings").delete().eq("id", id);
+  const { error } = await supabaseBrowser
+    .from("job_postings")
+    .delete()
+    .eq("id", id);
   if (error) throw error;
 }
 
