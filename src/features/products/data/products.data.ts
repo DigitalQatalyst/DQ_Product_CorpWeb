@@ -164,7 +164,7 @@ export const offeringClasses: OfferingClass[] = [
         title: "DTMP – Specification & Orchestration Platform",
         description:
           "End-to-end DBP specification and orchestration platform accelerating strategy, design, deployment, and adoption.",
-        href: "/products/dtmp",
+        href: "/products/marketplace/dtmp",
         linkLabel: "Learn More",
       },
       {
@@ -172,7 +172,7 @@ export const offeringClasses: OfferingClass[] = [
         title: "TMaaS – Transformation as a Service",
         description:
           "Marketplace-driven managed transformation initiatives delivered as scalable Transformation-as-a-Service.",
-        href: "/products/tmaas",
+        href: "/products/marketplace/tmaas",
         linkLabel: "Learn More",
       },
       {
@@ -180,7 +180,7 @@ export const offeringClasses: OfferingClass[] = [
         title: "DTO4T (TwinGM AI) – AI-Guided Transformation",
         description:
           "AI-guided digital twin transformation platform reinforcing precision execution as a continuous discipline.",
-        href: "/products/plant40",
+        href: "/products/marketplace/plant40",
         linkLabel: "Learn More",
       },
     ],
@@ -198,7 +198,7 @@ export const offeringClasses: OfferingClass[] = [
         title: "DTMI – Digital Transformation Management Insights",
         description:
           "Global digital transformation management insights platform structured by 6xD and sector lenses.",
-        href: "/products/dtmi",
+        href: "/products/marketplace/dtmi",
         linkLabel: "Learn More",
       },
       {
@@ -206,7 +206,7 @@ export const offeringClasses: OfferingClass[] = [
         title: "DTMA – Digital Transformation Academy",
         description:
           "Structured learning programs building competencies for operating in Digital Cognitive Organizations.",
-        href: "/products/dtma",
+        href: "/products/marketplace/dtma",
         linkLabel: "Learn More",
       },
       {
@@ -214,7 +214,7 @@ export const offeringClasses: OfferingClass[] = [
         title: "DTMB (6xD / GHC Series) – Published Intellectual Foundation",
         description:
           "Published intellectual foundation codifying DQ's digital transformation frameworks.",
-        href: "/products/dtmb",
+        href: "/products/marketplace/dtmb",
         linkLabel: "Learn More",
       },
     ],
