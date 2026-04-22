@@ -196,7 +196,7 @@ export function JobPostingEditorPage({ id }: Props) {
   }
 
   return (
-    <div className="space-y-6 max-w-3xl">
+    <div className="space-y-6 max-w-3xl mx-auto">
       {/* Header */}
       <div className="flex items-center gap-3 pb-4 border-b border-border">
         <Button variant="ghost" size="icon" onClick={() => router.push("/admin/job-postings")}>
