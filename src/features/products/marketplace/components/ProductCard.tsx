@@ -62,7 +62,7 @@ export function ProductCard({ product }: { readonly product: ProductType }) {
         </div>
 
         <Link
-          href={`/products/${product.id}`}
+          href={`/products/marketplace/${product.id}`}
           className="inline-flex items-center gap-1 text-secondary hover:text-secondary/80 text-sm font-medium transition-colors group mt-auto"
         >
           Learn more

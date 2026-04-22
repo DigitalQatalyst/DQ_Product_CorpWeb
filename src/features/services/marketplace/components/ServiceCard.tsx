@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import type { ServiceItem } from "../data/service.data";
+import type { Service } from "@/features/services/api/services";
 
 interface Props {
-  service: ServiceItem;
+  service: Service;
 }
 
 export function ServiceCard({ service }: Readonly<Props>) {

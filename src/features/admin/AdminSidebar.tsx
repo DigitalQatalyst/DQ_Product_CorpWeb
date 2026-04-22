@@ -12,6 +12,7 @@ import {
   Settings,
   LogOut,
   Package,
+  Layers,
 } from "lucide-react";
 import {
   Sidebar,
@@ -29,6 +30,7 @@ import { supabaseBrowser } from "@/lib/supabaseBrowser";
 const navItems = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Products", href: "/admin/products", icon: Package },
+  { label: "Service Categories", href: "/admin/service-categories", icon: Layers },
   { label: "Profiles", href: "/admin/profiles", icon: Users },
   { label: "Job Postings", href: "/admin/job-postings", icon: Briefcase },
   { label: "Applications", href: "/admin/applications", icon: FileText },

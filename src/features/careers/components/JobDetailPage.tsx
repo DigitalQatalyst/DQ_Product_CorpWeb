@@ -24,15 +24,15 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import type { JobListing } from "../data/careers.data";
+import type { JobPostingType } from "../api/types";
+import { getJobPostingById } from "../api/jobPostings";
 
 export function JobDetailPage({ jobId }: { jobId: string }) {
-  const [job, setJob] = useState<JobListing | null>(null);
+  const [job, setJob] = useState<JobPostingType | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/jobs/${jobId}`)
-      .then((r) => (r.ok ? r.json() : null))
+    getJobPostingById(Number(jobId))
       .then((data) => setJob(data))
       .catch(() => setJob(null))
       .finally(() => setLoading(false));
@@ -82,11 +82,13 @@ export function JobDetailPage({ jobId }: { jobId: string }) {
     {
       icon: Calendar,
       label: "Posted Date",
-      value: new Date(job.postedDate).toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      }),
+      value: job.postedDate
+        ? new Date(job.postedDate).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          })
+        : "—",
     },
   ];
 
