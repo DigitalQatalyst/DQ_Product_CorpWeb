@@ -62,3 +62,10 @@ export async function updateAdminApplication(
   return JSON.parse(text) as { ok: true; notified: boolean };
 }
 
+export async function deleteAdminApplication(id: string) {
+  const res = await fetch(`/api/admin/applications/${id}`, { method: "DELETE" });
+  const text = await res.text().catch(() => "");
+  if (!res.ok) throw new Error(text || "Failed to delete application.");
+  return JSON.parse(text) as { ok: true };
+}
+

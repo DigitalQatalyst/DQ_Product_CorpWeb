@@ -7,6 +7,7 @@ import {
   FileText,
   Loader,
   Search,
+  Trash2,
   User,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -17,6 +18,17 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
   Select,
   SelectContent,
   SelectGroup,
@@ -25,7 +37,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { ApplicationStatus, AdminJobApplication } from "@/features/careers/api";
-import { listAdminApplications, updateAdminApplication } from "@/features/careers/api";
+import {
+  deleteAdminApplication,
+  listAdminApplications,
+  updateAdminApplication,
+} from "@/features/careers/api";
 
 function statusPill(status: ApplicationStatus | null) {
   const s = status ?? "pending";
@@ -55,6 +71,7 @@ export function AdminApplicationsPage() {
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<ApplicationStatus | "all">("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
   const selected = useMemo(
     () => apps.find((a) => a.id === selectedId) ?? null,
@@ -140,6 +157,25 @@ export function AdminApplicationsPage() {
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to save notes.");
       toast.error("Failed to save notes.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function onDeleteSelected() {
+    if (!selected) return;
+    setSaving(true);
+    setError(null);
+    try {
+      await deleteAdminApplication(selected.id);
+      toast.success("Application deleted.");
+      setDeleteOpen(false);
+      const next = apps.find((a) => a.id !== selected.id)?.id ?? null;
+      setSelectedId(next);
+      await refresh();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to delete application.");
+      toast.error("Failed to delete application.");
     } finally {
       setSaving(false);
     }
@@ -309,6 +345,36 @@ export function AdminApplicationsPage() {
                   >
                     <CheckCircle /> Accept
                   </Button>
+                  <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+                    <AlertDialogTrigger render={
+                      <Button variant="destructive" disabled={saving}>
+                        <Trash2 /> Delete
+                      </Button>
+                    } />
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Delete application?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This permanently deletes the application for{" "}
+                          <span className="font-medium text-foreground">
+                            {selected.first_name} {selected.last_name}
+                          </span>{" "}
+                          and cannot be undone.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel disabled={saving}>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          variant="destructive"
+                          disabled={saving}
+                          onClick={onDeleteSelected}
+                        >
+                          {saving ? <Loader className="animate-spin" /> : <Trash2 />}
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               ) : null}
             </div>

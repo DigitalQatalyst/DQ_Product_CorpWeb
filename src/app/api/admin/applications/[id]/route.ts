@@ -129,3 +129,27 @@ export async function PATCH(
   return NextResponse.json({ ok: true, ...notify });
 }
 
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const unauthorized = await requireAdminAuth(request);
+  if (unauthorized) return unauthorized;
+  const missingKey = requireServiceRoleConfigured();
+  if (missingKey) return missingKey;
+
+  const { id } = await params;
+
+  const { error } = await getSupabaseAdmin()
+    .from("job_applications")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("[admin/applications] delete failed", error);
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+
+  return NextResponse.json({ ok: true });
+}
+
