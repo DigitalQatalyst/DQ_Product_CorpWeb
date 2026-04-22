@@ -32,7 +32,7 @@ const navItems = [
   { label: "Profiles", href: "/admin/profiles", icon: Users },
   { label: "Job Postings", href: "/admin/job-postings", icon: Briefcase },
   { label: "Applications", href: "/admin/applications", icon: FileText },
-  { label: "Interviews", href: "/admin/interviews", icon: Calendar },
+  // { label: "Interviews", href: "/admin/interviews", icon: Calendar },
   { label: "Analytics", href: "/admin/analytics", icon: TrendingUp },
   { label: "Settings", href: "/admin/settings", icon: Settings },
 ];
