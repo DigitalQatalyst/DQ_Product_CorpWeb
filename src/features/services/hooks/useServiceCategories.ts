@@ -56,7 +56,7 @@ function apiUrl(path: string) {
 }
 
 async function apiFetch(path: string, init?: RequestInit) {
-  const res = await fetch(apiUrl(path), init);
+  const res = await fetch(apiUrl(path), { credentials: "include", ...init });
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
     throw new Error((body as { error?: string }).error ?? `Request failed: ${res.status}`);

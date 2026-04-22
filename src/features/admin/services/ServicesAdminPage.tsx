@@ -49,7 +49,7 @@ export function ServicesAdminPage() {
         await updateMutation.mutateAsync({ id: editTarget.id, input });
         toast.success("Service updated.");
       } else {
-        await createMutation.mutateAsync({ ...input, sortOrder: input.sortOrder ?? 0 } as Service);
+        await createMutation.mutateAsync(input);
         toast.success("Service created.");
       }
       closeForm();

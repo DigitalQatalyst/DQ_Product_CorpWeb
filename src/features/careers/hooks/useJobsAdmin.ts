@@ -44,7 +44,7 @@ function fromRow(row: any): JobPostingType {
 // ─── API helpers ──────────────────────────────────────────────────────────────
 
 async function apiFetch(path: string, init?: RequestInit) {
-  const res = await fetch(path, init);
+  const res = await fetch(path, { credentials: "include", ...init });
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
     throw new Error((body as { error?: string }).error ?? `Request failed: ${res.status}`);

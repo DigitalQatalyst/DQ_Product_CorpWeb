@@ -92,9 +92,16 @@ export function AdminProductEditorPage(props: Props) {
       if (!id) { toast.error("Product ID is required"); return; }
 
       if (isEdit) {
-        await patchMutation.mutateAsync({
+        await upsertMutation.mutateAsync({
           id,
-          patch: { name: product.name, code: product.code, description: product.description, category: product.category, tags, ctaType: product.ctaType, isPublished: product.isPublished },
+          name: product.name,
+          code: product.code,
+          description: product.description,
+          category: product.category,
+          tags,
+          ctaType: product.ctaType,
+          isPublished: product.isPublished,
+          detail,
         });
       } else {
         await upsertMutation.mutateAsync({ id, name: product.name, code: product.code, description: product.description, category: product.category, tags, ctaType: product.ctaType, isPublished: product.isPublished, detail });
