@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch";
 import type { AdminProduct } from "./admin-products.types";
-import { adminFetch, adminFetchJson } from "@/lib/adminFetch";
+import { listAdminProducts, patchAdminProduct } from "@/features/products/api/products.admin";
 
 type LoadState =
   | { kind: "idle" }
@@ -40,8 +40,8 @@ export function AdminProductsListPage() {
   async function load() {
     setState({ kind: "loading" });
     try {
-      const data = await adminFetchJson<{ products: AdminProduct[] }>("/api/admin/products");
-      setProducts(data.products);
+      const products = await listAdminProducts();
+      setProducts(products);
       setState({ kind: "ready" });
     } catch (e) {
       setState({ kind: "error", message: e instanceof Error ? e.message : "Failed to load" });
@@ -57,14 +57,8 @@ export function AdminProductsListPage() {
       prev.map((p) => (p.id === productId ? { ...p, isPublished: next } : p)),
     );
     try {
-      const res = await adminFetch(`/api/admin/products/${encodeURIComponent(productId)}`, {
-        method: "PATCH",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ isPublished: next }),
-      });
-      if (!res.ok) throw new Error(`Publish update failed (${res.status})`);
+      await patchAdminProduct(productId, { isPublished: next });
     } catch {
-      // revert on failure
       setProducts((prev) =>
         prev.map((p) => (p.id === productId ? { ...p, isPublished: !next } : p)),
       );

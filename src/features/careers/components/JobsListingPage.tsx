@@ -39,6 +39,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import type { JobListing } from "../data/careers.data";
+import { listPublishedJobPostings } from "../api/jobPostings";
 
 type Filters = { department: string[]; location: string[]; type: string[] };
 
@@ -174,8 +175,7 @@ export function JobsListingPage() {
   });
 
   useEffect(() => {
-    fetch("/api/jobs")
-      .then((r) => r.json())
+    listPublishedJobPostings()
       .then((data) => setJobs(data))
       .catch(() => setJobs([]))
       .finally(() => setLoading(false));

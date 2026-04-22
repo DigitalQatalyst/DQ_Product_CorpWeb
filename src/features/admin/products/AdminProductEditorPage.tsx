@@ -13,7 +13,12 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import type { ProductCtaType, ProductDetail } from "@/features/products/api/products.queries";
 import type { AdminProductWithDetail } from "./admin-products.types";
-import { adminFetch, adminFetchJson } from "@/lib/adminFetch";
+import {
+  getAdminProductWithDetail,
+  upsertAdminProduct,
+  patchAdminProduct,
+  uploadProductImage,
+} from "@/features/products/api/products.admin";
 
 type Props =
   | { readonly mode: "create"; readonly productId?: never }
@@ -106,9 +111,8 @@ export function AdminProductEditorPage(props: Props) {
     async function load() {
       setLoading(true);
       try {
-        const data = await adminFetchJson<AdminProductWithDetail>(
-          `/api/admin/products/${encodeURIComponent(productId)}`,
-        );
+        const data = await getAdminProductWithDetail(productId);
+        if (!data) throw new Error("Product not found");
         setProduct({
           id: data.product.id,
           name: data.product.name,
@@ -124,10 +128,7 @@ export function AdminProductEditorPage(props: Props) {
         setDetail(data.detail);
         setLoading(false);
       } catch (e) {
-        setSaveState({
-          kind: "error",
-          message: e instanceof Error ? e.message : "Failed to load",
-        });
+        setSaveState({ kind: "error", message: e instanceof Error ? e.message : "Failed to load" });
         setLoading(false);
       }
     }
@@ -146,44 +147,24 @@ export function AdminProductEditorPage(props: Props) {
   async function save() {
     setSaveState({ kind: "saving" });
     try {
-      const payload = {
-        id: product.id,
-        name: product.name,
-        code: product.code,
-        description: product.description,
-        category: product.category,
-        tags,
-        ctaType: product.ctaType,
-        isPublished: product.isPublished,
-        detail,
-      };
+      const id = props.mode === "create" ? product.id.trim() : props.productId;
+      if (!id) throw new Error("Product ID is required");
 
-      const data = await adminFetchJson<{ id: string }>("/api/admin/products", {
-        method: props.mode === "create" ? "POST" : "PATCH",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(
-          props.mode === "create" ? payload : { ...payload, id: props.productId },
-        ),
-      });
+      if (props.mode === "create") {
+        await upsertAdminProduct({ id, name: product.name, code: product.code, description: product.description, category: product.category, tags, ctaType: product.ctaType, isPublished: product.isPublished, detail });
+      } else {
+        await patchAdminProduct(id, { name: product.name, code: product.code, description: product.description, category: product.category, tags, ctaType: product.ctaType, isPublished: product.isPublished });
+      }
 
       if (imageFile) {
-        const fd = new FormData();
-        fd.set("file", imageFile);
-        const uploadRes = await adminFetch(
-          `/api/admin/products/${encodeURIComponent(data.id)}/image`,
-          { method: "POST", body: fd },
-        );
-        if (!uploadRes.ok) throw new Error(`Image upload failed (${uploadRes.status})`);
+        await uploadProductImage(id, imageFile);
       }
 
       setSaveState({ kind: "saved" });
-      router.push(`/admin/products/${encodeURIComponent(data.id)}`);
+      router.push(`/admin/products/${encodeURIComponent(id)}`);
       router.refresh();
     } catch (e) {
-      setSaveState({
-        kind: "error",
-        message: e instanceof Error ? e.message : "Save failed",
-      });
+      setSaveState({ kind: "error", message: e instanceof Error ? e.message : "Save failed" });
     }
   }
 

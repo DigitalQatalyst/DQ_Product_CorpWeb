@@ -6,7 +6,7 @@ import { ImageIcon, Loader, Upload, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { adminFetch } from "@/lib/adminFetch";
+import { uploadServiceImage } from "@/features/services/api/serviceImages.admin";
 
 interface Props {
   value: string;
@@ -29,17 +29,8 @@ export function ImageUploadField({
   async function handleFile(file: File) {
     setUploading(true);
     try {
-      const fd = new FormData();
-      fd.append("file", file);
-      fd.append("folder", folder);
-
-      const res = await adminFetch("/api/admin/services/image", {
-        method: "POST",
-        body: fd,
-      });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error ?? "Upload failed");
-      onChange(json.url);
+      const result = await uploadServiceImage(file, folder);
+      onChange(result.url);
       toast.success("Image uploaded");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Upload failed");

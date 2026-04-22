@@ -25,14 +25,14 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import type { JobListing } from "../data/careers.data";
+import { getJobPostingById } from "../api/jobPostings";
 
 export function JobDetailPage({ jobId }: { jobId: string }) {
   const [job, setJob] = useState<JobListing | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/jobs/${jobId}`)
-      .then((r) => (r.ok ? r.json() : null))
+    getJobPostingById(Number(jobId))
       .then((data) => setJob(data))
       .catch(() => setJob(null))
       .finally(() => setLoading(false));

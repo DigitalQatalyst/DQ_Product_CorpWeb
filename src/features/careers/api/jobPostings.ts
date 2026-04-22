@@ -55,6 +55,17 @@ export async function listJobPostingsAdmin() {
   return (data ?? []).map(fromRow);
 }
 
+export async function listPublishedJobPostings() {
+  const { data, error } = await supabase
+    .from("job_postings")
+    .select("*")
+    .eq("status", "open")
+    .order("posted_date", { ascending: false });
+
+  if (error) throw error;
+  return (data ?? []).map(fromRow);
+}
+
 export async function getJobPostingById(id: number) {
   const { data, error } = await supabase
     .from("job_postings")
