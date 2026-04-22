@@ -329,13 +329,6 @@ export function AdminApplicationsPage() {
                     Mark reviewing
                   </Button>
                   <Button
-                    variant="outline"
-                    disabled={saving}
-                    onClick={() => setStatus("shortlisted")}
-                  >
-                    Next level
-                  </Button>
-                  <Button
                     disabled={saving}
                     onClick={() =>
                       setStatus("accepted", {

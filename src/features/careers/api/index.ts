@@ -4,4 +4,5 @@ export * from "./departments";
 export * from "./jobPostings";
 export * from "./jobApplications";
 export * from "./adminApplications";
+export * from "./adminInterviews";
 
