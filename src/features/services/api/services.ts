@@ -1,5 +1,3 @@
-import { supabase } from "@/lib/supabase";
-
 export interface ServiceOverview {
   paragraphs: string[];
   keyAreas: string[];
@@ -66,23 +64,32 @@ function fromRow(r: any): Service {
   };
 }
 
+function apiUrl(path: string) {
+  const base =
+    process.env.NEXT_PUBLIC_APP_URL ??
+    (typeof window === "undefined" ? "http://localhost:3000" : "");
+  return `${base}${path}`;
+}
+
+async function apiFetch(path: string) {
+  const res = await fetch(apiUrl(path));
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error((body as { error?: string }).error ?? `Request failed: ${res.status}`);
+  }
+  return res.json();
+}
+
 export async function listPublishedServices(): Promise<Service[]> {
-  const { data, error } = await supabase
-    .from("services")
-    .select("*")
-    .eq("is_published", true)
-    .order("sort_order", { ascending: true });
-  if (error) throw error;
-  return (data ?? []).map(fromRow);
+  const data = await apiFetch("/api/services");
+  return (data as unknown[]).map(fromRow);
 }
 
 export async function getServiceById(id: string): Promise<Service | null> {
-  const { data, error } = await supabase
-    .from("services")
-    .select("*")
-    .eq("id", id)
-    .eq("is_published", true)
-    .maybeSingle();
-  if (error) throw error;
-  return data ? fromRow(data) : null;
+  try {
+    const data = await apiFetch(`/api/services/${id}`);
+    return fromRow(data);
+  } catch {
+    return null;
+  }
 }

@@ -1,4 +1,3 @@
-import { supabase } from "@/lib/supabase";
 import type { ProductType } from "@/types/product";
 
 export type ProductCtaType = "waitlist" | "demo" | "tour";
@@ -32,9 +31,7 @@ type ProductDetailsRow = {
   problem_statement: string | null;
   solution_statement: string | null;
   capabilities_label: string | null;
-  capabilities:
-    | Array<{ title: string; body: string; accent: "primary" | "secondary" }>
-    | null;
+  capabilities: Array<{ title: string; body: string; accent: "primary" | "secondary" }> | null;
   practical_values: Array<{ icon: string; title: string; subtitle: string }> | null;
 };
 
@@ -89,8 +86,9 @@ function asPracticalValues(
 function resolvePublicImageUrl(imagePath: string | null): string | undefined {
   if (!imagePath) return undefined;
   if (/^https?:\/\//i.test(imagePath)) return imagePath;
-  const { data } = supabase.storage.from("product-images").getPublicUrl(imagePath);
-  return data.publicUrl || undefined;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!url) return undefined;
+  return `${url}/storage/v1/object/public/product-images/${imagePath}`;
 }
 
 function mapProductRow(row: ProductRow): ProductType & { ctaType: ProductCtaType } {
@@ -123,42 +121,41 @@ function mapProductDetailsRow(row: ProductDetailsRow | null): ProductDetail {
   };
 }
 
-export async function listPublishedProducts(): Promise<Array<ProductType & { ctaType: ProductCtaType }>> {
-  const { data, error } = await supabase
-    .from("products")
-    .select("id,name,code,description,category,tags,image_path,cta_type,is_published")
-    .eq("is_published", true)
-    .order("name", { ascending: true });
+function apiUrl(path: string) {
+  const base =
+    process.env.NEXT_PUBLIC_APP_URL ??
+    (typeof window === "undefined" ? "http://localhost:3000" : "");
+  return `${base}${path}`;
+}
 
-  if (error || !data) return [];
-  return (data as unknown as ProductRow[]).map(mapProductRow);
+async function apiFetch(path: string) {
+  const res = await fetch(apiUrl(path), { cache: "no-store" });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error((body as { error?: string }).error ?? `Request failed: ${res.status}`);
+  }
+  return res.json();
+}
+
+export async function listPublishedProducts(): Promise<
+  Array<ProductType & { ctaType: ProductCtaType }>
+> {
+  const data: ProductRow[] = await apiFetch("/api/products");
+  return data.map(mapProductRow);
 }
 
 export async function getPublishedProductWithDetails(productId: string): Promise<{
   product: (ProductType & { ctaType: ProductCtaType }) | null;
   detail: ProductDetail | null;
 }> {
-  const [productRes, detailRes] = await Promise.all([
-    supabase
-      .from("products")
-      .select("id,name,code,description,category,tags,image_path,cta_type,is_published")
-      .eq("id", productId)
-      .single(),
-    supabase
-      .from("product_details")
-      .select(
-        "product_id,about_paragraphs,feature_descriptions,problem_statement,solution_statement,capabilities_label,capabilities,practical_values",
-      )
-      .eq("product_id", productId)
-      .maybeSingle(),
-  ]);
-
-  if (productRes.error || !productRes.data) return { product: null, detail: null };
-
-  const product = mapProductRow(productRes.data as unknown as ProductRow);
-  const detail = mapProductDetailsRow(
-    (detailRes.data as unknown as ProductDetailsRow | null) ?? null,
-  );
-  return { product, detail };
+  try {
+    const data: { product: ProductRow; detail: ProductDetailsRow | null } =
+      await apiFetch(`/api/products/${productId}`);
+    return {
+      product: mapProductRow(data.product),
+      detail: mapProductDetailsRow(data.detail),
+    };
+  } catch {
+    return { product: null, detail: null };
+  }
 }
-

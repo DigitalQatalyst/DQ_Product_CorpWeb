@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Plus_Jakarta_Sans } from "next/font/google";
 import { QueryProvider } from "@/components/QueryProvider";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-sans" });
@@ -22,6 +23,7 @@ export default function RootLayout({
     <html lang="en" className={`${dmSans.variable} ${plusJakarta.variable}`}>
       <body className="min-h-screen flex flex-col antialiased">
         <QueryProvider>{children}</QueryProvider>
+        <Toaster richColors position="top-right" />
       </body>
     </html>
   );

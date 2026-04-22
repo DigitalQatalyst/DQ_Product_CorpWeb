@@ -1,9 +1,4 @@
-import { supabaseBrowser } from "@/lib/supabaseBrowser";
-import type {
-  JobPostingCreateInput,
-  JobPostingType,
-  JobPostingUpdateInput,
-} from "./types";
+import type { JobPostingCreateInput, JobPostingType, JobPostingUpdateInput } from "./types";
 import { parseJsonbStringArray } from "./utils";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -27,84 +22,58 @@ function fromRow(row: any): JobPostingType {
   };
 }
 
-function toWritePayload(input: JobPostingCreateInput | JobPostingUpdateInput) {
-  // Mirrors DB column names.
-  return {
-    title: input.title,
-    department: input.department,
-    location: input.location,
-    type: input.type,
-    level: input.level,
-    description: input.description,
-    requirements: input.requirements,
-    responsibilities: input.responsibilities,
-    skills: input.skills ?? null,
-    open_positions: input.openPositions ?? null,
-    posted_date: input.postedDate ?? null,
-    status: input.status,
-  };
+function apiUrl(path: string) {
+  const base =
+    process.env.NEXT_PUBLIC_APP_URL ??
+    (typeof window === "undefined" ? "http://localhost:3000" : "");
+  return `${base}${path}`;
 }
 
-export async function listJobPostingsAdmin() {
-  const { data, error } = await supabaseBrowser
-    .from("job_postings")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) throw error;
-  return (data ?? []).map(fromRow);
+async function apiFetch(path: string, init?: RequestInit) {
+  const res = await fetch(apiUrl(path), init);
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error((body as { error?: string }).error ?? `Request failed: ${res.status}`);
+  }
+  return res.json();
 }
 
-export async function listPublishedJobPostings() {
-  const { data, error } = await supabaseBrowser
-    .from("job_postings")
-    .select("*")
-    .eq("status", "open")
-    .order("posted_date", { ascending: false });
-
-  if (error) throw error;
-  return (data ?? []).map(fromRow);
+export async function listPublishedJobPostings(): Promise<JobPostingType[]> {
+  const data = await apiFetch("/api/jobs");
+  return (data as unknown[]).map(fromRow);
 }
 
-export async function getJobPostingById(id: number) {
-  const { data, error } = await supabaseBrowser
-    .from("job_postings")
-    .select("*")
-    .eq("id", id)
-    .single();
-
-  if (error) throw error;
+export async function getJobPostingById(id: number): Promise<JobPostingType> {
+  const data = await apiFetch(`/api/jobs/${id}`);
   return fromRow(data);
 }
 
-export async function createJobPosting(input: JobPostingCreateInput) {
-  const { data, error } = await supabaseBrowser
-    .from("job_postings")
-    .insert(toWritePayload(input))
-    .select("*")
-    .single();
+export async function listJobPostingsAdmin(): Promise<JobPostingType[]> {
+  const data = await apiFetch("/api/admin/job-postings");
+  return (data as unknown[]).map(fromRow);
+}
 
-  if (error) throw error;
+export async function createJobPosting(input: JobPostingCreateInput): Promise<JobPostingType> {
+  const data = await apiFetch("/api/admin/job-postings", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
   return fromRow(data);
 }
 
-export async function updateJobPosting(id: number, input: JobPostingUpdateInput) {
-  const { data, error } = await supabaseBrowser
-    .from("job_postings")
-    .update(toWritePayload(input))
-    .eq("id", id)
-    .select("*")
-    .single();
-
-  if (error) throw error;
+export async function updateJobPosting(
+  id: number,
+  input: JobPostingUpdateInput,
+): Promise<JobPostingType> {
+  const data = await apiFetch(`/api/admin/job-postings/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
   return fromRow(data);
 }
 
-export async function deleteJobPosting(id: number) {
-  const { error } = await supabaseBrowser
-    .from("job_postings")
-    .delete()
-    .eq("id", id);
-  if (error) throw error;
+export async function deleteJobPosting(id: number): Promise<void> {
+  await apiFetch(`/api/admin/job-postings/${id}`, { method: "DELETE" });
 }
-
