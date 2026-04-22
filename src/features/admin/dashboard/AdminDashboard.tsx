@@ -15,7 +15,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { supabase } from "@/lib/supabase";
+import { supabaseBrowser } from "@/lib/supabaseBrowser";
 
 interface Stats {
   totalApplications: number;
@@ -85,19 +85,19 @@ export function AdminDashboard() {
 
       const [appsRes, interviewsRes, postingsRes, usersRes] = await Promise.all(
         [
-          supabase
+          supabaseBrowser
             .from("job_applications")
             .select("*")
             .order("applied_at", { ascending: false }),
-          supabase
+          supabaseBrowser
             .from("interviews")
             .select("*")
             .order("scheduled_date", { ascending: false }),
-          supabase
+          supabaseBrowser
             .from("job_postings")
             .select("*")
             .order("created_at", { ascending: false }),
-          supabase
+          supabaseBrowser
             .from("admin_users")
             .select("*")
             .order("created_at", { ascending: false }),

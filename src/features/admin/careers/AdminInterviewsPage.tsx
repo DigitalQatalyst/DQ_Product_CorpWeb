@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Calendar, ExternalLink, Loader, Plus } from "lucide-react";
+import { Calendar, ExternalLink, Loader, Plus, Copy } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -64,6 +64,28 @@ export function AdminInterviewsPage() {
     () => apps.filter((a) => (a.application_status ?? "pending") === "accepted"),
     [apps],
   );
+
+  const selectedApp = useMemo(
+    () => acceptedApps.find((a) => a.id === draft.applicationId) ?? null,
+    [acceptedApps, draft.applicationId],
+  );
+
+  const teamsCalendarUrl = "https://teams.microsoft.com/_#/calendarv2";
+
+  const inviteSnippet = useMemo(() => {
+    if (!selectedApp) return "";
+    const when = draft.startLocal
+      ? new Date(draft.startLocal).toLocaleString()
+      : "(pick date/time)";
+    return [
+      `Candidate: ${selectedApp.first_name} ${selectedApp.last_name}`,
+      `Email: ${selectedApp.email}`,
+      `Role: ${selectedApp.job_title}`,
+      `When: ${when}`,
+      `Duration: ${draft.durationMinutes} minutes`,
+      `Notes: ${draft.notes.trim() || "-"}`,
+    ].join("\n");
+  }, [selectedApp, draft.startLocal, draft.durationMinutes, draft.notes]);
 
   async function refresh() {
     setError(null);
@@ -130,9 +152,19 @@ export function AdminInterviewsPage() {
             Schedule interviews for accepted applications. When Google is configured, this creates a calendar invite + Meet link.
           </p>
         </div>
-        <Button onClick={openSchedule} disabled={loading}>
-          <Plus /> Schedule
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            nativeButton={false}
+            variant="outline"
+            render={<a href={teamsCalendarUrl} target="_blank" rel="noreferrer noopener" />}
+            disabled={loading}
+          >
+            <ExternalLink /> Schedule in Teams
+          </Button>
+          <Button onClick={openSchedule} disabled={loading}>
+            <Plus /> Schedule
+          </Button>
+        </div>
       </div>
 
       {error && (
@@ -211,11 +243,36 @@ export function AdminInterviewsPage() {
           <DialogHeader>
             <DialogTitle>Schedule interview</DialogTitle>
             <DialogDescription>
-              Select an accepted application, pick a time, and we’ll create the invite. If Google isn’t configured yet, the interview is still saved.
+              You can either save an interview here, or open Teams to schedule it manually.
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4">
+            <div className="flex flex-col sm:flex-row gap-2 justify-between">
+              <Button
+                nativeButton={false}
+                variant="outline"
+                render={<a href={teamsCalendarUrl} target="_blank" rel="noreferrer noopener" />}
+              >
+                <ExternalLink /> Open Teams calendar
+              </Button>
+              <Button
+                variant="outline"
+                disabled={!selectedApp}
+                onClick={async () => {
+                  if (!inviteSnippet) return;
+                  try {
+                    await navigator.clipboard.writeText(inviteSnippet);
+                    toast.success("Details copied.");
+                  } catch {
+                    toast.error("Could not copy to clipboard.");
+                  }
+                }}
+              >
+                <Copy /> Copy details
+              </Button>
+            </div>
+
             <div>
               <label className="text-sm font-medium text-foreground">
                 Accepted application
@@ -243,6 +300,21 @@ export function AdminInterviewsPage() {
                 </p>
               ) : null}
             </div>
+
+            {selectedApp ? (
+              <Card className="py-0 gap-0">
+                <CardHeader className="px-4 py-3 border-b border-border bg-muted/30">
+                  <p className="text-sm font-semibold text-foreground">
+                    Copy/paste into Teams invite
+                  </p>
+                </CardHeader>
+                <CardContent className="p-4">
+                  <pre className="text-xs whitespace-pre-wrap break-words text-muted-foreground font-mono bg-background border border-border rounded-md p-3">
+                    {inviteSnippet}
+                  </pre>
+                </CardContent>
+              </Card>
+            ) : null}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>

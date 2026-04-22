@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabaseBrowser } from "@/lib/supabaseBrowser";
 import type { Department } from "./types";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,7 +17,7 @@ function asDepartment(row: any): Department | null {
 }
 
 export async function listDepartments() {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseBrowser
     .from("departments")
     .select("*")
     .order("name", { ascending: true });
