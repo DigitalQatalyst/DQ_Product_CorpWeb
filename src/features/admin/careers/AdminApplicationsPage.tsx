@@ -419,8 +419,19 @@ export function AdminApplicationsPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Info label="Resume URL" value={selected.resume_url} mono />
-                  <Info label="Resume filename" value={selected.resume_filename} />
+                  <Info
+                    label="Resume"
+                    value={
+                      <a
+                        href={selected.resume_url}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="underline underline-offset-4 hover:text-foreground"
+                      >
+                        {selected.resume_filename}
+                      </a>
+                    }
+                  />
                   <Info
                     label="Additional docs URL"
                     value={selected.additional_documents_url ?? "—"}
