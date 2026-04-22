@@ -182,10 +182,10 @@ export function JobApplyPage({ jobId }: { jobId: string }) {
                 </AlertDescription>
               </Alert>
               <div className="flex flex-col sm:flex-row gap-3">
-                <Button render={<Link href="/jobs" /> } variant="outline">
+                <Button nativeButton={false} render={<Link href="/jobs" />} variant="outline">
                   View other roles
                 </Button>
-                <Button render={<Link href={`/jobs/${jobId}`} />}>
+                <Button nativeButton={false} render={<Link href={`/jobs/${jobId}`} />}>
                   Back to job details
                 </Button>
               </div>
