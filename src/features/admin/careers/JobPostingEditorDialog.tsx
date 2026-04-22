@@ -22,14 +22,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  arrayToLines,
-  linesToArray,
-  type Department,
-  type JobPostingCreateInput,
-  type JobPostingStatus,
-  type JobPostingType,
-} from "@/features/careers/api";
+
+import type { Department, JobPostingCreateInput, JobPostingStatus, JobPostingType } from "@/features/careers/hooks/useJobs";
+import { arrayToLines, linesToArray } from "@/features/careers/utils";
 
 export type JobPostingEditorMode =
   | { kind: "create" }

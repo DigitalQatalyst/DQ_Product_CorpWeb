@@ -1,4 +1,4 @@
-import type { ProductCtaType, ProductDetail } from "@/features/products/api/products.queries";
+import type { ProductCtaType, ProductDetail } from "@/features/products/hooks/useProductsAdmin";
 
 export type AdminProduct = {
   id: string;

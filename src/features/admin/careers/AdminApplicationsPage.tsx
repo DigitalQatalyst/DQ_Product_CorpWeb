@@ -36,12 +36,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { ApplicationStatus, AdminJobApplication } from "@/features/careers/api";
+import type { ApplicationStatus, AdminJobApplication } from "@/features/careers/hooks/useJobsAdmin";
 import {
   deleteAdminApplication,
   listAdminApplications,
   updateAdminApplication,
-} from "@/features/careers/api";
+} from "@/features/careers/hooks/useJobsAdmin";
 
 function statusPill(status: ApplicationStatus | null) {
   const s = status ?? "pending";

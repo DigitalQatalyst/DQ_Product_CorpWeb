@@ -24,8 +24,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import type { JobPostingType } from "../api/types";
-import { getJobPostingById } from "../api/jobPostings";
+import type { JobPostingType } from "@/features/careers/hooks/useJobs";
+import { getJobPostingById } from "@/features/careers/hooks/useJobs";
 
 export function JobDetailPage({ jobId }: { jobId: string }) {
   const [job, setJob] = useState<JobPostingType | null>(null);

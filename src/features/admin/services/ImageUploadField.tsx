@@ -6,7 +6,7 @@ import { ImageIcon, Loader, Upload, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { uploadServiceImage } from "@/features/services/api/serviceImages.admin";
+import { uploadServiceImage } from "@/features/services/hooks/useServiceCategories";
 
 interface Props {
   value: string;

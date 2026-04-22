@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getServiceById } from "@/features/services/api/services";
+import { getServiceById } from "@/features/services/hooks/useServices";
 import { ServiceDetailPage } from "@/features/services/marketplace/components/ServiceDetailPage";
 
 type Props = { params: Promise<{ serviceId: string }> };

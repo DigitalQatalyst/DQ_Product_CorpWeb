@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import { useAllServices, useCreateService, useUpdateService, useDeleteService } from "@/features/services/hooks/useServicesAdmin";
-import type { Service } from "@/features/services/api/services.admin";
+import type { Service } from "@/features/services/hooks/useServicesAdmin";
 import {
   ServicesAdminForm,
   serviceToFormValues,

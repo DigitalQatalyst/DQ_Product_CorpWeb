@@ -56,9 +56,8 @@ import {
 import {
   deleteJobPosting,
   listJobPostingsAdmin,
-  type JobPostingStatus,
-  type JobPostingType,
-} from "@/features/careers/api";
+} from "@/features/careers/hooks/useJobsAdmin";
+import type { JobPostingStatus, JobPostingType } from "@/features/careers/hooks/useJobs";
 
 const col = createColumnHelper<JobPostingType>();
 

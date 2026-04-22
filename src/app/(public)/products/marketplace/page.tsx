@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ProductsMarketplacePage } from "@/features/products/marketplace/ProductsMarketplacePage";
-import { listPublishedProducts } from "@/features/products/api/products.queries";
+import { listPublishedProducts } from "@/features/products/hooks/useProducts";
 
 export const metadata: Metadata = {
   title: "Products Marketplace | DigitalQatalyst",

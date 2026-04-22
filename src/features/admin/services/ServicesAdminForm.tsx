@@ -14,7 +14,7 @@ import { InputGroup, InputGroupAddon, InputGroupText, InputGroupTextarea } from 
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import type { Service } from "@/features/services/api/services.admin";
+import type { Service } from "@/features/services/hooks/useServicesAdmin";
 
 // ─── Schema ──────────────────────────────────────────────────────────────────
 

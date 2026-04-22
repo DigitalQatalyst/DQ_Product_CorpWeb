@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ meetUrl, calendarEventId, calendarHtmlLink }, { status: 201 });
     }
     lastErr = error.message ?? "Insert failed.";
-    const schemaish = lastErr.includes("column") || lastErr.includes("does not exist");
+    const schemaish = lastErr!.includes("column") || lastErr!.includes("does not exist");
     if (!schemaish) return NextResponse.json({ error: lastErr }, { status: 500 });
   }
 

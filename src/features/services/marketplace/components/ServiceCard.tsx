@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import type { Service } from "@/features/services/api/services";
+import type { Service } from "@/features/services/hooks/useServices";
 
 interface Props {
   service: Service;

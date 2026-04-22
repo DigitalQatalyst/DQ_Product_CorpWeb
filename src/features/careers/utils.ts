@@ -17,13 +17,9 @@ export function parseJsonbStringArray(val: unknown): string[] {
 }
 
 export function linesToArray(value: string): string[] {
-  return value
-    .split("\n")
-    .map((s) => s.trim())
-    .filter(Boolean);
+  return value.split("\n").map((s) => s.trim()).filter(Boolean);
 }
 
 export function arrayToLines(value: string[] | undefined | null): string {
   return (value ?? []).join("\n");
 }
-
