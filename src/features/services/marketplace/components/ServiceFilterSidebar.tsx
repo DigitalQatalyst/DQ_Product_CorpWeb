@@ -6,7 +6,34 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { FILTER_CONFIG } from "../data/service.data";
+
+const FILTER_CONFIG = [
+  {
+    id: "serviceCategory",
+    title: "Service Category",
+    options: [
+      { id: "digital-experience",     label: "Digital Experience" },
+      { id: "digital-core-dws",       label: "Digital Core / DWS" },
+      { id: "connected-intelligence", label: "Connected Intelligence" },
+    ],
+  },
+  {
+    id: "serviceAvailability",
+    title: "Service Availability",
+    options: [
+      { id: "available",   label: "Available" },
+      { id: "coming-soon", label: "Coming Soon" },
+    ],
+  },
+  {
+    id: "serviceReadiness",
+    title: "Service Readiness",
+    options: [
+      { id: "ready-to-order", label: "Ready to Order" },
+      { id: "has-dependency", label: "Has Dependency" },
+    ],
+  },
+] as const;
 
 type ActiveFilters = Record<string, string[]>;
 
