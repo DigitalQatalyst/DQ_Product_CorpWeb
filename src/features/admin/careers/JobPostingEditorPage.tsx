@@ -2,10 +2,19 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Loader } from "lucide-react";
+import { ArrowLeft, Loader, Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -20,6 +29,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import {
   createJobPosting,
+  createDepartment,
   getJobPostingById,
   listDepartments,
   updateJobPosting,
@@ -90,6 +100,9 @@ export function JobPostingEditorPage({ id }: Props) {
   const [loading, setLoading] = useState(isEdit);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [departmentDialogOpen, setDepartmentDialogOpen] = useState(false);
+  const [newDepartmentName, setNewDepartmentName] = useState("");
+  const [addingDepartment, setAddingDepartment] = useState(false);
 
   useEffect(() => {
     listDepartments()
@@ -129,6 +142,24 @@ export function JobPostingEditorPage({ id }: Props) {
 
   function set<K extends keyof JobPostingCreateInput>(key: K, value: JobPostingCreateInput[K]) {
     setDraft((d) => ({ ...d, [key]: value }));
+  }
+
+  async function handleAddDepartment() {
+    setError(null);
+    setAddingDepartment(true);
+    try {
+      const created = await createDepartment(newDepartmentName);
+      setDepartments((prev) =>
+        [...prev, created].sort((a, b) => a.name.localeCompare(b.name)),
+      );
+      set("department", created.name);
+      setNewDepartmentName("");
+      setDepartmentDialogOpen(false);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to add department.");
+    } finally {
+      setAddingDepartment(false);
+    }
   }
 
   return (
@@ -184,7 +215,44 @@ export function JobPostingEditorPage({ id }: Props) {
 
             {/* Department */}
             <div className="space-y-1.5">
-              <Label>Department</Label>
+              <div className="flex items-center justify-between gap-2">
+                <Label>Department</Label>
+                <Dialog
+                  open={departmentDialogOpen}
+                  onOpenChange={setDepartmentDialogOpen}
+                >
+                  <DialogTrigger
+                    render={
+                      <Button variant="outline" size="icon-sm" />
+                    }
+                  >
+                    <Plus />
+                    <span className="sr-only">Add department</span>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                      <DialogTitle>Add department</DialogTitle>
+                      <DialogDescription>
+                        Create a new department so it can be used for job postings.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-2">
+                      <Label>Department name</Label>
+                      <Input
+                        value={newDepartmentName}
+                        onChange={(e) => setNewDepartmentName(e.target.value)}
+                        placeholder="e.g. People & Culture"
+                      />
+                    </div>
+                    <DialogFooter showCloseButton>
+                      <Button onClick={handleAddDepartment} disabled={addingDepartment}>
+                        {addingDepartment && <Loader className="animate-spin" size={16} />}
+                        Add
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </div>
               <Select
                 value={draft.department}
                 onValueChange={(v) => v && set("department", v)}
