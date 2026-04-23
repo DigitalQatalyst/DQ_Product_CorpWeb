@@ -2,20 +2,7 @@
 
 import { useState } from "react";
 import { CheckCircle, ArrowRight } from "lucide-react";
-
-const SECTORS = [
-  { value: "experience-4-0", label: "Experience 4.0" },
-  { value: "agility-4-0", label: "Agility 4.0" },
-  { value: "farming-4-0", label: "Farming 4.0" },
-  { value: "plant-4-0", label: "Plant 4.0" },
-  { value: "infrastructure-4-0", label: "Infrastructure 4.0" },
-  { value: "government-4-0", label: "Government 4.0" },
-  { value: "hospitality-4-0", label: "Hospitality 4.0" },
-  { value: "retail-4-0", label: "Retail 4.0" },
-  { value: "service-4-0", label: "Services 4.0" },
-  { value: "logistics-4-0", label: "Logistics 4.0" },
-  { value: "wellness-4-0", label: "Wellness 4.0" },
-];
+import { useSectorGroups } from "@/features/services/hooks/useSectors";
 
 const INTERESTS = [
   { value: "general-enquiries", label: "General Enquiries" },
@@ -31,6 +18,8 @@ const inputCls =
 const labelCls = "block text-sm font-medium text-gray-700 mb-1";
 
 export function CallToAction() {
+  const { data: groups = [] } = useSectorGroups();
+  const sectors = groups.flatMap((g) => g.items.map((s) => ({ value: s.slug, label: s.name })));
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -214,7 +203,7 @@ export function CallToAction() {
                       onChange={set("sector")}
                     >
                       <option value="">Select an option</option>
-                      {SECTORS.map((o) => (
+                      {sectors.map((o) => (
                         <option key={o.value} value={o.value}>
                           {o.label}
                         </option>

@@ -32,6 +32,8 @@ import {
   ServiceCategoryInput,
 } from "@/features/services/hooks/useServiceCategories";
 import { ImageUploadField } from "./ImageUploadField";
+import { useSectorGroups } from "@/features/services/hooks/useSectors";
+import { Checkbox } from "@/components/ui/checkbox";
 
 // ─── Schema ──────────────────────────────────────────────────────────────────
 
@@ -254,6 +256,63 @@ function ArrayField<T extends Record<string, string>>({
           </CardContent>
         </Card>
       ))}
+    </div>
+  );
+}
+
+// ─── Sector Picker ───────────────────────────────────────────────────────────
+
+function SectorPicker({
+  selected,
+  onChange,
+}: {
+  selected: { title: string; description: string }[];
+  onChange: (cards: { title: string; description: string }[]) => void;
+}) {
+  const { data: groups = [], isLoading } = useSectorGroups();
+
+  const selectedTitles = new Set(selected.map((s) => s.title));
+
+  function toggle(name: string, subtitle: string) {
+    if (selectedTitles.has(name)) {
+      onChange(selected.filter((s) => s.title !== name));
+    } else {
+      onChange([...selected, { title: name, description: subtitle }]);
+    }
+  }
+
+  if (isLoading) return <p className="text-sm text-muted-foreground">Loading sectors…</p>;
+
+  return (
+    <div className="space-y-4">
+      <p className="text-sm font-medium">Industry Cards — select sectors to display</p>
+      {groups.map((group) => (
+        <div key={group.id}>
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+            {group.label}
+          </p>
+          <div className="grid grid-cols-2 gap-2">
+            {group.items.map((sector) => {
+              const checked = selectedTitles.has(sector.name);
+              return (
+                <label
+                  key={sector.id}
+                  className="flex items-center gap-3 px-3 py-2 rounded-md border border-border cursor-pointer hover:bg-muted transition-colors"
+                >
+                  <Checkbox
+                    checked={checked}
+                    onCheckedChange={() => toggle(sector.name, sector.subtitle)}
+                  />
+                  <span className="text-sm">{sector.name}</span>
+                </label>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+      {selected.length > 0 && (
+        <p className="text-xs text-muted-foreground">{selected.length} sector{selected.length !== 1 ? "s" : ""} selected</p>
+      )}
     </div>
   );
 }
@@ -888,43 +947,9 @@ export function ServiceCategoryForm({
             />
           </FieldGroup>
           <Separator />
-          <ArrayField
-            label="Industry Cards"
-            fields={
-              industryCards.fields as ((typeof industryCards.fields)[number] & {
-                id: string;
-              })[]
-            }
-            append={() => industryCards.append({ title: "", description: "" })}
-            remove={industryCards.remove}
-            renderItem={(i) => (
-              <>
-                <Controller
-                  name={`industryCards.${i}.title`}
-                  control={form.control}
-                  render={({ field }) => (
-                    <Field>
-                      <FieldLabel>Title</FieldLabel>
-                      <Input {...field} />
-                    </Field>
-                  )}
-                />
-                <Controller
-                  name={`industryCards.${i}.description`}
-                  control={form.control}
-                  render={({ field }) => (
-                    <Field>
-                      <FieldLabel>Description</FieldLabel>
-                      <InputGroupTextarea
-                        {...field}
-                        rows={2}
-                        className="resize-none"
-                      />
-                    </Field>
-                  )}
-                />
-              </>
-            )}
+          <SectorPicker
+            selected={form.watch("industryCards")}
+            onChange={(cards) => form.setValue("industryCards", cards)}
           />
         </TabsContent>
       </Tabs>

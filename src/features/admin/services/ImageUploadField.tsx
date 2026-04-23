@@ -11,9 +11,11 @@ import { uploadServiceImage } from "@/features/services/hooks/useServiceCategori
 interface Props {
   value: string;
   onChange: (value: string) => void;
-  /** Subfolder inside the service-images bucket, e.g. "hero", "blueprint" */
+  /** Subfolder inside the bucket */
   folder?: string;
   placeholder?: string;
+  /** Custom upload function — defaults to service-images bucket */
+  uploadFn?: (file: File, folder: string) => Promise<{ url: string }>;
 }
 
 export function ImageUploadField({
@@ -21,6 +23,7 @@ export function ImageUploadField({
   onChange,
   folder = "misc",
   placeholder = "https:// or /images/example.png",
+  uploadFn = uploadServiceImage,
 }: Props) {
   const [uploading, setUploading] = React.useState(false);
   const [dragOver, setDragOver] = React.useState(false);
@@ -29,7 +32,7 @@ export function ImageUploadField({
   async function handleFile(file: File) {
     setUploading(true);
     try {
-      const result = await uploadServiceImage(file, folder);
+      const result = await uploadFn(file, folder);
       onChange(result.url);
       toast.success("Image uploaded");
     } catch (err) {

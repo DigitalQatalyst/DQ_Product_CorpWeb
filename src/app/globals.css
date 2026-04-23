@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -313,3 +314,12 @@ body {
 
 /* TipTap editor mirrors prose-dq */
 .tiptap { color: hsl(var(--foreground)); font-family: var(--font-sans); }
+
+/* ── Tiptap editor ───────────────────────────────────── */
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: hsl(var(--muted-foreground));
+  pointer-events: none;
+  float: left;
+  height: 0;
+}

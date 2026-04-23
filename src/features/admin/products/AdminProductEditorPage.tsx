@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Image as ImageIcon, Loader, Save, Upload } from "lucide-react";
+import { ArrowLeft, Image as ImageIcon, Loader, Save } from "lucide-react";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -150,23 +150,13 @@ export function AdminProductEditorPage(props: Props) {
             <p className="text-sm text-muted-foreground">Marketplace fields + full detail-page content.</p>
           </div>
         </div>
-        <Button onClick={save} disabled={isSaving}>
-          {isSaving ? <Loader size={16} className="animate-spin" /> : <Save size={16} />}
-          {isSaving ? "Saving…" : "Save"}
-        </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
-          <Card className="py-0 gap-0">
+      <div className="grid grid-cols-1 xl:grid-cols-[1fr_300px] gap-6 items-start">
+        <div className="space-y-6">
+        <Card className="py-0 gap-0">
             <CardHeader className="px-6 py-4 border-b border-border bg-muted/30">
-              <div className="flex items-center justify-between">
-                <h2 className="font-semibold text-foreground">Basic info</h2>
-                <div className="flex items-center gap-2">
-                  <Switch checked={product.isPublished} onCheckedChange={(v) => setProduct((p) => ({ ...p, isPublished: v }))} />
-                  <span className="text-xs text-muted-foreground">{product.isPublished ? "Published" : "Unpublished"}</span>
-                </div>
-              </div>
+              <h2 className="font-semibold text-foreground">Basic info</h2>
             </CardHeader>
             <CardContent className="p-6 space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -199,29 +189,6 @@ export function AdminProductEditorPage(props: Props) {
                     {tags.map((t) => <Badge key={t} variant="secondary">{t}</Badge>)}
                   </div>
                 )}
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <div className="text-xs text-muted-foreground">CTA Type</div>
-                  <Select value={product.ctaType} onValueChange={(v) => setProduct((p) => ({ ...p, ctaType: v as ProductCtaType }))}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="waitlist">waitlist</SelectItem>
-                      <SelectItem value="demo">demo</SelectItem>
-                      <SelectItem value="tour">tour</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-1">
-                  <div className="text-xs text-muted-foreground">Image</div>
-                  <div className="flex items-center gap-2">
-                    <Input type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files?.[0] ?? null)} />
-                    <Button type="button" variant="outline" disabled><Upload size={16} /></Button>
-                  </div>
-                  <div className="text-xs text-muted-foreground flex items-center gap-2">
-                    <ImageIcon size={14} />{product.imagePath ?? "No image uploaded yet"}
-                  </div>
-                </div>
               </div>
             </CardContent>
           </Card>
@@ -326,16 +293,53 @@ export function AdminProductEditorPage(props: Props) {
           </Card>
         </div>
 
-        <div className="space-y-6">
+        {/* ── Right sticky panel ── */}
+        <div className="space-y-4 xl:sticky xl:top-6">
           <Card className="py-0 gap-0">
-            <CardHeader className="px-6 py-4 border-b border-border bg-muted/30">
-              <h2 className="font-semibold text-foreground">Preview hints</h2>
+            <CardHeader className="px-4 py-3 border-b border-border bg-muted/30">
+              <h2 className="font-semibold text-sm">Status</h2>
             </CardHeader>
-            <CardContent className="p-6 space-y-3 text-sm text-muted-foreground">
-              <div><span className="font-medium text-foreground">Marketplace card</span> uses name, code, description, tags, and image.</div>
-              <div><span className="font-medium text-foreground">Detail page</span> uses all sections on the left.</div>
+            <CardContent className="p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Published</span>
+                <Switch checked={product.isPublished} onCheckedChange={(v) => setProduct((p) => ({ ...p, isPublished: v }))} />
+              </div>
+              <Separator />
+              <div className="space-y-1">
+                <div className="text-xs text-muted-foreground">CTA Type</div>
+                <Select value={product.ctaType} onValueChange={(v) => setProduct((p) => ({ ...p, ctaType: v as ProductCtaType }))}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="waitlist">waitlist</SelectItem>
+                    <SelectItem value="demo">demo</SelectItem>
+                    <SelectItem value="tour">tour</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </CardContent>
           </Card>
+
+          <Card className="py-0 gap-0">
+            <CardHeader className="px-4 py-3 border-b border-border bg-muted/30">
+              <h2 className="font-semibold text-sm">Product Image</h2>
+            </CardHeader>
+            <CardContent className="p-4 space-y-3">
+              {product.imageUrl && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={product.imageUrl} alt="Product" className="w-full rounded-md object-cover aspect-video border border-border" />
+              )}
+              <Input type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files?.[0] ?? null)} />
+              {imageFile && <p className="text-xs text-muted-foreground truncate">{imageFile.name}</p>}
+              {product.imagePath && !imageFile && (
+                <p className="text-xs text-muted-foreground flex items-center gap-1"><ImageIcon size={12} />{product.imagePath}</p>
+              )}
+            </CardContent>
+          </Card>
+
+          <Button onClick={save} disabled={isSaving} className="w-full">
+            {isSaving ? <Loader size={16} className="animate-spin" /> : <Save size={16} />}
+            {isSaving ? "Saving…" : "Save Product"}
+          </Button>
         </div>
       </div>
     </div>

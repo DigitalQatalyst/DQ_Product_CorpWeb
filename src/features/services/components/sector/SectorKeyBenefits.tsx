@@ -1,5 +1,5 @@
 import { FileText, TrendingUp, Users, DollarSign } from "lucide-react";
-import type { SectorData } from "@/features/services/data/sectors.data";
+import type { SectorData } from "@/features/services/data/sectors.db";
 
 const defaultBenefits = [
   {
