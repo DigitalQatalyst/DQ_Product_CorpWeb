@@ -3,7 +3,7 @@
     "supabase": {
       "url": "https://mcp.supabase.com/mcp?project_ref=yorxrlwwcthkovbgvxfa",
       "headers": {
-        "Authorization": "Bearer sbp_b5807428108b1d79b1bba796eb184e43b2bcebe6"
+        "Authorization": "Bearer sbp_26ee41ac58b76f9295a9c039a91e9ed334ededba"
       }
     }
   }

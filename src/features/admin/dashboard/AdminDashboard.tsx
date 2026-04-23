@@ -15,7 +15,6 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { supabaseBrowser } from "@/lib/supabaseBrowser";
 
 interface Stats {
   totalApplications: number;
@@ -81,33 +80,11 @@ export function AdminDashboard() {
   useEffect(() => {
     async function load() {
       setLoading(true);
-      const now = new Date().toISOString();
 
-      const [appsRes, interviewsRes, postingsRes, usersRes] = await Promise.all(
-        [
-          supabaseBrowser
-            .from("job_applications")
-            .select("*")
-            .order("applied_at", { ascending: false }),
-          supabaseBrowser
-            .from("interviews")
-            .select("*")
-            .order("scheduled_date", { ascending: false }),
-          supabaseBrowser
-            .from("job_postings")
-            .select("*")
-            .order("created_at", { ascending: false }),
-          supabaseBrowser
-            .from("admin_users")
-            .select("*")
-            .order("created_at", { ascending: false }),
-        ],
-      );
+      const res = await fetch("/api/admin/dashboard", { credentials: "include" });
+      if (!res.ok) { setLoading(false); return; }
 
-      const applications = (appsRes.data ?? []) as RecentApp[];
-      const interviewRows = (interviewsRes.data ?? []) as RecentInterview[];
-      const postingRows = (postingsRes.data ?? []) as RecentPosting[];
-      const adminUsers = (usersRes.data ?? []) as Array<{ is_active: boolean }>;
+      const { applications, interviews, postings, adminUsers } = await res.json();
 
       if (applications.length > 0) {
         setApps(getRecentApplications(applications));
@@ -117,22 +94,20 @@ export function AdminDashboard() {
           pendingReview: countPendingApplications(applications),
         }));
       }
-      if (interviewRows.length > 0) {
-        const upcomingInterviews = getUpcomingInterviews(interviewRows, now);
-
-        setInterviews(upcomingInterviews);
+      if (interviews.length > 0) {
+        setInterviews(interviews.slice(0, 3));
         setStats((current) => ({
           ...current,
-          totalInterviews: interviewRows.length,
-          upcomingInterviews: upcomingInterviews.length,
+          totalInterviews: interviews.length,
+          upcomingInterviews: interviews.length,
         }));
       }
-      if (postingRows.length > 0) {
-        setPostings(getRecentPostings(postingRows));
+      if (postings.length > 0) {
+        setPostings(getRecentPostings(postings));
         setStats((current) => ({
           ...current,
-          totalPostings: postingRows.length,
-          openPositions: countOpenPositions(postingRows),
+          totalPostings: postings.length,
+          openPositions: countOpenPositions(postings),
         }));
       }
       if (adminUsers.length > 0) {
@@ -402,14 +377,6 @@ function countPendingApplications(applications: RecentApp[]) {
   ).length;
 }
 
-function getUpcomingInterviews(interviews: RecentInterview[], nowIso: string) {
-  return interviews
-    .filter(
-      ({ scheduled_date, status }) =>
-        status === "scheduled" && scheduled_date > nowIso,
-    )
-    .slice(0, 3);
-}
 
 function getRecentPostings(postings: RecentPosting[]) {
   return postings.slice(0, 3);
