@@ -5,16 +5,27 @@ import { ImageIcon, Loader, Upload, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { uploadServiceImage } from "@/features/services/hooks/useServiceCategories";
+import { createClient } from "@supabase/supabase-js";
 
 interface Props {
   value: string;
   onChange: (value: string) => void;
-  /** Subfolder inside the bucket */
   folder?: string;
   placeholder?: string;
-  /** Custom upload function — defaults to service-images bucket */
-  uploadFn?: (file: File, folder: string) => Promise<{ url: string }>;
+  bucket?: string;
+}
+
+async function uploadDirect(file: File, folder: string, bucket: string): Promise<string> {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  );
+  const ext = file.name.split(".").pop() ?? "png";
+  const path = `${folder}/${Date.now()}.${ext}`;
+  const { error } = await supabase.storage.from(bucket).upload(path, file, { upsert: true, contentType: file.type });
+  if (error) throw new Error(error.message);
+  const { data } = supabase.storage.from(bucket).getPublicUrl(path);
+  return data.publicUrl;
 }
 
 export function ImageUploadField({
@@ -22,7 +33,7 @@ export function ImageUploadField({
   onChange,
   folder = "misc",
   placeholder = "https:// or /images/example.png",
-  uploadFn = uploadServiceImage,
+  bucket = "service-images",
 }: Props) {
   const [uploading, setUploading] = React.useState(false);
   const [dragOver, setDragOver] = React.useState(false);
@@ -31,8 +42,8 @@ export function ImageUploadField({
   async function handleFile(file: File) {
     setUploading(true);
     try {
-      const result = await uploadFn(file, folder);
-      onChange(result.url);
+      const url = await uploadDirect(file, folder, bucket);
+      onChange(url);
       toast.success("Image uploaded");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Upload failed");

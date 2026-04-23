@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAdminUserId } from "@/lib/api-admin-auth";
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 
+export const config = { api: { bodyParser: { sizeLimit: "10mb" } } };
+
 const ALLOWED_IMAGE = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
 const ALLOWED_VIDEO = new Set(["video/mp4", "video/webm", "video/ogg"]);
 

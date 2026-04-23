@@ -666,7 +666,7 @@ export function SectorAdminForm({
                 onChange={(val) => set("heroImage", val)}
                 folder="sector-hero"
                 placeholder="/images/hero.png"
-                uploadFn={uploadSectorMedia}
+                bucket="sector-media"
               />
             </div>
             <div className="space-y-1">
@@ -676,7 +676,7 @@ export function SectorAdminForm({
                 onChange={(val) => set("overviewImage", val)}
                 folder="sector-overview"
                 placeholder="/images/overview.png"
-                uploadFn={uploadSectorMedia}
+                bucket="sector-media"
               />
             </div>
             <div className="space-y-1">
