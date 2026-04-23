@@ -38,7 +38,7 @@ function TestimonialCarousel() {
   const t = testimonials[current];
 
   return (
-    <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-white/20 relative">
+    <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 md:p-12 relative">
       <div className="text-center mb-8">
         <h3 className="text-2xl font-bold text-white mb-6">Client Testimonials</h3>
 
@@ -149,7 +149,7 @@ export function ProofAndTrust() {
               return (
                 <div
                   key={i}
-                  className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-white/20 hover:bg-white/15"
+                  className="bg-white/10 backdrop-blur-sm rounded-lg p-6 text-center shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 hover:bg-white/15"
                 >
                   <div className="flex justify-center mb-3">
                     <Icon size={24} className="text-[#FF6B4D]" />

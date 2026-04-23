@@ -27,7 +27,7 @@ const SERVICES = [
     description: "Discover exciting career opportunities and join our team of digital transformation experts",
     icon: <Users />,
     href: "/careers",
-    isActive: true,
+    isActive: false,
   },
 ];
 
