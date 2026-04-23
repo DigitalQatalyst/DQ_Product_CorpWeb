@@ -1,4 +1,4 @@
-import type { SectorData } from "@/features/services/data/sectors.data";
+import type { SectorData } from "@/features/services/data/sectors.db";
 
 const defaultFocusAreas = [
   {

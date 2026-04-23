@@ -2,7 +2,7 @@ import { CheckCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import type { SectorData } from "@/features/services/data/sectors.data";
+import type { SectorData } from "@/features/services/data/sectors.db";
 
 export function SectorContent({ sector }: { sector: SectorData }) {
   return (

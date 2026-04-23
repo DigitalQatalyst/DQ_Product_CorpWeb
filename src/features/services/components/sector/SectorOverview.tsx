@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Play } from "lucide-react";
-import type { SectorData } from "@/features/services/data/sectors.data";
+import type { SectorData } from "@/features/services/data/sectors.db";
 
 export function SectorOverview({ sector }: { sector: SectorData }) {
   return (

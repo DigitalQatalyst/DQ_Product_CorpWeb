@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { getSectorsByGroup } from "@/data/sectors";
+import { listSectorGroups } from "@/features/services/hooks/useSectors";
 
-const groups = getSectorsByGroup();
+export async function SectorDomains() {
+  const groups = await listSectorGroups();
 
-export function SectorDomains() {
   return (
     <section className="py-20 bg-muted/20">
       <div className="container mx-auto px-6">
@@ -36,7 +36,7 @@ export function SectorDomains() {
                     key={item.slug}
                     className="px-4 py-3 bg-primary/5 rounded-xl border border-primary/10"
                   >
-                    <div className="text-sm font-medium text-foreground mb-1">{item.title}</div>
+                    <div className="text-sm font-medium text-foreground mb-1">{item.name}</div>
                     <Link
                       href={`/services/sectors/${item.slug}`}
                       className="text-secondary hover:text-secondary/80 text-xs font-semibold transition-colors"

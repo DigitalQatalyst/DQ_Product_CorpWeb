@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ChevronRight } from "lucide-react";
-import type { SectorData } from "@/features/services/data/sectors.data";
+import type { SectorData } from "@/features/services/data/sectors.db";
 
 export function SectorHero({ sector }: { sector: SectorData }) {
   return (
