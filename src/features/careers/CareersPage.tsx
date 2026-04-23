@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { CallToAction } from "@/features/landing/components/CallToAction";
 import { careerStats, benefits, values } from "./data/careers.data";
 
 export function CareersPage() {
@@ -136,8 +135,6 @@ export function CareersPage() {
           </div>
         </div>
       </section>
-
-      <CallToAction />
     </div>
   );
 }

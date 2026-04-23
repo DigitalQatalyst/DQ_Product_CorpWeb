@@ -66,7 +66,7 @@ export function TransformationStats() {
               results.
             </p>
             <Link
-              href="/consultation"
+              href="#consultation"
               className="inline-flex items-center px-6 py-3 bg-secondary hover:bg-secondary/80 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
               Book Your Free Consultation

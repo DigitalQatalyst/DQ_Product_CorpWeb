@@ -57,7 +57,7 @@ export function ProductDetailPage({ product, detail }: Props) {
 
   return (
     <>
-      <div className="container mx-auto px-4 md:px-6 py-4">
+      <div className="container mx-auto px-4 md:px-6 py-8">
         <div className="pl-4">
         <nav
           aria-label="Breadcrumb"
