@@ -7,12 +7,12 @@ import {
   Briefcase,
   FileText,
   Users,
-  Calendar,
   TrendingUp,
   Settings,
   LogOut,
   Package,
   Layers,
+  Globe,
 } from "lucide-react";
 import {
   Sidebar,
@@ -32,6 +32,7 @@ const navItems = [
   { label: "Products", href: "/admin/products", icon: Package },
   { label: "Service Categories", href: "/admin/service-categories", icon: Layers },
   { label: "Services", href: "/admin/services", icon: Briefcase },
+  { label: "Sectors", href: "/admin/sectors", icon: Globe },
   { label: "Profiles", href: "/admin/profiles", icon: Users },
   { label: "Job Postings", href: "/admin/job-postings", icon: Briefcase },
   { label: "Applications", href: "/admin/applications", icon: FileText },
