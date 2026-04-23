@@ -69,7 +69,8 @@ export function ProductsMarketplacePage({
   );
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 md:px-6 py-8">
+      <div className="pl-4">
       {/* Breadcrumb */}
       <nav
         aria-label="Breadcrumb"
@@ -199,6 +200,7 @@ export function ProductsMarketplacePage({
             </CardContent>
           </Card>
         </div>
+      </div>
       </div>
     </div>
   );

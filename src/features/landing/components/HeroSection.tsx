@@ -163,7 +163,7 @@ export function HeroSection() {
         {/* CTA Button */}
         <Link
           href="/services"
-          className="h-14 px-8 bg-[#FF6B4D] text-white font-bold rounded-lg hover:bg-[#E63D1A] transition-all transform hover:-translate-y-1 hover:shadow-xl inline-flex items-center gap-2 group"
+          className="inline-flex items-center gap-2 h-14 px-8 bg-secondary text-secondary-foreground font-bold rounded-lg hover:-translate-y-1 hover:shadow-xl transition-all group"
         >
           <span className="relative z-10">Explore Now</span>
           <ArrowRight

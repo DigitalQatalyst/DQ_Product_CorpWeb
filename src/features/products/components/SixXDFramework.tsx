@@ -1,5 +1,3 @@
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { sixXDFramework } from "../data/products.data";
 
@@ -25,13 +23,7 @@ export function SixXDFramework() {
                   <span className="text-secondary font-bold text-2xl">{item.number}</span>
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-4">{item.title}</h3>
-                <p className="text-muted-foreground flex-1 mb-6 leading-relaxed">{item.description}</p>
-                <Link
-                  href={item.href}
-                  className="inline-flex items-center gap-2 text-secondary hover:text-secondary/80 font-medium transition-colors mt-auto"
-                >
-                  Read more <ArrowRight size={16} />
-                </Link>
+                <p className="text-muted-foreground flex-1 leading-relaxed">{item.description}</p>
               </CardContent>
             </Card>
           ))}

@@ -17,7 +17,7 @@ export function MarketplaceBanner() {
           <div className="flex justify-center">
             <Link
               href="/services/marketplace"
-              className="h-14 px-8 bg-secondary hover:bg-secondary/90 text-secondary-foreground font-bold rounded-lg transition-all shadow-lg hover:-translate-y-1 hover:shadow-xl inline-flex items-center gap-2 group"
+              className="inline-flex items-center gap-2 h-14 px-8 bg-secondary text-secondary-foreground font-bold rounded-lg hover:-translate-y-1 hover:shadow-xl transition-all group"
             >
               Browse Services
               <ArrowRight

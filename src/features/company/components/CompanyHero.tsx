@@ -19,7 +19,7 @@ export function CompanyHero() {
           </p>
           <Link
             href="/consultation"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-secondary text-secondary-foreground font-bold rounded-full hover:bg-secondary/80 transition-all hover:-translate-y-1 hover:shadow-xl group"
+            className="inline-flex items-center gap-2 h-14 px-8 bg-secondary text-secondary-foreground font-bold rounded-lg hover:-translate-y-1 hover:shadow-xl transition-all group"
           >
             Start Your Transformation Journey
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
