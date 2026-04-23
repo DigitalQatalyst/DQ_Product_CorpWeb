@@ -134,12 +134,82 @@ export async function deleteDepartment(id: Department["id"]): Promise<void> {
   await apiFetch(`/api/admin/departments/${id}`, { method: "DELETE" });
 }
 
+// ─── Locations / Employment types / Levels ────────────────────────────────────
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function asNamedOption(row: any): Department | null {
+  const id = row?.id;
+  const name = row?.name ?? row?.title ?? row?.label ?? row?.slug ?? null;
+  if ((typeof id !== "number" && typeof id !== "string") || !name || typeof name !== "string") return null;
+  return { id, name };
+}
+
+export async function listJobLocations(): Promise<Department[]> {
+  const data = await apiFetch("/api/admin/job-locations");
+  const mapped = (data as unknown[]).map(asNamedOption).filter(Boolean) as Department[];
+  return mapped.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+export async function createJobLocation(name: string): Promise<Department> {
+  const data = await apiFetch("/api/admin/job-locations", {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name }),
+  });
+  const opt = asNamedOption(data);
+  if (!opt) throw new Error("Failed to create location.");
+  return opt;
+}
+
+export async function deleteJobLocation(id: Department["id"]): Promise<void> {
+  await apiFetch(`/api/admin/job-locations/${id}`, { method: "DELETE" });
+}
+
+export async function listEmploymentTypes(): Promise<Department[]> {
+  const data = await apiFetch("/api/admin/employment-types");
+  const mapped = (data as unknown[]).map(asNamedOption).filter(Boolean) as Department[];
+  return mapped.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+export async function createEmploymentType(name: string): Promise<Department> {
+  const data = await apiFetch("/api/admin/employment-types", {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name }),
+  });
+  const opt = asNamedOption(data);
+  if (!opt) throw new Error("Failed to create employment type.");
+  return opt;
+}
+
+export async function deleteEmploymentType(id: Department["id"]): Promise<void> {
+  await apiFetch(`/api/admin/employment-types/${id}`, { method: "DELETE" });
+}
+
+export async function listJobLevels(): Promise<Department[]> {
+  const data = await apiFetch("/api/admin/job-levels");
+  const mapped = (data as unknown[]).map(asNamedOption).filter(Boolean) as Department[];
+  return mapped.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+export async function createJobLevel(name: string): Promise<Department> {
+  const data = await apiFetch("/api/admin/job-levels", {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name }),
+  });
+  const opt = asNamedOption(data);
+  if (!opt) throw new Error("Failed to create job level.");
+  return opt;
+}
+
+export async function deleteJobLevel(id: Department["id"]): Promise<void> {
+  await apiFetch(`/api/admin/job-levels/${id}`, { method: "DELETE" });
+}
+
 // ─── Hooks ────────────────────────────────────────────────────────────────────
 
 export const JOB_POSTINGS_ADMIN_KEY = ["job-postings-admin"] as const;
 export const APPLICATIONS_ADMIN_KEY = ["applications-admin"] as const;
 export const INTERVIEWS_ADMIN_KEY = ["interviews-admin"] as const;
 export const DEPARTMENTS_KEY = ["departments"] as const;
+export const JOB_LOCATIONS_KEY = ["job-locations"] as const;
+export const EMPLOYMENT_TYPES_KEY = ["employment-types"] as const;
+export const JOB_LEVELS_KEY = ["job-levels"] as const;
 
 export function useAdminJobPostings() {
   return useQuery({ queryKey: JOB_POSTINGS_ADMIN_KEY, queryFn: listJobPostingsAdmin });
@@ -219,5 +289,65 @@ export function useDeleteDepartment() {
   return useMutation({
     mutationFn: (id: string | number) => deleteDepartment(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: DEPARTMENTS_KEY }),
+  });
+}
+
+export function useJobLocations() {
+  return useQuery({ queryKey: JOB_LOCATIONS_KEY, queryFn: listJobLocations });
+}
+
+export function useCreateJobLocation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (name: string) => createJobLocation(name),
+    onSuccess: () => qc.invalidateQueries({ queryKey: JOB_LOCATIONS_KEY }),
+  });
+}
+
+export function useDeleteJobLocation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string | number) => deleteJobLocation(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: JOB_LOCATIONS_KEY }),
+  });
+}
+
+export function useEmploymentTypes() {
+  return useQuery({ queryKey: EMPLOYMENT_TYPES_KEY, queryFn: listEmploymentTypes });
+}
+
+export function useCreateEmploymentType() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (name: string) => createEmploymentType(name),
+    onSuccess: () => qc.invalidateQueries({ queryKey: EMPLOYMENT_TYPES_KEY }),
+  });
+}
+
+export function useDeleteEmploymentType() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string | number) => deleteEmploymentType(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: EMPLOYMENT_TYPES_KEY }),
+  });
+}
+
+export function useJobLevels() {
+  return useQuery({ queryKey: JOB_LEVELS_KEY, queryFn: listJobLevels });
+}
+
+export function useCreateJobLevel() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (name: string) => createJobLevel(name),
+    onSuccess: () => qc.invalidateQueries({ queryKey: JOB_LEVELS_KEY }),
+  });
+}
+
+export function useDeleteJobLevel() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string | number) => deleteJobLevel(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: JOB_LEVELS_KEY }),
   });
 }
