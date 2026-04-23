@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import { ImageIcon, Loader, Upload, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -73,12 +72,11 @@ export function ImageUploadField({
 
         {value ? (
           <>
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src={value}
               alt="Preview"
-              fill
-              className="object-contain p-2"
-              unoptimized={value.startsWith("/")}
+              className="absolute inset-0 w-full h-full object-contain p-2"
             />
             {/* Hover overlay */}
             <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 hover:opacity-100 transition-opacity">
