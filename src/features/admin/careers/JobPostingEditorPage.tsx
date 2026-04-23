@@ -42,14 +42,11 @@ import {
   createJobPosting,
   createDepartment,
   deleteDepartment,
-  getJobPostingById,
   listDepartments,
   updateJobPosting,
-  type Department,
-  type JobPostingCreateInput,
-  type JobPostingStatus,
-  type JobPostingType,
-} from "@/features/careers/api";
+} from "@/features/careers/hooks/useJobsAdmin";
+import { getJobPostingById } from "@/features/careers/hooks/useJobs";
+import type { Department, JobPostingCreateInput, JobPostingStatus, JobPostingType } from "@/features/careers/hooks/useJobs";
 
 function arrayToLines(arr: string[] | undefined | null) {
   return (arr ?? []).join("\n");

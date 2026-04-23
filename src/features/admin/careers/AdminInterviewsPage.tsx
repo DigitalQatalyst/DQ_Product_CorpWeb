@@ -30,7 +30,7 @@ import {
   listAdminInterviews,
   scheduleAdminInterview,
   type AdminJobApplication,
-} from "@/features/careers/api";
+} from "@/features/careers/hooks/useJobsAdmin";
 
 type Draft = {
   applicationId: string;

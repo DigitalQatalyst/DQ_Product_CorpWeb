@@ -14,7 +14,7 @@ import type { ProductType } from "@/types/product";
 import type {
   ProductCtaType,
   ProductDetail,
-} from "@/features/products/api/products.queries";
+} from "@/features/products/hooks/useProducts";
 
 function CtaButton({
   product,

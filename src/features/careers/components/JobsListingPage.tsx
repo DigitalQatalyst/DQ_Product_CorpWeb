@@ -38,8 +38,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import type { JobPostingType } from "../api/types";
-import { listPublishedJobPostings } from "../api/jobPostings";
+import type { JobPostingType } from "@/features/careers/hooks/useJobs";
+import { listPublishedJobPostings } from "@/features/careers/hooks/useJobs";
 
 type Filters = { department: string[]; location: string[]; type: string[] };
 

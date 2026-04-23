@@ -22,7 +22,7 @@ import {
   useServiceCategories, useCreateServiceCategory,
   useUpdateServiceCategory, useDeleteServiceCategory,
 } from "@/features/services/hooks/useServiceCategories";
-import type { ServiceCategory } from "@/features/services/api/serviceCategories";
+import type { ServiceCategory } from "@/features/services/hooks/useServiceCategories";
 import {
   ServiceCategoryForm,
   categoryToFormValues,

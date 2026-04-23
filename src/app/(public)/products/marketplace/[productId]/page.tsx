@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ProductDetailPage } from "@/features/products/detail/ProductDetailPage";
 import { notFound } from "next/navigation";
-import { getPublishedProductWithDetails } from "@/features/products/api/products.queries";
+import { getPublishedProductWithDetails } from "@/features/products/hooks/useProducts";
 
 type Props = { params: Promise<{ productId: string }> };
 

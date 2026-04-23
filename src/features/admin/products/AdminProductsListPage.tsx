@@ -1,68 +1,35 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, RefreshCw } from "lucide-react";
+import { Plus, RefreshCw, Loader } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch";
-import type { AdminProduct } from "./admin-products.types";
-import { listAdminProducts, patchAdminProduct } from "@/features/products/api/products.admin";
-
-type LoadState =
-  | { kind: "idle" }
-  | { kind: "loading" }
-  | { kind: "error"; message: string }
-  | { kind: "ready" };
+import { useAdminProducts, usePatchProduct } from "@/features/products/hooks/useProductsAdmin";
 
 export function AdminProductsListPage() {
   const router = useRouter();
-  const [state, setState] = useState<LoadState>({ kind: "idle" });
-  const [products, setProducts] = useState<AdminProduct[]>([]);
+  const { data: products = [], isLoading, error, refetch } = useAdminProducts();
+  const patchMutation = usePatchProduct();
   const [q, setQ] = useState("");
 
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();
     if (!query) return products;
-    return products.filter((p) => {
-      return (
-        p.id.toLowerCase().includes(query) ||
-        p.name.toLowerCase().includes(query) ||
-        p.code.toLowerCase().includes(query) ||
-        p.category.toLowerCase().includes(query)
-      );
-    });
+    return products.filter((p) =>
+      p.id.toLowerCase().includes(query) ||
+      p.name.toLowerCase().includes(query) ||
+      p.code.toLowerCase().includes(query) ||
+      p.category.toLowerCase().includes(query),
+    );
   }, [products, q]);
 
-  async function load() {
-    setState({ kind: "loading" });
-    try {
-      const products = await listAdminProducts();
-      setProducts(products);
-      setState({ kind: "ready" });
-    } catch (e) {
-      setState({ kind: "error", message: e instanceof Error ? e.message : "Failed to load" });
-    }
-  }
-
-  useEffect(() => {
-    void load();
-  }, []);
-
-  async function togglePublish(productId: string, next: boolean) {
-    setProducts((prev) =>
-      prev.map((p) => (p.id === productId ? { ...p, isPublished: next } : p)),
-    );
-    try {
-      await patchAdminProduct(productId, { isPublished: next });
-    } catch {
-      setProducts((prev) =>
-        prev.map((p) => (p.id === productId ? { ...p, isPublished: !next } : p)),
-      );
-    }
+  function togglePublish(productId: string, next: boolean) {
+    patchMutation.mutate({ id: productId, patch: { isPublished: next } });
   }
 
   return (
@@ -70,19 +37,21 @@ export function AdminProductsListPage() {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Products</h1>
-          <p className="text-sm text-muted-foreground">
-            Manage marketplace products and product detail pages.
-          </p>
+          <p className="text-sm text-muted-foreground">Manage marketplace products and product detail pages.</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={load}>
-            <RefreshCw size={16} /> Refresh
+          <Button variant="outline" onClick={() => refetch()} disabled={isLoading}>
+            <RefreshCw size={16} className={isLoading ? "animate-spin" : ""} /> Refresh
           </Button>
           <Button onClick={() => router.push("/admin/products/new")}>
             <Plus size={16} /> New product
           </Button>
         </div>
       </div>
+
+      {error && (
+        <div className="text-sm text-destructive">{error instanceof Error ? error.message : "Failed to load"}</div>
+      )}
 
       <Card className="py-0 gap-0">
         <CardHeader className="px-6 py-4 border-b border-border bg-muted/30 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -99,15 +68,10 @@ export function AdminProductsListPage() {
           </div>
         </CardHeader>
         <CardContent className="p-0">
-          {(() => {
-            if (state.kind === "loading") {
-              return <div className="p-6 text-sm text-muted-foreground">Loading…</div>;
-            }
-            if (state.kind === "error") {
-              return <div className="p-6 text-sm text-destructive">{state.message}</div>;
-            }
-            return (
-              <Table>
+          {isLoading ? (
+            <div className="flex justify-center py-16"><Loader className="animate-spin text-primary" size={28} /></div>
+          ) : (
+            <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>ID</TableHead>
@@ -131,30 +95,21 @@ export function AdminProductsListPage() {
                     <TableRow key={p.id}>
                       <TableCell className="font-medium">{p.id}</TableCell>
                       <TableCell className="max-w-[360px] truncate">{p.name}</TableCell>
-                      <TableCell>
-                        <Badge variant="secondary">{p.code}</Badge>
-                      </TableCell>
+                      <TableCell><Badge variant="secondary">{p.code}</Badge></TableCell>
                       <TableCell>{p.category}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{p.ctaType}</Badge>
-                      </TableCell>
+                      <TableCell><Badge variant="outline">{p.ctaType}</Badge></TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
                           <Switch
                             checked={p.isPublished}
                             onCheckedChange={(next) => togglePublish(p.id, next)}
+                            disabled={patchMutation.isPending}
                           />
-                          <span className="text-xs text-muted-foreground">
-                            {p.isPublished ? "Yes" : "No"}
-                          </span>
+                          <span className="text-xs text-muted-foreground">{p.isPublished ? "Yes" : "No"}</span>
                         </div>
                       </TableCell>
                       <TableCell className="text-right">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => router.push(`/admin/products/${encodeURIComponent(p.id)}`)}
-                        >
+                        <Button variant="outline" size="sm" onClick={() => router.push(`/admin/products/${encodeURIComponent(p.id)}`)}>
                           Edit
                         </Button>
                       </TableCell>
@@ -162,12 +117,10 @@ export function AdminProductsListPage() {
                   ))
                 )}
               </TableBody>
-              </Table>
-            );
-          })()}
+            </Table>
+          )}
         </CardContent>
       </Card>
     </div>
   );
 }
-

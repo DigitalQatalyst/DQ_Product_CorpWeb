@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getServiceCategoryBySlug } from "@/features/services/api/serviceCategories";
+import { getServiceCategoryBySlug } from "@/features/services/hooks/useServiceCategories";
 import { ServiceCategoryPage } from "@/features/services/components/ServiceCategoryPage";
 
 type Props = { params: Promise<{ slug: string }> };

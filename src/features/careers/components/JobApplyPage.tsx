@@ -9,9 +9,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import type { JobPostingType } from "@/features/careers/api/types";
-import { createJobApplication } from "@/features/careers/api";
-import { getJobPostingById } from "@/features/careers/api/jobPostings";
+import type { JobPostingType } from "@/features/careers/hooks/useJobs";
+import { createJobApplication, getJobPostingById } from "@/features/careers/hooks/useJobs";
 
 type FormState = {
   firstName: string;
