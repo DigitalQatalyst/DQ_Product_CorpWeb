@@ -1,8 +1,19 @@
-import Link from "next/link";
-import { listSectorGroups } from "@/features/services/hooks/useSectors";
+"use client";
 
-export async function SectorDomains() {
-  const groups = await listSectorGroups();
+import Link from "next/link";
+import { Loader } from "lucide-react";
+import { useSectorGroups } from "@/features/services/hooks/useSectors";
+
+export function SectorDomains() {
+  const { data: groups = [], isLoading } = useSectorGroups();
+
+  if (isLoading) {
+    return (
+      <section className="py-20 bg-muted/20 flex justify-center">
+        <Loader className="animate-spin text-primary" size={28} />
+      </section>
+    );
+  }
 
   return (
     <section className="py-20 bg-muted/20">
