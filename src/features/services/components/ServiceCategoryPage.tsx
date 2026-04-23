@@ -125,7 +125,7 @@ export function ServiceCategoryPage({ slug }: { slug: string }) {
       {cat.methodSteps.length > 0 && (
         <section className="py-20 bg-muted/20">
           <div className="container mx-auto px-4">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="grid lg:grid-cols-2 gap-16 items-stretch">
               <div className="space-y-8">
                 <div>
                   <p className="text-sm uppercase tracking-widest text-primary mb-3">{cat.methodEyebrow}</p>
@@ -152,8 +152,8 @@ export function ServiceCategoryPage({ slug }: { slug: string }) {
                 </Link>
               </div>
               {cat.methodImage && (
-                <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-                  <Image src={cat.methodImage} alt={cat.methodTitle} width={600} height={500} className="w-full object-cover" />
+                <div className="relative rounded-3xl overflow-hidden shadow-2xl self-stretch min-h-[400px]">
+                  <Image src={cat.methodImage} alt={cat.methodTitle} fill className="object-cover" />
                 </div>
               )}
             </div>

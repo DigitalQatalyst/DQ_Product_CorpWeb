@@ -8,7 +8,7 @@ export interface SectorGroupWithItems {
   label: string;
   description: string;
   sort_order: number;
-  items: Array<{ id: string; slug: string; name: string }>;
+  items: Array<{ id: string; slug: string; name: string; subtitle: string }>;
 }
 
 // ─── API helpers ──────────────────────────────────────────────────────────────
