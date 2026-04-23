@@ -7,6 +7,7 @@ import {
   MapPin,
   Clock,
   ArrowLeft,
+  ArrowRight,
   CheckCircle,
   Building2,
   Calendar,
@@ -154,9 +155,10 @@ export function JobDetailPage({ jobId }: { jobId: string }) {
               <div className="flex flex-wrap gap-3">
                 <Link
                   href={`/jobs/${jobId}/apply`}
-                  className="px-6 py-3 bg-secondary text-secondary-foreground font-semibold rounded-lg hover:bg-secondary/80 transition-colors shadow-md"
+                  className="inline-flex items-center gap-2 h-14 px-8 bg-secondary text-secondary-foreground font-bold rounded-lg hover:-translate-y-1 hover:shadow-xl transition-all group"
                 >
                   Apply Now
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <button
                   onClick={handleShare}
@@ -312,9 +314,10 @@ export function JobDetailPage({ jobId }: { jobId: string }) {
             </p>
             <Link
               href={`/jobs/${jobId}/apply`}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-secondary text-secondary-foreground font-semibold rounded-lg hover:bg-secondary/80 transition-colors shadow-md text-lg"
+              className="inline-flex items-center gap-2 h-14 px-8 bg-secondary text-secondary-foreground font-bold rounded-lg hover:-translate-y-1 hover:shadow-xl transition-all group"
             >
               Apply for this Position
+              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </CardContent>
         </Card>

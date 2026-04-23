@@ -27,9 +27,9 @@ type TabId = (typeof TABS)[number]["id"];
 const RequestBtn = ({ size = "default", onClick }: { size?: "default" | "lg"; onClick: () => void }) => (
   <button
     onClick={onClick}
-    className={`inline-flex items-center gap-2 bg-secondary text-secondary-foreground font-semibold rounded-lg hover:bg-secondary/80 transition-colors ${size === "lg" ? "px-8 py-3 text-lg" : "px-6 py-3"}`}
+    className={`inline-flex items-center gap-2 bg-secondary text-secondary-foreground font-bold rounded-lg hover:-translate-y-1 hover:shadow-xl transition-all group ${size === "lg" ? "h-14 px-8" : "h-12 px-6"}`}
   >
-    Request Service <ArrowRight size={size === "lg" ? 20 : 18} />
+    Request Service <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
   </button>
 );
 

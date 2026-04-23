@@ -69,12 +69,18 @@ export function ProductOfferings() {
                     <p className="text-muted-foreground flex-1 mb-6 leading-relaxed">
                       {item.description}
                     </p>
-                    <Link
-                      href={item.href}
-                      className="inline-flex items-center gap-2 text-secondary hover:text-secondary/80 font-medium transition-colors mt-auto"
-                    >
-                      {item.linkLabel} <ArrowRight size={18} />
-                    </Link>
+                    {item.isComingSoon ? (
+                      <span className="inline-flex items-center gap-2 text-muted-foreground font-medium mt-auto cursor-not-allowed">
+                        {item.linkLabel}
+                      </span>
+                    ) : (
+                      <Link
+                        href={item.href}
+                        className="inline-flex items-center gap-2 text-secondary hover:text-secondary/80 font-medium transition-colors mt-auto"
+                      >
+                        {item.linkLabel} <ArrowRight size={18} />
+                      </Link>
+                    )}
                   </CardContent>
                 </Card>
               ))}

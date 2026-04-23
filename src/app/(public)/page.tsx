@@ -2,7 +2,6 @@ import {
   HeroSection,
   TransformationStats,
   ProofAndTrust,
-  DigitalMaturityAssessment,
   ServicesSection,
   ClientLogos,
   CallToAction,
@@ -14,7 +13,6 @@ export default function HomePage() {
       <HeroSection />
       <TransformationStats />
       <ProofAndTrust />
-      <DigitalMaturityAssessment />
       <ServicesSection />
       <ClientLogos />
       <CallToAction />

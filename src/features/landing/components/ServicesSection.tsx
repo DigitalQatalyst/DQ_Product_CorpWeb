@@ -10,7 +10,7 @@ const SERVICES = [
     title: "Services Marketplace",
     description: "Maximize ROI with our affordable, data-driven and architecture-led digital transformation services",
     icon: <Briefcase />,
-    href: "/marketplace/services",
+    href: "/services/marketplace",
     isActive: true,
   },
   {

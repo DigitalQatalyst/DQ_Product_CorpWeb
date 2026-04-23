@@ -24,7 +24,7 @@ export function ProductsHero() {
           </p>
           <Link
             href="/products/marketplace"
-            className="inline-flex items-center gap-2 h-14 px-8 bg-white text-primary font-bold rounded-lg hover:-translate-y-1 hover:shadow-xl transition-all group"
+            className="inline-flex items-center gap-2 h-14 px-8 bg-secondary text-secondary-foreground font-bold rounded-lg hover:-translate-y-1 hover:shadow-xl transition-all group"
           >
             Explore Our Products
             <ArrowRight

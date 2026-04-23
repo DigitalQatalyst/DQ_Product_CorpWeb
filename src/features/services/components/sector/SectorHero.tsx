@@ -18,7 +18,7 @@ export function SectorHero({ sector }: { sector: SectorData }) {
           </p>
           <Link 
             href="/contact" 
-            className="inline-flex items-center gap-2 px-6 py-3 bg-secondary text-white font-semibold rounded-lg hover:bg-secondary/90 transition-colors group"
+            className="inline-flex items-center gap-2 h-14 px-8 bg-secondary text-secondary-foreground font-bold rounded-lg hover:-translate-y-1 hover:shadow-xl transition-all group"
           >
             Get in Touch <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </Link>

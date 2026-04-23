@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useCallback } from "react";
 import Link from "next/link";
-import { HomeIcon, Search, X, Filter, BookmarkIcon, ScaleIcon, Loader } from "lucide-react";
+import { HomeIcon, Search, X, Filter, Loader } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -106,38 +106,30 @@ function FilterSidebar({ filters, onFilterChange, onReset }: {
 function ServiceCard({ service }: { service: Service }) {
   return (
     <Card className="flex flex-col min-h-[340px] rounded-lg py-0 gap-0 hover:shadow-md transition-shadow">
-      <CardContent className="flex-grow flex flex-col px-4 py-5">
-        <div className="flex items-start mb-5">
+      <CardContent className="flex-grow flex flex-col p-6">
+        <div className="flex items-start mb-4">
           <div className="h-12 w-12 rounded-md bg-muted flex items-center justify-center shrink-0 mr-3 text-xs font-bold text-muted-foreground">
             DQ
           </div>
-          <div className="flex-grow min-h-[72px] flex flex-col justify-center">
-            <h3 className="font-bold text-foreground line-clamp-2 min-h-[48px] leading-snug">{service.title}</h3>
-            <p className="text-sm text-muted-foreground min-h-[20px] mt-1">{service.provider}</p>
+          <div className="flex-grow flex flex-col">
+            <h3 className="font-bold text-foreground line-clamp-2 leading-snug">{service.title}</h3>
+            <p className="text-sm text-muted-foreground mt-1">{service.provider}</p>
           </div>
         </div>
-        <p className="text-sm text-muted-foreground line-clamp-3 min-h-[60px] leading-relaxed mb-5">
+        <p className="text-sm text-muted-foreground line-clamp-3 min-h-[60px] leading-relaxed mb-2">
           {service.description}
         </p>
         <div className="flex justify-between items-center mt-auto">
-          <div className="flex flex-wrap gap-1 max-w-[70%]">
+          <div className="flex flex-wrap gap-1">
             {service.tags.slice(0, 2).map((tag, i) => (
               <Badge key={tag} variant={i === 0 ? "default" : "secondary"} className="text-xs rounded-full">
                 {tag}
               </Badge>
             ))}
           </div>
-          <div className="flex space-x-2 shrink-0">
-            <button className="p-1.5 rounded-full bg-muted text-muted-foreground hover:bg-muted/80" aria-label="Bookmark">
-              <BookmarkIcon size={16} />
-            </button>
-            <button className="p-1.5 rounded-full bg-muted text-muted-foreground hover:bg-muted/80" aria-label="Compare">
-              <ScaleIcon size={16} />
-            </button>
-          </div>
         </div>
       </CardContent>
-      <CardFooter className="border-t border-border px-4 py-4 gap-2">
+      <CardFooter className="border-t border-border p-4 gap-2">
         <Link
           href={`/services/${service.id}`}
           className="px-4 py-2 text-sm font-medium text-secondary border border-secondary rounded-md hover:bg-secondary/5 transition-colors flex-1 text-center"
@@ -200,7 +192,8 @@ export function ServicesMarketplacePage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-muted/30">
-      <div className="container mx-auto px-4 py-8 flex-grow">
+      <div className="container mx-auto px-4 md:px-6 py-8 flex-grow">
+        <div className="pl-4">
 
         <Breadcrumb className="mb-4">
           <BreadcrumbList>
@@ -236,7 +229,7 @@ export function ServicesMarketplacePage() {
         </Card>
 
         {/* Tabs */}
-        <div className="border-b border-border mb-6">
+        <div className="border-b border-secondary mb-6">
           <div className="flex space-x-8">
             {SERVICE_TABS.map((tab) => (
               <button
@@ -244,7 +237,7 @@ export function ServicesMarketplacePage() {
                 onClick={() => { setActiveTab(tab.id); setSearch(""); }}
                 className={`pb-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                   activeTab === tab.id
-                    ? "border-primary text-primary"
+                    ? "border-secondary text-secondary"
                     : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
                 }`}
               >
@@ -340,6 +333,7 @@ export function ServicesMarketplacePage() {
               </Card>
             )}
           </div>
+        </div>
         </div>
       </div>
     </div>

@@ -39,8 +39,8 @@ export function ServiceCategoryPage({ slug }: { slug: string }) {
         <div className="relative container mx-auto px-4 h-full flex flex-col justify-center text-white">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">{cat.heroTitle}</h1>
           <p className="text-white/80 text-lg mb-6 max-w-2xl">{cat.heroSubtitle}</p>
-          <Link href="/consultation" className="inline-flex items-center gap-2 px-8 py-3 bg-white text-primary font-semibold rounded-full hover:bg-white/90 transition-colors w-fit">
-            Get in Touch <ArrowRight size={18} />
+          <Link href="/consultation" className="inline-flex items-center gap-2 h-14 px-8 bg-secondary text-secondary-foreground font-bold rounded-lg hover:-translate-y-1 hover:shadow-xl transition-all group w-fit">
+            Get in Touch <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </Link>
           <div className="mt-10 flex items-center text-sm text-white/70 gap-2 flex-wrap">
             {breadcrumbs.map((crumb, i) => (
@@ -75,12 +75,12 @@ export function ServiceCategoryPage({ slug }: { slug: string }) {
             <p className="text-muted-foreground text-lg">{cat.bpDescription}</p>
             <div className="flex flex-wrap gap-4">
               {cat.bpPrimaryCta.label && (
-                <Link href={cat.bpPrimaryCta.href} className="inline-flex items-center gap-2 px-6 py-3 bg-secondary text-secondary-foreground font-semibold rounded-full hover:bg-secondary/90 transition-colors">
-                  {cat.bpPrimaryCta.label} <ArrowRight size={16} />
+                <Link href={cat.bpPrimaryCta.href} className="inline-flex items-center gap-2 h-14 px-8 bg-secondary text-secondary-foreground font-bold rounded-lg hover:-translate-y-1 hover:shadow-xl transition-all group">
+                  {cat.bpPrimaryCta.label} <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
               )}
               {cat.bpSecondaryCta.label && (
-                <Link href={cat.bpSecondaryCta.href} className="inline-flex items-center px-6 py-3 border border-border text-foreground font-semibold rounded-full hover:bg-muted transition-colors">
+                <Link href={cat.bpSecondaryCta.href} className="inline-flex items-center px-6 py-3 border border-border text-foreground font-semibold rounded-lg hover:bg-muted transition-colors">
                   {cat.bpSecondaryCta.label}
                 </Link>
               )}
@@ -146,9 +146,9 @@ export function ServiceCategoryPage({ slug }: { slug: string }) {
                 </div>
                 <Link
                   href="/consultation"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-full hover:bg-primary/90 transition-colors"
+                  className="inline-flex items-center gap-2 h-14 px-8 bg-secondary text-secondary-foreground font-bold rounded-lg hover:-translate-y-1 hover:shadow-xl transition-all group"
                 >
-                  {cat.methodCtaLabel} <ArrowRight size={16} />
+                  {cat.methodCtaLabel} <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
               {cat.methodImage && (
@@ -205,8 +205,8 @@ export function ServiceCategoryPage({ slug }: { slug: string }) {
               ))}
             </div>
             <div className="text-center">
-              <Link href="/services" className="inline-flex items-center gap-2 px-6 py-3 bg-secondary text-secondary-foreground font-semibold rounded-full hover:bg-secondary/90 transition-colors">
-                {cat.industryCtaLabel} <ArrowRight size={16} />
+              <Link href="/services" className="inline-flex items-center gap-2 h-14 px-8 bg-secondary text-secondary-foreground font-bold rounded-lg hover:-translate-y-1 hover:shadow-xl transition-all group">
+                {cat.industryCtaLabel} <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </div>
