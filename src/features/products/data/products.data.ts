@@ -113,6 +113,7 @@ export type OfferingItem = {
   description: string;
   href: string;
   linkLabel: string;
+  isComingSoon?: boolean;
 };
 
 export type OfferingClass = {
