@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { listPublishedProducts } from "@/features/products/hooks/useProducts";
 import { ProductsMarketplacePage } from "@/features/products/marketplace/ProductsMarketplacePage";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Products Marketplace | DigitalQatalyst",
   description:

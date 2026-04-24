@@ -14,11 +14,10 @@ export interface SectorGroupWithItems {
 // ─── API helpers ──────────────────────────────────────────────────────────────
 
 function apiUrl(path: string) {
-  if (typeof window !== "undefined") return path; // client: relative URL is fine
-  // Server: need absolute URL — prefer explicit env, then Vercel's built-in
-  const vercelUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined;
-  const base = process.env.NEXT_PUBLIC_APP_URL ?? vercelUrl ?? "http://localhost:3000";
-  return `${base}${path}`;
+  if (typeof window !== "undefined") return path;
+  if (process.env.NEXT_PUBLIC_APP_URL) return `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}${path}`;
+  return `http://localhost:3000${path}`;
 }
 
 async function apiFetch(path: string) {

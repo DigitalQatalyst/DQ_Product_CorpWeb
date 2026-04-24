@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { ServiceCategoryPage } from "@/features/services/components/ServiceCategoryPage";
 import { getServiceCategoryBySlug } from "@/features/services/hooks/useServiceCategories";
 
+export const dynamic = "force-dynamic";
+
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

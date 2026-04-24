@@ -7,6 +7,8 @@ import { SectorKeyBenefits } from "@/features/services/components/sector/SectorK
 import { SectorWhereToStart } from "@/features/services/components/sector/SectorWhereToStart";
 import { SectorFocusAreas } from "@/features/services/components/sector/SectorFocusAreas";
 
+export const dynamic = "force-dynamic";
+
 type Props = { params: Promise<{ sectorId: string }> };
 
 export default async function Page({ params }: Props) {

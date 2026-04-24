@@ -105,8 +105,10 @@ function mapProductDetailsRow(row: ProductDetailsRow | null): ProductDetail {
 // ─── API helpers ──────────────────────────────────────────────────────────────
 
 function apiUrl(path: string) {
-  const base = process.env.NEXT_PUBLIC_APP_URL ?? (typeof window === "undefined" ? "http://localhost:3000" : "");
-  return `${base}${path}`;
+  if (typeof window !== "undefined") return path;
+  if (process.env.NEXT_PUBLIC_APP_URL) return `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}${path}`;
+  return `http://localhost:3000${path}`;
 }
 
 async function apiFetch(path: string) {

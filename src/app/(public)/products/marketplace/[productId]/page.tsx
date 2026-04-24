@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { getPublishedProductWithDetails } from "@/features/products/hooks/useProducts";
 import { ProductDetailPage } from "@/features/products/detail/ProductDetailPage";
 
+export const dynamic = "force-dynamic";
+
 type Props = { params: Promise<{ productId: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
