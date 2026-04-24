@@ -71,7 +71,7 @@ function ExploreDropdown() {
 }
 
 // ── Mobile Drawer ─────────────────────────────────────────────────────────────
-function MobileDrawer() {
+function MobileDrawer({ handleGetInTouchClick }: { handleGetInTouchClick: (location: string) => void }) {
   const [open, setOpen] = useState(false);
   const [exploreOpen, setExploreOpen] = useState(false);
   const pathname = usePathname();
@@ -92,10 +92,6 @@ function MobileDrawer() {
   }, [open]);
 
   const close = () => setOpen(false);
-
-  const handleGetInTouchClick = (location: string) => {
-    trackButtonClick("Get In Touch", location);
-  };
 
   return (
     <>
@@ -197,6 +193,10 @@ function MobileDrawer() {
 export function Header() {
   const pathname = usePathname();
 
+  const handleGetInTouchClick = (location: string) => {
+    trackButtonClick("Get In Touch", location);
+  };
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 w-full min-h-[72px] bg-[#030F35] shadow-md text-white transition-all duration-300">
       <div className="container mx-auto px-4 md:px-6 py-3">
@@ -236,7 +236,7 @@ export function Header() {
           </div>
 
           {/* Mobile / Tablet */}
-          <MobileDrawer />
+          <MobileDrawer handleGetInTouchClick={handleGetInTouchClick} />
         </div>
       </div>
     </header>
