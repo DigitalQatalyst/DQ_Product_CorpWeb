@@ -1,7 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 export interface ServiceOverview { paragraphs: string[]; keyAreas: string[]; targetAudience: string[] }
 export interface DeliveryStage { number: number; title: string; subtitle: string; outcome: string; achieved: string[]; deliverables: string[] }
 export interface ServiceDeliverable { title: string; description: string }
@@ -16,59 +14,36 @@ export interface Service {
   isPublished: boolean; sortOrder: number;
 }
 
-// ─── Row mapper ───────────────────────────────────────────────────────────────
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function fromRow(r: any): Service {
   return {
-    id: r.id, title: r.title, description: r.description ?? "",
-    provider: r.provider ?? "DigitalQatalyst", category: r.category,
-    tags: r.tags ?? [], serviceCategory: r.service_category ?? "",
-    serviceAvailability: r.service_availability ?? "Available",
-    serviceReadiness: r.service_readiness ?? "Ready to Order",
-    duration: r.duration ?? "",
-    overview: r.overview ?? { paragraphs: [], keyAreas: [], targetAudience: [] },
-    deliveryStages: r.delivery_stages ?? [], deliverables: r.deliverables ?? [],
-    requiredInputs: r.required_inputs ?? [],
+    id: r.id, title: r.title, description: r.description ?? "", provider: r.provider ?? "DigitalQatalyst",
+    category: r.category, tags: r.tags ?? [], serviceCategory: r.service_category ?? "",
+    serviceAvailability: r.service_availability ?? "Available", serviceReadiness: r.service_readiness ?? "Ready to Order",
+    duration: r.duration ?? "", overview: r.overview ?? { paragraphs: [], keyAreas: [], targetAudience: [] },
+    deliveryStages: r.delivery_stages ?? [], deliverables: r.deliverables ?? [], requiredInputs: r.required_inputs ?? [],
     isPublished: !!r.is_published, sortOrder: r.sort_order ?? 0,
   };
 }
 
-// ─── API helpers ──────────────────────────────────────────────────────────────
-
-function apiUrl(path: string) {
-  if (typeof window !== "undefined") return path;
-  if (process.env.NEXT_PUBLIC_APP_URL) return `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}${path}`;
-  return `http://localhost:3000${path}`;
+async function getDb() {
+  const { getSupabaseAdmin } = await import("@/lib/supabaseAdmin");
+  return getSupabaseAdmin();
 }
-
-async function apiFetch(path: string) {
-  const res = await fetch(apiUrl(path));
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw new Error((body as { error?: string }).error ?? `Request failed: ${res.status}`);
-  }
-  return res.json();
-}
-
-// ─── Fetch functions (used by server components + hooks) ─────────────────────
 
 export async function listPublishedServices(): Promise<Service[]> {
-  const data = await apiFetch("/api/services");
-  return (data as unknown[]).map(fromRow);
+  const db = await getDb();
+  const { data, error } = await db.from("services").select("*").eq("is_published", true).order("sort_order", { ascending: true });
+  if (error) throw new Error(error.message);
+  return (data ?? []).map(fromRow);
 }
 
 export async function getServiceById(id: string): Promise<Service | null> {
-  try {
-    const data = await apiFetch(`/api/services/${id}`);
-    return fromRow(data);
-  } catch {
-    return null;
-  }
+  const db = await getDb();
+  const { data, error } = await db.from("services").select("*").eq("id", id).eq("is_published", true).maybeSingle();
+  if (error || !data) return null;
+  return fromRow(data);
 }
-
-// ─── Hooks ────────────────────────────────────────────────────────────────────
 
 export const SERVICES_KEY = ["services"] as const;
 
@@ -77,9 +52,5 @@ export function usePublishedServices() {
 }
 
 export function useServiceById(id: string) {
-  return useQuery({
-    queryKey: [...SERVICES_KEY, id],
-    queryFn: () => getServiceById(id),
-    enabled: !!id,
-  });
+  return useQuery({ queryKey: [...SERVICES_KEY, id], queryFn: () => getServiceById(id), enabled: !!id });
 }

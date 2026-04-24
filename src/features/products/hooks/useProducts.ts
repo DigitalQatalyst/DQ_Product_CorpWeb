@@ -102,41 +102,28 @@ function mapProductDetailsRow(row: ProductDetailsRow | null): ProductDetail {
   };
 }
 
-// ─── API helpers ──────────────────────────────────────────────────────────────
-
-function apiUrl(path: string) {
-  if (typeof window !== "undefined") return path;
-  if (process.env.NEXT_PUBLIC_APP_URL) return `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}${path}`;
-  return `http://localhost:3000${path}`;
-}
-
-async function apiFetch(path: string) {
-  const res = await fetch(apiUrl(path), { cache: "no-store" });
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw new Error((body as { error?: string }).error ?? `Request failed: ${res.status}`);
-  }
-  return res.json();
-}
-
 // ─── Public fetch functions (used by server components + hooks) ───────────────
 
 export async function listPublishedProducts(): Promise<Array<ProductType & { ctaType: ProductCtaType }>> {
-  const data: ProductRow[] = await apiFetch("/api/products");
-  return data.map(mapProductRow);
+  const { getSupabaseAdmin } = await import("@/lib/supabaseAdmin");
+  const db = getSupabaseAdmin();
+  const { data, error } = await db.from("products").select("id,name,code,description,category,tags,image_path,cta_type,is_published").eq("is_published", true).order("name", { ascending: true });
+  if (error) throw new Error(error.message);
+  return (data as ProductRow[]).map(mapProductRow);
 }
 
 export async function getPublishedProductWithDetails(productId: string): Promise<{
   product: (ProductType & { ctaType: ProductCtaType }) | null;
   detail: ProductDetail | null;
 }> {
-  try {
-    const data: { product: ProductRow; detail: ProductDetailsRow | null } = await apiFetch(`/api/products/${productId}`);
-    return { product: mapProductRow(data.product), detail: mapProductDetailsRow(data.detail) };
-  } catch {
-    return { product: null, detail: null };
-  }
+  const { getSupabaseAdmin } = await import("@/lib/supabaseAdmin");
+  const db = getSupabaseAdmin();
+  const [productRes, detailRes] = await Promise.all([
+    db.from("products").select("id,name,code,description,category,tags,image_path,cta_type,is_published").eq("id", productId).eq("is_published", true).single(),
+    db.from("product_details").select("product_id,about_paragraphs,feature_descriptions,problem_statement,solution_statement,capabilities_label,capabilities,practical_values").eq("product_id", productId).maybeSingle(),
+  ]);
+  if (productRes.error || !productRes.data) return { product: null, detail: null };
+  return { product: mapProductRow(productRes.data as ProductRow), detail: mapProductDetailsRow(detailRes.data as ProductDetailsRow | null) };
 }
 
 // ─── Hooks ────────────────────────────────────────────────────────────────────
