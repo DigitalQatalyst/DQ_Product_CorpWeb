@@ -4,8 +4,15 @@ import { ValueProps } from "../components/ValueProps";
 import { SectorDomains } from "../components/SectorDomains";
 import { MarketplaceBanner } from "../components/MarketplaceBanner";
 import { valueProps } from "../data/why-work-with-us";
+import { listPublishedServiceCategories } from "../hooks/useServiceCategories";
+import { listSectorGroups } from "../hooks/useSectors";
 
-export function ServicesPage() {
+export async function ServicesPage() {
+  const [categories, groups] = await Promise.all([
+    listPublishedServiceCategories(),
+    listSectorGroups(),
+  ]);
+
   return (
     <div className="min-h-screen bg-background">
       <ServiceHero />
@@ -22,12 +29,12 @@ export function ServicesPage() {
               plans for seamless, efficient implementation.
             </p>
           </div>
-          <ServiceCategoryCards />
+          <ServiceCategoryCards categories={categories} />
         </div>
       </section>
 
       <ValueProps items={valueProps} />
-      <SectorDomains />
+      <SectorDomains groups={groups} />
       <MarketplaceBanner />
     </div>
   );
