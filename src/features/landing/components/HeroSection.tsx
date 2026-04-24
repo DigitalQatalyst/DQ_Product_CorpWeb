@@ -1,45 +1,23 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { Send, ChevronDown, ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ChevronDown, ArrowRight } from "lucide-react";
 import Link from "next/link";
-
-const SUGGESTIONS = [
-  "How can my organization start its digital transformation journey?",
-  "What service areas does DQ serve?",
-  "How is DQ's digital transformation different?",
-  "What products does DQ offer?",
-  "Tell me about the DT 2.0 methodology",
-];
+import { trackButtonClick } from "@/lib/analytics";
 
 export function HeroSection() {
-  const [prompt, setPrompt] = useState("");
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const [showSuggestions, setShowSuggestions] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     setIsLoaded(true);
   }, []);
 
-  useEffect(() => {
-    let timer: ReturnType<typeof setTimeout>;
-    if (isSearchFocused) {
-      timer = setTimeout(() => setShowSuggestions(true), 500);
-    } else {
-      setShowSuggestions(false);
-    }
-    return () => clearTimeout(timer);
-  }, [isSearchFocused]);
+  const handleExploreServicesClick = () => {
+    trackButtonClick("Explore Services", "Hero Section");
+  };
 
-  const handleSubmit = () => {
-    if (!prompt.trim()) return;
-    setIsProcessing(true);
-    // TODO: wire to chatbot context
-    console.log("chatbot:", prompt);
-    setPrompt("");
-    setIsProcessing(false);
+  const handleExploreProductsClick = () => {
+    trackButtonClick("Explore Products", "Hero Section");
   };
 
   return (
@@ -82,95 +60,31 @@ export function HeroSection() {
           </p>
         </div>
 
-        {/* AI Prompt Interface */}
-        <div className="w-full max-w-3xl mb-10">
-          <div
-            className={`bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 ${
-              isSearchFocused ? "shadow-xl scale-105" : ""
-            }`}
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 items-center">
+          <Link
+            href="/services"
+            onClick={handleExploreServicesClick}
+            className="inline-flex items-center gap-2 h-14 px-8 bg-secondary text-secondary-foreground font-bold rounded-lg hover:-translate-y-1 hover:shadow-xl transition-all group"
           >
-            <div className="p-2 md:p-3">
-              <div className="flex items-center">
-                <div className="flex-grow relative">
-                  <input
-                    type="text"
-                    placeholder="Ask about our digital transformation services..."
-                    className={`font-sans w-full py-3 px-4 outline-none text-gray-700 rounded-lg bg-gray-50 transition-all duration-300 ${
-                      isSearchFocused ? "bg-white" : ""
-                    }`}
-                    value={prompt}
-                    onChange={(e) => setPrompt(e.target.value)}
-                    onFocus={() => setIsSearchFocused(true)}
-                    onBlur={() =>
-                      setTimeout(() => setIsSearchFocused(false), 200)
-                    }
-                    onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-                  />
-                </div>
-                <button
-                  onClick={handleSubmit}
-                  disabled={isProcessing || !prompt.trim()}
-                  className={`ml-2 p-3 rounded-lg flex items-center justify-center transition-all ${
-                    isProcessing || !prompt.trim()
-                      ? "bg-gray-200 cursor-not-allowed text-gray-400"
-                      : "bg-[#FF6B4D] hover:bg-[#E63D1A] text-white"
-                  }`}
-                >
-                  <Send
-                    size={20}
-                    className={isProcessing ? "animate-pulse" : ""}
-                  />
-                </button>
-              </div>
-            </div>
-
-            {/* Suggestion pills */}
-            <div
-              className={`bg-gray-50 px-4 py-3 border-t border-gray-100 transition-all duration-500 ease-in-out ${
-                showSuggestions
-                  ? "opacity-100 max-h-24 mb-4"
-                  : "opacity-0 max-h-0 overflow-hidden"
-              }`}
-            >
-              <p className="text-xs text-gray-500 mb-2">Try asking:</p>
-              <div
-                className="flex gap-2 overflow-x-auto pb-2 md:flex-wrap md:overflow-x-visible md:pb-0"
-                style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
-              >
-                {SUGGESTIONS.map((pill, index) => (
-                  <button
-                    key={index}
-                    className="text-xs bg-white border border-gray-200 rounded-full px-3 py-1 text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer flex-shrink-0 whitespace-nowrap"
-                    style={{
-                      opacity: showSuggestions ? 1 : 0,
-                      transform: showSuggestions
-                        ? "translateY(0)"
-                        : "translateY(10px)",
-                      transition:
-                        "opacity 0.3s ease-out, transform 0.3s ease-out",
-                      transitionDelay: `${0.1 + index * 0.1}s`,
-                    }}
-                    onClick={() => setPrompt(pill)}
-                  >
-                    {pill}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
+            <span className="relative z-10">Explore Services</span>
+            <ArrowRight
+              size={18}
+              className="relative z-10 group-hover:translate-x-1 transition-transform duration-300"
+            />
+          </Link>
+          <Link
+            href="/products"
+            onClick={handleExploreProductsClick}
+            className="inline-flex items-center gap-2 h-14 px-8 bg-transparent border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-gray-900 hover:-translate-y-1 hover:shadow-xl transition-all group"
+          >
+            <span className="relative z-10">Explore Products</span>
+            <ArrowRight
+              size={18}
+              className="relative z-10 group-hover:translate-x-1 transition-transform duration-300"
+            />
+          </Link>
         </div>
-
-        {/* CTA Button */}
-        <Link
-          href="/services"
-          className="inline-flex items-center gap-2 h-14 px-8 bg-secondary text-secondary-foreground font-bold rounded-lg hover:-translate-y-1 hover:shadow-xl transition-all group"
-        >
-          <span className="relative z-10">Explore Now</span>
-          <ArrowRight
-            size={18}
-            className="relative z-10 group-hover:translate-x-1 transition-transform duration-300"
-          />
-        </Link>
       </div>
 
       {/* Scroll indicator */}

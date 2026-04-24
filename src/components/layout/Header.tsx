@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowRight, ChevronDown, Menu, X, ChevronRight, Building2, Package, Users, Phone } from "lucide-react";
+import { trackButtonClick } from "@/lib/analytics";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -92,11 +93,15 @@ function MobileDrawer() {
 
   const close = () => setOpen(false);
 
+  const handleGetInTouchClick = (location: string) => {
+    trackButtonClick("Get In Touch", location);
+  };
+
   return (
     <>
       {/* Mobile: CTA + hamburger */}
       <div className="flex items-center space-x-2 md:hidden">
-        <Link href="/consultation" onClick={close}
+        <Link href="/#consultation" onClick={() => { close(); handleGetInTouchClick("Mobile Header"); }}
           className="px-3 py-2 bg-[#FF6B4D] text-white rounded-md hover:bg-[#E63D1A] transition-all font-medium text-sm"
         >
           Get In Touch
@@ -173,7 +178,7 @@ function MobileDrawer() {
               <div className="border-t border-gray-200 mx-6 my-2" />
 
               <div className="px-6 py-4">
-                <Link href="/consultation" onClick={close}
+                <Link href="/#consultation" onClick={() => { close(); handleGetInTouchClick("Mobile Menu"); }}
                   className="w-full flex items-center justify-between px-4 py-3 text-white bg-[#FF6B4D] hover:bg-[#E63D1A] rounded-lg transition-colors font-medium shadow-lg"
                 >
                   <div className="flex items-center"><Phone size={20} className="mr-3" /><span>Get In Touch</span></div>
@@ -223,7 +228,7 @@ export function Header() {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-4">
-            <Link href="/consultation"
+            <Link href="/#consultation" onClick={() => handleGetInTouchClick("Desktop Header")}
               className="flex items-center gap-2 bg-[#FF6B4D] text-white font-semibold px-6 py-2.5 rounded-lg shadow-lg hover:bg-[#E63D1A] transition-all duration-200"
             >
               Get In Touch <ArrowRight size={18} />
