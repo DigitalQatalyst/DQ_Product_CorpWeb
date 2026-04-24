@@ -52,9 +52,9 @@ function fromRow(r: any): ServiceCategory {
 
 function apiUrl(path: string) {
   if (typeof window !== "undefined") return path;
-  const vercelUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined;
-  const base = process.env.NEXT_PUBLIC_APP_URL ?? vercelUrl ?? "http://localhost:3000";
-  return `${base}${path}`;
+  if (process.env.NEXT_PUBLIC_APP_URL) return `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}${path}`;
+  return `http://localhost:3000${path}`;
 }
 
 async function apiFetch(path: string, init?: RequestInit) {
@@ -74,17 +74,19 @@ export async function listServiceCategories(): Promise<ServiceCategory[]> {
 }
 
 export async function listPublishedServiceCategories(): Promise<ServiceCategory[]> {
-  const data = await apiFetch("/api/service-categories");
-  return (data as unknown[]).map(fromRow);
+  const { getSupabaseAdmin } = await import("@/lib/supabaseAdmin");
+  const db = getSupabaseAdmin();
+  const { data, error } = await db.from("service_categories").select("*").eq("is_published", true).order("created_at", { ascending: true });
+  if (error) throw new Error(error.message);
+  return (data ?? []).map(fromRow);
 }
 
 export async function getServiceCategoryBySlug(slug: string): Promise<ServiceCategory | null> {
-  try {
-    const data = await apiFetch(`/api/service-categories/${slug}`);
-    return fromRow(data);
-  } catch {
-    return null;
-  }
+  const { getSupabaseAdmin } = await import("@/lib/supabaseAdmin");
+  const db = getSupabaseAdmin();
+  const { data, error } = await db.from("service_categories").select("*").eq("slug", slug).eq("is_published", true).maybeSingle();
+  if (error || !data) return null;
+  return fromRow(data);
 }
 
 export async function createServiceCategory(input: ServiceCategoryInput): Promise<ServiceCategory> {

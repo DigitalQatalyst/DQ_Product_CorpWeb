@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
-import { ProductsMarketplaceClient } from "@/features/products/marketplace/ProductsMarketplaceClient";
+import { listPublishedProducts } from "@/features/products/hooks/useProducts";
+import { ProductsMarketplacePage } from "@/features/products/marketplace/ProductsMarketplacePage";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Products Marketplace | DigitalQatalyst",
@@ -7,6 +10,7 @@ export const metadata: Metadata = {
     "Discover curated digital products and accelerators engineered for growth and success in the digital economy.",
 };
 
-export default function Page() {
-  return <ProductsMarketplaceClient />;
+export default async function Page() {
+  const products = await listPublishedProducts();
+  return <ProductsMarketplacePage products={products} />;
 }

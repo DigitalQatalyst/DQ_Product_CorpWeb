@@ -1,26 +1,15 @@
-"use client";
-
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ChevronDown, ChevronUp, Loader } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { notFound } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { useServiceCategoryBySlug } from "@/features/services/hooks/useServiceCategories";
+import { getServiceCategoryBySlug } from "@/features/services/hooks/useServiceCategories";
+import { FaqAccordion } from "./FaqAccordion";
 
-export function ServiceCategoryPage({ slug }: { slug: string }) {
-  const { data: cat, isLoading } = useServiceCategoryBySlug(slug);
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader className="animate-spin text-primary" size={32} />
-      </div>
-    );
-  }
-
-  if (!cat) return null;
+export async function ServiceCategoryPage({ slug }: { slug: string }) {
+  const cat = await getServiceCategoryBySlug(slug);
+  if (!cat) return notFound();
 
   const breadcrumbs = [
     { label: "Home", href: "/" },
@@ -85,22 +74,7 @@ export function ServiceCategoryPage({ slug }: { slug: string }) {
                 </Link>
               )}
             </div>
-            <div className="space-y-3 pt-2">
-              {cat.bpFaqs.map((faq, i) => (
-                <div key={i} className="border border-border rounded-2xl overflow-hidden">
-                  <button
-                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                    className="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-foreground hover:bg-muted/40 transition-colors"
-                  >
-                    <span>{faq.question}</span>
-                    {openFaq === i ? <ChevronUp className="w-5 h-5 shrink-0" /> : <ChevronDown className="w-5 h-5 shrink-0" />}
-                  </button>
-                  {openFaq === i && (
-                    <div className="px-5 pb-5 text-muted-foreground text-sm leading-relaxed">{faq.answer}</div>
-                  )}
-                </div>
-              ))}
-            </div>
+            <FaqAccordion faqs={cat.bpFaqs} />
           </div>
         </div>
 
