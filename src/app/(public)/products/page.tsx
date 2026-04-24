@@ -7,6 +7,6 @@ export const metadata: Metadata = {
     "DQ products operationalize your vision through unified, scalable systems built for measurable growth and sustained transformation.",
 };
 
-export default function Page() {
+export default async function Page() {
   return <ProductsPage />;
 }

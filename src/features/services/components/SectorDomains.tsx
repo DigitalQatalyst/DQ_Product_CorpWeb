@@ -1,20 +1,7 @@
-"use client";
-
 import Link from "next/link";
-import { Loader } from "lucide-react";
-import { useSectorGroups } from "@/features/services/hooks/useSectors";
+import type { SectorGroupWithItems } from "@/features/services/hooks/useSectors";
 
-export function SectorDomains() {
-  const { data: groups = [], isLoading } = useSectorGroups();
-
-  if (isLoading) {
-    return (
-      <section className="py-20 bg-muted/20 flex justify-center">
-        <Loader className="animate-spin text-primary" size={28} />
-      </section>
-    );
-  }
-
+export function SectorDomains({ groups }: { groups: SectorGroupWithItems[] }) {
   return (
     <section className="py-20 bg-muted/20">
       <div className="container mx-auto px-6">

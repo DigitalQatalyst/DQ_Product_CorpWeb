@@ -6,6 +6,6 @@ export const metadata: Metadata = {
   description: "Accelerate your digital transformation with DQ's end-to-end services.",
 };
 
-export default function Page() {
+export default async function Page() {
   return <ServicesPage />;
 }

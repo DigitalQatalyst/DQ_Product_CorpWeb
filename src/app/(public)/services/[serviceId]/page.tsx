@@ -1,6 +1,12 @@
-import { ServiceDetailPage } from "@/features/services/marketplace/components/ServiceDetailPage";
+import type { Metadata } from "next";
+import { ServiceDetailPage, generateMetadata as genMeta } from "@/features/services/marketplace/components/ServiceDetailPage";
 
 type Props = { params: Promise<{ serviceId: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { serviceId } = await params;
+  return genMeta({ serviceId });
+}
 
 export default async function Page({ params }: Props) {
   const { serviceId } = await params;

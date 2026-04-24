@@ -1,29 +1,16 @@
-"use client";
-
 import Link from "next/link";
-import { ArrowRight, Loader, Palette, Rocket } from "lucide-react";
+import { ArrowRight, Palette, Rocket } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { usePublishedServiceCategories } from "@/features/services/hooks/useServiceCategories";
+import type { ServiceCategory } from "@/features/services/hooks/useServiceCategories";
 
-// Icon mapping for service categories
 const categoryIcons: Record<string, React.ReactNode> = {
   "Design Services": <Palette size={24} className="text-secondary" />,
   "Deploy Services (SaaS)": <Rocket size={24} className="text-secondary" />,
   "Deploy Services (On-Prem)": <Rocket size={24} className="text-secondary" />,
 };
 
-export function ServiceCategoryCards() {
-  const { data: categories = [], isLoading } = usePublishedServiceCategories();
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center py-12">
-        <Loader className="animate-spin text-primary" size={28} />
-      </div>
-    );
-  }
-
+export function ServiceCategoryCards({ categories }: { categories: ServiceCategory[] }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       {categories.map((cat) => (
